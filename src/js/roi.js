@@ -142,8 +142,7 @@
       pad.querySelectorAll(".arow.clk").forEach(function (r) {
         r.onclick = function () {
           window.PIQ._jumpPattern = +r.dataset.pat;
-          var tabs = document.querySelectorAll(".modtab");
-          tabs.forEach(function (t) { if (t.textContent.indexOf("Pattern Library") === 0) t.click(); });
+          window.PIQ.go("library");
         };
       });
     }, 10);

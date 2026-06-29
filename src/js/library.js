@@ -148,10 +148,7 @@
     var btn = document.getElementById("toCockpit");
     if (btn) btn.onclick = function () {
       window.PIQ._jumpInvoice = tiv.belnr;
-      // switch module via shell
-      var nav = document.getElementById("modnav");
-      var tabs = nav.querySelectorAll(".modtab");
-      tabs.forEach(function (t) { if (t.textContent === "Cognitive Cockpit") t.click(); });
+      window.PIQ.go("cockpit");
     };
   }
 

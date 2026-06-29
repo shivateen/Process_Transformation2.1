@@ -114,13 +114,7 @@
 
     // navigation handoffs
     view.querySelectorAll("[data-go]").forEach(function (b) {
-      b.onclick = function () {
-        var id = b.dataset.go;
-        document.querySelectorAll(".modtab").forEach(function (t) {
-          var want = id === "cockpit" ? "Cognitive Cockpit" : "Pattern Library";
-          if (t.textContent.indexOf(want) === 0) t.click();
-        });
-      };
+      b.onclick = function () { window.PIQ.go(b.dataset.go); };
     });
 
     // scroll reveal

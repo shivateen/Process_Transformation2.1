@@ -1,0 +1,980 @@
+{
+  "meta": {
+    "title": "Process Transformation Accelerator — Navigation Spine",
+    "tagline": "From client mission to running agent — one continuous pipeline.",
+    "note": "Function-agnostic. Order-to-Cash is fully built; other functions are samples that prove the framework generalises.",
+    "stages": [
+      {
+        "id": "design",
+        "n": 1,
+        "name": "Design",
+        "sub": "Missions → Actions",
+        "blurb": "Pick the mission, choose the patterns, configure the action blocks."
+      },
+      {
+        "id": "fit",
+        "n": 2,
+        "name": "Discover & Fit",
+        "sub": "Process discovery & agent fitment",
+        "blurb": "Assess every action block for agent fit; record and agentivise the happy path."
+      },
+      {
+        "id": "run",
+        "n": 3,
+        "name": "Run & Govern",
+        "sub": "Process flow → Agentic workflow",
+        "blurb": "Straight-through on the happy path; variations matched to patterns and routed for approval."
+      }
+    ],
+    "functionCount": 5
+  },
+  "functions": [
+    {
+      "id": "o2c",
+      "name": "Order-to-Cash",
+      "short": "O2C",
+      "icon": "💵",
+      "accent": "#e67e22",
+      "status": "live",
+      "tagline": "AR collections, disputes, credit risk — the fully-built core.",
+      "processes": [
+        {
+          "id": "o2c-ar",
+          "name": "AR Collections & Dispute Management",
+          "desc": "Behavioural collections: read intent, sequence the right action, escalate only when warranted.",
+          "roles": [
+            {
+              "id": "o2c-analyst",
+              "name": "Collections Analyst",
+              "objectives": [
+                {
+                  "id": "o2c-o-dso",
+                  "name": "Accelerate collections / cut DSO",
+                  "kpi": "DSO (days)",
+                  "patternIds": [
+                    10,
+                    11,
+                    12,
+                    13,
+                    14,
+                    15,
+                    16,
+                    17,
+                    18
+                  ],
+                  "patternCount": 9
+                },
+                {
+                  "id": "o2c-o-dispute",
+                  "name": "Resolve disputes & deductions faster",
+                  "kpi": "Dispute cycle time",
+                  "patternIds": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9
+                  ],
+                  "patternCount": 9
+                }
+              ]
+            },
+            {
+              "id": "o2c-credit",
+              "name": "Credit & Risk Manager",
+              "objectives": [
+                {
+                  "id": "o2c-o-risk",
+                  "name": "Detect insolvency & credit risk early",
+                  "kpi": "Bad-debt write-off $",
+                  "patternIds": [
+                    19,
+                    20,
+                    21,
+                    22,
+                    23
+                  ],
+                  "patternCount": 5
+                }
+              ]
+            },
+            {
+              "id": "o2c-cashapp",
+              "name": "Cash Application Specialist",
+              "objectives": [
+                {
+                  "id": "o2c-o-match",
+                  "name": "Lift auto-match / cash-application rate",
+                  "kpi": "Auto-match %",
+                  "patternIds": [
+                    24,
+                    25,
+                    26
+                  ],
+                  "patternCount": 3
+                }
+              ]
+            },
+            {
+              "id": "o2c-kam",
+              "name": "Strategic Account Manager",
+              "objectives": [
+                {
+                  "id": "o2c-o-rel",
+                  "name": "Curb contractual & relationship abuse",
+                  "kpi": "Margin leakage $",
+                  "patternIds": [
+                    27,
+                    28,
+                    29,
+                    30,
+                    31
+                  ],
+                  "patternCount": 5
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "patternCount": 31
+    },
+    {
+      "id": "p2p",
+      "name": "Procure-to-Pay",
+      "short": "P2P",
+      "icon": "🧾",
+      "accent": "#7c4dff",
+      "status": "sample",
+      "tagline": "Invoice integrity, matching, and working-capital capture.",
+      "processes": [
+        {
+          "id": "p2p-ap",
+          "name": "AP Invoice Processing & Exceptions",
+          "desc": "From invoice receipt to posting — duplicates, mismatches, and spend leakage.",
+          "roles": [
+            {
+              "id": "p2p-ap-analyst",
+              "name": "AP Analyst",
+              "objectives": [
+                {
+                  "id": "p2p-o-dup",
+                  "name": "Eliminate duplicate & fraudulent payments",
+                  "kpi": "Duplicate leakage $",
+                  "patternIds": [
+                    2001
+                  ],
+                  "patternCount": 1
+                },
+                {
+                  "id": "p2p-o-match",
+                  "name": "Touchless invoice matching",
+                  "kpi": "Touchless %",
+                  "patternIds": [
+                    2002
+                  ],
+                  "patternCount": 1
+                }
+              ]
+            },
+            {
+              "id": "p2p-buyer",
+              "name": "Category / Procurement Manager",
+              "objectives": [
+                {
+                  "id": "p2p-o-mav",
+                  "name": "Curb off-contract (maverick) spend",
+                  "kpi": "Contract compliance %",
+                  "patternIds": [
+                    2003
+                  ],
+                  "patternCount": 1
+                }
+              ]
+            },
+            {
+              "id": "p2p-treasury",
+              "name": "Treasury Analyst",
+              "objectives": [
+                {
+                  "id": "p2p-o-disc",
+                  "name": "Maximize early-payment discount capture",
+                  "kpi": "Discounts captured $",
+                  "patternIds": [
+                    2004
+                  ],
+                  "patternCount": 1
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "patternCount": 4
+    },
+    {
+      "id": "r2r",
+      "name": "Record-to-Report",
+      "short": "R2R",
+      "icon": "📒",
+      "accent": "#0aa3a3",
+      "status": "sample",
+      "tagline": "A faster, cleaner close — reconciliations, accruals, intercompany.",
+      "processes": [
+        {
+          "id": "r2r-close",
+          "name": "Financial Close & Reconciliation",
+          "desc": "Period-end: clear breaks, post accruals, balance intercompany.",
+          "roles": [
+            {
+              "id": "r2r-gl",
+              "name": "GL Accountant",
+              "objectives": [
+                {
+                  "id": "r2r-o-recon",
+                  "name": "Clear reconciliation breaks faster",
+                  "kpi": "Aged breaks",
+                  "patternIds": [
+                    3001
+                  ],
+                  "patternCount": 1
+                },
+                {
+                  "id": "r2r-o-accrual",
+                  "name": "Close the accrual gap",
+                  "kpi": "Missed accruals",
+                  "patternIds": [
+                    3002
+                  ],
+                  "patternCount": 1
+                }
+              ]
+            },
+            {
+              "id": "r2r-controller",
+              "name": "Controller",
+              "objectives": [
+                {
+                  "id": "r2r-o-ic",
+                  "name": "Balance intercompany before consolidation",
+                  "kpi": "IC imbalance $",
+                  "patternIds": [
+                    3003
+                  ],
+                  "patternCount": 1
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "patternCount": 3
+    },
+    {
+      "id": "h2r",
+      "name": "Hire-to-Retire",
+      "short": "HR",
+      "icon": "👤",
+      "accent": "#e0529c",
+      "status": "sample",
+      "tagline": "Onboarding that's ready on day one, compliantly.",
+      "processes": [
+        {
+          "id": "h2r-onboard",
+          "name": "Employee Onboarding",
+          "desc": "From offer-accept to productive day-one — provisioning and compliance.",
+          "roles": [
+            {
+              "id": "h2r-hrbp",
+              "name": "HR Business Partner",
+              "objectives": [
+                {
+                  "id": "h2r-o-prov",
+                  "name": "Guarantee day-one readiness",
+                  "kpi": "Day-1 readiness %",
+                  "patternIds": [
+                    4001
+                  ],
+                  "patternCount": 1
+                }
+              ]
+            },
+            {
+              "id": "h2r-comp",
+              "name": "Compliance Officer",
+              "objectives": [
+                {
+                  "id": "h2r-o-doc",
+                  "name": "Close compliance-document gaps pre-start",
+                  "kpi": "Open doc gaps",
+                  "patternIds": [
+                    4002
+                  ],
+                  "patternCount": 1
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "patternCount": 2
+    },
+    {
+      "id": "sc",
+      "name": "Supply Chain",
+      "short": "SC",
+      "icon": "📦",
+      "accent": "#f08a24",
+      "status": "sample",
+      "tagline": "Availability and on-time delivery, exception-first.",
+      "processes": [
+        {
+          "id": "sc-fulfill",
+          "name": "Order Fulfillment & Replenishment",
+          "desc": "Keep shelves stocked and promises kept — stockouts and slippage.",
+          "roles": [
+            {
+              "id": "sc-planner",
+              "name": "Supply Planner",
+              "objectives": [
+                {
+                  "id": "sc-o-stock",
+                  "name": "Prevent stockouts on critical SKUs",
+                  "kpi": "Stockout incidents",
+                  "patternIds": [
+                    5001
+                  ],
+                  "patternCount": 1
+                }
+              ]
+            },
+            {
+              "id": "sc-logistics",
+              "name": "Logistics Coordinator",
+              "objectives": [
+                {
+                  "id": "sc-o-eta",
+                  "name": "Protect on-time-in-full delivery",
+                  "kpi": "OTIF %",
+                  "patternIds": [
+                    5002
+                  ],
+                  "patternCount": 1
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "patternCount": 2
+    }
+  ],
+  "stubPatterns": {
+    "2001": {
+      "id": 2001,
+      "name": "Duplicate Invoice Slip",
+      "category": "Invoice Integrity & Duplication",
+      "priority": "Critical",
+      "priorityRank": 0,
+      "mentalModel": "Same vendor, same amount, near-identical date — is this a re-bill or a genuine duplicate? Fingerprint it before it clears.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Duplicate Invoice Slip pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Duplicate_Fingerprint",
+      "featureSlug": "duplicate-fingerprint",
+      "conceptualSQL": "-- sample trigger for Duplicate_Fingerprint\nSELECT * FROM source WHERE signal = 'Duplicate_Fingerprint'",
+      "originalDAG": [
+        "Fingerprint_Invoice",
+        "Match_Against_History",
+        "Auto_Block_If_Match",
+        "Notify_AP"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Fingerprint_Match = exact",
+          "actions": [
+            "Auto_Hold + Flag_Duplicate"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Fingerprint_Match = fuzzy",
+          "actions": [
+            "Route_To_AP_Review",
+            "Attach_Candidate_Pair"
+          ],
+          "hitl": "AP analyst confirms duplicate",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "AP analyst confirms duplicate"
+      ]
+    },
+    "2002": {
+      "id": 2002,
+      "name": "PO–Invoice 3-Way Mismatch",
+      "category": "Match & Exception Handling",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "Invoice says 1,000 units, GR says 980. Is this within tolerance, a short-ship, or a price creep? Decide the variance, don't bounce it to a human by default.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the PO–Invoice 3-Way Mismatch pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "ThreeWay_Variance",
+      "featureSlug": "threeway-variance",
+      "conceptualSQL": "-- sample trigger for ThreeWay_Variance\nSELECT * FROM source WHERE signal = 'ThreeWay_Variance'",
+      "originalDAG": [
+        "Pull_PO_GR_Invoice",
+        "Compute_Variance",
+        "Apply_Tolerance",
+        "Post_If_Within"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Variance <= tolerance",
+          "actions": [
+            "Auto_Post + Clear_Block"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Price_Variance > 2%",
+          "actions": [
+            "Route_To_Buyer",
+            "Request_Price_Confirmation"
+          ],
+          "hitl": "Buyer confirms price change",
+          "tier": "escalation",
+          "escLevel": 1
+        },
+        {
+          "condition": "ELSE IF Qty_Variance",
+          "actions": [
+            "Open_GR_Discrepancy",
+            "Notify_Receiving"
+          ],
+          "hitl": null,
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Buyer confirms price change"
+      ]
+    },
+    "2003": {
+      "id": 2003,
+      "name": "Maverick / Off-Contract Spend",
+      "category": "Spend Compliance",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "This buy bypassed the preferred-supplier contract. Was it an emergency, or leakage? Surface it before payment, attribute the savings lost.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Maverick / Off-Contract Spend pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Off_Contract_Flag",
+      "featureSlug": "off-contract-flag",
+      "conceptualSQL": "-- sample trigger for Off_Contract_Flag\nSELECT * FROM source WHERE signal = 'Off_Contract_Flag'",
+      "originalDAG": [
+        "Match_To_Contract",
+        "Detect_Off_Contract",
+        "Quantify_Leakage",
+        "Log_For_Sourcing"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF On_Contract",
+          "actions": [
+            "Auto_Approve"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Off_Contract AND Amount < threshold",
+          "actions": [
+            "Flag_For_Review",
+            "Notify_Category_Manager"
+          ],
+          "hitl": "Category manager reviews leakage",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Category manager reviews leakage"
+      ]
+    },
+    "2004": {
+      "id": 2004,
+      "name": "Early-Payment Discount Capture",
+      "category": "Working Capital",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "There's a 2/10 net-30 discount on the table and the clock is ticking. Is the discount worth more than the cash held? Capture it automatically when it is.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Early-Payment Discount Capture pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Discount_Window",
+      "featureSlug": "discount-window",
+      "conceptualSQL": "-- sample trigger for Discount_Window\nSELECT * FROM source WHERE signal = 'Discount_Window'",
+      "originalDAG": [
+        "Read_Payment_Terms",
+        "Compute_Discount_Value",
+        "Compare_Cost_Of_Cash",
+        "Schedule_Early_Pay"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Discount_Value > Cost_Of_Cash",
+          "actions": [
+            "Auto_Schedule_Early_Payment"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Marginal",
+          "actions": [
+            "Route_To_Treasury"
+          ],
+          "hitl": "Treasury approves early pay",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Treasury approves early pay"
+      ]
+    },
+    "3001": {
+      "id": 3001,
+      "name": "Stuck Reconciliation Item",
+      "category": "Close & Reconciliation",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "This GL-to-subledger break has rolled forward three closes. Is it a timing item that will clear, or a real difference someone must own? Age it and route.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Stuck Reconciliation Item pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Aging_Recon_Break",
+      "featureSlug": "aging-recon-break",
+      "conceptualSQL": "-- sample trigger for Aging_Recon_Break\nSELECT * FROM source WHERE signal = 'Aging_Recon_Break'",
+      "originalDAG": [
+        "Pull_Recon_Breaks",
+        "Classify_Timing_vs_Real",
+        "Auto_Clear_Timing",
+        "Assign_Owner"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Timing_Difference",
+          "actions": [
+            "Auto_Clear + Document"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Aging > 2 periods",
+          "actions": [
+            "Assign_To_Owner",
+            "Escalate_Controller"
+          ],
+          "hitl": "Controller signs off write-off",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Controller signs off write-off"
+      ]
+    },
+    "3002": {
+      "id": 3002,
+      "name": "Late / Missing Accrual",
+      "category": "Period-End Accruals",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "A recurring accrual that posted every month is missing this period. Did the activity stop, or did someone forget? Detect the gap before the books close.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Late / Missing Accrual pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Accrual_Gap",
+      "featureSlug": "accrual-gap",
+      "conceptualSQL": "-- sample trigger for Accrual_Gap\nSELECT * FROM source WHERE signal = 'Accrual_Gap'",
+      "originalDAG": [
+        "Scan_Recurring_Accruals",
+        "Detect_Missing",
+        "Estimate_Amount",
+        "Propose_Journal"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Within_Materiality",
+          "actions": [
+            "Auto_Propose_Journal"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Material",
+          "actions": [
+            "Route_To_Accountant",
+            "Attach_Trend"
+          ],
+          "hitl": "Accountant approves accrual",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Accountant approves accrual"
+      ]
+    },
+    "3003": {
+      "id": 3003,
+      "name": "Intercompany Out-of-Balance",
+      "category": "Intercompany",
+      "priority": "Critical",
+      "priorityRank": 0,
+      "mentalModel": "Entity A booked the charge; Entity B never picked it up. Every day this lingers it distorts the consolidation. Match the legs and chase the missing one.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Intercompany Out-of-Balance pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "IC_Imbalance",
+      "featureSlug": "ic-imbalance",
+      "conceptualSQL": "-- sample trigger for IC_Imbalance\nSELECT * FROM source WHERE signal = 'IC_Imbalance'",
+      "originalDAG": [
+        "Match_IC_Legs",
+        "Detect_Imbalance",
+        "Identify_Missing_Leg",
+        "Notify_Counterparty"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Both_Legs_Posted",
+          "actions": [
+            "Auto_Eliminate"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF One_Leg_Missing",
+          "actions": [
+            "Notify_Counterparty_Entity",
+            "Open_IC_Case"
+          ],
+          "hitl": "Group accountant approves true-up",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Group accountant approves true-up"
+      ]
+    },
+    "4001": {
+      "id": 4001,
+      "name": "Stalled Onboarding Provisioning",
+      "category": "Onboarding Throughput",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "Day-one is in 48 hours and laptop, accounts, and badge are still 'pending'. Which task is the bottleneck, and who do I nudge before the new hire shows up to nothing?",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Stalled Onboarding Provisioning pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Provisioning_Stall",
+      "featureSlug": "provisioning-stall",
+      "conceptualSQL": "-- sample trigger for Provisioning_Stall\nSELECT * FROM source WHERE signal = 'Provisioning_Stall'",
+      "originalDAG": [
+        "Track_Provisioning_Tasks",
+        "Detect_Stall",
+        "Identify_Bottleneck",
+        "Auto_Nudge_Owner"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF All_On_Track",
+          "actions": [
+            "Auto_Confirm_Ready"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Task_Stalled < SLA",
+          "actions": [
+            "Auto_Nudge_Owner"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Past_SLA",
+          "actions": [
+            "Escalate_HRBP",
+            "Flag_Day1_Risk"
+          ],
+          "hitl": "HRBP confirms day-1 readiness",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "HRBP confirms day-1 readiness"
+      ]
+    },
+    "4002": {
+      "id": 4002,
+      "name": "Missing Compliance Document",
+      "category": "Compliance & Eligibility",
+      "priority": "Critical",
+      "priorityRank": 0,
+      "mentalModel": "Right-to-work paperwork still isn't on file and the start date is locked. Chase it now, or we have a compliance exposure on day one.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Missing Compliance Document pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Doc_Gap",
+      "featureSlug": "doc-gap",
+      "conceptualSQL": "-- sample trigger for Doc_Gap\nSELECT * FROM source WHERE signal = 'Doc_Gap'",
+      "originalDAG": [
+        "Checklist_Required_Docs",
+        "Detect_Missing",
+        "Auto_Request_From_Hire",
+        "Block_If_Unresolved"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Complete",
+          "actions": [
+            "Auto_Clear_Gate"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Missing AND > 24h_to_start",
+          "actions": [
+            "Auto_Request_Document"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Missing AND imminent",
+          "actions": [
+            "Escalate_Compliance",
+            "Hold_Start"
+          ],
+          "hitl": "Compliance approves conditional start",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Compliance approves conditional start"
+      ]
+    },
+    "5001": {
+      "id": 5001,
+      "name": "Stockout Risk Signal",
+      "category": "Inventory & Availability",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "Demand is trending up and on-hand cover just dropped below lead time. Do I expedite, substitute, or ride it out? Decide before the shelf goes empty.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Stockout Risk Signal pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Stockout_Lead",
+      "featureSlug": "stockout-lead",
+      "conceptualSQL": "-- sample trigger for Stockout_Lead\nSELECT * FROM source WHERE signal = 'Stockout_Lead'",
+      "originalDAG": [
+        "Read_Demand_Signal",
+        "Compute_Cover_vs_LeadTime",
+        "Detect_Risk",
+        "Propose_Replenishment"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Cover >= LeadTime",
+          "actions": [
+            "No_Action"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Risk AND Auto_Replen_Eligible",
+          "actions": [
+            "Auto_Raise_Replenishment_PO"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Critical_SKU",
+          "actions": [
+            "Propose_Expedite",
+            "Notify_Planner"
+          ],
+          "hitl": "Planner approves expedite cost",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Planner approves expedite cost"
+      ]
+    },
+    "5002": {
+      "id": 5002,
+      "name": "Delivery Slippage",
+      "category": "Order Fulfillment Exceptions",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "The carrier's ETA just slipped past the customer's promised date. Do I re-route, split the shipment, or proactively tell the customer? Don't let them find out first.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Delivery Slippage pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "ETA_Slip",
+      "featureSlug": "eta-slip",
+      "conceptualSQL": "-- sample trigger for ETA_Slip\nSELECT * FROM source WHERE signal = 'ETA_Slip'",
+      "originalDAG": [
+        "Track_Shipment_ETA",
+        "Detect_Slip",
+        "Assess_Impact",
+        "Trigger_Customer_Comms"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF On_Time",
+          "actions": [
+            "No_Action"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Slip < grace",
+          "actions": [
+            "Auto_Notify_Customer"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Slip > grace",
+          "actions": [
+            "Propose_Reroute",
+            "Escalate_Logistics"
+          ],
+          "hitl": "Logistics lead approves reroute",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Logistics lead approves reroute"
+      ]
+    }
+  }
+}

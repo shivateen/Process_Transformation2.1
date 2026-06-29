@@ -22,11 +22,12 @@ def read(*parts):
 
 def main():
     # Re-generate data first so the build is always current with the xlsx.
-    import build_patterns, build_portfolio, build_roi, build_discovery  # noqa
+    import build_patterns, build_portfolio, build_roi, build_discovery, build_taxonomy  # noqa
     build_patterns.main()
     build_portfolio.main()
     build_roi.main()
     build_discovery.main()
+    build_taxonomy.main()   # depends on patterns.json above
 
     css = read("src", "css", "app.css")
     body = read("src", "html", "cockpit_body.html")
@@ -34,6 +35,9 @@ def main():
     # load order matters: shell defines window.PIQ, modules self-register, then boot
     js_modules = "\n".join([
         read("src", "js", "shell.js"),
+        read("src", "js", "studio.js"),
+        read("src", "js", "fitment.js"),
+        read("src", "js", "runtime.js"),
         read("src", "js", "provocation.js"),
         read("src", "js", "cockpit.js"),
         read("src", "js", "library.js"),
@@ -45,13 +49,14 @@ def main():
     portfolio = read("src", "data", "portfolio.json")
     roi = read("src", "data", "roi.json")
     discovery = read("src", "data", "discovery.json")
+    taxonomy = read("src", "data", "taxonomy.json")
 
     html = """<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>ProcessIQ — AR Collections Cognitive Cockpit · Tiger Analytics</title>
+<title>Process Transformation Accelerator · Tiger Analytics</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -64,6 +69,7 @@ def main():
 <script>window.PROCESSIQ_PORTFOLIO = {portfolio};</script>
 <script>window.PROCESSIQ_ROI = {roi};</script>
 <script>window.PROCESSIQ_DISCOVERY = {discovery};</script>
+<script>window.PROCESSIQ_TAXONOMY = {taxonomy};</script>
 <script>
 {engine}
 </script>
@@ -74,7 +80,7 @@ def main():
 </body>
 </html>
 """.format(css=css, body=body, patterns=patterns, portfolio=portfolio, roi=roi,
-           discovery=discovery, engine=engine, js_modules=js_modules)
+           discovery=discovery, taxonomy=taxonomy, engine=engine, js_modules=js_modules)
 
     os.makedirs(PUB, exist_ok=True)
     out = os.path.join(PUB, "processiq.html")
