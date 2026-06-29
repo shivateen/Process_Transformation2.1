@@ -1,0 +1,205 @@
+{
+  "meta": {
+    "title": "ProcessIQ — ROI & Attribution",
+    "year1Total": 8400000,
+    "patternCount": 31,
+    "note": "Illustrative model. Figures are attributed to patterns, decisions, and actions — every dollar is traceable."
+  },
+  "kpis": [
+    {
+      "name": "DSO",
+      "unit": "days",
+      "before": 45,
+      "after": 35,
+      "better": "down",
+      "note": "Days Sales Outstanding"
+    },
+    {
+      "name": "CEI",
+      "unit": "%",
+      "before": 72,
+      "after": 90,
+      "better": "up",
+      "note": "Collection Effectiveness Index"
+    },
+    {
+      "name": "Auto-Match",
+      "unit": "%",
+      "before": 35,
+      "after": 85,
+      "better": "up",
+      "note": "Cash auto-applied"
+    },
+    {
+      "name": "Dispute Cycle",
+      "unit": "days",
+      "before": 25,
+      "after": 12,
+      "better": "down",
+      "note": "Time to resolve"
+    },
+    {
+      "name": "Deduction Auto",
+      "unit": "%",
+      "before": 0,
+      "after": 40,
+      "better": "up",
+      "note": "Auto-dispositioned",
+      "isNew": true
+    }
+  ],
+  "outcomes": [
+    {
+      "icon": "$",
+      "label": "Working Capital Released",
+      "value": 4200000,
+      "unit": "$",
+      "desc": "DSO compression freeing cash — measured, attributed, auditable."
+    },
+    {
+      "icon": "⊘",
+      "label": "Revenue Leakage Prevented",
+      "value": 2100000,
+      "unit": "$",
+      "desc": "Deductions caught, disputes won, unearned discounts reversed."
+    },
+    {
+      "icon": "↓",
+      "label": "Bad Debt Reduction",
+      "value": 2100000,
+      "unit": "$",
+      "desc": "Credit-risk patterns detected before write-off."
+    },
+    {
+      "icon": "→",
+      "label": "Expert Capacity Freed",
+      "value": 9600,
+      "unit": "fte",
+      "desc": "Analyst FTE-hours redirected from triage to strategic engagement."
+    }
+  ],
+  "trajectory": [
+    {
+      "period": "M1-3",
+      "label": "Foundation",
+      "cumulative": 0
+    },
+    {
+      "period": "M4-6",
+      "label": "First recoveries",
+      "cumulative": 2100000
+    },
+    {
+      "period": "M7-9",
+      "label": "Scaling patterns",
+      "cumulative": 5200000
+    },
+    {
+      "period": "M10-12",
+      "label": "Compound gains",
+      "cumulative": 8400000
+    }
+  ],
+  "attribution": [
+    {
+      "patternId": 20,
+      "name": "Partial Breadcrumbing",
+      "category": "Credit Risk & Insolvency Indicators",
+      "featureSlug": "min-viable-payment",
+      "priority": "Critical",
+      "recovery": 1131000.0,
+      "customers": 13
+    },
+    {
+      "patternId": 19,
+      "name": "Bust-Out Fraud Precursor",
+      "category": "Credit Risk & Insolvency Indicators",
+      "featureSlug": "credit-limit-velocity",
+      "priority": "Critical",
+      "recovery": 907000.0,
+      "customers": 8
+    },
+    {
+      "patternId": 22,
+      "name": "Bureau Downgrade",
+      "category": "Credit Risk & Insolvency Indicators",
+      "featureSlug": "score-vs-dso-delta",
+      "priority": "Critical",
+      "recovery": 768000.0,
+      "customers": 13
+    },
+    {
+      "patternId": 10,
+      "name": "Missing PO Trap",
+      "category": "Intentional Stalling & Delay Tactics",
+      "featureSlug": "po-mismatch-flag",
+      "priority": "High",
+      "recovery": 627000.0,
+      "customers": 7
+    },
+    {
+      "patternId": 11,
+      "name": "Approval Musical Chairs",
+      "category": "Intentional Stalling & Delay Tactics",
+      "featureSlug": "contact-shift-frequency",
+      "priority": "High",
+      "recovery": 624000.0,
+      "customers": 6
+    },
+    {
+      "patternId": 29,
+      "name": "Strategic Shielding",
+      "category": "Relationship & Contractual Abuse",
+      "featureSlug": "sales-override-freq",
+      "priority": "High",
+      "recovery": 614000.0,
+      "customers": 6
+    },
+    {
+      "patternId": 25,
+      "name": "Duplicate Payment Bait",
+      "category": "Cash Application & Remittance Friction",
+      "featureSlug": "refund-velocity",
+      "priority": "High",
+      "recovery": 603000.0,
+      "customers": 7
+    },
+    {
+      "patternId": 3,
+      "name": "Dispute Splitting",
+      "category": "Dispute & Deduction Manipulation",
+      "featureSlug": "volume-vs-threshold",
+      "priority": "High",
+      "recovery": 552000.0,
+      "customers": 6
+    },
+    {
+      "patternId": 8,
+      "name": "Month-End RMA Dump",
+      "category": "Dispute & Deduction Manipulation",
+      "featureSlug": "rma-velocity-eom",
+      "priority": "High",
+      "recovery": 539000.0,
+      "customers": 6
+    },
+    {
+      "patternId": 4,
+      "name": "Friday Afternoon Slicing",
+      "category": "Dispute & Deduction Manipulation",
+      "featureSlug": "micro-deduction-density",
+      "priority": "High",
+      "recovery": 523000.0,
+      "customers": 7
+    },
+    {
+      "patternId": null,
+      "name": "21 other patterns",
+      "category": "Long tail",
+      "featureSlug": null,
+      "priority": null,
+      "recovery": 1512000.0,
+      "customers": 45,
+      "isOther": true
+    }
+  ]
+}
