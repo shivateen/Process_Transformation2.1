@@ -751,6 +751,62 @@ button{font-family:inherit;cursor:pointer}
   .blk{grid-template-columns:6px 1fr;gap:8px}.blk-tech,.blk-mode,.blk-fit{grid-column:2}
   .ftrow{grid-template-columns:14px 1fr 90px}.ft-tech,.ft-score{display:none}}
 
+/* ---- Process taxonomy matrix (Design · Process step, O2C value chain) ---- */
+.vc{margin:18px 0 4px}
+.vc-l1{display:flex;align-items:center;justify-content:center;gap:10px;text-align:center;
+  font-weight:800;font-size:14px;letter-spacing:.01em;color:#fff;
+  background:linear-gradient(90deg,var(--high),#d9822b);border-radius:9px;
+  padding:9px 14px;box-shadow:var(--shadow)}
+.vc-l1 .vc-arrow{opacity:.7;font-size:16px}
+.vc-groups{display:flex;gap:10px;margin-top:10px;align-items:stretch}
+.vc-group{display:flex;flex-direction:column;min-width:0}
+.vc-ghead{min-height:38px;display:flex;flex-direction:column;justify-content:center;
+  text-align:center;font-weight:800;font-size:12.5px;color:var(--ink);
+  border-radius:8px;padding:6px 8px;margin-bottom:8px}
+.vc-ghead small{font-weight:600;font-size:10px;color:var(--muted);display:block;margin-top:1px}
+.vc-areas{display:flex;gap:8px;flex:1}
+.vc-col{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;
+  border-radius:9px;padding:7px;background:#f7f9fb;border:1px solid var(--line);transition:.14s}
+.vc-area{position:relative;font-weight:700;font-size:12px;color:var(--ink);text-align:center;
+  border-radius:7px;padding:18px 14px 8px;background:#fff;border:1px solid var(--line);
+  clip-path:polygon(0 0,calc(100% - 9px) 0,100% 50%,calc(100% - 9px) 100%,0 100%,9px 50%)}
+.vc-lvl{position:absolute;top:3px;left:5px;font-size:8px;font-weight:800;letter-spacing:.03em;
+  color:#fff;background:var(--muted);border-radius:4px;padding:1px 3px;opacity:.55}
+.vc-badge{display:block;margin-top:3px;font-size:9px;font-weight:800;letter-spacing:.03em;
+  color:var(--act)}
+.vc-badge.ctx{color:var(--muted);opacity:.7}
+.vc-subs{display:flex;flex-direction:column;gap:5px}
+.vc-sub{position:relative;font-size:11px;font-weight:600;color:var(--muted);line-height:1.25;
+  text-align:center;background:#fff;border:1px solid var(--line);border-radius:6px;padding:16px 6px 7px}
+.vc-sub .vc-lvl{opacity:.4}
+
+/* group tones — mirror the source taxonomy palette */
+.tone-md   .vc-ghead{background:#d6efe4}
+.tone-o2d  .vc-ghead{background:#efe6d6}
+.tone-b2c  .vc-ghead{background:#f7e9c2}
+.tone-claims .vc-ghead{background:#cfe6f2}
+.tone-violet .vc-ghead{background:#e5ddf7}
+.tone-slate  .vc-ghead{background:#dde5ee}
+.tone-md   .vc-col{background:#eef8f2}
+.tone-o2d  .vc-col{background:#f7f2e9}
+.tone-b2c  .vc-col{background:#fdf7e6}
+.tone-claims .vc-col{background:#eef6fb}
+.tone-violet .vc-col{background:#f4effc}
+.tone-slate  .vc-col{background:#eef2f7}
+
+/* built areas are navigable; context areas are dimmed */
+.vc-col.built{cursor:pointer;border-color:var(--high)}
+.vc-col.built:hover{box-shadow:0 0 0 2px #e67e2233;transform:translateY(-1px)}
+.vc-col.built .vc-area{border-color:var(--high)}
+.vc-col.built .vc-lvl{background:var(--high);opacity:.9}
+.vc-col.sel{box-shadow:0 0 0 2px var(--high);border-color:var(--high)}
+.vc-col.sel .vc-area{background:var(--high);color:#fff}
+.vc-col.sel .vc-badge{color:#fff}
+.vc-col:not(.built){opacity:.62}
+.vc-col:not(.built) .vc-sub{color:#9aa6b4}
+
+@media(max-width:1000px){.vc-groups{flex-wrap:wrap}.vc-group{flex:1 1 100%!important}}
+
 </style>
 </head>
 <body>
@@ -4028,7 +4084,7 @@ button{font-family:inherit;cursor:pointer}
         "blurb": "Straight-through on the happy path; variations matched to patterns and routed for approval."
       }
     ],
-    "functionCount": 5
+    "functionCount": 10
   },
   "functions": [
     {
@@ -4039,6 +4095,107 @@ button{font-family:inherit;cursor:pointer}
       "accent": "#e67e22",
       "status": "live",
       "tagline": "AR collections, disputes, credit risk — the fully-built core.",
+      "valueChain": {
+        "name": "Order-to-Cash Value Chain",
+        "groups": [
+          {
+            "id": "md",
+            "name": "Master Data",
+            "tone": "md",
+            "areas": [
+              {
+                "name": "Master Data",
+                "sub": [
+                  "Data Prep & Request Validation",
+                  "Data collection & validation",
+                  "Approval & Syndication",
+                  "Ongoing Data Maintenance"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "o2d",
+            "name": "Order to Deliver",
+            "tone": "o2d",
+            "areas": [
+              {
+                "name": "Order Mgmt",
+                "sub": [
+                  "Order Intake & validation",
+                  "Order Modification / Cancellation",
+                  "Credit Check & Approval",
+                  "Outbound Delivery & fulfilment"
+                ]
+              },
+              {
+                "name": "Order Fulfilment",
+                "sub": [
+                  "Stock Allocation & Mgmt",
+                  "Delivery Creation",
+                  "Logistics Operations",
+                  "Warehouse Mgmt & Logistics"
+                ]
+              },
+              {
+                "name": "Customer Billing",
+                "sub": [
+                  "Invoice Generation",
+                  "Invoice validation & dispute handling",
+                  "Credit Note / Debit Note processing",
+                  "Billing adjustments"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "b2c",
+            "name": "Bill to Cash",
+            "note": "Collections & Cash apps",
+            "tone": "b2c",
+            "areas": [
+              {
+                "name": "Collections Mgmt",
+                "sub": [
+                  "Collections Strategy",
+                  "Collections correspondence & escalation",
+                  "Promise to pay / payment plan capture",
+                  "Provisions & writeoff"
+                ],
+                "built": true,
+                "procId": "o2c-ar"
+              },
+              {
+                "name": "Cash Application",
+                "sub": [
+                  "Payment Identification",
+                  "Payment matching & reconciliation",
+                  "Deduction identification",
+                  "Cash posting & adjustment"
+                ],
+                "built": true,
+                "procId": "o2c-ar"
+              }
+            ]
+          },
+          {
+            "id": "claims",
+            "name": "Claims",
+            "tone": "claims",
+            "areas": [
+              {
+                "name": "Claims Mgmt",
+                "sub": [
+                  "Claims Registration",
+                  "Claims Validation",
+                  "Claims Approval",
+                  "Claims Settlement"
+                ]
+              }
+            ]
+          }
+        ]
+      },
       "processes": [
         {
           "id": "o2c-ar",
@@ -4153,6 +4310,125 @@ button{font-family:inherit;cursor:pointer}
       "accent": "#7c4dff",
       "status": "sample",
       "tagline": "Invoice integrity, matching, and working-capital capture.",
+      "valueChain": {
+        "name": "Procure-to-Pay Value Chain",
+        "groups": [
+          {
+            "id": "sup",
+            "name": "Supplier & Master Data",
+            "tone": "md",
+            "areas": [
+              {
+                "name": "Vendor Onboarding & Master Data",
+                "sub": [
+                  "Vendor Registration & Validation",
+                  "Bank Detail Verification",
+                  "Compliance & Risk Screening",
+                  "Ongoing Vendor Maintenance"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "s2c",
+            "name": "Source to Contract",
+            "tone": "violet",
+            "areas": [
+              {
+                "name": "Sourcing & RFQ",
+                "sub": [
+                  "Sourcing Event Setup",
+                  "Bid Evaluation & Award",
+                  "Negotiation & Savings",
+                  "Supplier Selection"
+                ]
+              },
+              {
+                "name": "Contract Management",
+                "sub": [
+                  "Contract Authoring",
+                  "Approval & Signature",
+                  "Compliance Monitoring",
+                  "Renewal & Expiry"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "p2r",
+            "name": "Purchase to Receipt",
+            "tone": "o2d",
+            "areas": [
+              {
+                "name": "Requisition Management",
+                "sub": [
+                  "Requisition Intake",
+                  "Budget & Policy Check",
+                  "Requisition Approval",
+                  "PR-to-PO Conversion"
+                ]
+              },
+              {
+                "name": "PO Management",
+                "sub": [
+                  "PO Creation & Dispatch",
+                  "Change / Cancellation",
+                  "Order Confirmation",
+                  "Expediting & Follow-up"
+                ]
+              },
+              {
+                "name": "Goods & Service Receipt",
+                "sub": [
+                  "Goods Receipt Posting",
+                  "Service Entry Sheet",
+                  "Quality Inspection",
+                  "Returns & Rejections"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "i2p",
+            "name": "Invoice to Pay",
+            "note": "AP automation",
+            "tone": "b2c",
+            "areas": [
+              {
+                "name": "Invoice Processing",
+                "sub": [
+                  "Invoice Capture & Coding",
+                  "Duplicate Detection",
+                  "Non-PO Routing",
+                  "Approval Workflow"
+                ],
+                "built": true,
+                "procId": "p2p-ap"
+              },
+              {
+                "name": "Matching & Exceptions",
+                "sub": [
+                  "2/3-Way Matching",
+                  "Tolerance & Variance",
+                  "Exception Resolution",
+                  "GR/IR Clearing"
+                ],
+                "built": true,
+                "procId": "p2p-ap"
+              },
+              {
+                "name": "Payment Execution",
+                "sub": [
+                  "Payment Proposal",
+                  "Discount Capture",
+                  "Payment Run & Remittance",
+                  "Bank Reconciliation"
+                ]
+              }
+            ]
+          }
+        ]
+      },
       "processes": [
         {
           "id": "p2p-ap",
@@ -4166,11 +4442,27 @@ button{font-family:inherit;cursor:pointer}
                 {
                   "id": "p2p-o-dup",
                   "name": "Eliminate duplicate & fraudulent payments",
-                  "kpi": "Duplicate leakage $",
+                  "kpi": "Fraud & duplicate leakage $",
                   "patternIds": [
-                    2001
+                    2001,
+                    2005,
+                    2006,
+                    2007,
+                    2008
                   ],
-                  "patternCount": 1
+                  "patternCount": 5
+                },
+                {
+                  "id": "p2p-o-proc",
+                  "name": "Touchless invoice coding & approval",
+                  "kpi": "Touchless processing %",
+                  "patternIds": [
+                    2009,
+                    2010,
+                    2011,
+                    2012
+                  ],
+                  "patternCount": 4
                 },
                 {
                   "id": "p2p-o-match",
@@ -4216,7 +4508,7 @@ button{font-family:inherit;cursor:pointer}
           ]
         }
       ],
-      "patternCount": 4
+      "patternCount": 12
     },
     {
       "id": "r2r",
@@ -4226,6 +4518,89 @@ button{font-family:inherit;cursor:pointer}
       "accent": "#0aa3a3",
       "status": "sample",
       "tagline": "A faster, cleaner close — reconciliations, accruals, intercompany.",
+      "valueChain": {
+        "name": "Record-to-Report Value Chain",
+        "groups": [
+          {
+            "id": "record",
+            "name": "Record & Capture",
+            "tone": "o2d",
+            "areas": [
+              {
+                "name": "Journal & Transaction Processing",
+                "sub": [
+                  "Journal Entry Capture",
+                  "Recurring & Accrual Journals",
+                  "Cost Allocations",
+                  "Sub-ledger Postings"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "close",
+            "name": "Reconcile & Close",
+            "note": "The built core",
+            "tone": "b2c",
+            "areas": [
+              {
+                "name": "Account Reconciliation",
+                "sub": [
+                  "Balance Sheet Reconciliation",
+                  "Bank Reconciliation",
+                  "Break Identification & Aging",
+                  "Reconciliation Sign-off"
+                ],
+                "built": true,
+                "procId": "r2r-close"
+              },
+              {
+                "name": "Period-End Close",
+                "sub": [
+                  "Close Task Orchestration",
+                  "Accrual & Provision Review",
+                  "Intercompany Balancing",
+                  "Pre-close Validation"
+                ],
+                "built": true,
+                "procId": "r2r-close"
+              }
+            ]
+          },
+          {
+            "id": "consol",
+            "name": "Consolidate & Adjust",
+            "tone": "violet",
+            "areas": [
+              {
+                "name": "Consolidation",
+                "sub": [
+                  "Data Collection & Mapping",
+                  "Intercompany Elimination",
+                  "Currency Translation",
+                  "Minority Interest & Equity"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "report",
+            "name": "Report & Disclose",
+            "tone": "slate",
+            "areas": [
+              {
+                "name": "Financial & Management Reporting",
+                "sub": [
+                  "Statutory Financial Statements",
+                  "Management Reporting",
+                  "Regulatory & Tax Reporting",
+                  "Disclosure & Filing"
+                ]
+              }
+            ]
+          }
+        ]
+      },
       "processes": [
         {
           "id": "r2r-close",
@@ -4238,21 +4613,15 @@ button{font-family:inherit;cursor:pointer}
               "objectives": [
                 {
                   "id": "r2r-o-recon",
-                  "name": "Clear reconciliation breaks faster",
+                  "name": "Keep reconciliations clean & current",
                   "kpi": "Aged breaks",
                   "patternIds": [
-                    3001
+                    3001,
+                    3004,
+                    3005,
+                    3006
                   ],
-                  "patternCount": 1
-                },
-                {
-                  "id": "r2r-o-accrual",
-                  "name": "Close the accrual gap",
-                  "kpi": "Missed accruals",
-                  "patternIds": [
-                    3002
-                  ],
-                  "patternCount": 1
+                  "patternCount": 4
                 }
               ]
             },
@@ -4261,20 +4630,23 @@ button{font-family:inherit;cursor:pointer}
               "name": "Controller",
               "objectives": [
                 {
-                  "id": "r2r-o-ic",
-                  "name": "Balance intercompany before consolidation",
-                  "kpi": "IC imbalance $",
+                  "id": "r2r-o-close",
+                  "name": "Run a controlled, on-time close",
+                  "kpi": "Close cycle days",
                   "patternIds": [
-                    3003
+                    3002,
+                    3003,
+                    3007,
+                    3008
                   ],
-                  "patternCount": 1
+                  "patternCount": 4
                 }
               ]
             }
           ]
         }
       ],
-      "patternCount": 3
+      "patternCount": 8
     },
     {
       "id": "h2r",
@@ -4284,6 +4656,107 @@ button{font-family:inherit;cursor:pointer}
       "accent": "#e0529c",
       "status": "sample",
       "tagline": "Onboarding that's ready on day one, compliantly.",
+      "valueChain": {
+        "name": "Hire-to-Retire Lifecycle",
+        "groups": [
+          {
+            "id": "hire",
+            "name": "Attract & Hire",
+            "tone": "violet",
+            "areas": [
+              {
+                "name": "Recruitment & Sourcing",
+                "sub": [
+                  "Job Requisition",
+                  "Sourcing & Screening",
+                  "Interview Management",
+                  "Offer & Negotiation"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "onboard",
+            "name": "Onboard",
+            "note": "Day-1 readiness",
+            "tone": "md",
+            "areas": [
+              {
+                "name": "Pre-boarding & Provisioning",
+                "sub": [
+                  "Offer Acceptance Handover",
+                  "IT & Asset Provisioning",
+                  "Workspace & Access Setup",
+                  "Provisioning Tracking"
+                ],
+                "built": true,
+                "procId": "h2r-onboard"
+              },
+              {
+                "name": "Compliance & Day-1",
+                "sub": [
+                  "Right-to-Work Verification",
+                  "Document Collection",
+                  "Background Checks",
+                  "Day-1 Readiness Gate"
+                ],
+                "built": true,
+                "procId": "h2r-onboard"
+              }
+            ]
+          },
+          {
+            "id": "manage",
+            "name": "Manage & Develop",
+            "tone": "o2d",
+            "areas": [
+              {
+                "name": "Core HR & Master Data",
+                "sub": [
+                  "Employee Master Data",
+                  "Org & Position Mgmt",
+                  "Time & Attendance",
+                  "Leave & Absence"
+                ]
+              },
+              {
+                "name": "Payroll & Benefits",
+                "sub": [
+                  "Payroll Processing",
+                  "Benefits Administration",
+                  "Expense & Reimbursement",
+                  "Statutory & Tax Filing"
+                ]
+              },
+              {
+                "name": "Talent & Performance",
+                "sub": [
+                  "Goal & Performance Mgmt",
+                  "Learning & Development",
+                  "Compensation Review",
+                  "Succession Planning"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "retire",
+            "name": "Offboard & Retire",
+            "tone": "slate",
+            "areas": [
+              {
+                "name": "Separation Management",
+                "sub": [
+                  "Resignation / Termination",
+                  "Exit Clearance & Deprovisioning",
+                  "Final Settlement",
+                  "Records Retention"
+                ]
+              }
+            ]
+          }
+        ]
+      },
       "processes": [
         {
           "id": "h2r-onboard",
@@ -4299,9 +4772,12 @@ button{font-family:inherit;cursor:pointer}
                   "name": "Guarantee day-one readiness",
                   "kpi": "Day-1 readiness %",
                   "patternIds": [
-                    4001
+                    4001,
+                    4003,
+                    4004,
+                    4005
                   ],
-                  "patternCount": 1
+                  "patternCount": 4
                 }
               ]
             },
@@ -4311,19 +4787,22 @@ button{font-family:inherit;cursor:pointer}
               "objectives": [
                 {
                   "id": "h2r-o-doc",
-                  "name": "Close compliance-document gaps pre-start",
-                  "kpi": "Open doc gaps",
+                  "name": "Close compliance & eligibility gaps pre-start",
+                  "kpi": "Open compliance gaps",
                   "patternIds": [
-                    4002
+                    4002,
+                    4006,
+                    4007,
+                    4008
                   ],
-                  "patternCount": 1
+                  "patternCount": 4
                 }
               ]
             }
           ]
         }
       ],
-      "patternCount": 2
+      "patternCount": 8
     },
     {
       "id": "sc",
@@ -4373,6 +4852,705 @@ button{font-family:inherit;cursor:pointer}
         }
       ],
       "patternCount": 2
+    },
+    {
+      "id": "fpa",
+      "name": "Financial Planning & Analysis",
+      "short": "FP&A",
+      "icon": "📊",
+      "accent": "#3f5efb",
+      "status": "sample",
+      "tagline": "Rolling forecast, variance insight, and decision support — the perform half of finance.",
+      "valueChain": {
+        "name": "Plan-to-Perform Value Chain",
+        "groups": [
+          {
+            "id": "plan",
+            "name": "Plan & Target",
+            "tone": "violet",
+            "areas": [
+              {
+                "name": "Strategic Planning",
+                "sub": [
+                  "Long-Range Planning",
+                  "Target Setting",
+                  "Driver & Assumption Library",
+                  "Capital Allocation"
+                ]
+              },
+              {
+                "name": "Annual Budgeting",
+                "sub": [
+                  "Budget Calendar & Templates",
+                  "Bottom-Up Build",
+                  "Top-Down Challenge",
+                  "Budget Consolidation"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "forecast",
+            "name": "Forecast & Variance",
+            "note": "The built core",
+            "tone": "md",
+            "areas": [
+              {
+                "name": "Rolling Forecast",
+                "sub": [
+                  "Forecast Refresh",
+                  "Driver-Based Projection",
+                  "Bias & Sandbag Detection",
+                  "Reforecast Triggers"
+                ],
+                "built": true,
+                "procId": "fpa-plan"
+              },
+              {
+                "name": "Variance Analysis",
+                "sub": [
+                  "Actual-vs-Plan Bridge",
+                  "Variance Commentary",
+                  "Phasing & Timing Split",
+                  "Controllable vs Allocated"
+                ],
+                "built": true,
+                "procId": "fpa-plan"
+              }
+            ]
+          },
+          {
+            "id": "report",
+            "name": "Report & Steer",
+            "tone": "o2d",
+            "areas": [
+              {
+                "name": "Management Reporting",
+                "sub": [
+                  "Monthly Business Review",
+                  "Flash & Board Reporting",
+                  "KPI & Scorecard",
+                  "Profitability Analysis"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "decide",
+            "name": "Decision Support",
+            "tone": "slate",
+            "areas": [
+              {
+                "name": "Scenario & Investment",
+                "sub": [
+                  "Scenario Modeling",
+                  "Sensitivity Analysis",
+                  "Business Case & ROI",
+                  "What-If Simulation"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "processes": [
+        {
+          "id": "fpa-plan",
+          "name": "Forecasting & Variance Management",
+          "desc": "Keep the forecast honest and the variances explained — bias out, insight in.",
+          "roles": [
+            {
+              "id": "fpa-analyst",
+              "name": "FP&A Analyst",
+              "objectives": [
+                {
+                  "id": "fpa-o-fc",
+                  "name": "Keep the rolling forecast accurate & bias-free",
+                  "kpi": "Forecast accuracy %",
+                  "patternIds": [
+                    6000,
+                    6001,
+                    6002,
+                    6003
+                  ],
+                  "patternCount": 4
+                }
+              ]
+            },
+            {
+              "id": "fpa-partner",
+              "name": "Finance Business Partner",
+              "objectives": [
+                {
+                  "id": "fpa-o-var",
+                  "name": "Deliver explained, timely variances",
+                  "kpi": "Variance cycle time",
+                  "patternIds": [
+                    6004,
+                    6005,
+                    6006,
+                    6007
+                  ],
+                  "patternCount": 4
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "patternCount": 8
+    },
+    {
+      "id": "tcm",
+      "name": "Treasury & Cash Management",
+      "short": "TCM",
+      "icon": "🏦",
+      "accent": "#1f9d76",
+      "status": "sample",
+      "tagline": "Cash visibility, liquidity, and FX / covenant risk — money in motion.",
+      "valueChain": {
+        "name": "Treasury & Cash Value Chain",
+        "groups": [
+          {
+            "id": "position",
+            "name": "Plan & Position",
+            "tone": "violet",
+            "areas": [
+              {
+                "name": "Cash Forecasting & Liquidity",
+                "sub": [
+                  "Short-Term Cash Forecast",
+                  "Liquidity Planning",
+                  "Working-Capital Levers",
+                  "Funding Strategy"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "cash",
+            "name": "Cash & Liquidity",
+            "note": "The built core",
+            "tone": "md",
+            "areas": [
+              {
+                "name": "Cash Positioning",
+                "sub": [
+                  "Daily Cash Position",
+                  "Idle-Balance Sweep",
+                  "Forecast-vs-Actual Cash",
+                  "Trapped-Cash Watch"
+                ],
+                "built": true,
+                "procId": "tcm-cash"
+              },
+              {
+                "name": "Bank Recon & Payments",
+                "sub": [
+                  "Bank Reconciliation",
+                  "Payment Release Controls",
+                  "Duplicate-Payment Guard",
+                  "Bank-Fee Analysis"
+                ],
+                "built": true,
+                "procId": "tcm-cash"
+              }
+            ]
+          },
+          {
+            "id": "bank",
+            "name": "Bank & Accounts",
+            "tone": "o2d",
+            "areas": [
+              {
+                "name": "Payment Factory",
+                "sub": [
+                  "Payment Orchestration",
+                  "In-House Bank",
+                  "Bank Account Mgmt",
+                  "Signatory & Mandate Control"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "risk",
+            "name": "Debt, Investment & FX",
+            "tone": "slate",
+            "areas": [
+              {
+                "name": "Financial Risk",
+                "sub": [
+                  "FX Exposure & Hedging",
+                  "Interest-Rate Risk",
+                  "Covenant Monitoring",
+                  "Counterparty Risk"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "processes": [
+        {
+          "id": "tcm-cash",
+          "name": "Cash & Liquidity Management",
+          "desc": "See the cash, sweep the idle, and catch the risk before it's a surprise.",
+          "roles": [
+            {
+              "id": "tcm-manager",
+              "name": "Cash Manager",
+              "objectives": [
+                {
+                  "id": "tcm-o-cash",
+                  "name": "Maximise cash visibility & yield",
+                  "kpi": "Idle cash $",
+                  "patternIds": [
+                    7000,
+                    7001,
+                    7002,
+                    7003
+                  ],
+                  "patternCount": 4
+                }
+              ]
+            },
+            {
+              "id": "tcm-risk",
+              "name": "Treasury Risk Analyst",
+              "objectives": [
+                {
+                  "id": "tcm-o-risk",
+                  "name": "Contain FX & covenant risk",
+                  "kpi": "Unhedged exposure $",
+                  "patternIds": [
+                    7004,
+                    7005,
+                    7006,
+                    7007
+                  ],
+                  "patternCount": 4
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "patternCount": 8
+    },
+    {
+      "id": "tax",
+      "name": "Tax Management",
+      "short": "TAX",
+      "icon": "🧮",
+      "accent": "#2d6cdf",
+      "status": "sample",
+      "tagline": "Determination, compliance, and provisioning — accurate, penalty-free tax.",
+      "valueChain": {
+        "name": "Tax Management Value Chain",
+        "groups": [
+          {
+            "id": "determine",
+            "name": "Determine",
+            "tone": "violet",
+            "areas": [
+              {
+                "name": "Tax Determination",
+                "sub": [
+                  "Rate & Rule Engine",
+                  "Reverse-Charge Logic",
+                  "Exemption & Certificates",
+                  "Master Data & Nexus"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "comply",
+            "name": "Comply & File",
+            "note": "The built core",
+            "tone": "md",
+            "areas": [
+              {
+                "name": "Compliance & Filing",
+                "sub": [
+                  "Return Preparation",
+                  "Deadline Management",
+                  "e-Invoicing & Clearance",
+                  "Filing & Submission"
+                ],
+                "built": true,
+                "procId": "tax-comp"
+              },
+              {
+                "name": "Reconciliation & Payment",
+                "sub": [
+                  "Return-to-Ledger Recon",
+                  "Credit-Note Timing",
+                  "Tax Payment",
+                  "Refund & Reclaim"
+                ],
+                "built": true,
+                "procId": "tax-comp"
+              }
+            ]
+          },
+          {
+            "id": "provision",
+            "name": "Provision & Report",
+            "tone": "o2d",
+            "areas": [
+              {
+                "name": "Provision & Reporting",
+                "sub": [
+                  "Current-Tax Provision",
+                  "Deferred Tax",
+                  "Effective-Rate Analysis",
+                  "Statutory Disclosure"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "audit",
+            "name": "Audit & Controversy",
+            "tone": "slate",
+            "areas": [
+              {
+                "name": "Audit Management",
+                "sub": [
+                  "Audit Response",
+                  "Assessment Tracking",
+                  "Rulings & Positions",
+                  "Dispute Resolution"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "processes": [
+        {
+          "id": "tax-comp",
+          "name": "Indirect Tax Compliance & Filing",
+          "desc": "File on time and right — reconcile to the ledger, determine at source, never miss a deadline.",
+          "roles": [
+            {
+              "id": "tax-analyst",
+              "name": "Tax Analyst",
+              "objectives": [
+                {
+                  "id": "tax-o-file",
+                  "name": "File on time and accurately",
+                  "kpi": "Penalty exposure $",
+                  "patternIds": [
+                    8000,
+                    8001,
+                    8002,
+                    8003
+                  ],
+                  "patternCount": 4
+                }
+              ]
+            },
+            {
+              "id": "tax-specialist",
+              "name": "Tax Specialist",
+              "objectives": [
+                {
+                  "id": "tax-o-det",
+                  "name": "Get determination right at source",
+                  "kpi": "Determination error %",
+                  "patternIds": [
+                    8004,
+                    8005,
+                    8006,
+                    8007
+                  ],
+                  "patternCount": 4
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "patternCount": 8
+    },
+    {
+      "id": "tne",
+      "name": "Travel & Expense",
+      "short": "T&E",
+      "icon": "💳",
+      "accent": "#d68910",
+      "status": "sample",
+      "tagline": "Expense capture, policy, and reimbursement — spend that behaves.",
+      "valueChain": {
+        "name": "Travel & Expense Value Chain",
+        "groups": [
+          {
+            "id": "book",
+            "name": "Request & Book",
+            "tone": "violet",
+            "areas": [
+              {
+                "name": "Travel Request & Booking",
+                "sub": [
+                  "Trip Request & Approval",
+                  "Online Booking Tool",
+                  "Cash Advances",
+                  "Pre-Trip Policy Check"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "capture",
+            "name": "Capture & Audit",
+            "note": "The built core",
+            "tone": "md",
+            "areas": [
+              {
+                "name": "Expense Capture & Audit",
+                "sub": [
+                  "Receipt Capture & OCR",
+                  "Duplicate-Claim Detection",
+                  "Fraud & Anomaly Scoring",
+                  "Mileage & Per-Diem Check"
+                ],
+                "built": true,
+                "procId": "tne-exp"
+              },
+              {
+                "name": "Policy & Compliance",
+                "sub": [
+                  "Policy Rule Engine",
+                  "Out-of-Policy Flagging",
+                  "Missing-Receipt Chase",
+                  "Submission-Window Control"
+                ],
+                "built": true,
+                "procId": "tne-exp"
+              }
+            ]
+          },
+          {
+            "id": "reimburse",
+            "name": "Approve & Reimburse",
+            "tone": "o2d",
+            "areas": [
+              {
+                "name": "Approval & Reimbursement",
+                "sub": [
+                  "Approval Workflow",
+                  "Reimbursement Run",
+                  "Payroll / AP Posting",
+                  "VAT Reclaim"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "control",
+            "name": "Analyze & Control",
+            "tone": "slate",
+            "areas": [
+              {
+                "name": "Spend Analytics",
+                "sub": [
+                  "Category Spend Analysis",
+                  "Card Program Mgmt",
+                  "Vendor & Rate Leakage",
+                  "Compliance Dashboards"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "processes": [
+        {
+          "id": "tne-exp",
+          "name": "Expense Audit & Compliance",
+          "desc": "Catch the leakage and keep reimbursement frictionless — audit smart, pay clean.",
+          "roles": [
+            {
+              "id": "tne-auditor",
+              "name": "Expense Auditor",
+              "objectives": [
+                {
+                  "id": "tne-o-audit",
+                  "name": "Catch out-of-policy & fraudulent spend",
+                  "kpi": "Expense leakage $",
+                  "patternIds": [
+                    9000,
+                    9001,
+                    9002,
+                    9003
+                  ],
+                  "patternCount": 4
+                }
+              ]
+            },
+            {
+              "id": "tne-analyst",
+              "name": "T&E Analyst",
+              "objectives": [
+                {
+                  "id": "tne-o-flow",
+                  "name": "Frictionless, compliant reimbursement",
+                  "kpi": "Auto-approval %",
+                  "patternIds": [
+                    9004,
+                    9005,
+                    9006,
+                    9007
+                  ],
+                  "patternCount": 4
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "patternCount": 8
+    },
+    {
+      "id": "icc",
+      "name": "Internal Controls & Compliance",
+      "short": "GRC",
+      "icon": "🛡️",
+      "accent": "#c0392b",
+      "status": "sample",
+      "tagline": "Continuous control monitoring and segregation of duties — trust, evidenced.",
+      "valueChain": {
+        "name": "Internal Controls & Compliance Value Chain",
+        "groups": [
+          {
+            "id": "design",
+            "name": "Design & Scope",
+            "tone": "violet",
+            "areas": [
+              {
+                "name": "Risk & Control Design",
+                "sub": [
+                  "Risk Assessment",
+                  "Control Framework",
+                  "Scoping & Materiality",
+                  "Control Documentation"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "operate",
+            "name": "Operate & Monitor",
+            "note": "The built core",
+            "tone": "md",
+            "areas": [
+              {
+                "name": "Continuous Control Monitoring",
+                "sub": [
+                  "Journal-Entry Testing",
+                  "Master-Data Change Watch",
+                  "Config & Threshold Monitors",
+                  "Privileged-Access Alerts"
+                ],
+                "built": true,
+                "procId": "icc-ccm"
+              },
+              {
+                "name": "Segregation of Duties",
+                "sub": [
+                  "Toxic-Combination Detection",
+                  "Access-Creep Review",
+                  "Dormant-Account Sweep",
+                  "Emergency-Access Control"
+                ],
+                "built": true,
+                "procId": "icc-ccm"
+              }
+            ]
+          },
+          {
+            "id": "certify",
+            "name": "Test & Certify",
+            "tone": "o2d",
+            "areas": [
+              {
+                "name": "Testing & Certification",
+                "sub": [
+                  "Control Testing",
+                  "Evidence Collection",
+                  "Sub-Certification",
+                  "Management Sign-off"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "remediate",
+            "name": "Remediate & Report",
+            "tone": "slate",
+            "areas": [
+              {
+                "name": "Issue & Assurance",
+                "sub": [
+                  "Deficiency Logging",
+                  "Remediation Tracking",
+                  "Internal Audit Liaison",
+                  "Regulatory Reporting"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "processes": [
+        {
+          "id": "icc-ccm",
+          "name": "Continuous Control Monitoring & SoD",
+          "desc": "Catch control failures and toxic access before they become losses — assurance, continuously.",
+          "roles": [
+            {
+              "id": "icc-analyst",
+              "name": "Controls Analyst",
+              "objectives": [
+                {
+                  "id": "icc-o-detect",
+                  "name": "Detect control failures early",
+                  "kpi": "Control exceptions",
+                  "patternIds": [
+                    10000,
+                    10001,
+                    10002,
+                    10003
+                  ],
+                  "patternCount": 4
+                }
+              ]
+            },
+            {
+              "id": "icc-access",
+              "name": "Access Reviewer",
+              "objectives": [
+                {
+                  "id": "icc-o-sod",
+                  "name": "Prevent toxic access combinations",
+                  "kpi": "Open SoD conflicts",
+                  "patternIds": [
+                    10004,
+                    10005,
+                    10006,
+                    10007
+                  ],
+                  "patternCount": 4
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "patternCount": 8
     }
   ],
   "stubPatterns": {
@@ -4589,10 +5767,499 @@ button{font-family:inherit;cursor:pointer}
         "Treasury approves early pay"
       ]
     },
+    "2005": {
+      "id": 2005,
+      "name": "Remit-To Bank Swap",
+      "category": "Invoice Integrity & Fraud Signals",
+      "priority": "Critical",
+      "priorityRank": 0,
+      "mentalModel": "The bank details on this invoice don't match the vendor master. A changed remit-to is the number-one invoice-redirection fraud vector — I never pay to it until it's verified on a known-good phone number, no matter how routine the invoice looks.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Remit-To Bank Swap pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "RemitTo_Change_Flag",
+      "featureSlug": "remitto-change-flag",
+      "conceptualSQL": "-- sample trigger for RemitTo_Change_Flag\nSELECT * FROM source WHERE signal = 'RemitTo_Change_Flag'",
+      "originalDAG": [
+        "Compare_RemitTo_vs_VendorMaster",
+        "Detect_Bank_Change",
+        "Hold_Payment",
+        "Trigger_OutOfBand_Verification"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF RemitTo_Match = TRUE",
+          "actions": [
+            "Auto_Continue_Processing"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Bank_Changed AND Callback_Verified",
+          "actions": [
+            "Update_Vendor_Master",
+            "Release_Hold",
+            "Log_Change_Audit"
+          ],
+          "hitl": "AP lead approves bank-detail change",
+          "tier": "escalation",
+          "escLevel": 1
+        },
+        {
+          "condition": "ELSE IF Bank_Changed AND Verification_Fails",
+          "actions": [
+            "Freeze_Vendor",
+            "Open_Fraud_Case",
+            "Notify_Security"
+          ],
+          "hitl": "Controller confirms suspected fraud",
+          "tier": "escalation",
+          "escLevel": 2
+        }
+      ],
+      "hitlGates": [
+        "AP lead approves bank-detail change",
+        "Controller confirms suspected fraud"
+      ]
+    },
+    "2006": {
+      "id": 2006,
+      "name": "Resubmission-After-Reject",
+      "category": "Invoice Integrity & Fraud Signals",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "This 'new' invoice number is last week's rejected invoice wearing a disguise — same vendor, PO, and amount. If the original gets corrected and this one clears too, we pay twice. I match on the economic fingerprint, not the invoice number.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Resubmission-After-Reject pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Resubmit_Fingerprint",
+      "featureSlug": "resubmit-fingerprint",
+      "conceptualSQL": "-- sample trigger for Resubmit_Fingerprint\nSELECT * FROM source WHERE signal = 'Resubmit_Fingerprint'",
+      "originalDAG": [
+        "Fingerprint_Invoice(vendor+PO+amount+period)",
+        "Match_Against_Rejected_And_Open",
+        "Link_Resubmission",
+        "Supersede_Original"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF No_Prior_Match",
+          "actions": [
+            "Auto_Continue_Processing"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Matches_Rejected_Item",
+          "actions": [
+            "Link_To_Original",
+            "Carry_Forward_Approvals",
+            "Auto_Post"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Matches_Open_Unpaid",
+          "actions": [
+            "Block_As_Potential_Duplicate",
+            "Route_To_AP_Review"
+          ],
+          "hitl": "AP analyst confirms not a duplicate",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "AP analyst confirms not a duplicate"
+      ]
+    },
+    "2007": {
+      "id": 2007,
+      "name": "Unapplied Credit Memo",
+      "category": "Invoice Integrity & Fraud Signals",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "The vendor issued a credit memo weeks ago but keeps billing the full amount, and the credit is just sitting there unapplied. Every gross invoice I clear without netting it is money we've effectively paid twice. Net it before it posts.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Unapplied Credit Memo pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Open_Credit_Balance",
+      "featureSlug": "open-credit-balance",
+      "conceptualSQL": "-- sample trigger for Open_Credit_Balance\nSELECT * FROM source WHERE signal = 'Open_Credit_Balance'",
+      "originalDAG": [
+        "Scan_Open_Credit_Memos",
+        "Match_Credit_To_Invoice(vendor)",
+        "Net_Before_Posting",
+        "Update_Vendor_Statement"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF No_Open_Credit",
+          "actions": [
+            "Auto_Continue_Processing"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Credit_Matches_Invoice",
+          "actions": [
+            "Auto_Apply_Credit",
+            "Post_Net_Amount"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Credit_Aging > 60d AND Unmatched",
+          "actions": [
+            "Request_Refund_From_Vendor",
+            "Escalate_AP_Lead"
+          ],
+          "hitl": "AP lead approves refund request",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "AP lead approves refund request"
+      ]
+    },
+    "2008": {
+      "id": 2008,
+      "name": "Round-Sum Non-PO Inflation",
+      "category": "Invoice Integrity & Fraud Signals",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "A suspiciously round non-PO invoice — exactly $10,000, no line detail — from a vendor with barely any history. It's not proof of anything, but round-sum, low-history, no-backup is the classic soft-fraud signature. I want a second look before it slides into an auto-approve tier.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Round-Sum Non-PO Inflation pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "RoundSum_Anomaly",
+      "featureSlug": "roundsum-anomaly",
+      "conceptualSQL": "-- sample trigger for RoundSum_Anomaly\nSELECT * FROM source WHERE signal = 'RoundSum_Anomaly'",
+      "originalDAG": [
+        "Assess_Invoice_Shape(round+backup+history)",
+        "Score_Anomaly",
+        "Attach_Vendor_History",
+        "Route_By_Score"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Anomaly_Score = low",
+          "actions": [
+            "Auto_Continue_Processing"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Round_Sum AND Low_History",
+          "actions": [
+            "Request_Supporting_Backup",
+            "Flag_For_Review"
+          ],
+          "hitl": "AP analyst reviews anomaly",
+          "tier": "escalation",
+          "escLevel": 1
+        },
+        {
+          "condition": "ELSE IF No_Backup AND Amount > threshold",
+          "actions": [
+            "Hold_Payment",
+            "Escalate_Procurement"
+          ],
+          "hitl": "Procurement validates spend",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "AP analyst reviews anomaly",
+        "Procurement validates spend"
+      ]
+    },
+    "2009": {
+      "id": 2009,
+      "name": "Threshold-Split Approval Dodge",
+      "category": "Coding, Routing & Approval Judgment",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "Three $9,900 invoices from the same vendor this week, each one just under the $10k approval gate. Individually every one is auto-approvable; together it's a $29,700 decision someone senior should actually see. I aggregate the window before I let any of them approve.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Threshold-Split Approval Dodge pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Split_Under_Threshold",
+      "featureSlug": "split-under-threshold",
+      "conceptualSQL": "-- sample trigger for Split_Under_Threshold\nSELECT * FROM source WHERE signal = 'Split_Under_Threshold'",
+      "originalDAG": [
+        "Aggregate_Vendor_Invoices(rolling_window)",
+        "Compare_To_Approval_Tiers",
+        "Detect_SubThreshold_Clustering",
+        "Re_Tier_Approval"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Aggregate < threshold",
+          "actions": [
+            "Auto_Approve_Each"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Cluster_Crosses_Tier",
+          "actions": [
+            "Bundle_For_Higher_Approver",
+            "Attach_Split_Evidence"
+          ],
+          "hitl": "Cost-centre owner approves aggregated spend",
+          "tier": "escalation",
+          "escLevel": 1
+        },
+        {
+          "condition": "ELSE IF Repeat_Pattern > 2 windows",
+          "actions": [
+            "Flag_To_Procurement",
+            "Open_Policy_Review"
+          ],
+          "hitl": null,
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Cost-centre owner approves aggregated spend"
+      ]
+    },
+    "2010": {
+      "id": 2010,
+      "name": "Approval Musical Chairs",
+      "category": "Coding, Routing & Approval Judgment",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "This invoice has bounced to a third approver in a week, each one saying 'not mine'. The delegation-of-authority is ambiguous and the invoice is aging while they pass it around. I pin the correct approver by amount and cost-centre authority and stop the merry-go-round.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Approval Musical Chairs pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Approval_Bounce",
+      "featureSlug": "approval-bounce",
+      "conceptualSQL": "-- sample trigger for Approval_Bounce\nSELECT * FROM source WHERE signal = 'Approval_Bounce'",
+      "originalDAG": [
+        "Read_Approval_History",
+        "Resolve_DoA(amount+costcentre)",
+        "Assign_Correct_Approver",
+        "Notify_With_Deadline"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Single_Clear_Approver",
+          "actions": [
+            "Auto_Route_To_Approver"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Bounced >= 2 AND DoA_Resolvable",
+          "actions": [
+            "Pin_Authoritative_Approver",
+            "Attach_DoA_Evidence"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF DoA_Ambiguous AND Aging > SLA",
+          "actions": [
+            "Escalate_AP_Manager",
+            "Flag_Approval_Gap"
+          ],
+          "hitl": "AP manager assigns approver",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "AP manager assigns approver"
+      ]
+    },
+    "2011": {
+      "id": 2011,
+      "name": "Ownerless Non-PO Invoice",
+      "category": "Coding, Routing & Approval Judgment",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "A non-PO invoice arrives with no PO and no requester named on it. Left alone it ages in the unassigned queue for weeks. I infer the likely owner from GL history, the vendor, and the contract, and route it — an inferred owner who can reassign beats a silent backlog.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Ownerless Non-PO Invoice pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Missing_Owner",
+      "featureSlug": "missing-owner",
+      "conceptualSQL": "-- sample trigger for Missing_Owner\nSELECT * FROM source WHERE signal = 'Missing_Owner'",
+      "originalDAG": [
+        "Extract_Invoice_Signals(vendor+GL+desc)",
+        "Infer_Owner_From_History",
+        "Assign_Provisional_Owner",
+        "Route_For_Confirmation"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Owner_Confidently_Inferred",
+          "actions": [
+            "Auto_Route_To_Owner"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Multiple_Candidate_Owners",
+          "actions": [
+            "Route_To_Top_Candidate",
+            "CC_Alternates"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF No_Signal",
+          "actions": [
+            "Hold_In_Triage",
+            "Escalate_AP_Lead"
+          ],
+          "hitl": "AP lead assigns cost-centre owner",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "AP lead assigns cost-centre owner"
+      ]
+    },
+    "2012": {
+      "id": 2012,
+      "name": "OCR Confidence Cliff",
+      "category": "Coding, Routing & Approval Judgment",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "The capture engine is only 62% sure the invoice total is $12,400 — the tax and vendor fields are shaky too. Above the confidence bar I let it post untouched; below it, this is a keying error waiting to hit the ledger. I gate straight-through on confidence, not on hope.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the OCR Confidence Cliff pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "OCR_Confidence",
+      "featureSlug": "ocr-confidence",
+      "conceptualSQL": "-- sample trigger for OCR_Confidence\nSELECT * FROM source WHERE signal = 'OCR_Confidence'",
+      "originalDAG": [
+        "Read_Capture_Confidence(perfield)",
+        "Compare_To_Threshold",
+        "Auto_Post_If_Clear",
+        "Queue_LowConfidence_For_Verify"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF All_Fields_Above_Bar",
+          "actions": [
+            "Auto_Post"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Key_Field_Below_Bar",
+          "actions": [
+            "Highlight_Suspect_Fields",
+            "Route_To_Keying_Review"
+          ],
+          "hitl": "AP clerk verifies captured fields",
+          "tier": "escalation",
+          "escLevel": 1
+        },
+        {
+          "condition": "ELSE IF Vendor_Unrecognised",
+          "actions": [
+            "Hold_For_Vendor_Match",
+            "Escalate_Master_Data"
+          ],
+          "hitl": null,
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "AP clerk verifies captured fields"
+      ]
+    },
     "3001": {
       "id": 3001,
       "name": "Stuck Reconciliation Item",
-      "category": "Close & Reconciliation",
+      "category": "Reconciliation Integrity",
       "priority": "High",
       "priorityRank": 1,
       "mentalModel": "This GL-to-subledger break has rolled forward three closes. Is it a timing item that will clear, or a real difference someone must own? Age it and route.",
@@ -4640,10 +6307,187 @@ button{font-family:inherit;cursor:pointer}
         "Controller signs off write-off"
       ]
     },
+    "3004": {
+      "id": 3004,
+      "name": "Bank Reconciliation Outlier",
+      "category": "Reconciliation Integrity",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "A bank line has sat unmatched for two weeks — not an in-transit item, it's stopped clearing. Either a payment failed silently or something posted twice. I chase the outlier now, before it's buried in next month's noise.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Bank Reconciliation Outlier pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Bank_Recon_Outlier",
+      "featureSlug": "bank-recon-outlier",
+      "conceptualSQL": "-- sample trigger for Bank_Recon_Outlier\nSELECT * FROM source WHERE signal = 'Bank_Recon_Outlier'",
+      "originalDAG": [
+        "Pull_Bank_vs_Ledger",
+        "Auto_Match_Clearing_Items",
+        "Isolate_Unmatched_Outliers",
+        "Investigate_And_Clear"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF All_Matched",
+          "actions": [
+            "Auto_Certify"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF In_Transit < grace",
+          "actions": [
+            "Auto_Carry_Forward"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Unmatched > grace",
+          "actions": [
+            "Trace_Root_Cause",
+            "Route_To_GL_Accountant"
+          ],
+          "hitl": "GL accountant clears bank outlier",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "GL accountant clears bank outlier"
+      ]
+    },
+    "3005": {
+      "id": 3005,
+      "name": "Suspense Account Creep",
+      "category": "Reconciliation Integrity",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "The suspense and clearing accounts are quietly filling up — items land there 'temporarily' and never leave. A growing suspense balance is unreconciled risk in disguise; I age it and force each item to a home.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Suspense Account Creep pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Suspense_Aging",
+      "featureSlug": "suspense-aging",
+      "conceptualSQL": "-- sample trigger for Suspense_Aging\nSELECT * FROM source WHERE signal = 'Suspense_Aging'",
+      "originalDAG": [
+        "Scan_Suspense_Clearing_Accounts",
+        "Age_Parked_Items",
+        "Propose_Reclass",
+        "Drain_To_Correct_Account"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Suspense_Near_Zero",
+          "actions": [
+            "No_Action"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Item_Reclassifiable",
+          "actions": [
+            "Auto_Reclass + Document"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Aged > 2 periods",
+          "actions": [
+            "Assign_Owner",
+            "Escalate_Controller"
+          ],
+          "hitl": "Controller approves write-off",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Controller approves write-off"
+      ]
+    },
+    "3006": {
+      "id": 3006,
+      "name": "Auto-Certified Reconciliation",
+      "category": "Reconciliation Integrity",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "This account was certified 'reconciled' in four seconds flat, same as every month — but the supporting balance hasn't moved and nobody attached evidence. A rubber-stamped rec isn't a control; I re-open the risky ones for a real look.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Auto-Certified Reconciliation pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "RubberStamp_Recon",
+      "featureSlug": "rubberstamp-recon",
+      "conceptualSQL": "-- sample trigger for RubberStamp_Recon\nSELECT * FROM source WHERE signal = 'RubberStamp_Recon'",
+      "originalDAG": [
+        "Measure_Certification_Behaviour",
+        "Check_Evidence_Attached",
+        "Flag_RubberStamp_Recons",
+        "Route_High_Risk_For_Review"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Evidenced_Review",
+          "actions": [
+            "Accept_Certification"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Low_Risk_Account",
+          "actions": [
+            "Accept + Sample_Later"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF High_Risk AND No_Evidence",
+          "actions": [
+            "Re_Open_Reconciliation",
+            "Notify_Controller"
+          ],
+          "hitl": "Controller reviews certification quality",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Controller reviews certification quality"
+      ]
+    },
     "3002": {
       "id": 3002,
       "name": "Late / Missing Accrual",
-      "category": "Period-End Accruals",
+      "category": "Close Orchestration & Control",
       "priority": "High",
       "priorityRank": 1,
       "mentalModel": "A recurring accrual that posted every month is missing this period. Did the activity stop, or did someone forget? Detect the gap before the books close.",
@@ -4694,7 +6538,7 @@ button{font-family:inherit;cursor:pointer}
     "3003": {
       "id": 3003,
       "name": "Intercompany Out-of-Balance",
-      "category": "Intercompany",
+      "category": "Close Orchestration & Control",
       "priority": "Critical",
       "priorityRank": 0,
       "mentalModel": "Entity A booked the charge; Entity B never picked it up. Every day this lingers it distorts the consolidation. Match the legs and chase the missing one.",
@@ -4742,10 +6586,128 @@ button{font-family:inherit;cursor:pointer}
         "Group accountant approves true-up"
       ]
     },
+    "3007": {
+      "id": 3007,
+      "name": "Close Task Critical-Path Slip",
+      "category": "Close Orchestration & Control",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "A close task just slipped and it's on the critical path — every downstream task is now waiting on it. I don't need a status meeting; I need to know who the one bottleneck is and nudge them before the whole close moves a day right.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Close Task Critical-Path Slip pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Close_CriticalPath",
+      "featureSlug": "close-criticalpath",
+      "conceptualSQL": "-- sample trigger for Close_CriticalPath\nSELECT * FROM source WHERE signal = 'Close_CriticalPath'",
+      "originalDAG": [
+        "Track_Close_Task_Status",
+        "Compute_Critical_Path",
+        "Detect_Blocking_Slip",
+        "Auto_Nudge_Bottleneck"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF On_Schedule",
+          "actions": [
+            "Auto_Confirm_Progress"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Slip AND Off_Critical_Path",
+          "actions": [
+            "Auto_Nudge_Owner"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Slip AND On_Critical_Path",
+          "actions": [
+            "Escalate_Controller",
+            "Flag_Close_Delay_Risk"
+          ],
+          "hitl": "Controller approves close plan change",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Controller approves close plan change"
+      ]
+    },
+    "3008": {
+      "id": 3008,
+      "name": "Period Cut-Off Error",
+      "category": "Close Orchestration & Control",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "A big invoice for in-period services posted two days after the cut-off, into the next month. Booked in the wrong period it distorts both months' results. I catch cut-off errors at close, not when the auditor does.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Period Cut-Off Error pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "CutOff_Error",
+      "featureSlug": "cutoff-error",
+      "conceptualSQL": "-- sample trigger for CutOff_Error\nSELECT * FROM source WHERE signal = 'CutOff_Error'",
+      "originalDAG": [
+        "Scan_Transactions_Around_CutOff",
+        "Test_Service_vs_Posting_Date",
+        "Detect_Wrong_Period",
+        "Propose_Reclass_Journal"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Correct_Period",
+          "actions": [
+            "Auto_Pass"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Clear_CutOff_Error AND Immaterial",
+          "actions": [
+            "Auto_Reclass_Journal"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Material",
+          "actions": [
+            "Propose_Adjusting_Entry",
+            "Escalate_Controller"
+          ],
+          "hitl": "Controller approves cut-off adjustment",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Controller approves cut-off adjustment"
+      ]
+    },
     "4001": {
       "id": 4001,
       "name": "Stalled Onboarding Provisioning",
-      "category": "Onboarding Throughput",
+      "category": "Provisioning & Readiness",
       "priority": "High",
       "priorityRank": 1,
       "mentalModel": "Day-one is in 48 hours and laptop, accounts, and badge are still 'pending'. Which task is the bottleneck, and who do I nudge before the new hire shows up to nothing?",
@@ -4799,6 +6761,183 @@ button{font-family:inherit;cursor:pointer}
       ],
       "hitlGates": [
         "HRBP confirms day-1 readiness"
+      ]
+    },
+    "4003": {
+      "id": 4003,
+      "name": "Manager Onboarding No-Show",
+      "category": "Provisioning & Readiness",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "Day-one is 48 hours out and the hiring manager still hasn't done a single onboarding task — no buddy, no equipment sign-off, no first-week plan. The new hire will show up to a manager who forgot they were coming. I nudge the manager before the impression is set.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Manager Onboarding No-Show pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Manager_Prep_Gap",
+      "featureSlug": "manager-prep-gap",
+      "conceptualSQL": "-- sample trigger for Manager_Prep_Gap\nSELECT * FROM source WHERE signal = 'Manager_Prep_Gap'",
+      "originalDAG": [
+        "Track_Manager_Onboarding_Tasks",
+        "Detect_Incomplete",
+        "Auto_Nudge_Manager",
+        "Confirm_Ready"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Manager_Tasks_Complete",
+          "actions": [
+            "Auto_Confirm_Ready"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Incomplete < SLA",
+          "actions": [
+            "Auto_Nudge_Manager"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Past_SLA",
+          "actions": [
+            "Escalate_HRBP",
+            "Flag_Day1_Risk"
+          ],
+          "hitl": "HRBP confirms day-1 readiness",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "HRBP confirms day-1 readiness"
+      ]
+    },
+    "4004": {
+      "id": 4004,
+      "name": "Access Not Ready Day-1",
+      "category": "Provisioning & Readiness",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "Laptop's here, but the accounts — email, VPN, the core app — still aren't provisioned and start is tomorrow. A new hire who can't log in on day one loses their first week and their first impression. I chase the access owner, not just the asset.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Access Not Ready Day-1 pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Access_Provisioning_Gap",
+      "featureSlug": "access-provisioning-gap",
+      "conceptualSQL": "-- sample trigger for Access_Provisioning_Gap\nSELECT * FROM source WHERE signal = 'Access_Provisioning_Gap'",
+      "originalDAG": [
+        "Track_Access_Requests",
+        "Detect_Unprovisioned_Systems",
+        "Auto_Expedite_With_IT",
+        "Verify_Login_Ready"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF All_Access_Ready",
+          "actions": [
+            "Auto_Confirm_Ready"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Pending < SLA",
+          "actions": [
+            "Auto_Expedite_IT_Ticket"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Critical_System AND Past_SLA",
+          "actions": [
+            "Escalate_IT_Lead",
+            "Provision_Temp_Access"
+          ],
+          "hitl": "IT lead approves expedited provisioning",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "IT lead approves expedited provisioning"
+      ]
+    },
+    "4005": {
+      "id": 4005,
+      "name": "Ghost-Start Risk",
+      "category": "Provisioning & Readiness",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "The new hire has gone quiet — didn't confirm start details, didn't open the pre-boarding portal, and it's a hot market. Ghosting after accept is real, and every provisioned laptop and licence is sunk cost if they no-show. I re-engage now and warn the manager to keep a backup warm.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Ghost-Start Risk pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "NoShow_Signal",
+      "featureSlug": "noshow-signal",
+      "conceptualSQL": "-- sample trigger for NoShow_Signal\nSELECT * FROM source WHERE signal = 'NoShow_Signal'",
+      "originalDAG": [
+        "Track_PreBoarding_Engagement",
+        "Score_NoShow_Risk",
+        "Auto_ReEngage_Candidate",
+        "Alert_If_Elevated"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Engaged",
+          "actions": [
+            "No_Action"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Quiet < window",
+          "actions": [
+            "Auto_ReEngage_Candidate"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF High_NoShow_Risk",
+          "actions": [
+            "Notify_HRBP_And_Manager",
+            "Hold_Further_Provisioning"
+          ],
+          "hitl": "HRBP confirms candidate still starting",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "HRBP confirms candidate still starting"
       ]
     },
     "4002": {
@@ -4858,6 +6997,185 @@ button{font-family:inherit;cursor:pointer}
       ],
       "hitlGates": [
         "Compliance approves conditional start"
+      ]
+    },
+    "4006": {
+      "id": 4006,
+      "name": "Background-Check Stall",
+      "category": "Compliance & Eligibility",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "The background check has been 'in progress' for two weeks and the start date is locked. Let them start before it clears and we've got an unvetted person in a sensitive role; hold it blindly and we lose the hire. I chase the vendor and prep the conditional-start call.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Background-Check Stall pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "BGCheck_Stall",
+      "featureSlug": "bgcheck-stall",
+      "conceptualSQL": "-- sample trigger for BGCheck_Stall\nSELECT * FROM source WHERE signal = 'BGCheck_Stall'",
+      "originalDAG": [
+        "Track_BGCheck_Status",
+        "Detect_Stall",
+        "Auto_Chase_Vendor",
+        "Assess_Conditional_Start"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Cleared",
+          "actions": [
+            "Auto_Clear_Gate"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF In_Progress < SLA",
+          "actions": [
+            "Auto_Chase_Vendor"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Stalled AND Start_Imminent",
+          "actions": [
+            "Escalate_Compliance",
+            "Propose_Conditional_Start"
+          ],
+          "hitl": "Compliance approves conditional start",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Compliance approves conditional start"
+      ]
+    },
+    "4007": {
+      "id": 4007,
+      "name": "Expiring Work Authorization",
+      "category": "Compliance & Eligibility",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "This hire's work permit expires four months after they start — right in the middle of probation. An expiring authorization nobody's tracking becomes an illegal-to-employ problem overnight. I flag the renewal runway now, while there's still time to act.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Expiring Work Authorization pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "WorkAuth_Expiry",
+      "featureSlug": "workauth-expiry",
+      "conceptualSQL": "-- sample trigger for WorkAuth_Expiry\nSELECT * FROM source WHERE signal = 'WorkAuth_Expiry'",
+      "originalDAG": [
+        "Read_Work_Authorization",
+        "Compute_Expiry_Runway",
+        "Detect_Short_Runway",
+        "Schedule_Renewal_Track"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Long_Runway",
+          "actions": [
+            "Log + Monitor"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Runway < policy",
+          "actions": [
+            "Auto_Open_Renewal_Case",
+            "Notify_Compliance"
+          ],
+          "hitl": "Compliance approves sponsorship/renewal",
+          "tier": "escalation",
+          "escLevel": 1
+        },
+        {
+          "condition": "ELSE IF Expires_During_Probation",
+          "actions": [
+            "Escalate_Compliance",
+            "Flag_Employment_Risk"
+          ],
+          "hitl": null,
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Compliance approves sponsorship/renewal"
+      ]
+    },
+    "4008": {
+      "id": 4008,
+      "name": "Certification / License Gap",
+      "category": "Compliance & Eligibility",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "This role legally requires a professional licence, and the one on file can't be verified against the register — maybe lapsed, maybe never held. Putting an unlicensed person in a regulated seat is a fine and a headline. I verify at source before day one.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Certification / License Gap pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "License_Gap",
+      "featureSlug": "license-gap",
+      "conceptualSQL": "-- sample trigger for License_Gap\nSELECT * FROM source WHERE signal = 'License_Gap'",
+      "originalDAG": [
+        "Identify_Required_Licenses",
+        "Verify_Against_Registry",
+        "Detect_Gap",
+        "Request_Evidence"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Verified_Valid",
+          "actions": [
+            "Auto_Clear_Gate"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Pending_Verification",
+          "actions": [
+            "Auto_Request_Evidence"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Unverifiable AND Regulated_Role",
+          "actions": [
+            "Hold_Start",
+            "Escalate_Compliance"
+          ],
+          "hitl": "Compliance confirms licensing",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Compliance confirms licensing"
       ]
     },
     "5001": {
@@ -4976,6 +7294,2363 @@ button{font-family:inherit;cursor:pointer}
       ],
       "hitlGates": [
         "Logistics lead approves reroute"
+      ]
+    },
+    "6000": {
+      "id": 6000,
+      "name": "Budget Sandbagging",
+      "category": "Forecast Integrity & Bias",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "The regional budget landed 15% below current run-rate — right after their bonus was tied to budget attainment. That's not conservatism, it's a sandbag: lowball the plan so any outcome looks like a beat.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Budget Sandbagging pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Sandbag_Signal",
+      "featureSlug": "sandbag-signal",
+      "conceptualSQL": "-- sample trigger for Sandbag_Signal\nSELECT * FROM source WHERE signal = 'Sandbag_Signal'",
+      "originalDAG": [
+        "Compare_Budget_vs_RunRate",
+        "Score_Sandbag_Risk",
+        "Attach_Trend_Evidence",
+        "Flag_For_Challenge"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Budget within run-rate band",
+          "actions": [
+            "Auto_Accept_Submission"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Below_Band AND Incentive_Linked",
+          "actions": [
+            "Request_Justification",
+            "Route_To_FP&A_Review"
+          ],
+          "hitl": "FP&A lead challenges submission",
+          "tier": "escalation",
+          "escLevel": 1
+        },
+        {
+          "condition": "ELSE IF Repeat_Sandbagger",
+          "actions": [
+            "Escalate_Finance_Director",
+            "Propose_Stretch_Target"
+          ],
+          "hitl": null,
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "FP&A lead challenges submission"
+      ]
+    },
+    "6001": {
+      "id": 6001,
+      "name": "Hockey-Stick Forecast",
+      "category": "Forecast Integrity & Bias",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "Every quarter the forecast crawls flat then miraculously spikes in the final month to hit the number. The back-loaded hockey stick almost never lands — I discount the miracle month before it's baked in.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Hockey-Stick Forecast pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "BackLoaded_Curve",
+      "featureSlug": "backloaded-curve",
+      "conceptualSQL": "-- sample trigger for BackLoaded_Curve\nSELECT * FROM source WHERE signal = 'BackLoaded_Curve'",
+      "originalDAG": [
+        "Read_Forecast_Curve",
+        "Detect_BackLoading",
+        "Compare_To_History",
+        "Risk_Adjust_Outlook"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Curve_Linear",
+          "actions": [
+            "Auto_Accept_Forecast"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF BackLoaded AND History_Misses",
+          "actions": [
+            "Apply_Haircut",
+            "Flag_Delivery_Risk"
+          ],
+          "hitl": "FP&A lead approves haircut",
+          "tier": "escalation",
+          "escLevel": 1
+        },
+        {
+          "condition": "ELSE IF Extreme_Spike",
+          "actions": [
+            "Request_Weekly_Milestones",
+            "Escalate_Business_Partner"
+          ],
+          "hitl": null,
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "FP&A lead approves haircut"
+      ]
+    },
+    "6002": {
+      "id": 6002,
+      "name": "Forecast Drift",
+      "category": "Forecast Integrity & Bias",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "The forecast still assumes 8% growth three months after the market turned. Nobody refreshed the driver — the gap between what we're steering by and reality is widening silently.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Forecast Drift pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Assumption_Staleness",
+      "featureSlug": "assumption-staleness",
+      "conceptualSQL": "-- sample trigger for Assumption_Staleness\nSELECT * FROM source WHERE signal = 'Assumption_Staleness'",
+      "originalDAG": [
+        "Check_Assumption_Freshness",
+        "Compare_Drivers_To_Actuals",
+        "Detect_Drift",
+        "Prompt_Refresh"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Assumptions_Current",
+          "actions": [
+            "No_Action"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Drift < tolerance",
+          "actions": [
+            "Auto_Nudge_Owner"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Drift > tolerance",
+          "actions": [
+            "Recompute_Driver_Based_Forecast",
+            "Escalate_FP&A"
+          ],
+          "hitl": "FP&A lead approves reforecast",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "FP&A lead approves reforecast"
+      ]
+    },
+    "6003": {
+      "id": 6003,
+      "name": "Reforecast Trigger Miss",
+      "category": "Forecast Integrity & Bias",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "A material event just hit — a lost contract, an FX swing — but no reforecast was triggered. The number the business is steering by is already wrong and nobody's noticed.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Reforecast Trigger Miss pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Reforecast_Trigger",
+      "featureSlug": "reforecast-trigger",
+      "conceptualSQL": "-- sample trigger for Reforecast_Trigger\nSELECT * FROM source WHERE signal = 'Reforecast_Trigger'",
+      "originalDAG": [
+        "Monitor_Material_Events",
+        "Assess_Forecast_Impact",
+        "Trigger_Reforecast",
+        "Notify_Stakeholders"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF No_Material_Event",
+          "actions": [
+            "No_Action"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Impact < threshold",
+          "actions": [
+            "Log_Event + Watch"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Impact > threshold",
+          "actions": [
+            "Mandate_Reforecast",
+            "Escalate_CFO_Office"
+          ],
+          "hitl": "Finance director approves reforecast scope",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Finance director approves reforecast scope"
+      ]
+    },
+    "6004": {
+      "id": 6004,
+      "name": "Unexplained Variance",
+      "category": "Variance Explanation & Insight",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "A $2M unfavourable variance and the commentary just says 'timing'. Timing three months running isn't timing — it's a miss nobody wants to name. I want the real driver, not a placeholder word.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Unexplained Variance pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Variance_Unexplained",
+      "featureSlug": "variance-unexplained",
+      "conceptualSQL": "-- sample trigger for Variance_Unexplained\nSELECT * FROM source WHERE signal = 'Variance_Unexplained'",
+      "originalDAG": [
+        "Pull_Variance_By_Driver",
+        "Test_Commentary_Quality",
+        "Decompose_Root_Cause",
+        "Request_Real_Explanation"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Variance < materiality",
+          "actions": [
+            "Auto_Accept_Commentary"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Generic_Commentary",
+          "actions": [
+            "Reject_Commentary",
+            "Request_Driver_Detail"
+          ],
+          "hitl": "Business partner provides root cause",
+          "tier": "escalation",
+          "escLevel": 1
+        },
+        {
+          "condition": "ELSE IF Recurring_Unexplained",
+          "actions": [
+            "Escalate_Controller",
+            "Open_Deep_Dive"
+          ],
+          "hitl": null,
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Business partner provides root cause"
+      ]
+    },
+    "6005": {
+      "id": 6005,
+      "name": "Offsetting Variance Masking",
+      "category": "Variance Explanation & Insight",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "Net variance is near zero, so it looks clean — but it's a big favourable price hiding an equally big unfavourable volume. The net tells a comforting lie; the components tell the real story.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Offsetting Variance Masking pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Offsetting_Variance",
+      "featureSlug": "offsetting-variance",
+      "conceptualSQL": "-- sample trigger for Offsetting_Variance\nSELECT * FROM source WHERE signal = 'Offsetting_Variance'",
+      "originalDAG": [
+        "Decompose_Net_Variance",
+        "Detect_Offsetting_Components",
+        "Surface_Gross_Drivers",
+        "Report_Components"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Components_Aligned",
+          "actions": [
+            "Auto_Accept"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Offsetting_Detected",
+          "actions": [
+            "Split_Report_By_Driver",
+            "Flag_Hidden_Risk"
+          ],
+          "hitl": "FP&A lead reviews component story",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "FP&A lead reviews component story"
+      ]
+    },
+    "6006": {
+      "id": 6006,
+      "name": "Phasing / Timing Distortion",
+      "category": "Variance Explanation & Insight",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "The whole variance is phasing — spend that shifted a month, not real overspend. Raising an alarm on a calendar artefact wastes everyone's time; I reclass it to the right period and move on.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Phasing / Timing Distortion pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Phasing_Artifact",
+      "featureSlug": "phasing-artifact",
+      "conceptualSQL": "-- sample trigger for Phasing_Artifact\nSELECT * FROM source WHERE signal = 'Phasing_Artifact'",
+      "originalDAG": [
+        "Trace_Variance_To_Period",
+        "Detect_Phasing",
+        "Reclass_To_Correct_Period",
+        "Annotate_Timing"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Not_Phasing",
+          "actions": [
+            "Route_As_Real_Variance"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Pure_Phasing",
+          "actions": [
+            "Auto_Reclass + Annotate"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Mixed",
+          "actions": [
+            "Split_Phasing_vs_Real",
+            "Route_Real_Portion"
+          ],
+          "hitl": null,
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": []
+    },
+    "6007": {
+      "id": 6007,
+      "name": "Allocation Dispute",
+      "category": "Variance Explanation & Insight",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "The cost centre is up in arms about a variance driven entirely by a corporate allocation they don't control. Before anyone's judged on it, I separate what they own from what was pushed down to them.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Allocation Dispute pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Allocation_Split",
+      "featureSlug": "allocation-split",
+      "conceptualSQL": "-- sample trigger for Allocation_Split\nSELECT * FROM source WHERE signal = 'Allocation_Split'",
+      "originalDAG": [
+        "Split_Controllable_vs_Allocated",
+        "Attribute_Allocation_Source",
+        "Restate_On_Controllable",
+        "Notify_Both_Owners"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Fully_Controllable",
+          "actions": [
+            "Route_To_Cost_Centre"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Allocation_Driven",
+          "actions": [
+            "Restate_Controllable_View",
+            "Redirect_To_Allocation_Owner"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Disputed_Split",
+          "actions": [
+            "Escalate_FP&A_Arbitration"
+          ],
+          "hitl": "FP&A lead arbitrates allocation",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "FP&A lead arbitrates allocation"
+      ]
+    },
+    "7000": {
+      "id": 7000,
+      "name": "Idle Balance Sweep Miss",
+      "category": "Liquidity & Cash Efficiency",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "€4M sat in a non-interest current account over the weekend while another entity drew on an overdraft. We paid to borrow what we already had — sweep the idle balance before it costs us on both sides.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Idle Balance Sweep Miss pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Idle_Balance",
+      "featureSlug": "idle-balance",
+      "conceptualSQL": "-- sample trigger for Idle_Balance\nSELECT * FROM source WHERE signal = 'Idle_Balance'",
+      "originalDAG": [
+        "Scan_Account_Balances",
+        "Detect_Idle_Above_Target",
+        "Compute_Sweep",
+        "Execute_Cash_Sweep"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Balances_At_Target",
+          "actions": [
+            "No_Action"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Idle AND Auto_Sweep_Eligible",
+          "actions": [
+            "Auto_Sweep_To_Concentration"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Idle AND Restricted_Account",
+          "actions": [
+            "Propose_Manual_Transfer",
+            "Notify_Cash_Manager"
+          ],
+          "hitl": "Cash manager approves transfer",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Cash manager approves transfer"
+      ]
+    },
+    "7001": {
+      "id": 7001,
+      "name": "Cash-Forecast Variance",
+      "category": "Liquidity & Cash Efficiency",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "Actual cash came in €3M under the 5-day forecast — a major customer paid late and nobody flagged it. If the forecast is this wrong we could walk into a funding gap blind.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Cash-Forecast Variance pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "CashForecast_Miss",
+      "featureSlug": "cashforecast-miss",
+      "conceptualSQL": "-- sample trigger for CashForecast_Miss\nSELECT * FROM source WHERE signal = 'CashForecast_Miss'",
+      "originalDAG": [
+        "Compare_Actual_vs_Forecast_Cash",
+        "Detect_Material_Miss",
+        "Trace_Driver",
+        "Update_Liquidity_View"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Within_Tolerance",
+          "actions": [
+            "No_Action"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Miss AND Timing",
+          "actions": [
+            "Reforecast_Short_Term",
+            "Notify_Cash_Manager"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Miss AND Funding_Risk",
+          "actions": [
+            "Trigger_Contingency_Funding",
+            "Escalate_Treasurer"
+          ],
+          "hitl": "Treasurer approves contingency draw",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Treasurer approves contingency draw"
+      ]
+    },
+    "7002": {
+      "id": 7002,
+      "name": "Trapped Cash",
+      "category": "Liquidity & Cash Efficiency",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "We keep counting the Brazil balance as available, but repatriation rules mean we can't actually move it without a haircut. Trapped cash on the dashboard is a liquidity illusion — I ring-fence it.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Trapped Cash pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Trapped_Cash",
+      "featureSlug": "trapped-cash",
+      "conceptualSQL": "-- sample trigger for Trapped_Cash\nSELECT * FROM source WHERE signal = 'Trapped_Cash'",
+      "originalDAG": [
+        "Classify_Cash_By_Availability",
+        "Detect_Restrictions",
+        "Ring_Fence_Trapped",
+        "Restate_Available_Liquidity"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Fully_Available",
+          "actions": [
+            "Include_In_Liquidity"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Restricted",
+          "actions": [
+            "Exclude_From_Available",
+            "Flag_Repatriation_Cost"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Repatriation_Opportunity",
+          "actions": [
+            "Propose_Upstream_Plan",
+            "Escalate_Treasury"
+          ],
+          "hitl": "Treasurer approves repatriation",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Treasurer approves repatriation"
+      ]
+    },
+    "7003": {
+      "id": 7003,
+      "name": "Duplicate / Fat-Finger Payment",
+      "category": "Liquidity & Cash Efficiency",
+      "priority": "Critical",
+      "priorityRank": 0,
+      "mentalModel": "A €500k payment matches one released two hours ago — same beneficiary, same amount. A duplicate wire is near-impossible to claw back, so I hold it and verify before it ever leaves the building.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Duplicate / Fat-Finger Payment pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Duplicate_Wire",
+      "featureSlug": "duplicate-wire",
+      "conceptualSQL": "-- sample trigger for Duplicate_Wire\nSELECT * FROM source WHERE signal = 'Duplicate_Wire'",
+      "originalDAG": [
+        "Fingerprint_Payment(beneficiary+amount+ref)",
+        "Match_Against_Recent_Releases",
+        "Hold_Suspected_Duplicate",
+        "Route_For_Verification"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF No_Match",
+          "actions": [
+            "Auto_Release_Payment"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Exact_Duplicate",
+          "actions": [
+            "Block_Payment",
+            "Alert_Payments_Team"
+          ],
+          "hitl": "Cash manager confirms not duplicate",
+          "tier": "escalation",
+          "escLevel": 1
+        },
+        {
+          "condition": "ELSE IF Fuzzy_Match",
+          "actions": [
+            "Hold_For_Review",
+            "Attach_Candidate_Pair"
+          ],
+          "hitl": null,
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Cash manager confirms not duplicate"
+      ]
+    },
+    "7004": {
+      "id": 7004,
+      "name": "FX Exposure Drift",
+      "category": "Financial Risk & Covenant",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "Net USD exposure has drifted 20% past the hedge-policy band as receivables piled up. Unhedged drift is just a P&L surprise waiting for the next rate move — bring it back inside the band.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the FX Exposure Drift pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "FX_Drift",
+      "featureSlug": "fx-drift",
+      "conceptualSQL": "-- sample trigger for FX_Drift\nSELECT * FROM source WHERE signal = 'FX_Drift'",
+      "originalDAG": [
+        "Aggregate_Net_FX_Exposure",
+        "Compare_To_Hedge_Policy",
+        "Detect_Band_Breach",
+        "Propose_Hedge"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Within_Policy_Band",
+          "actions": [
+            "No_Action"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Breach AND Standard_Instrument",
+          "actions": [
+            "Propose_Forward_Hedge",
+            "Notify_Risk_Analyst"
+          ],
+          "hitl": "Treasury risk approves hedge",
+          "tier": "escalation",
+          "escLevel": 1
+        },
+        {
+          "condition": "ELSE IF Large_Breach",
+          "actions": [
+            "Escalate_Treasurer",
+            "Model_Hedge_Options"
+          ],
+          "hitl": null,
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Treasury risk approves hedge"
+      ]
+    },
+    "7005": {
+      "id": 7005,
+      "name": "Covenant Early-Warning",
+      "category": "Financial Risk & Covenant",
+      "priority": "Critical",
+      "priorityRank": 0,
+      "mentalModel": "Projected leverage is creeping toward the 3.0x covenant with two months to the test date. I flag it now, while there's still room to act — discovering a breach on the test date is discovering it too late.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Covenant Early-Warning pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Covenant_Proximity",
+      "featureSlug": "covenant-proximity",
+      "conceptualSQL": "-- sample trigger for Covenant_Proximity\nSELECT * FROM source WHERE signal = 'Covenant_Proximity'",
+      "originalDAG": [
+        "Project_Covenant_Ratios",
+        "Compare_To_Thresholds",
+        "Detect_Proximity",
+        "Alert_With_Runway"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Ample_Headroom",
+          "actions": [
+            "No_Action"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Proximity < buffer",
+          "actions": [
+            "Model_Mitigations",
+            "Notify_Treasurer"
+          ],
+          "hitl": "Treasurer reviews covenant plan",
+          "tier": "escalation",
+          "escLevel": 1
+        },
+        {
+          "condition": "ELSE IF Breach_Projected",
+          "actions": [
+            "Escalate_CFO",
+            "Prepare_Waiver_Case"
+          ],
+          "hitl": null,
+          "tier": "escalation",
+          "escLevel": 2
+        }
+      ],
+      "hitlGates": [
+        "Treasurer reviews covenant plan"
+      ]
+    },
+    "7006": {
+      "id": 7006,
+      "name": "Counterparty Concentration",
+      "category": "Financial Risk & Covenant",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "We're holding more with a single bank than policy allows — and its rating just went on negative watch. Concentration is fine right up until the counterparty isn't, so I rebalance before the headline.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Counterparty Concentration pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Counterparty_Concentration",
+      "featureSlug": "counterparty-concentration",
+      "conceptualSQL": "-- sample trigger for Counterparty_Concentration\nSELECT * FROM source WHERE signal = 'Counterparty_Concentration'",
+      "originalDAG": [
+        "Aggregate_Exposure_By_Counterparty",
+        "Compare_To_Limits",
+        "Overlay_Credit_Signals",
+        "Propose_Rebalance"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Within_Limits",
+          "actions": [
+            "No_Action"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Over_Limit",
+          "actions": [
+            "Propose_Diversification",
+            "Notify_Risk_Analyst"
+          ],
+          "hitl": "Treasury risk approves reallocation",
+          "tier": "escalation",
+          "escLevel": 1
+        },
+        {
+          "condition": "ELSE IF Rating_Downgrade",
+          "actions": [
+            "Reduce_Exposure",
+            "Escalate_Treasurer"
+          ],
+          "hitl": null,
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Treasury risk approves reallocation"
+      ]
+    },
+    "7007": {
+      "id": 7007,
+      "name": "Interest-Rate Reset Surprise",
+      "category": "Financial Risk & Covenant",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "A large floating-rate facility resets next week into a higher-rate environment, and the forecast still uses the old coupon. The reset will quietly blow the interest budget unless we price it in now.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Interest-Rate Reset Surprise pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Rate_Reset",
+      "featureSlug": "rate-reset",
+      "conceptualSQL": "-- sample trigger for Rate_Reset\nSELECT * FROM source WHERE signal = 'Rate_Reset'",
+      "originalDAG": [
+        "Scan_Upcoming_Resets",
+        "Reprice_At_Forward_Curve",
+        "Compare_To_Budget",
+        "Update_Interest_Forecast"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Reset_Immaterial",
+          "actions": [
+            "Auto_Update_Forecast"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Material_Increase",
+          "actions": [
+            "Flag_Budget_Impact",
+            "Notify_Risk_Analyst"
+          ],
+          "hitl": "Treasury risk reviews hedge option",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Treasury risk reviews hedge option"
+      ]
+    },
+    "8000": {
+      "id": 8000,
+      "name": "Filing-Deadline Slip",
+      "category": "Compliance & Filing Integrity",
+      "priority": "Critical",
+      "priorityRank": 0,
+      "mentalModel": "The VAT return is due in three days and three entities still haven't closed. A missed filing is an automatic penalty plus interest — I chase the stragglers now, not on day four when it's already a fine.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Filing-Deadline Slip pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Filing_Deadline",
+      "featureSlug": "filing-deadline",
+      "conceptualSQL": "-- sample trigger for Filing_Deadline\nSELECT * FROM source WHERE signal = 'Filing_Deadline'",
+      "originalDAG": [
+        "Track_Return_Calendar",
+        "Detect_At_Risk_Filings",
+        "Chase_Owners",
+        "Escalate_If_Stalled"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF All_On_Track",
+          "actions": [
+            "Auto_Confirm_Ready"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF At_Risk < SLA",
+          "actions": [
+            "Auto_Remind_Owner"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Past_Internal_SLA",
+          "actions": [
+            "Escalate_Tax_Manager",
+            "Prepare_Extension_If_Available"
+          ],
+          "hitl": "Tax manager approves extension/priority",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Tax manager approves extension/priority"
+      ]
+    },
+    "8001": {
+      "id": 8001,
+      "name": "Return-to-Ledger Mismatch",
+      "category": "Compliance & Filing Integrity",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "The output tax on the draft return is €90k off the GL control account. File that and you've either overpaid or handed an auditor a thread to pull — I reconcile the delta before anything is submitted.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Return-to-Ledger Mismatch pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "ReturnLedger_Delta",
+      "featureSlug": "returnledger-delta",
+      "conceptualSQL": "-- sample trigger for ReturnLedger_Delta\nSELECT * FROM source WHERE signal = 'ReturnLedger_Delta'",
+      "originalDAG": [
+        "Compare_Return_To_GL",
+        "Compute_Delta",
+        "Trace_Difference",
+        "Reconcile_Before_Filing"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Delta = 0",
+          "actions": [
+            "Auto_Proceed_To_File"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Delta_Explained",
+          "actions": [
+            "Document_Reconciliation",
+            "Proceed"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Delta_Unexplained",
+          "actions": [
+            "Hold_Filing",
+            "Escalate_Tax_Manager"
+          ],
+          "hitl": "Tax manager approves adjustment",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Tax manager approves adjustment"
+      ]
+    },
+    "8002": {
+      "id": 8002,
+      "name": "Credit-Note Timing Gap",
+      "category": "Compliance & Filing Integrity",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "A big credit note landed after the period cut-off but relates to in-period sales. Claim it in the wrong period and the reclaim gets denied — I place it where the underlying transaction lives.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Credit-Note Timing Gap pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "CreditNote_Period",
+      "featureSlug": "creditnote-period",
+      "conceptualSQL": "-- sample trigger for CreditNote_Period\nSELECT * FROM source WHERE signal = 'CreditNote_Period'",
+      "originalDAG": [
+        "Match_CreditNote_To_Sale",
+        "Determine_Correct_Period",
+        "Apply_In_Right_Return",
+        "Document_Basis"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Same_Period",
+          "actions": [
+            "Auto_Apply"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Cross_Period_Clear",
+          "actions": [
+            "Assign_To_Original_Period",
+            "Adjust_Return"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Ambiguous",
+          "actions": [
+            "Route_To_Tax_Specialist"
+          ],
+          "hitl": "Tax specialist confirms period",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Tax specialist confirms period"
+      ]
+    },
+    "8003": {
+      "id": 8003,
+      "name": "e-Invoicing Clearance Reject",
+      "category": "Compliance & Filing Integrity",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "The authority's real-time clearance platform bounced 40 invoices on a format rule. Until they're fixed and re-cleared, those sales can't legally ship — this is a today problem, not a month-end one.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the e-Invoicing Clearance Reject pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Clearance_Reject",
+      "featureSlug": "clearance-reject",
+      "conceptualSQL": "-- sample trigger for Clearance_Reject\nSELECT * FROM source WHERE signal = 'Clearance_Reject'",
+      "originalDAG": [
+        "Ingest_Clearance_Responses",
+        "Detect_Rejections",
+        "Diagnose_Format_Error",
+        "Auto_Correct_And_Resubmit"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Cleared",
+          "actions": [
+            "Release_Invoice"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Known_Format_Error",
+          "actions": [
+            "Auto_Fix + Resubmit"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Unknown_Reject",
+          "actions": [
+            "Hold_Shipment",
+            "Escalate_Tax_Specialist"
+          ],
+          "hitl": "Tax specialist resolves clearance rule",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Tax specialist resolves clearance rule"
+      ]
+    },
+    "8004": {
+      "id": 8004,
+      "name": "Reverse-Charge Miscode",
+      "category": "Determination & Position",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "This cross-border service should be reverse-charged but it's coded standard-rated. Wrong mechanism means a wrong return on both sides of the border — I catch it at determination, not in an audit.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Reverse-Charge Miscode pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "ReverseCharge_Flag",
+      "featureSlug": "reversecharge-flag",
+      "conceptualSQL": "-- sample trigger for ReverseCharge_Flag\nSELECT * FROM source WHERE signal = 'ReverseCharge_Flag'",
+      "originalDAG": [
+        "Read_Transaction_Attributes",
+        "Determine_Correct_Mechanism",
+        "Detect_Miscode",
+        "Correct_Tax_Treatment"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Treatment_Correct",
+          "actions": [
+            "Auto_Continue"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Clear_Miscode",
+          "actions": [
+            "Auto_Reclassify + Log"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Complex_Cross_Border",
+          "actions": [
+            "Route_To_Tax_Specialist"
+          ],
+          "hitl": "Tax specialist confirms treatment",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Tax specialist confirms treatment"
+      ]
+    },
+    "8005": {
+      "id": 8005,
+      "name": "Nexus Threshold Breach",
+      "category": "Determination & Position",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "Sales into this state just crossed the economic-nexus threshold and we're not registered there. Every day unregistered is tax we should be collecting and will end up paying out of margin — register before it compounds.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Nexus Threshold Breach pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Nexus_Threshold",
+      "featureSlug": "nexus-threshold",
+      "conceptualSQL": "-- sample trigger for Nexus_Threshold\nSELECT * FROM source WHERE signal = 'Nexus_Threshold'",
+      "originalDAG": [
+        "Track_Sales_By_Jurisdiction",
+        "Compare_To_Nexus_Thresholds",
+        "Detect_Breach",
+        "Initiate_Registration"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Below_Threshold",
+          "actions": [
+            "Monitor"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Breach_Recent",
+          "actions": [
+            "Flag_Registration_Need",
+            "Notify_Tax_Manager"
+          ],
+          "hitl": "Tax manager approves registration",
+          "tier": "escalation",
+          "escLevel": 1
+        },
+        {
+          "condition": "ELSE IF Breach_Aged",
+          "actions": [
+            "Quantify_Back_Liability",
+            "Escalate_Tax_Director"
+          ],
+          "hitl": null,
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Tax manager approves registration"
+      ]
+    },
+    "8006": {
+      "id": 8006,
+      "name": "Exemption-Certificate Gap",
+      "category": "Determination & Position",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "We're treating this customer as exempt, but the certificate on file expired last quarter. No valid certificate means no exemption — the assessment lands on us, so I chase the cert before we invoice again.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Exemption-Certificate Gap pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Cert_Expiry",
+      "featureSlug": "cert-expiry",
+      "conceptualSQL": "-- sample trigger for Cert_Expiry\nSELECT * FROM source WHERE signal = 'Cert_Expiry'",
+      "originalDAG": [
+        "Check_Certificate_Validity",
+        "Detect_Expired_Or_Missing",
+        "Request_Renewal",
+        "Suspend_Exemption_If_Unresolved"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Valid_Certificate",
+          "actions": [
+            "Apply_Exemption"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Expired AND Grace",
+          "actions": [
+            "Auto_Request_Renewal"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Missing AND Invoicing",
+          "actions": [
+            "Charge_Tax_Provisionally",
+            "Notify_Tax_Analyst"
+          ],
+          "hitl": "Tax analyst confirms exemption status",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Tax analyst confirms exemption status"
+      ]
+    },
+    "8007": {
+      "id": 8007,
+      "name": "Rate-Change Lag",
+      "category": "Determination & Position",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "The jurisdiction changed the rate effective the 1st and our tax engine still has the old one. Every invoice since is wrong by the delta — I refresh the rate and sweep the mispriced ones before the return is built.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Rate-Change Lag pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Rate_Staleness",
+      "featureSlug": "rate-staleness",
+      "conceptualSQL": "-- sample trigger for Rate_Staleness\nSELECT * FROM source WHERE signal = 'Rate_Staleness'",
+      "originalDAG": [
+        "Monitor_Statutory_Rate_Changes",
+        "Compare_To_Engine_Config",
+        "Detect_Stale_Rate",
+        "Update_And_Restate"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Rate_Current",
+          "actions": [
+            "No_Action"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Stale AND No_Invoices_Yet",
+          "actions": [
+            "Auto_Update_Rate"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Stale AND Invoices_Issued",
+          "actions": [
+            "Update_Rate",
+            "Flag_Mispriced_For_Correction"
+          ],
+          "hitl": "Tax analyst approves corrections",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Tax analyst approves corrections"
+      ]
+    },
+    "9000": {
+      "id": 9000,
+      "name": "Duplicate Receipt Submission",
+      "category": "Expense Integrity & Fraud",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "The same restaurant receipt shows up on two reports a month apart — once on the card feed, once as a manual claim. Pay both and we've bought that dinner twice. I fingerprint the receipt, not the report.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Duplicate Receipt Submission pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Duplicate_Claim",
+      "featureSlug": "duplicate-claim",
+      "conceptualSQL": "-- sample trigger for Duplicate_Claim\nSELECT * FROM source WHERE signal = 'Duplicate_Claim'",
+      "originalDAG": [
+        "Fingerprint_Receipt(merchant+amount+date)",
+        "Match_Across_Reports_And_Card",
+        "Flag_Duplicate",
+        "Block_Second_Claim"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF No_Match",
+          "actions": [
+            "Auto_Approve_Line"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Exact_Duplicate",
+          "actions": [
+            "Auto_Reject_Duplicate",
+            "Notify_Claimant"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Card_vs_Manual_Overlap",
+          "actions": [
+            "Hold_For_Review",
+            "Route_To_Auditor"
+          ],
+          "hitl": "Expense auditor confirms duplicate",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Expense auditor confirms duplicate"
+      ]
+    },
+    "9001": {
+      "id": 9001,
+      "name": "Split-to-Dodge-Limit",
+      "category": "Expense Integrity & Fraud",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "A €300 dinner split into two €150 claims to stay under the receipt-required line. The split itself is the tell — I reassemble the pieces and apply the rule to the whole.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Split-to-Dodge-Limit pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Claim_Split",
+      "featureSlug": "claim-split",
+      "conceptualSQL": "-- sample trigger for Claim_Split\nSELECT * FROM source WHERE signal = 'Claim_Split'",
+      "originalDAG": [
+        "Aggregate_Related_Lines(merchant+day)",
+        "Compare_To_Thresholds",
+        "Detect_Sub_Limit_Split",
+        "Re_Apply_Rule"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF No_Splitting",
+          "actions": [
+            "Auto_Continue"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Split_Detected",
+          "actions": [
+            "Merge_And_Require_Receipt",
+            "Flag_For_Review"
+          ],
+          "hitl": "Expense auditor reviews split",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Expense auditor reviews split"
+      ]
+    },
+    "9002": {
+      "id": 9002,
+      "name": "Weekend / Personal Blur",
+      "category": "Expense Integrity & Fraud",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "The hotel spans Saturday and Sunday with no meeting on the calendar. Personal days dressed up as business travel — I carve out the private portion before reimbursing it.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Weekend / Personal Blur pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Personal_Blur",
+      "featureSlug": "personal-blur",
+      "conceptualSQL": "-- sample trigger for Personal_Blur\nSELECT * FROM source WHERE signal = 'Personal_Blur'",
+      "originalDAG": [
+        "Cross_Ref_Dates_To_Calendar",
+        "Detect_Non_Business_Days",
+        "Split_Business_vs_Personal",
+        "Reimburse_Business_Only"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF All_Business",
+          "actions": [
+            "Auto_Approve"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Clear_Personal_Days",
+          "actions": [
+            "Auto_Deduct_Personal",
+            "Notify_Claimant"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Disputed",
+          "actions": [
+            "Route_To_Auditor"
+          ],
+          "hitl": "Expense auditor rules on split",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Expense auditor rules on split"
+      ]
+    },
+    "9003": {
+      "id": 9003,
+      "name": "Mileage / Per-Diem Inflation",
+      "category": "Expense Integrity & Fraud",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "Claimed mileage is 40% over the map distance for that route, and it's a recurring habit for this claimant. Inflated distance every trip is small money that adds up — I check it against the route, not the honour system.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Mileage / Per-Diem Inflation pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Mileage_Inflation",
+      "featureSlug": "mileage-inflation",
+      "conceptualSQL": "-- sample trigger for Mileage_Inflation\nSELECT * FROM source WHERE signal = 'Mileage_Inflation'",
+      "originalDAG": [
+        "Compute_Route_Distance",
+        "Compare_To_Claimed",
+        "Detect_Inflation",
+        "Cap_At_Standard"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Within_Tolerance",
+          "actions": [
+            "Auto_Approve"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Over AND One_Off",
+          "actions": [
+            "Auto_Cap + Notify"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Repeat_Inflator",
+          "actions": [
+            "Flag_Pattern",
+            "Route_To_Auditor"
+          ],
+          "hitl": "Expense auditor reviews claimant pattern",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Expense auditor reviews claimant pattern"
+      ]
+    },
+    "9004": {
+      "id": 9004,
+      "name": "Out-of-Policy Class/Rate",
+      "category": "Policy & Flow",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "Business-class flight on a route policy caps at economy, no exception on file. It's not fraud — but it clears silently unless the rule actually bites. I hold it for the exception it needs.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Out-of-Policy Class/Rate pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Policy_Breach",
+      "featureSlug": "policy-breach",
+      "conceptualSQL": "-- sample trigger for Policy_Breach\nSELECT * FROM source WHERE signal = 'Policy_Breach'",
+      "originalDAG": [
+        "Evaluate_Against_Policy",
+        "Detect_Out_Of_Policy",
+        "Check_Exception_On_File",
+        "Route_By_Rule"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF In_Policy",
+          "actions": [
+            "Auto_Approve"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Breach AND Exception_Exists",
+          "actions": [
+            "Auto_Approve + Log_Exception"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Breach AND No_Exception",
+          "actions": [
+            "Hold_For_Approval",
+            "Notify_Manager"
+          ],
+          "hitl": "Cost-centre manager approves exception",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Cost-centre manager approves exception"
+      ]
+    },
+    "9005": {
+      "id": 9005,
+      "name": "Missing-Receipt Loop",
+      "category": "Policy & Flow",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "Third reminder and the receipt still isn't attached; the report just ages while the claimant ignores it. I auto-remind, then auto-hold — a claim can't sit in limbo forever waiting on one attachment.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Missing-Receipt Loop pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Missing_Receipt",
+      "featureSlug": "missing-receipt",
+      "conceptualSQL": "-- sample trigger for Missing_Receipt\nSELECT * FROM source WHERE signal = 'Missing_Receipt'",
+      "originalDAG": [
+        "Detect_Missing_Receipt",
+        "Auto_Remind_Claimant",
+        "Escalate_On_Timeout",
+        "Hold_Until_Resolved"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Receipt_Present",
+          "actions": [
+            "Auto_Continue"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Missing < window",
+          "actions": [
+            "Auto_Remind"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Missing > window",
+          "actions": [
+            "Hold_Reimbursement",
+            "Notify_Manager"
+          ],
+          "hitl": "Manager approves receipt waiver",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Manager approves receipt waiver"
+      ]
+    },
+    "9006": {
+      "id": 9006,
+      "name": "Late Submission Beyond Window",
+      "category": "Policy & Flow",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "This expense is four months old — past the submission window and the VAT-reclaim deadline. Late claims quietly cost us the tax recovery, so I flag the reclaim loss before it's just accepted.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Late Submission Beyond Window pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Late_Submission",
+      "featureSlug": "late-submission",
+      "conceptualSQL": "-- sample trigger for Late_Submission\nSELECT * FROM source WHERE signal = 'Late_Submission'",
+      "originalDAG": [
+        "Check_Expense_Date_vs_Window",
+        "Detect_Late_Submission",
+        "Quantify_Reclaim_Loss",
+        "Route_By_Policy"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Within_Window",
+          "actions": [
+            "Auto_Continue"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Late AND Within_Grace",
+          "actions": [
+            "Approve + Flag_No_Reclaim"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Beyond_Grace",
+          "actions": [
+            "Route_To_Manager",
+            "Attach_Policy"
+          ],
+          "hitl": "Manager approves late claim",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Manager approves late claim"
+      ]
+    },
+    "9007": {
+      "id": 9007,
+      "name": "Manager Rubber-Stamp",
+      "category": "Policy & Flow",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "This approver clears every report in under three seconds flat — flags and all. A rubber-stamp isn't a control; I re-route the flagged reports somewhere they'll actually be read.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Manager Rubber-Stamp pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "RubberStamp_Approval",
+      "featureSlug": "rubberstamp-approval",
+      "conceptualSQL": "-- sample trigger for RubberStamp_Approval\nSELECT * FROM source WHERE signal = 'RubberStamp_Approval'",
+      "originalDAG": [
+        "Measure_Approval_Behaviour",
+        "Detect_RubberStamp_Pattern",
+        "Re_Route_Flagged_Reports",
+        "Notify_Controls"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Approver_Reviews",
+          "actions": [
+            "Auto_Continue"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF RubberStamp AND No_Flags",
+          "actions": [
+            "Allow + Monitor"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF RubberStamp AND Flagged_Items",
+          "actions": [
+            "Redirect_To_Independent_Review",
+            "Escalate_Controls"
+          ],
+          "hitl": "Controls reviews approval quality",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Controls reviews approval quality"
+      ]
+    },
+    "10000": {
+      "id": 10000,
+      "name": "Journal-Entry Anomaly",
+      "category": "Control-Failure Signals",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "A manual top-side journal, round number, posted on the last day of the quarter by someone who never posts journals. Every red flag for earnings management sitting on one line — I stop and ask before it hits the books.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Journal-Entry Anomaly pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "JE_Anomaly",
+      "featureSlug": "je-anomaly",
+      "conceptualSQL": "-- sample trigger for JE_Anomaly\nSELECT * FROM source WHERE signal = 'JE_Anomaly'",
+      "originalDAG": [
+        "Scan_Manual_Journals",
+        "Score_Anomaly(round+timing+poster)",
+        "Attach_Context",
+        "Route_High_Risk"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Score_Low",
+          "actions": [
+            "Auto_Pass"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Elevated",
+          "actions": [
+            "Request_Support",
+            "Notify_Controls_Analyst"
+          ],
+          "hitl": "Controls analyst reviews journal",
+          "tier": "escalation",
+          "escLevel": 1
+        },
+        {
+          "condition": "ELSE IF High_Risk",
+          "actions": [
+            "Hold_Posting",
+            "Escalate_Controller"
+          ],
+          "hitl": null,
+          "tier": "escalation",
+          "escLevel": 2
+        }
+      ],
+      "hitlGates": [
+        "Controls analyst reviews journal"
+      ]
+    },
+    "10001": {
+      "id": 10001,
+      "name": "Control-Owner Gap",
+      "category": "Control-Failure Signals",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "A key control's owner left three weeks ago and nobody's been reassigned. An unowned control isn't operating — it's just a paragraph in a binder. I reassign it before the next test proves it dead.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Control-Owner Gap pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Owner_Gap",
+      "featureSlug": "owner-gap",
+      "conceptualSQL": "-- sample trigger for Owner_Gap\nSELECT * FROM source WHERE signal = 'Owner_Gap'",
+      "originalDAG": [
+        "Map_Controls_To_Owners",
+        "Detect_Vacant_Ownership",
+        "Propose_Reassignment",
+        "Notify_Control_Manager"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Owner_Active",
+          "actions": [
+            "No_Action"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Vacant < grace",
+          "actions": [
+            "Auto_Nudge_Manager"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Vacant > grace",
+          "actions": [
+            "Flag_Control_At_Risk",
+            "Escalate_Controls_Lead"
+          ],
+          "hitl": "Controls lead reassigns owner",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Controls lead reassigns owner"
+      ]
+    },
+    "10002": {
+      "id": 10002,
+      "name": "Master-Data Change Without Approval",
+      "category": "Control-Failure Signals",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "A vendor's bank detail changed outside the approval workflow — and then a payment went to it. Change-without-approval followed by a payment is the exact shape of invoice fraud; I freeze and investigate.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Master-Data Change Without Approval pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Unapproved_Change",
+      "featureSlug": "unapproved-change",
+      "conceptualSQL": "-- sample trigger for Unapproved_Change\nSELECT * FROM source WHERE signal = 'Unapproved_Change'",
+      "originalDAG": [
+        "Monitor_Master_Data_Changes",
+        "Match_To_Approval_Records",
+        "Detect_Unapproved",
+        "Correlate_With_Payments"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Change_Approved",
+          "actions": [
+            "Auto_Pass"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Unapproved AND No_Payment",
+          "actions": [
+            "Flag_For_Review",
+            "Notify_Controls"
+          ],
+          "hitl": "Controls analyst validates change",
+          "tier": "escalation",
+          "escLevel": 1
+        },
+        {
+          "condition": "ELSE IF Unapproved AND Payment_Made",
+          "actions": [
+            "Freeze_Vendor",
+            "Open_Investigation",
+            "Alert_Security"
+          ],
+          "hitl": "Controller confirms suspected fraud",
+          "tier": "escalation",
+          "escLevel": 2
+        }
+      ],
+      "hitlGates": [
+        "Controls analyst validates change",
+        "Controller confirms suspected fraud"
+      ]
+    },
+    "10003": {
+      "id": 10003,
+      "name": "After-Hours Privileged Access",
+      "category": "Control-Failure Signals",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "A privileged admin logged into the finance system at 3am from a new location and touched payment config. Maybe it's a legitimate fix — but 'explain or freeze' is the only safe default for privilege at that hour.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the After-Hours Privileged Access pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "OffHours_Privilege",
+      "featureSlug": "offhours-privilege",
+      "conceptualSQL": "-- sample trigger for OffHours_Privilege\nSELECT * FROM source WHERE signal = 'OffHours_Privilege'",
+      "originalDAG": [
+        "Monitor_Privileged_Sessions",
+        "Detect_Anomalous_Access(time+geo+action)",
+        "Request_Justification",
+        "Contain_If_Unexplained"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Normal_Pattern",
+          "actions": [
+            "Auto_Pass"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Anomalous AND Justified",
+          "actions": [
+            "Log + Clear"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Anomalous AND Unexplained",
+          "actions": [
+            "Suspend_Session",
+            "Escalate_Security"
+          ],
+          "hitl": "Security approves account suspension",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Security approves account suspension"
+      ]
+    },
+    "10004": {
+      "id": 10004,
+      "name": "Toxic SoD Combination",
+      "category": "Segregation of Duties & Access",
+      "priority": "Critical",
+      "priorityRank": 0,
+      "mentalModel": "This user can both create a vendor and release a payment. That single combination is how invoice fraud happens — I break the conflict before it's exploited, not while writing the post-mortem.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Toxic SoD Combination pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Toxic_SoD",
+      "featureSlug": "toxic-sod",
+      "conceptualSQL": "-- sample trigger for Toxic_SoD\nSELECT * FROM source WHERE signal = 'Toxic_SoD'",
+      "originalDAG": [
+        "Analyze_User_Entitlements",
+        "Detect_Toxic_Combination",
+        "Propose_Mitigation",
+        "Enforce_Separation"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF No_Conflict",
+          "actions": [
+            "Auto_Pass"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Conflict AND Mitigating_Control",
+          "actions": [
+            "Log_Mitigation + Monitor"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Conflict AND Unmitigated",
+          "actions": [
+            "Remove_Conflicting_Access",
+            "Notify_Access_Owner"
+          ],
+          "hitl": "Access owner approves entitlement change",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Access owner approves entitlement change"
+      ]
+    },
+    "10005": {
+      "id": 10005,
+      "name": "Access-Creep After Role Change",
+      "category": "Segregation of Duties & Access",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "They moved from AP to Treasury six months ago but kept every AP entitlement on the way. Access nobody revoked just widens the blast radius — I strip the stale rights back to the current role.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Access-Creep After Role Change pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Access_Creep",
+      "featureSlug": "access-creep",
+      "conceptualSQL": "-- sample trigger for Access_Creep\nSELECT * FROM source WHERE signal = 'Access_Creep'",
+      "originalDAG": [
+        "Compare_Access_To_Current_Role",
+        "Detect_Residual_Entitlements",
+        "Propose_Revocation",
+        "Recertify_With_Manager"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Access_Matches_Role",
+          "actions": [
+            "No_Action"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Residual_Low_Risk",
+          "actions": [
+            "Auto_Revoke + Notify"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Residual_Sensitive",
+          "actions": [
+            "Route_To_Manager_Recert",
+            "Flag_SoD_Risk"
+          ],
+          "hitl": "Manager recertifies access",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Manager recertifies access"
+      ]
+    },
+    "10006": {
+      "id": 10006,
+      "name": "Dormant Privileged Account",
+      "category": "Segregation of Duties & Access",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "A super-user account hasn't logged in for 90 days but is still enabled. Dormant privilege is free real estate for an attacker — I disable it now and make someone re-justify it if it's really needed.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Dormant Privileged Account pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Dormant_Account",
+      "featureSlug": "dormant-account",
+      "conceptualSQL": "-- sample trigger for Dormant_Account\nSELECT * FROM source WHERE signal = 'Dormant_Account'",
+      "originalDAG": [
+        "Scan_Privileged_Accounts",
+        "Detect_Dormancy",
+        "Disable_Provisionally",
+        "Notify_Owner_To_Justify"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Recently_Active",
+          "actions": [
+            "No_Action"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Dormant AND Non_Critical",
+          "actions": [
+            "Auto_Disable + Notify"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Dormant AND Critical_System",
+          "actions": [
+            "Route_To_Access_Owner"
+          ],
+          "hitl": "Access owner confirms disable",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Access owner confirms disable"
+      ]
+    },
+    "10007": {
+      "id": 10007,
+      "name": "Emergency-Access Never Closed",
+      "category": "Segregation of Duties & Access",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "Firefighter access was granted for a go-live three weeks ago and never revoked. Temporary access that outlives its reason is just a standing hole in the wall — I close it and log what it did while open.",
+      "sample": true,
+      "sources": {
+        "sap": [
+          "(sample mapping — connect your system of record)"
+        ],
+        "oracle": [
+          "(sample mapping — connect your system of record)"
+        ]
+      },
+      "layer1_logicalMapping": "Sample logical mapping for the Emergency-Access Never Closed pattern.",
+      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer3_feature": "Firefighter_Open",
+      "featureSlug": "firefighter-open",
+      "conceptualSQL": "-- sample trigger for Firefighter_Open\nSELECT * FROM source WHERE signal = 'Firefighter_Open'",
+      "originalDAG": [
+        "Track_Emergency_Grants",
+        "Detect_Expired_Window",
+        "Review_Actions_Taken",
+        "Revoke_Access"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Within_Window",
+          "actions": [
+            "Monitor"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Expired AND Clean_Log",
+          "actions": [
+            "Auto_Revoke + Archive_Log"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Expired AND Suspicious_Actions",
+          "actions": [
+            "Revoke + Escalate_Controls"
+          ],
+          "hitl": "Controls reviews firefighter activity",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Controls reviews firefighter activity"
       ]
     }
   }
@@ -5786,9 +10461,11 @@ button{font-family:inherit;cursor:pointer}
     }, function (f) {
       var c = C();
       if (c.fnId !== f.id) { c.fnId = f.id; c.procId = null; c.roleIds = []; c.objIds = []; c.patternIds = []; c.blocks = {}; }
-      // auto-advance; if function has a single process, pre-select it and its full persona set
-      if (f.processes.length === 1) { c.procId = f.processes[0].id; selectAllPersonas(); }
-      state.step = f.processes.length === 1 ? 2 : 1;
+      // auto-advance; a single-process function pre-selects it — UNLESS it carries a
+      // value-chain map, where the SME must pick a built area from the taxonomy matrix.
+      var single = f.processes.length === 1 && !f.valueChain;
+      if (single) { c.procId = f.processes[0].id; selectAllPersonas(); }
+      state.step = single ? 2 : 1;
       redraw();
     });
     body.appendChild(grid);
@@ -5804,6 +10481,10 @@ button{font-family:inherit;cursor:pointer}
   function stepProcess(body) {
     var f = window.PIQ.fn(); if (!f) { state.step = 0; return redraw(); }
     var c = C();
+    // Functions that carry a value-chain map (O2C) present the full process
+    // taxonomy; only the built areas are navigable. Others use the card list.
+    if (f.valueChain) return stepProcessMatrix(body, f, c);
+
     body.appendChild(el("div", "st-q", "Which <b>process</b> inside " + esc(f.name) + "?"));
     body.appendChild(pickGrid(f.processes, function (p) {
       var on = c.procId === p.id;
@@ -5821,6 +10502,67 @@ button{font-family:inherit;cursor:pointer}
       body.appendChild(nextBar(p.roles.length + " persona" + (p.roles.length !== 1 ? "s" : "") + " mapped",
         "Continue → Personas", function () { state.step = 2; redraw(); }));
     }
+  }
+
+  /* Process taxonomy matrix — L1 value chain › L2 groups › L3 process areas ›
+     L4 sub-processes. Built areas (backed by a real pattern library) are clickable
+     and select their process; every other area is landscape context. */
+  function stepProcessMatrix(body, f, c) {
+    var vc = f.valueChain;
+    var live = f.status === "live";
+    body.appendChild(el("div", "st-q", "The <b>" + esc(f.name) + "</b> process taxonomy"));
+    body.appendChild(el("p", "st-hint",
+      "Your end-to-end value chain, L1 → L4. Highlighted areas are backed by " +
+      (live ? "the fully-built accelerator" : "a working sample library") +
+      " — pick one to compose it. The rest map the surrounding landscape."));
+
+    var chain = el("div", "vc");
+    chain.appendChild(el("div", "vc-l1", '<span class="vc-arrow">↔</span>' + esc(vc.name)));
+
+    var groups = el("div", "vc-groups");
+    vc.groups.forEach(function (g) {
+      var gEl = el("div", "vc-group tone-" + g.tone);
+      gEl.style.flex = g.areas.length;   // group header spans its process areas
+      gEl.appendChild(el("div", "vc-ghead",
+        esc(g.name) + (g.note ? ' <small>' + esc(g.note) + '</small>' : '')));
+      var areas = el("div", "vc-areas");
+      g.areas.forEach(function (a) {
+        var built = !!a.built;
+        var col = el("div", "vc-col" + (built ? " built" : "") +
+          (built && c.procId === a.procId ? " sel" : ""));
+        col.appendChild(el("div", "vc-area",
+          '<span class="vc-lvl">L3</span>' + esc(a.name) +
+          (built ? '<span class="vc-badge">' + (live ? "Built ✓" : "Sample ✓") + '</span>'
+                 : '<span class="vc-badge ctx">Roadmap</span>')));
+        var subs = el("div", "vc-subs");
+        (a.sub || []).forEach(function (s) {
+          subs.appendChild(el("div", "vc-sub", '<span class="vc-lvl">L4</span>' + esc(s)));
+        });
+        col.appendChild(subs);
+        if (built) col.onclick = function () { pickBuiltArea(a); };
+        areas.appendChild(col);
+      });
+      gEl.appendChild(areas);
+      groups.appendChild(gEl);
+    });
+    chain.appendChild(groups);
+    body.appendChild(chain);
+
+    var p = proc();
+    if (p) {
+      body.appendChild(hierarchy(f, p));
+      body.appendChild(nextBar('Selected: ' + p.name + ' · ' + p.roles.length +
+        " persona" + (p.roles.length !== 1 ? "s" : "") + " mapped",
+        "Continue → Personas", function () { state.step = 2; redraw(); }));
+    } else {
+      body.appendChild(nextBar("Pick a built area to compose it", "", null));
+    }
+  }
+
+  function pickBuiltArea(a) {
+    var c = C();
+    if (c.procId !== a.procId) { c.procId = a.procId; selectAllPersonas(); }
+    redraw();   // reveal the selected process's L1–L4 tree + Continue bar
   }
 
   /* L1–L4 process-hierarchy tree: Function › Process › Persona › Objective.

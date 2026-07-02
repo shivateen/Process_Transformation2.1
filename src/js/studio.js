@@ -212,9 +212,11 @@
     }, function (f) {
       var c = C();
       if (c.fnId !== f.id) { c.fnId = f.id; c.procId = null; c.roleIds = []; c.objIds = []; c.patternIds = []; c.blocks = {}; }
-      // auto-advance; if function has a single process, pre-select it and its full persona set
-      if (f.processes.length === 1) { c.procId = f.processes[0].id; selectAllPersonas(); }
-      state.step = f.processes.length === 1 ? 2 : 1;
+      // auto-advance; a single-process function pre-selects it — UNLESS it carries a
+      // value-chain map, where the SME must pick a built area from the taxonomy matrix.
+      var single = f.processes.length === 1 && !f.valueChain;
+      if (single) { c.procId = f.processes[0].id; selectAllPersonas(); }
+      state.step = single ? 2 : 1;
       redraw();
     });
     body.appendChild(grid);
@@ -230,6 +232,10 @@
   function stepProcess(body) {
     var f = window.PIQ.fn(); if (!f) { state.step = 0; return redraw(); }
     var c = C();
+    // Functions that carry a value-chain map (O2C) present the full process
+    // taxonomy; only the built areas are navigable. Others use the card list.
+    if (f.valueChain) return stepProcessMatrix(body, f, c);
+
     body.appendChild(el("div", "st-q", "Which <b>process</b> inside " + esc(f.name) + "?"));
     body.appendChild(pickGrid(f.processes, function (p) {
       var on = c.procId === p.id;
@@ -247,6 +253,67 @@
       body.appendChild(nextBar(p.roles.length + " persona" + (p.roles.length !== 1 ? "s" : "") + " mapped",
         "Continue → Personas", function () { state.step = 2; redraw(); }));
     }
+  }
+
+  /* Process taxonomy matrix — L1 value chain › L2 groups › L3 process areas ›
+     L4 sub-processes. Built areas (backed by a real pattern library) are clickable
+     and select their process; every other area is landscape context. */
+  function stepProcessMatrix(body, f, c) {
+    var vc = f.valueChain;
+    var live = f.status === "live";
+    body.appendChild(el("div", "st-q", "The <b>" + esc(f.name) + "</b> process taxonomy"));
+    body.appendChild(el("p", "st-hint",
+      "Your end-to-end value chain, L1 → L4. Highlighted areas are backed by " +
+      (live ? "the fully-built accelerator" : "a working sample library") +
+      " — pick one to compose it. The rest map the surrounding landscape."));
+
+    var chain = el("div", "vc");
+    chain.appendChild(el("div", "vc-l1", '<span class="vc-arrow">↔</span>' + esc(vc.name)));
+
+    var groups = el("div", "vc-groups");
+    vc.groups.forEach(function (g) {
+      var gEl = el("div", "vc-group tone-" + g.tone);
+      gEl.style.flex = g.areas.length;   // group header spans its process areas
+      gEl.appendChild(el("div", "vc-ghead",
+        esc(g.name) + (g.note ? ' <small>' + esc(g.note) + '</small>' : '')));
+      var areas = el("div", "vc-areas");
+      g.areas.forEach(function (a) {
+        var built = !!a.built;
+        var col = el("div", "vc-col" + (built ? " built" : "") +
+          (built && c.procId === a.procId ? " sel" : ""));
+        col.appendChild(el("div", "vc-area",
+          '<span class="vc-lvl">L3</span>' + esc(a.name) +
+          (built ? '<span class="vc-badge">' + (live ? "Built ✓" : "Sample ✓") + '</span>'
+                 : '<span class="vc-badge ctx">Roadmap</span>')));
+        var subs = el("div", "vc-subs");
+        (a.sub || []).forEach(function (s) {
+          subs.appendChild(el("div", "vc-sub", '<span class="vc-lvl">L4</span>' + esc(s)));
+        });
+        col.appendChild(subs);
+        if (built) col.onclick = function () { pickBuiltArea(a); };
+        areas.appendChild(col);
+      });
+      gEl.appendChild(areas);
+      groups.appendChild(gEl);
+    });
+    chain.appendChild(groups);
+    body.appendChild(chain);
+
+    var p = proc();
+    if (p) {
+      body.appendChild(hierarchy(f, p));
+      body.appendChild(nextBar('Selected: ' + p.name + ' · ' + p.roles.length +
+        " persona" + (p.roles.length !== 1 ? "s" : "") + " mapped",
+        "Continue → Personas", function () { state.step = 2; redraw(); }));
+    } else {
+      body.appendChild(nextBar("Pick a built area to compose it", "", null));
+    }
+  }
+
+  function pickBuiltArea(a) {
+    var c = C();
+    if (c.procId !== a.procId) { c.procId = a.procId; selectAllPersonas(); }
+    redraw();   // reveal the selected process's L1–L4 tree + Continue bar
   }
 
   /* L1–L4 process-hierarchy tree: Function › Process › Persona › Objective.
