@@ -250,6 +250,7 @@
     var p = proc();
     if (p) {
       body.appendChild(hierarchy(f, p));
+      body.appendChild(swimlane(f, p));
       body.appendChild(nextBar(p.roles.length + " persona" + (p.roles.length !== 1 ? "s" : "") + " mapped",
         "Continue → Personas", function () { state.step = 2; redraw(); }));
     }
@@ -302,6 +303,7 @@
     var p = proc();
     if (p) {
       body.appendChild(hierarchy(f, p));
+      body.appendChild(swimlane(f, p));
       body.appendChild(nextBar('Selected: ' + p.name + ' · ' + p.roles.length +
         " persona" + (p.roles.length !== 1 ? "s" : "") + " mapped",
         "Continue → Personas", function () { state.step = 2; redraw(); }));
@@ -314,6 +316,95 @@
     var c = C();
     if (c.procId !== a.procId) { c.procId = a.procId; selectAllPersonas(); }
     redraw();   // reveal the selected process's L1–L4 tree + Continue bar
+  }
+
+  /* ---- Process map: swimlanes by role across the cognitive spine ----
+     One lane per in-scope persona; columns are the Sense → Diagnose → Decide → Act
+     stages the accelerator runs. Each cell holds the action blocks that role's
+     patterns contribute in that stage, so the SME sees role presence across the
+     process (and where each role's work is straight-through vs approval-gated). */
+  var SWL_PHASES = [
+    { name: "Sense", sub: "observe" }, { name: "Diagnose", sub: "analyse" },
+    { name: "Decide", sub: "route" }, { name: "Act", sub: "execute" }
+  ];
+  var SWL_COLORS = ["#8e44ad", "#2980b9", "#16a085", "#d68910", "#c0392b", "#7c4dff", "#e0529c"];
+
+  // classify an action-block key into a cognitive stage (0..3), first match wins
+  function phaseOf(key) {
+    var t = " " + key.toLowerCase() + " ";
+    if (/read|pull|scan|monitor|track|fingerprint|ingest|watch|extract|checklist|cross_ref|parse|measure|_history/.test(t)) return 0;
+    if (/classif|score|detect|diagnos|match|decompose|test|determin|identif|assess|compar|comput|reconcile|trace|estimat|verif|evaluat|check|isolat|project|analyz|split|quantif|aggregat|overlay|_variance|age_/.test(t)) return 1;
+    if (/decide|route|propose|assign|tier|flag|prioriti|bundle|recommend|escalat/.test(t)) return 2;
+    return 3; // Act — post/clear/update/hold/notify/send/apply/… and anything else
+  }
+
+  // the in-scope pattern ids a single persona contributes
+  function rolePatternIds(r) {
+    var c = C(), out = [], seen = {};
+    (r.objectives || []).forEach(function (o) {
+      if (c.objIds.indexOf(o.id) < 0) return;
+      (o.patternIds || []).forEach(function (id) { if (!seen[id]) { seen[id] = 1; out.push(id); } });
+    });
+    return out;
+  }
+
+  function shortBlock(label) {
+    var s = String(label).split("(")[0].trim();
+    return s.length > 24 ? s.slice(0, 23) + "…" : s;
+  }
+
+  function swimlane(f, p) {
+    var roles = window.PIQ.roles();
+    var wrap = el("div", "swl-wrap");
+    if (!roles.length) return wrap;
+    wrap.appendChild(el("div", "st-subq",
+      "Process map <small>swimlanes by role · Sense → Diagnose → Decide → Act · presence across the flow</small>"));
+
+    var grid = el("div", "swl");
+    grid.appendChild(el("div", "swl-corner", "Role / Persona"));
+    SWL_PHASES.forEach(function (ph, idx) {
+      grid.appendChild(el("div", "swl-phase p" + idx,
+        '<span class="swl-pn">' + ph.name + '</span><span class="swl-ps">' + ph.sub + '</span>' +
+        (idx < 3 ? '<i class="swl-arr">→</i>' : '')));
+    });
+
+    roles.forEach(function (r, ri) {
+      var blocks = window.PIQ.collectBlocks(rolePatternIds(r));
+      var buckets = [[], [], [], []], seen = {};
+      blocks.forEach(function (b) {
+        var ph = phaseOf(b.key), k = ph + "|" + b.label;
+        if (seen[k]) return; seen[k] = 1;
+        buckets[ph].push(b);
+      });
+      var present = buckets.filter(function (x) { return x.length; }).length;
+      var rc = SWL_COLORS[ri % SWL_COLORS.length];
+
+      var roleEl = el("div", "swl-role",
+        '<span class="swl-dot" style="background:' + rc + '"></span>' +
+        '<span class="swl-rt"><b>' + esc(r.name) + '</b>' +
+        '<small>' + present + ' of 4 stages</small></span>');
+      roleEl.style.setProperty("--rc", rc);
+      grid.appendChild(roleEl);
+
+      buckets.forEach(function (cell, idx) {
+        var c = el("div", "swl-cell p" + idx + (cell.length ? "" : " empty"));
+        c.style.setProperty("--rc", rc);
+        if (!cell.length) { c.innerHTML = '<span class="swl-none">—</span>'; grid.appendChild(c); return; }
+        cell.slice(0, 5).forEach(function (b) {
+          var fit = window.PIQ.fitment(b);
+          c.appendChild(el("span", "swl-chip f-" + fit.mode, esc(shortBlock(b.label))));
+        });
+        if (cell.length > 5) c.appendChild(el("span", "swl-more", "+" + (cell.length - 5)));
+        grid.appendChild(c);
+      });
+    });
+    wrap.appendChild(grid);
+
+    wrap.appendChild(el("div", "swl-legend",
+      '<span class="swl-lg"><i class="lg-auto"></i>Straight-through</span>' +
+      '<span class="swl-lg"><i class="lg-hitl"></i>Approval-gated</span>' +
+      '<span class="swl-lgn">Chips are the action blocks each role runs in that stage.</span>'));
+    return wrap;
   }
 
   /* L1–L4 process-hierarchy tree: Function › Process › Persona › Objective.
