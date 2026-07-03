@@ -582,23 +582,31 @@
       "Select the <b>patterns</b> to deploy for “" + esc(p0 ? p0.name : "this process") + "”" +
       '<button class="linkbtn" id="stAll">' + (c.patternIds.length === pats.length ? "clear all" : "select all") + '</button>'));
     body.appendChild(el("p", "st-hint",
-      "Each pattern encodes the analyst's judgement: a happy path (straight-through) plus a branching DAG that handles the variations. Pick the ones that match how your experts actually work."));
+      "Each pattern encodes the analyst's judgement: a happy path (straight-through) plus a branching DAG that handles the variations. " +
+      "Tick the circle to add a pattern; click the card to open its detail and customise the happy-path DAG."));
 
     var grid = el("div", "patgrid");
     pats.forEach(function (p) {
       var sel = c.patternIds.indexOf(p.id) >= 0;
       var branches = (p.branchingDAG || []).length;
       var gates = (p.hitlGates || []).length;
-      var flow = (p.originalDAG || []).slice(0, 4).map(function (s) { return '<span class="mini-b">' + esc(window.PIQ.prettify(s)) + '</span>'; }).join('<i>→</i>');
+      var happy = window.PIQ.happyDAG(p.id);
+      var custom = window.PIQ.dagCustomised(p.id);
+      var flow = happy.slice(0, 4).map(function (s) { return '<span class="mini-b">' + esc(window.PIQ.prettify(s)) + '</span>'; }).join('<i>→</i>');
       var card = el("div", "patcard" + (sel ? " sel" : ""),
         '<div class="pat-top"><span class="pat-prio" style="background:' + PRIO[p.priority] + '"></span>' +
-        '<div class="pat-n">' + esc(p.name) + (p.sample ? ' <span class="statusbadge sample">sample</span>' : '') + '</div>' +
-        '<div class="pat-check">' + (sel ? "✓" : "") + '</div></div>' +
+        '<div class="pat-n">' + esc(p.name) + (p.sample ? ' <span class="statusbadge sample">sample</span>' : '') +
+          (custom ? ' <span class="dagbadge">✎ DAG edited</span>' : '') + '</div>' +
+        '<button class="pat-check' + (sel ? " on" : "") + '" title="' + (sel ? "Remove from composition" : "Add to composition") + '">' + (sel ? "✓" : "+") + '</button></div>' +
         '<div class="pat-mm">“' + esc(trim(p.mentalModel, 150)) + '”</div>' +
-        '<div class="pat-flow"><span class="flab">Happy path</span>' + flow + (p.originalDAG.length > 4 ? '<i>→</i><span class="mini-b more">+' + (p.originalDAG.length - 4) + '</span>' : '') + '</div>' +
-        '<div class="pat-foot"><span>' + branches + ' variation branches</span>' +
-        '<span>' + (gates ? '🔒 ' + gates + ' HITL gate' + (gates > 1 ? "s" : "") : 'no gates') + '</span></div>');
-      card.onclick = function () {
+        '<div class="pat-flow"><span class="flab">Happy path</span>' + (flow || '<span class="muted">no steps</span>') +
+          (happy.length > 4 ? '<i>→</i><span class="mini-b more">+' + (happy.length - 4) + '</span>' : '') + '</div>' +
+        '<div class="pat-foot"><span>' + branches + ' variation branches · ' +
+          (gates ? '🔒 ' + gates + ' gate' + (gates > 1 ? "s" : "") : 'no gates') + '</span>' +
+        '<span class="pat-cue">✎ details &amp; DAG</span></div>');
+      card.onclick = function () { openPatternDetail(p); };
+      card.querySelector(".pat-check").onclick = function (e) {
+        e.stopPropagation();
         var i = c.patternIds.indexOf(p.id);
         if (i >= 0) c.patternIds.splice(i, 1); else c.patternIds.push(p.id);
         c.blocks = {};   // selection changed → reconfigure
@@ -616,6 +624,127 @@
       c.patternIds = c.patternIds.length === pats.length ? [] : pats.map(function (p) { return p.id; });
       c.blocks = {}; redraw();
     };
+  }
+
+  /* ---- Pattern detail + happy-path DAG editor (opened from a pattern card) --
+     Shows the full pattern (mental model, 3-layer mapping, branching DAG, gates)
+     and lets the SME reorder / enable-disable the happy-path steps. Edits persist
+     into PIQ.composition.dag and flow through collectBlocks → swimlane, the
+     action-block configurator, Fitment and Runtime. */
+  function layer(n, title, desc, extra) {
+    return '<div class="dlayer"><div class="lh"><span class="ln">' + n + '</span>' + title + '</div>' +
+      '<div class="ld">' + desc + '</div>' + (extra || "") + '</div>';
+  }
+  function pdlgEsc(e) { if (e.key === "Escape") closePatternDetail(); }
+  function closePatternDetail() {
+    var b = document.querySelector(".pdlg-back");
+    if (b) { b.remove(); document.removeEventListener("keydown", pdlgEsc); redraw(); }
+  }
+  function openPatternDetail(p) {
+    closePatternDetail();
+    var back = el("div", "pdlg-back");
+    var dlg = el("div", "pdlg");
+    back.appendChild(dlg);
+    back.addEventListener("mousedown", function (e) { if (e.target === back) closePatternDetail(); });
+    document.addEventListener("keydown", pdlgEsc);
+    document.body.appendChild(back);
+    renderPatternDetail(dlg, p);
+  }
+  // materialise a per-pattern DAG override (seeded from the original) for editing
+  function ensureDag(id) {
+    var c = C(); if (!c.dag) c.dag = {};
+    if (!c.dag[id]) c.dag[id] = { steps: window.PIQ.dagSteps(id).map(function (s) { return { k: s.k, on: s.on }; }) };
+    return c.dag[id];
+  }
+  function afterDagEdit() { C().blocks = {}; if (window.PIQ.persistComposition) window.PIQ.persistComposition(); }
+
+  function renderPatternDetail(dlg, p) {
+    var c = C();
+    var sel = c.patternIds.indexOf(p.id) >= 0;
+    var custom = window.PIQ.dagCustomised(p.id);
+    var steps = window.PIQ.dagSteps(p.id);
+    var onCount = steps.filter(function (s) { return s.on; }).length;
+
+    var rows = steps.map(function (s, i) {
+      return '<div class="dstep' + (s.on ? "" : " off") + '">' +
+        '<div class="dstep-ord">' +
+          '<button data-mv="-1" data-i="' + i + '"' + (i === 0 ? " disabled" : "") + '>↑</button>' +
+          '<button data-mv="1" data-i="' + i + '"' + (i === steps.length - 1 ? " disabled" : "") + '>↓</button></div>' +
+        '<span class="dstep-n">' + (i + 1) + '</span>' +
+        '<div class="dstep-k mono">' + esc(window.PIQ.prettify(s.k)) + '</div>' +
+        '<button class="dstep-tog' + (s.on ? " on" : "") + '" data-tog="' + i + '">' + (s.on ? "On" : "Off") + '</button>' +
+      '</div>';
+    }).join("");
+
+    var prev = window.PIQ.happyDAG(p.id).map(function (s) {
+      return '<span class="mini-b">' + esc(window.PIQ.prettify(s)) + '</span>'; }).join('<i>→</i>')
+      || '<span class="muted">no steps enabled</span>';
+
+    var branches = (p.branchingDAG || []).map(function (b) {
+      var verbs = (b.actions || []).map(function (a) { return '<span class="verb">' + esc(a) + '</span>'; }).join("");
+      var hitl = b.hitl ? '<div class="b-hitl">🔒 HITL: ' + esc(b.hitl) + '</div>' : "";
+      return '<div class="branch t-' + b.tier + '"><div class="b-cond mono">' + esc(b.condition) + '</div>' +
+        '<div class="b-acts">' + verbs + '</div>' + hitl + '</div>';
+    }).join("");
+
+    dlg.innerHTML =
+      '<div class="pdlg-head"><div class="pnum lg" style="background:' + PRIO[p.priority] + '">' + p.id + '</div>' +
+      '<div class="pdlg-ht"><h2>' + esc(p.name) + (p.sample ? ' <span class="statusbadge sample">sample</span>' : '') + '</h2>' +
+      '<div class="pdlg-cat">' + esc(p.category) + '</div></div>' +
+      '<span class="badge" style="background:' + PRIO[p.priority] + '">' + p.priority + '</span>' +
+      '<span class="badge ghost mono">' + esc(p.layer3_feature) + '</span>' +
+      '<button class="pdlg-x" id="pdlgClose" title="Close">✕</button></div>' +
+
+      '<div class="pdlg-body">' +
+      '<div class="mental">“' + esc(p.mentalModel) + '”<span class="who">— the analyst\'s mental model</span></div>' +
+      '<div class="d-grid">' +
+        layer("1", "Logical Mapping", esc(p.layer1_logicalMapping), "") +
+        layer("2", "Event Series", esc(p.layer2_eventSeries), "") +
+        layer("3", "AI Feature", '<b>' + esc(p.layer3_feature) + '</b> — pre-calculated trigger', "") +
+      '</div>' +
+
+      '<div class="dedit"><div class="dedit-h"><h4>Happy-path DAG ' +
+        '<span class="muted">reorder & enable/disable — flows to Fitment &amp; Runtime</span></h4>' +
+        (custom ? '<button class="linkbtn" id="dagReset">reset to default</button>' : '') + '</div>' +
+        '<div class="dsteps">' + rows + '</div>' +
+        '<div class="dprev"><span class="flab">Resulting sequence <b>' + onCount + '/' + steps.length + '</b></span>' + prev + '</div>' +
+      '</div>' +
+
+      '<div class="d-sec"><h4>Branching DAG <span class="muted">variation handling · read-only</span></h4>' +
+        '<div class="branches">' + (branches || '<span class="muted">none</span>') + '</div></div>' +
+      (p.hitlGates && p.hitlGates.length ? '<div class="gatebar">🔒 HITL gates: ' + p.hitlGates.map(esc).join(" · ") + '</div>' : '') +
+      '</div>' +
+
+      '<div class="pdlg-foot"><span class="muted">' + (custom ? "✎ DAG customised for this composition" : "Default DAG") + '</span>' +
+        '<div class="pdlg-actions">' +
+        '<button class="btn ' + (sel ? "ghost" : "go") + ' sm" id="pdlgSel">' + (sel ? "Remove from composition" : "Add to composition") + '</button>' +
+        '<button class="btn ghost sm" id="pdlgDone">Done</button></div></div>';
+
+    dlg.querySelector("#pdlgClose").onclick = closePatternDetail;
+    dlg.querySelector("#pdlgDone").onclick = closePatternDetail;
+    dlg.querySelector("#pdlgSel").onclick = function () {
+      var i = c.patternIds.indexOf(p.id);
+      if (i >= 0) c.patternIds.splice(i, 1); else c.patternIds.push(p.id);
+      c.blocks = {};
+      if (window.PIQ.persistComposition) window.PIQ.persistComposition();
+      renderPatternDetail(dlg, p);
+    };
+    var rst = dlg.querySelector("#dagReset");
+    if (rst) rst.onclick = function () { window.PIQ.resetDag(p.id); afterDagEdit(); renderPatternDetail(dlg, p); };
+    dlg.querySelectorAll("[data-mv]").forEach(function (b) {
+      b.onclick = function () {
+        var d = ensureDag(p.id), i = +b.dataset.i, j = i + (+b.dataset.mv);
+        if (j < 0 || j >= d.steps.length) return;
+        var t = d.steps[i]; d.steps[i] = d.steps[j]; d.steps[j] = t;
+        afterDagEdit(); renderPatternDetail(dlg, p);
+      };
+    });
+    dlg.querySelectorAll("[data-tog]").forEach(function (b) {
+      b.onclick = function () {
+        var d = ensureDag(p.id); d.steps[+b.dataset.tog].on = !d.steps[+b.dataset.tog].on;
+        afterDagEdit(); renderPatternDetail(dlg, p);
+      };
+    });
   }
 
   /* ---- the configurator: the heart of the hand-off to Stage 2 ---- */

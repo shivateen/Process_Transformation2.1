@@ -29,6 +29,7 @@
       objIds: [],         // objectives in scope (across the selected personas)
       patternIds: [],     // selected patterns
       blocks: {},         // blockKey -> { mode:'auto'|'hitl', tech:string, configured:bool }
+      dag: {},            // patternId -> { steps:[{k:string,on:bool}] } happy-path customisation
       live: false,        // promoted to Run & Govern
     },
   };
@@ -104,6 +105,27 @@
     return out;
   };
 
+  // ---- happy-path DAG customisation (per-composition, per-pattern) ----------
+  // The editable step list: seeds from originalDAG, then persists reorder + on/off.
+  PIQ.dagSteps = function (id) {
+    var ov = (PIQ.composition.dag || {})[id];
+    if (ov && ov.steps) return ov.steps;
+    var p = PIQ.pattern(id);
+    return ((p && p.originalDAG) || []).map(function (k) { return { k: k, on: true }; });
+  };
+  // resolved happy path the rest of the app runs on: enabled steps in user order.
+  PIQ.happyDAG = function (id) {
+    var ov = (PIQ.composition.dag || {})[id];
+    if (ov && ov.steps) return ov.steps.filter(function (s) { return s.on; }).map(function (s) { return s.k; });
+    var p = PIQ.pattern(id);
+    return (p && p.originalDAG) ? p.originalDAG.slice() : [];
+  };
+  PIQ.dagCustomised = function (id) {
+    var ov = (PIQ.composition.dag || {})[id];
+    return !!(ov && ov.steps);
+  };
+  PIQ.resetDag = function (id) { if (PIQ.composition.dag) delete PIQ.composition.dag[id]; };
+
   // Decompose selected patterns into unique configurable action blocks.
   // Happy-path blocks (originalDAG) are straight-through candidates; variation
   // blocks (branchingDAG actions) carry the HITL flag of their branch.
@@ -121,7 +143,7 @@
     }
     (patternIds || []).forEach(function (id) {
       var p = PIQ.pattern(id); if (!p) return;
-      (p.originalDAG || []).forEach(function (s) { touch(s, id, "happy", false); });
+      PIQ.happyDAG(id).forEach(function (s) { touch(s, id, "happy", false); });
       (p.branchingDAG || []).forEach(function (br) {
         (br.actions || []).forEach(function (a) { touch(a, id, "variation", !!br.hitl); });
       });
@@ -146,7 +168,7 @@
 
   PIQ.resetComposition = function () {
     PIQ.composition = { fnId: null, procId: null, roleIds: [], objIds: [],
-      patternIds: [], blocks: {}, live: false };
+      patternIds: [], blocks: {}, dag: {}, live: false };
     PIQ.persistComposition();
   };
 
@@ -167,6 +189,7 @@
         objIds: Array.isArray(saved.objIds) ? saved.objIds : [],
         patternIds: Array.isArray(saved.patternIds) ? saved.patternIds : [],
         blocks: saved.blocks && typeof saved.blocks === "object" ? saved.blocks : {},
+        dag: saved.dag && typeof saved.dag === "object" ? saved.dag : {},
         live: !!saved.live,
       };
     } catch (e) {}
