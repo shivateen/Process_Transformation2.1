@@ -353,12 +353,25 @@
     return s.length > 24 ? s.slice(0, 23) + "…" : s;
   }
 
+  var SWL_CAP = 5;   // chips shown per cell before "+N more"
+
   function swimlane(f, p) {
     var roles = window.PIQ.roles();
     var wrap = el("div", "swl-wrap");
     if (!roles.length) return wrap;
-    wrap.appendChild(el("div", "st-subq",
+    var mode = state.swlMode || "happy";   // "happy" = straight-through spine, "all" = + variations
+
+    var head = el("div", "swl-head");
+    head.appendChild(el("div", "st-subq",
       "Process map <small>swimlanes by role · Sense → Diagnose → Decide → Act · presence across the flow</small>"));
+    var toggle = el("div", "swl-toggle",
+      '<button class="swl-mode' + (mode === "happy" ? " on" : "") + '" data-m="happy">Happy path</button>' +
+      '<button class="swl-mode' + (mode === "all" ? " on" : "") + '" data-m="all">All actions</button>');
+    toggle.querySelectorAll(".swl-mode").forEach(function (b) {
+      b.onclick = function () { state.swlMode = b.dataset.m; redraw(); };
+    });
+    head.appendChild(toggle);
+    wrap.appendChild(head);
 
     var grid = el("div", "swl");
     grid.appendChild(el("div", "swl-corner", "Role / Persona"));
@@ -370,6 +383,7 @@
 
     roles.forEach(function (r, ri) {
       var blocks = window.PIQ.collectBlocks(rolePatternIds(r));
+      if (mode === "happy") blocks = blocks.filter(function (b) { return b.source === "happy"; });
       var buckets = [[], [], [], []], seen = {};
       blocks.forEach(function (b) {
         var ph = phaseOf(b.key), k = ph + "|" + b.label;
@@ -390,11 +404,22 @@
         var c = el("div", "swl-cell p" + idx + (cell.length ? "" : " empty"));
         c.style.setProperty("--rc", rc);
         if (!cell.length) { c.innerHTML = '<span class="swl-none">—</span>'; grid.appendChild(c); return; }
-        cell.slice(0, 5).forEach(function (b) {
+        cell.forEach(function (b, bi) {
           var fit = window.PIQ.fitment(b);
-          c.appendChild(el("span", "swl-chip f-" + fit.mode, esc(shortBlock(b.label))));
+          var chip = el("span", "swl-chip f-" + fit.mode + (bi >= SWL_CAP ? " swl-hide" : ""),
+            esc(shortBlock(b.label)));
+          chip.title = b.label + " — " + fit.tier + " · used by " + b.patterns.length +
+            " pattern" + (b.patterns.length !== 1 ? "s" : "");
+          c.appendChild(chip);
         });
-        if (cell.length > 5) c.appendChild(el("span", "swl-more", "+" + (cell.length - 5)));
+        if (cell.length > SWL_CAP) {
+          var more = el("button", "swl-more", "+" + (cell.length - SWL_CAP) + " more");
+          more.onclick = function () {
+            c.querySelectorAll(".swl-hide").forEach(function (x) { x.classList.remove("swl-hide"); });
+            more.remove();
+          };
+          c.appendChild(more);
+        }
         grid.appendChild(c);
       });
     });
@@ -403,7 +428,10 @@
     wrap.appendChild(el("div", "swl-legend",
       '<span class="swl-lg"><i class="lg-auto"></i>Straight-through</span>' +
       '<span class="swl-lg"><i class="lg-hitl"></i>Approval-gated</span>' +
-      '<span class="swl-lgn">Chips are the action blocks each role runs in that stage.</span>'));
+      '<span class="swl-lgn">' +
+      (mode === "happy" ? "Happy-path spine — the straight-through flow. Switch to All actions for exception handling."
+                        : "All action blocks incl. variation handling. Hover a chip for detail.") +
+      '</span>'));
     return wrap;
   }
 
