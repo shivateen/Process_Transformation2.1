@@ -666,13 +666,15 @@
     var onCount = steps.filter(function (s) { return s.on; }).length;
 
     var rows = steps.map(function (s, i) {
-      return '<div class="dstep' + (s.on ? "" : " off") + '">' +
+      var tag = s.added ? ' <span class="dstep-added">added</span>' : '';
+      var rm = s.added ? '<button class="dstep-rm" data-rm="' + i + '" title="Remove block">✕</button>' : '';
+      return '<div class="dstep' + (s.on ? "" : " off") + (s.added ? " added" : "") + '">' +
         '<div class="dstep-ord">' +
           '<button data-mv="-1" data-i="' + i + '"' + (i === 0 ? " disabled" : "") + '>↑</button>' +
           '<button data-mv="1" data-i="' + i + '"' + (i === steps.length - 1 ? " disabled" : "") + '>↓</button></div>' +
         '<span class="dstep-n">' + (i + 1) + '</span>' +
-        '<div class="dstep-k mono">' + esc(window.PIQ.prettify(s.k)) + '</div>' +
-        '<button class="dstep-tog' + (s.on ? " on" : "") + '" data-tog="' + i + '">' + (s.on ? "On" : "Off") + '</button>' +
+        '<div class="dstep-k mono">' + esc(window.PIQ.prettify(s.k)) + tag + '</div>' +
+        '<button class="dstep-tog' + (s.on ? " on" : "") + '" data-tog="' + i + '">' + (s.on ? "On" : "Off") + '</button>' + rm +
       '</div>';
     }).join("");
 
@@ -707,6 +709,9 @@
         '<span class="muted">reorder & enable/disable — flows to Fitment &amp; Runtime</span></h4>' +
         (custom ? '<button class="linkbtn" id="dagReset">reset to default</button>' : '') + '</div>' +
         '<div class="dsteps">' + rows + '</div>' +
+        '<div class="dadd"><input id="dagAddInput" class="dadd-in" autocomplete="off" ' +
+          'placeholder="+ Add an action block — search the repository or type your own…"/>' +
+          '<div class="dadd-list" id="dagAddList"></div></div>' +
         '<div class="dprev"><span class="flab">Resulting sequence <b>' + onCount + '/' + steps.length + '</b></span>' + prev + '</div>' +
       '</div>' +
 
@@ -744,6 +749,50 @@
         var d = ensureDag(p.id); d.steps[+b.dataset.tog].on = !d.steps[+b.dataset.tog].on;
         afterDagEdit(); renderPatternDetail(dlg, p);
       };
+    });
+    dlg.querySelectorAll("[data-rm]").forEach(function (b) {
+      b.onclick = function () {
+        var d = ensureDag(p.id); d.steps.splice(+b.dataset.rm, 1);
+        afterDagEdit(); renderPatternDetail(dlg, p);
+      };
+    });
+    var addIn = dlg.querySelector("#dagAddInput");
+    if (addIn) {
+      addIn.oninput = function () { fillAddList(dlg, p); };
+      addIn.onkeydown = function (e) {
+        if (e.key === "Enter") {
+          var v = addIn.value.trim();
+          if (v) { addBlock(p.id, v.replace(/\s+/g, "_")); renderPatternDetail(dlg, p); focusAdd(dlg); }
+        }
+      };
+    }
+    fillAddList(dlg, p);
+  }
+
+  function focusAdd(dlg) { var i = dlg.querySelector("#dagAddInput"); if (i) i.focus(); }
+  function addBlock(id, key) {
+    key = (key || "").trim(); if (!key) return;
+    ensureDag(id).steps.push({ k: key, on: true, added: true });
+    afterDagEdit();
+  }
+  // populate the add-block suggestion list from the repository, filtered by the search box
+  function fillAddList(dlg, p) {
+    var inp = dlg.querySelector("#dagAddInput"), list = dlg.querySelector("#dagAddList");
+    if (!inp || !list) return;
+    var typed = inp.value.trim(), q = typed.toLowerCase();
+    var have = {}; window.PIQ.dagSteps(p.id).forEach(function (s) { have[s.k] = 1; });
+    var repo = window.PIQ.actionRepository().filter(function (k) {
+      return !have[k] && (!q || k.toLowerCase().indexOf(q) >= 0);
+    });
+    var html = repo.slice(0, 8).map(function (k) {
+      return '<button class="dadd-opt" data-add="' + esc(k) + '">' + esc(window.PIQ.prettify(k)) + '</button>';
+    }).join("");
+    if (typed && repo.indexOf(typed.replace(/\s+/g, "_")) < 0) {
+      html += '<button class="dadd-opt custom" data-add="' + esc(typed.replace(/\s+/g, "_")) + '">+ Add custom “' + esc(typed) + '”</button>';
+    }
+    list.innerHTML = html || '<span class="dadd-none">No matching blocks — type a name to add your own.</span>';
+    list.querySelectorAll("[data-add]").forEach(function (b) {
+      b.onclick = function () { addBlock(p.id, b.dataset.add); renderPatternDetail(dlg, p); focusAdd(dlg); };
     });
   }
 

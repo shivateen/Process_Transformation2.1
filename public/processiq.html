@@ -903,6 +903,26 @@ button{font-family:inherit;cursor:pointer}
 .dprev .flab{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-right:6px}
 .dprev .flab b{color:var(--brand2)}
 
+/* ---- DAG editor: add-block-from-repository + added steps ---- */
+.dstep.added{border-color:#f3cfa8;background:#fdf7f0}
+.dstep.added.off{background:repeating-linear-gradient(45deg,#fdf7f0,#fdf7f0 6px,#f6ead9 6px,#f6ead9 12px)}
+.dstep-added{font-size:9px;font-weight:800;color:var(--brand2);background:#fbecdd;border:1px solid #f3cfa8;
+  border-radius:4px;padding:1px 4px;letter-spacing:.02em;vertical-align:middle}
+.dstep-rm{border:1px solid var(--line);background:#fff;color:var(--muted);width:22px;height:22px;border-radius:6px;
+  font-size:11px;cursor:pointer;flex-shrink:0;line-height:1}
+.dstep-rm:hover{border-color:var(--crit);color:var(--crit);background:#fdecea}
+.dadd{position:relative;margin-top:6px}
+.dadd-in{width:100%;border:1px dashed var(--brand2);background:#fff;border-radius:9px;padding:9px 12px;
+  font-family:inherit;font-size:12.5px;color:var(--ink);outline:none;box-sizing:border-box}
+.dadd-in::placeholder{color:var(--brand2);opacity:.75;font-weight:600}
+.dadd-in:focus{border-style:solid;box-shadow:0 0 0 2px rgba(244,122,30,.18)}
+.dadd-list{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.dadd-opt{border:1px solid var(--line);background:#fff;color:var(--ink);font-family:var(--mono);font-size:11px;
+  padding:4px 9px;border-radius:7px;cursor:pointer;transition:.12s}
+.dadd-opt:hover{border-color:var(--brand2);background:#fdf7f0;color:var(--brand2)}
+.dadd-opt.custom{font-family:inherit;font-weight:700;color:var(--brand2);border-color:#f3cfa8;background:#fbecdd}
+.dadd-none{font-size:11px;color:var(--muted);font-style:italic;padding:2px}
+
 </style>
 </head>
 <body>
@@ -10205,6 +10225,22 @@ button{font-family:inherit;cursor:pointer}
   };
   PIQ.resetDag = function (id) { if (PIQ.composition.dag) delete PIQ.composition.dag[id]; };
 
+  // repository of every distinct action block across the whole library (real +
+  // sample patterns, happy-path + variation actions) — for adding to a DAG.
+  PIQ.actionRepository = function () {
+    if (PIQ._actionRepo) return PIQ._actionRepo;
+    var set = {};
+    function add(tok) { (tok || "").split(" + ").forEach(function (raw) { var k = raw.trim(); if (k) set[k] = 1; }); }
+    var stubs = PIQ.tax && PIQ.tax.stubPatterns ? PIQ.tax.stubPatterns : {};
+    var all = (PIQ.patterns || []).concat(Object.keys(stubs).map(function (id) { return stubs[id]; }));
+    all.forEach(function (p) {
+      (p.originalDAG || []).forEach(add);
+      (p.branchingDAG || []).forEach(function (b) { (b.actions || []).forEach(add); });
+    });
+    PIQ._actionRepo = Object.keys(set).sort();
+    return PIQ._actionRepo;
+  };
+
   // Decompose selected patterns into unique configurable action blocks.
   // Happy-path blocks (originalDAG) are straight-through candidates; variation
   // blocks (branchingDAG actions) carry the HITL flag of their branch.
@@ -10357,6 +10393,17 @@ button{font-family:inherit;cursor:pointer}
   /* "Why" link → the narrative front door */
   var why = document.getElementById("whyLink");
   if (why) why.onclick = function (e) { e.preventDefault(); go("provocation"); };
+
+  /* brand → reset the session and return to the landing page */
+  var brandEl = document.querySelector(".brand");
+  if (brandEl) {
+    brandEl.style.cursor = "pointer";
+    brandEl.title = "Reset session & return to the landing page";
+    brandEl.addEventListener("click", function () {
+      PIQ.resetComposition();
+      window.location.href = "index.html";
+    });
+  }
 
   /* boot */
   document.getElementById("varStat").textContent = PIQ.E._money(PIQ.book.meta.valueAtRisk);
@@ -11034,13 +11081,15 @@ button{font-family:inherit;cursor:pointer}
     var onCount = steps.filter(function (s) { return s.on; }).length;
 
     var rows = steps.map(function (s, i) {
-      return '<div class="dstep' + (s.on ? "" : " off") + '">' +
+      var tag = s.added ? ' <span class="dstep-added">added</span>' : '';
+      var rm = s.added ? '<button class="dstep-rm" data-rm="' + i + '" title="Remove block">✕</button>' : '';
+      return '<div class="dstep' + (s.on ? "" : " off") + (s.added ? " added" : "") + '">' +
         '<div class="dstep-ord">' +
           '<button data-mv="-1" data-i="' + i + '"' + (i === 0 ? " disabled" : "") + '>↑</button>' +
           '<button data-mv="1" data-i="' + i + '"' + (i === steps.length - 1 ? " disabled" : "") + '>↓</button></div>' +
         '<span class="dstep-n">' + (i + 1) + '</span>' +
-        '<div class="dstep-k mono">' + esc(window.PIQ.prettify(s.k)) + '</div>' +
-        '<button class="dstep-tog' + (s.on ? " on" : "") + '" data-tog="' + i + '">' + (s.on ? "On" : "Off") + '</button>' +
+        '<div class="dstep-k mono">' + esc(window.PIQ.prettify(s.k)) + tag + '</div>' +
+        '<button class="dstep-tog' + (s.on ? " on" : "") + '" data-tog="' + i + '">' + (s.on ? "On" : "Off") + '</button>' + rm +
       '</div>';
     }).join("");
 
@@ -11075,6 +11124,9 @@ button{font-family:inherit;cursor:pointer}
         '<span class="muted">reorder & enable/disable — flows to Fitment &amp; Runtime</span></h4>' +
         (custom ? '<button class="linkbtn" id="dagReset">reset to default</button>' : '') + '</div>' +
         '<div class="dsteps">' + rows + '</div>' +
+        '<div class="dadd"><input id="dagAddInput" class="dadd-in" autocomplete="off" ' +
+          'placeholder="+ Add an action block — search the repository or type your own…"/>' +
+          '<div class="dadd-list" id="dagAddList"></div></div>' +
         '<div class="dprev"><span class="flab">Resulting sequence <b>' + onCount + '/' + steps.length + '</b></span>' + prev + '</div>' +
       '</div>' +
 
@@ -11112,6 +11164,50 @@ button{font-family:inherit;cursor:pointer}
         var d = ensureDag(p.id); d.steps[+b.dataset.tog].on = !d.steps[+b.dataset.tog].on;
         afterDagEdit(); renderPatternDetail(dlg, p);
       };
+    });
+    dlg.querySelectorAll("[data-rm]").forEach(function (b) {
+      b.onclick = function () {
+        var d = ensureDag(p.id); d.steps.splice(+b.dataset.rm, 1);
+        afterDagEdit(); renderPatternDetail(dlg, p);
+      };
+    });
+    var addIn = dlg.querySelector("#dagAddInput");
+    if (addIn) {
+      addIn.oninput = function () { fillAddList(dlg, p); };
+      addIn.onkeydown = function (e) {
+        if (e.key === "Enter") {
+          var v = addIn.value.trim();
+          if (v) { addBlock(p.id, v.replace(/\s+/g, "_")); renderPatternDetail(dlg, p); focusAdd(dlg); }
+        }
+      };
+    }
+    fillAddList(dlg, p);
+  }
+
+  function focusAdd(dlg) { var i = dlg.querySelector("#dagAddInput"); if (i) i.focus(); }
+  function addBlock(id, key) {
+    key = (key || "").trim(); if (!key) return;
+    ensureDag(id).steps.push({ k: key, on: true, added: true });
+    afterDagEdit();
+  }
+  // populate the add-block suggestion list from the repository, filtered by the search box
+  function fillAddList(dlg, p) {
+    var inp = dlg.querySelector("#dagAddInput"), list = dlg.querySelector("#dagAddList");
+    if (!inp || !list) return;
+    var typed = inp.value.trim(), q = typed.toLowerCase();
+    var have = {}; window.PIQ.dagSteps(p.id).forEach(function (s) { have[s.k] = 1; });
+    var repo = window.PIQ.actionRepository().filter(function (k) {
+      return !have[k] && (!q || k.toLowerCase().indexOf(q) >= 0);
+    });
+    var html = repo.slice(0, 8).map(function (k) {
+      return '<button class="dadd-opt" data-add="' + esc(k) + '">' + esc(window.PIQ.prettify(k)) + '</button>';
+    }).join("");
+    if (typed && repo.indexOf(typed.replace(/\s+/g, "_")) < 0) {
+      html += '<button class="dadd-opt custom" data-add="' + esc(typed.replace(/\s+/g, "_")) + '">+ Add custom “' + esc(typed) + '”</button>';
+    }
+    list.innerHTML = html || '<span class="dadd-none">No matching blocks — type a name to add your own.</span>';
+    list.querySelectorAll("[data-add]").forEach(function (b) {
+      b.onclick = function () { addBlock(p.id, b.dataset.add); renderPatternDetail(dlg, p); focusAdd(dlg); };
     });
   }
 

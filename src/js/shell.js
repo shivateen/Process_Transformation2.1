@@ -126,6 +126,22 @@
   };
   PIQ.resetDag = function (id) { if (PIQ.composition.dag) delete PIQ.composition.dag[id]; };
 
+  // repository of every distinct action block across the whole library (real +
+  // sample patterns, happy-path + variation actions) — for adding to a DAG.
+  PIQ.actionRepository = function () {
+    if (PIQ._actionRepo) return PIQ._actionRepo;
+    var set = {};
+    function add(tok) { (tok || "").split(" + ").forEach(function (raw) { var k = raw.trim(); if (k) set[k] = 1; }); }
+    var stubs = PIQ.tax && PIQ.tax.stubPatterns ? PIQ.tax.stubPatterns : {};
+    var all = (PIQ.patterns || []).concat(Object.keys(stubs).map(function (id) { return stubs[id]; }));
+    all.forEach(function (p) {
+      (p.originalDAG || []).forEach(add);
+      (p.branchingDAG || []).forEach(function (b) { (b.actions || []).forEach(add); });
+    });
+    PIQ._actionRepo = Object.keys(set).sort();
+    return PIQ._actionRepo;
+  };
+
   // Decompose selected patterns into unique configurable action blocks.
   // Happy-path blocks (originalDAG) are straight-through candidates; variation
   // blocks (branchingDAG actions) carry the HITL flag of their branch.
@@ -278,6 +294,17 @@
   /* "Why" link → the narrative front door */
   var why = document.getElementById("whyLink");
   if (why) why.onclick = function (e) { e.preventDefault(); go("provocation"); };
+
+  /* brand → reset the session and return to the landing page */
+  var brandEl = document.querySelector(".brand");
+  if (brandEl) {
+    brandEl.style.cursor = "pointer";
+    brandEl.title = "Reset session & return to the landing page";
+    brandEl.addEventListener("click", function () {
+      PIQ.resetComposition();
+      window.location.href = "index.html";
+    });
+  }
 
   /* boot */
   document.getElementById("varStat").textContent = PIQ.E._money(PIQ.book.meta.valueAtRisk);

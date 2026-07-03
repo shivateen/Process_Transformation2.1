@@ -893,3 +893,23 @@ button{font-family:inherit;cursor:pointer}
 .dprev{display:flex;align-items:center;flex-wrap:wrap;gap:5px;margin-top:6px;padding-top:10px;border-top:1px dashed var(--line)}
 .dprev .flab{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-right:6px}
 .dprev .flab b{color:var(--brand2)}
+
+/* ---- DAG editor: add-block-from-repository + added steps ---- */
+.dstep.added{border-color:#f3cfa8;background:#fdf7f0}
+.dstep.added.off{background:repeating-linear-gradient(45deg,#fdf7f0,#fdf7f0 6px,#f6ead9 6px,#f6ead9 12px)}
+.dstep-added{font-size:9px;font-weight:800;color:var(--brand2);background:#fbecdd;border:1px solid #f3cfa8;
+  border-radius:4px;padding:1px 4px;letter-spacing:.02em;vertical-align:middle}
+.dstep-rm{border:1px solid var(--line);background:#fff;color:var(--muted);width:22px;height:22px;border-radius:6px;
+  font-size:11px;cursor:pointer;flex-shrink:0;line-height:1}
+.dstep-rm:hover{border-color:var(--crit);color:var(--crit);background:#fdecea}
+.dadd{position:relative;margin-top:6px}
+.dadd-in{width:100%;border:1px dashed var(--brand2);background:#fff;border-radius:9px;padding:9px 12px;
+  font-family:inherit;font-size:12.5px;color:var(--ink);outline:none;box-sizing:border-box}
+.dadd-in::placeholder{color:var(--brand2);opacity:.75;font-weight:600}
+.dadd-in:focus{border-style:solid;box-shadow:0 0 0 2px rgba(244,122,30,.18)}
+.dadd-list{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.dadd-opt{border:1px solid var(--line);background:#fff;color:var(--ink);font-family:var(--mono);font-size:11px;
+  padding:4px 9px;border-radius:7px;cursor:pointer;transition:.12s}
+.dadd-opt:hover{border-color:var(--brand2);background:#fdf7f0;color:var(--brand2)}
+.dadd-opt.custom{font-family:inherit;font-weight:700;color:var(--brand2);border-color:#f3cfa8;background:#fbecdd}
+.dadd-none{font-size:11px;color:var(--muted);font-style:italic;padding:2px}
