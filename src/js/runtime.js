@@ -30,6 +30,9 @@
   function buildSim() {
     var c = C();
     var pats = window.PIQ.selectedPatterns();
+    // Deterministic SYNTHETIC demo stream — 18 fabricated transactions with a fixed
+    // spread of clean (happy-path) and variation (pattern-matched) items. This is
+    // illustrative demo data, not a live ERP feed; nothing here is a real invoice.
     var q = [];
     for (var i = 0; i < 18; i++) {
       var entity = NAMES[i % NAMES.length];
@@ -44,7 +47,61 @@
         q.push({ n: i + 1, id: "TXN-" + (10480 + i * 7), entity: entity, amt: amt, kind: "clean", status: "queued" });
       }
     }
+    applyCompoundSeed(q, pats);
     return { q: q, cursor: 0, log: [], counts: { stp: 0, auto: 0, pending: 0, approved: 0, rejected: 0, value: 0 } };
+  }
+
+  /* Compound-signal seed — force two variation transactions to share one entity and
+     fire two constituents of an applicable cross-process pattern, so the second-pass
+     compound scan reliably surfaces an emergent signal in the demo. */
+  function applyCompoundSeed(q, pats) {
+    var selIds = {}; pats.forEach(function (p) { selIds[p.id] = 1; });
+    var applicable = window.PIQ.compoundPatterns();
+    var pick = null;
+    for (var a = 0; a < applicable.length; a++) {
+      var cons = applicable[a].constituents.filter(function (id) { return selIds[id]; });
+      if (cons.length >= 2) { pick = cons; break; }
+    }
+    if (!pick) return;
+    var slots = [];
+    for (var j = 0; j < q.length; j++) if (q[j].kind === "variation") slots.push(j);
+    if (slots.length < 2) return;
+    var entity = q[slots[0]].entity;
+    [0, 1].forEach(function (k) {
+      var t = q[slots[k]], p = window.PIQ.pattern(pick[k]);
+      if (!p) return;
+      var br = (p.branchingDAG || [])[0] || {};
+      t.entity = entity; t.patternId = pick[k]; t.branchIdx = 0; t.needsApproval = !!br.hitl;
+    });
+  }
+
+  /* Second pass — after individual transactions are matched, correlate the fired
+     patterns per entity against the theme's cross-process compound patterns. A
+     combination that no single process would flag surfaces as a Compound Signal. */
+  function compoundSignals() {
+    var applicable = window.PIQ.compoundPatterns();
+    if (!applicable.length || !sim) return [];
+    var byEntity = {}, globalFired = {};
+    sim.q.forEach(function (t) {
+      if (t.kind === "variation" && t.patternId &&
+          (t.status === "auto" || t.status === "approved" || t.status === "pending")) {
+        (byEntity[t.entity] = byEntity[t.entity] || {})[t.patternId] = 1;
+        globalFired[t.patternId] = 1;
+      }
+    });
+    var out = [];
+    applicable.forEach(function (a) {
+      if (a.constituents.length < 2) return;
+      var fired = a.constituents.filter(function (id) { return globalFired[id]; });
+      if (fired.length < 2) return;
+      var bestE = null, bestN = 0;
+      Object.keys(byEntity).forEach(function (e) {
+        var n = a.constituents.filter(function (id) { return byEntity[e][id]; }).length;
+        if (n > bestN) { bestN = n; bestE = e; }
+      });
+      out.push({ cp: a.cp, theme: a.theme, fired: fired, entity: bestE, concentrated: bestN >= 2 });
+    });
+    return out;
   }
 
   function ensureSim(force) {
@@ -60,13 +117,15 @@
     var root = el("div", "rt");
     root.appendChild(head());
     root.appendChild(kpis());
+    var comp = el("div", "rt-compound"); comp.id = "rtCompound";
+    root.appendChild(comp);   // filled by drawCompound as compound signals emerge
     var grid = el("div", "rt-grid");
     grid.innerHTML = '<div class="rt-stream" id="rtStream"></div>' +
       '<div class="rt-side"><div class="rt-approvals" id="rtApprovals"></div>' +
       '<div class="rt-feed" id="rtFeed"></div></div>';
     root.appendChild(grid);
     view.appendChild(root);
-    drawStream(); drawApprovals(); drawFeed(); drawKpis();
+    drawStream(); drawApprovals(); drawFeed(); drawKpis(); drawCompound();
     wireControls(root);
   }
 
@@ -196,7 +255,29 @@
   }
 
   function logE(k, t) { sim.log.push({ k: k, t: t }); }
-  function repaint() { drawStream(); drawApprovals(); drawFeed(); drawKpis(); }
+  function repaint() { drawStream(); drawApprovals(); drawFeed(); drawKpis(); drawCompound(); }
+
+  function drawCompound() {
+    var host = document.getElementById("rtCompound"); if (!host) return;
+    var sigs = compoundSignals();
+    if (!sigs.length) { host.innerHTML = ""; host.classList.remove("on"); return; }
+    host.classList.add("on");
+    host.innerHTML = '<div class="rc-h">⚠ Compound Signals <span class="rc-c">' + sigs.length + '</span>' +
+      '<small>emergent cross-process risk — no single pattern would catch this</small></div>' +
+      '<div class="rc-cards">' + sigs.map(function (s) {
+        var cons = s.fired.map(function (id) {
+          var p = window.PIQ.pattern(id);
+          return '<span class="rc-pat">#' + id + (p ? ' ' + esc(p.name) : '') + '</span>';
+        }).join("");
+        return '<div class="rc-card">' +
+          '<div class="rc-top"><span class="rc-name">' + esc(s.cp.name) + '</span>' +
+          (s.entity ? '<span class="rc-ent">' + esc(s.entity) + (s.concentrated ? '' : ' cohort') + '</span>' : '') + '</div>' +
+          '<div class="rc-desc">' + esc(s.cp.description) + '</div>' +
+          '<div class="rc-cons"><span class="rc-lab">Constituent signals</span>' + cons + '</div>' +
+          '<div class="rc-foot"><div class="rc-impact"><b>Compound impact</b>' + esc(s.cp.compoundImpact) + '</div>' +
+          '<div class="rc-resp"><b>Response</b>' + esc(s.cp.response) + '</div></div></div>';
+      }).join("") + '</div>';
+  }
 
   /* ---------------- controls ---------------- */
   function wireControls(root) {

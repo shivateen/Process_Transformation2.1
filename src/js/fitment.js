@@ -70,21 +70,44 @@
       '<div class="fd-bar">' + bars + '</div><div class="fd-legend">' + legend + '</div>');
   }
 
+  // calibration of a block's representative pattern (its Layer-2 event-series logic)
+  function blockCalibration(b) {
+    for (var i = 0; i < b.patterns.length; i++) {
+      var p = window.PIQ.pattern(b.patterns[i]);
+      if (p && p.calibration) return p.calibration;
+    }
+    return null;
+  }
+
+  function calCell(b) {
+    var cal = blockCalibration(b);
+    if (!cal) return '<div class="ft-cal"><span class="muted">—</span></div>';
+    var traces = (cal.traceCount || 0).toLocaleString();
+    return '<div class="ft-cal" title="Calibrated from ' + traces + ' client event traces · ' + esc(cal.method) + '">' +
+      '<span class="cal-th"><span class="cal-def">' + esc(cal.defaultThreshold) + '</span><i>→</i>' +
+      '<b class="cal-fit">' + esc(cal.calibratedThreshold) + '</b></span>' +
+      '<span class="cal-delta">+' + cal.additionalCoverage + ' traces</span>' +
+      '<span class="cal-badge">PM4Py Event Analysis</span></div>';
+  }
+
   function fitmentTable(blocks) {
     var rows = blocks.map(function (b) {
       var fit = window.PIQ.fitment(b);
       var cfg = (C().blocks[b.key] || {});
       var pct = Math.round(fit.score * 100);
-      return '<div class="ftrow">' +
+      return '<div class="ftrow cal">' +
         '<div class="ft-src k-' + (b.source === "happy" ? "happy" : "vary") + '" title="' + (b.source === "happy" ? "happy path" : "variation") + '"></div>' +
         '<div class="ft-name"><b>' + esc(b.label) + '</b><span class="mono">' + esc(b.key) + '</span></div>' +
         '<div class="ft-tech">' + esc(cfg.tech || "—") + '</div>' +
         '<div class="ft-score"><div class="ft-bar"><i style="width:' + pct + '%"></i></div><span>' + pct + '%</span></div>' +
+        calCell(b) +
         '<div class="ft-verdict"><span class="fitchip f-' + fit.mode + '">' + fit.tier + '</span></div></div>';
     }).join("");
     return el("div", "fit-table",
-      '<div class="ftrow ft-head"><div class="ft-src"></div><div class="ft-name">Action block</div>' +
-      '<div class="ft-tech">Technology</div><div class="ft-score">Fitment</div><div class="ft-verdict">Verdict</div></div>' + rows);
+      '<div class="ftrow cal ft-head"><div class="ft-src"></div><div class="ft-name">Action block</div>' +
+      '<div class="ft-tech">Technology</div><div class="ft-score">Fitment</div>' +
+      '<div class="ft-cal">Calibration <span class="ft-cal-sub">default → client-fitted</span></div>' +
+      '<div class="ft-verdict">Verdict</div></div>' + rows);
   }
 
   function happyPanel(happy) {
@@ -103,23 +126,79 @@
       '<div class="hp-flow">' + (flow || '<span class="muted">No happy-path blocks in this selection.</span>') + '</div>');
   }
 
-  function tobePanel() {
+  /* Interactive to-be flow — each action block is a toggle between Agent (automated)
+     and Manual (human). Toggling writes composition.blocks[key].mode and recomputes
+     the automated / semi-automated / manual distribution. A configuration surface,
+     not just a display. */
+  function blockMode(b) {
+    var cfg = C().blocks[b.key] || {};
+    return cfg.mode || window.PIQ.fitment(b).mode;   // seed from fitment verdict
+  }
+  function tobeDist() {
+    var blocks = window.PIQ.collectBlocks(C().patternIds);
+    var d = { automated: 0, semi: 0, manual: 0 };
+    blocks.forEach(function (b) {
+      if (blockMode(b) === "hitl") d.manual++;
+      else if (window.PIQ.fitment(b).tier === "Full-auto") d.automated++;
+      else d.semi++;
+    });
+    return d;
+  }
+  function toggleBlockMode(key) {
     var c = C();
+    var blk = window.PIQ.collectBlocks(c.patternIds).filter(function (b) { return b.key === key; })[0];
+    var cur = (c.blocks[key] && c.blocks[key].mode) || (blk ? window.PIQ.fitment(blk).mode : "auto");
+    if (!c.blocks[key]) c.blocks[key] = { tech: "", configured: false };
+    c.blocks[key].mode = cur === "hitl" ? "auto" : "hitl";
+    c.blocks[key].configured = true;
+    if (window.PIQ.persistComposition) window.PIQ.persistComposition();
+  }
+
+  function distHtml(d) {
+    var total = d.automated + d.semi + d.manual || 1;
+    var seg = [["automated", d.automated, "#27ae60", "Automated"],
+               ["semi", d.semi, "#e67e22", "Semi-automated"],
+               ["manual", d.manual, "#c0392b", "Manual"]];
+    var bars = seg.filter(function (s) { return s[1]; }).map(function (s) {
+      return '<i style="flex:' + s[1] + ';background:' + s[2] + '" title="' + s[3] + '"></i>';
+    }).join("");
+    var legend = seg.map(function (s) {
+      return '<span class="dl"><i style="background:' + s[2] + '"></i>' + s[3] + ' · <b>' + s[1] + '</b></span>';
+    }).join("");
+    var pa = Math.round(100 * d.automated / total), ps = Math.round(100 * d.semi / total);
+    return '<div class="tb-dist"><div class="fd-bar">' + bars + '</div>' +
+      '<div class="tb-distlbl"><b>' + pa + '%</b> automated · <b>' + ps + '%</b> semi-automated · <b>' +
+      (100 - pa - ps) + '%</b> manual</div><div class="fd-legend">' + legend + '</div></div>';
+  }
+
+  function drawTobe(wrap) {
     var pats = window.PIQ.selectedPatterns();
     var lanes = pats.map(function (p) {
-      var branches = (p.branchingDAG || []).map(function (b) {
-        var acts = (b.actions || []).join(" + ");
-        return '<div class="tb-branch t-' + (b.tier || "primary") + '">' +
-          '<span class="tb-cond mono">' + esc(b.condition) + '</span>' +
-          '<span class="tb-act">' + esc(window.PIQ.prettify(acts)) + '</span>' +
-          (b.hitl ? '<span class="tb-hitl">🔒 ' + esc(b.hitl) + '</span>' : '') + '</div>';
+      var blocks = window.PIQ.collectBlocks([p.id]);
+      var chips = blocks.map(function (b) {
+        var agent = blockMode(b) !== "hitl";
+        return '<button class="tb-blk ' + (agent ? "agent" : "manual") + '" data-k="' + esc(b.key) + '" ' +
+          'title="' + esc(b.key) + ' — click to toggle">' +
+          '<span class="tbk-ic">' + (agent ? "🤖" : "✋") + '</span>' +
+          '<span class="tbk-l">' + esc(b.label) + '</span>' +
+          '<span class="tbk-mode">' + (agent ? "Agent" : "Manual") + '</span></button>';
       }).join("");
       return '<div class="tb-lane"><div class="tb-pat"><span class="pat-prio" style="background:' + PRIO[p.priority] + '"></span>' +
-        esc(p.name) + '</div><div class="tb-branches">' + branches + '</div></div>';
+        esc(p.name) + '</div><div class="tb-blocks">' + chips + '</div></div>';
     }).join("");
-    return el("div", "fit-tobe",
-      '<h3>To-be process flow <span class="muted">happy path + pattern-driven variation handling</span></h3>' +
-      '<div class="tb-wrap">' + lanes + '</div>');
+    wrap.innerHTML =
+      '<h3>To-be process flow <span class="muted">happy path + pattern-driven variation · click a block to toggle Agent ⇄ Manual</span></h3>' +
+      distHtml(tobeDist()) +
+      '<div class="tb-wrap">' + lanes + '</div>';
+    wrap.querySelectorAll(".tb-blk").forEach(function (btn) {
+      btn.onclick = function () { toggleBlockMode(btn.dataset.k); drawTobe(wrap); };
+    });
+  }
+
+  function tobePanel() {
+    var wrap = el("div", "fit-tobe");
+    drawTobe(wrap);
+    return wrap;
   }
 
   function goLiveBar(stp) {

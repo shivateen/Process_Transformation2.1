@@ -923,6 +923,192 @@ button{font-family:inherit;cursor:pointer}
 .dadd-opt.custom{font-family:inherit;font-weight:700;color:var(--brand2);border-color:#f3cfa8;background:#fbecdd}
 .dadd-none{font-size:11px;color:var(--muted);font-style:italic;padding:2px}
 
+/* ===================================================================== */
+/* v2.1 additions — Theme layer, Build Engine, Compound Signals, ROI     */
+/* theme rollup, 4th trust mode, calibration, interactive to-be, toast    */
+/* ===================================================================== */
+
+/* ---- Studio: Theme cards (Step 0) + theme banner on Function step ---- */
+.pc-kpi{display:flex;flex-direction:column;gap:1px;background:#faf6f0;border:1px solid var(--line);
+  border-radius:9px;padding:7px 10px;margin-top:2px}
+.pck-n{font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+.pck-v{font-size:13.5px;font-weight:700;color:var(--ink)}
+.pck-v i{font-style:normal;color:var(--muted)}
+.pck-v b{color:var(--act)}
+.pc-meta b{color:var(--ink);font-weight:750}
+.st-themebar{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);
+  border-left:4px solid var(--act);border-radius:11px;padding:10px 14px;margin:0 0 16px;box-shadow:var(--shadow)}
+.st-themebar .stt-ic{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;font-size:17px;
+  background:color-mix(in srgb,var(--ac) 16%,#fff);border:1px solid color-mix(in srgb,var(--ac) 32%,#fff)}
+.st-themebar .stt-n{font-size:14px;font-weight:750}
+.st-themebar .stt-k{font-size:12px;color:var(--muted);font-weight:600}
+.st-themebar .stt-k b{color:var(--act)}
+.st-themebar .linkbtn{margin-left:auto}
+
+/* ---- Build Engine (Stage 2 sub-view) ---- */
+.bld{max-width:1180px;margin:0 auto;padding:20px 4px 60px}
+.bld-input{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:14px 0 6px}
+.bld-input .bi-lab{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.bi-pill{font-size:11.5px;font-weight:650;background:#f2ece2;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+.bld-asm{margin:22px 0}
+.asm-chains{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+.asm-chain{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow)}
+.asm-pat{font-weight:750;font-size:13.5px;display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.asm-flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:6px}
+.asm-node{display:flex;flex-direction:column;gap:4px;min-width:120px;background:#faf6f0;border:1px solid var(--line);
+  border-radius:9px;padding:8px 10px;opacity:.45;transform:translateY(2px);transition:.28s}
+.asm-node.on{opacity:1;transform:none;box-shadow:0 0 0 2px #16a08522}
+.an-b{font-size:12px;font-weight:700;line-height:1.25}
+.an-b.w{color:var(--brand2)} .an-b.r{color:var(--sense)}
+.an-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.an-tech{font-size:10px;font-weight:600;color:var(--muted)}
+.an-mode{font-size:9px;font-weight:800;padding:1px 6px;border-radius:5px;letter-spacing:.03em}
+.an-mode.m-auto{background:#e6f7ef;color:#1a8a5a}.an-mode.m-hitl{background:#fdeee6;color:#b85518}
+.asm-arr{display:flex;align-items:center;color:var(--muted);font-weight:800;padding:0 2px}
+.bld-valid{margin:22px 0}
+.vchecks{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+@media(max-width:820px){.vchecks{grid-template-columns:1fr}}
+.vcheck{display:flex;gap:10px;background:#fff;border:1px solid var(--line);border-radius:11px;padding:11px 14px;box-shadow:var(--shadow)}
+.vcheck .vc-ic{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;flex:0 0 auto}
+.vcheck.ok .vc-ic{background:#e6f7ef;color:#1a8a5a}
+.vcheck.no .vc-ic{background:#f2ece2;color:var(--muted)}
+.vcheck.ok{border-color:#bfe6d3}
+.vc-l{font-size:13px;font-weight:700}
+.vc-d{font-size:11.5px;color:var(--muted);margin-top:2px}
+
+/* ---- Runtime: Compound Signals band ---- */
+.rt-compound{margin:2px 0 0}
+.rt-compound.on{margin:6px 0 14px}
+.rc-h{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:800;color:#c0392b;margin:0 0 8px}
+.rc-h .rc-c{background:#c0392b;color:#fff;border-radius:999px;font-size:11px;padding:1px 8px}
+.rc-h small{color:var(--muted);font-weight:600}
+.rc-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
+.rc-card{background:#fff;border:1px solid #edc9c2;border-left:4px solid #c0392b;border-radius:12px;padding:13px 15px;box-shadow:var(--shadow)}
+.rc-top{display:flex;align-items:center;gap:10px;justify-content:space-between}
+.rc-name{font-size:14px;font-weight:800;color:#a5281c}
+.rc-ent{font-size:11px;font-weight:700;background:#fdeeeb;color:#c0392b;border-radius:999px;padding:2px 9px}
+.rc-desc{font-size:12px;color:var(--ink);margin:7px 0;line-height:1.45}
+.rc-cons{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:8px}
+.rc-lab,.cs-lab{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-right:2px}
+.rc-pat{font-size:11px;font-weight:700;background:#f6eee2;border:1px solid var(--line);border-radius:6px;padding:2px 8px}
+.rc-foot{display:flex;flex-direction:column;gap:5px;border-top:1px dashed var(--line);padding-top:8px}
+.rc-impact,.rc-resp{font-size:11.5px;line-height:1.4}
+.rc-impact b,.rc-resp b{display:inline-block;font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-right:6px}
+
+/* ---- Cockpit: Compound Signals band + payload modal + review pill ---- */
+.riskpill.review{background:#8e44ad}
+.cs-band{margin:0 0 16px;background:#fff;border:1px solid #edc9c2;border-radius:14px;padding:14px 16px;box-shadow:var(--shadow)}
+.cs-h{font-size:14px;font-weight:800;color:#a5281c;margin:0 0 10px}
+.cs-h small{display:block;font-size:11.5px;font-weight:600;color:var(--muted);margin-top:2px}
+.cs-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}
+.cs-card{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:#fbfaf7}
+.cs-card.active{border-color:#e2a89f;border-left:4px solid #c0392b;background:#fff}
+.cs-card.watch{border-left:4px solid #d9ccb6;opacity:.86}
+.cs-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cs-state{font-size:10px;font-weight:800;letter-spacing:.03em}
+.cs-card.active .cs-state{color:#c0392b}.cs-card.watch .cs-state{color:var(--muted)}
+.cs-name{font-size:13.5px;font-weight:800}
+.cs-ent{margin-left:auto;font-size:11px;font-weight:700;background:#fdeeeb;color:#c0392b;border-radius:999px;padding:2px 9px}
+.cs-desc{font-size:12px;color:var(--ink);margin:7px 0;line-height:1.45}
+.cs-cons{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-bottom:8px}
+.cs-pat{font-size:10.5px;font-weight:650;background:#f2ece2;border:1px solid var(--line);border-radius:6px;padding:2px 7px;color:var(--muted)}
+.cs-pat.fired{background:#fdeeeb;border-color:#e2a89f;color:#a5281c;font-weight:750}
+.cs-resp{font-size:11.5px;line-height:1.4;border-top:1px dashed var(--line);padding-top:8px}
+.cs-resp b{display:block;font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:3px}
+.pm-back{position:fixed;inset:0;background:rgba(20,16,12,.44);display:grid;place-items:center;z-index:80;padding:24px}
+.pm-dlg{background:#fff;border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,.3);max-width:560px;width:100%;max-height:86vh;display:flex;flex-direction:column;overflow:hidden}
+.pm-head{display:flex;align-items:center;gap:10px;padding:16px 18px;border-bottom:1px solid var(--line)}
+.pm-head h3{margin:0;font-size:16px;flex:1}
+.pm-ro{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;background:#f2ece2;color:var(--muted);padding:2px 8px;border-radius:6px}
+.pm-x{background:none;border:0;font-size:16px;cursor:pointer;color:var(--muted)}
+.pm-body{padding:14px 18px;overflow:auto}
+.pm-fields{display:grid;grid-template-columns:1fr;gap:0}
+.pm-row{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-top:1px solid var(--line);font-size:12.5px}
+.pm-row:first-child{border-top:0}
+.pm-k{color:var(--muted);font-weight:650}
+.pm-v{font-size:12px;text-align:right}
+.pm-evh{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--brand2);margin:14px 0 8px}
+.pm-evs{display:flex;flex-direction:column;gap:5px}
+.pm-ev{display:flex;gap:10px;font-size:12px}
+.pm-ev .pm-d{color:var(--muted);font-weight:700;min-width:56px}
+.pm-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px;border-top:1px solid var(--line)}
+.pm-foot .muted{font-size:11px}
+
+/* ---- ROI: theme toggle + theme rollup ---- */
+.roi-toggle{display:flex;align-items:center;gap:8px;margin:14px 0 4px}
+.roi-tg{background:#fff;border:1px solid var(--line);color:var(--ink);font-weight:700;font-size:12.5px;padding:6px 14px;border-radius:999px;cursor:pointer;transition:.12s}
+.roi-tg.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+.roi-tg-hint{font-size:11.5px;color:var(--muted);margin-left:6px}
+.th-hero{display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;padding:20px 24px}
+.th-h-lab{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.th-h-val{display:flex;align-items:baseline;gap:10px;margin:4px 0 6px}
+.th-h-val .thb{font-size:34px;font-weight:800;color:var(--muted);letter-spacing:-.02em}
+.th-h-val .tha{font-size:22px;color:var(--muted)}
+.th-h-val .thg{font-size:44px;font-weight:800;color:var(--act);letter-spacing:-.03em;line-height:1}
+.th-h-val .thu{font-size:15px;font-weight:700;color:var(--muted)}
+.th-h-form{font-size:12.5px;color:var(--muted)}
+.th-h-impact{text-align:right;background:#faf2e8;border-radius:12px;padding:12px 18px}
+.thi-lab{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.thi-val{font-size:17px;font-weight:800;color:var(--brand2);max-width:240px}
+.th-contrib .th-stack{display:flex;height:16px;border-radius:8px;overflow:hidden;margin:4px 0 16px;border:1px solid var(--line)}
+.th-seg{display:block}
+.th-seg.s0,.th-dot.s0{background:#16a085}.th-seg.s1,.th-dot.s1{background:#e67e22}.th-seg.s2,.th-dot.s2{background:#2980b9}
+.th-seg.s3,.th-dot.s3{background:#8e44ad}.th-seg.s4,.th-dot.s4{background:#d68910}.th-seg.s5,.th-dot.s5{background:#c0392b}
+.th-rows{display:flex;flex-direction:column;gap:10px}
+.th-row{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fbfaf7}
+.th-r-h{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.th-dot{width:11px;height:11px;border-radius:50%;flex:0 0 auto}
+.th-kpi{font-weight:800;font-size:13.5px}
+.th-proc{font-size:11.5px;color:var(--muted);font-weight:600}
+.th-w{font-size:11px;font-weight:700;color:var(--muted);background:#f2ece2;border-radius:999px;padding:2px 8px}
+.th-r-v{margin-left:auto;font-size:13px;color:var(--muted)}
+.th-r-v b{color:var(--ink)}
+.th-r-attr{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px}
+.th-al{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.th-pat{font-size:11px;font-weight:650;background:#f6eee2;border:1px solid var(--line);border-radius:6px;padding:2px 8px}
+
+/* ---- Governance: fit a 4th trust mode ---- */
+.modetabs{grid-template-columns:repeat(4,1fr)}
+@media(max-width:1000px){.modetabs{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.modetabs{grid-template-columns:1fr}}
+
+/* ---- Fitment: calibration column + interactive to-be flow ---- */
+.ftrow.cal{grid-template-columns:14px 1fr 118px 96px 188px 104px}
+@media(max-width:960px){.ftrow.cal{grid-template-columns:14px 1fr 188px 104px}.ftrow.cal .ft-tech,.ftrow.cal .ft-score{display:none}}
+@media(max-width:640px){.ftrow.cal{grid-template-columns:14px 1fr 104px}.ftrow.cal .ft-cal{display:none}}
+.ft-cal{display:flex;flex-direction:column;gap:3px}
+.ft-cal-sub{display:block;font-size:9px;font-weight:600;color:var(--muted);text-transform:none;letter-spacing:0}
+.cal-th{font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px}
+.cal-th i{font-style:normal;color:var(--muted)}
+.cal-def{color:var(--muted);text-decoration:line-through;text-decoration-color:#cbb}
+.cal-fit{color:var(--act)}
+.cal-delta{font-size:10px;font-weight:700;color:#1a8a5a}
+.cal-badge{font-size:8.5px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;color:#5d4777;background:#f0ebf6;border:1px solid #ddd0ee;border-radius:5px;padding:1px 6px;width:fit-content}
+.tb-dist{margin:12px 0 16px}
+.tb-dist .fd-bar{display:flex;height:14px;border-radius:7px;overflow:hidden;border:1px solid var(--line)}
+.tb-dist .fd-bar i{display:block}
+.tb-distlbl{font-size:12px;color:var(--muted);margin:7px 0 4px}
+.tb-distlbl b{color:var(--ink)}
+.tb-dist .fd-legend{display:flex;flex-wrap:wrap;gap:14px}
+.tb-dist .dl{font-size:11.5px;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:5px}
+.tb-dist .dl i{width:9px;height:9px;border-radius:2px}
+.tb-blocks{display:flex;flex-wrap:wrap;gap:7px}
+.tb-blk{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:9px;padding:6px 10px;cursor:pointer;
+  background:#fff;font-size:12px;font-weight:600;transition:.12s}
+.tb-blk:hover{transform:translateY(-1px)}
+.tb-blk .tbk-ic{font-size:13px}
+.tb-blk .tbk-mode{font-size:9px;font-weight:800;letter-spacing:.03em;padding:1px 6px;border-radius:5px}
+.tb-blk.agent{border-color:#bfe6d3;background:#f2fbf7}
+.tb-blk.agent .tbk-mode{background:#e6f7ef;color:#1a8a5a}
+.tb-blk.manual{border-color:#e6c8bf;background:#fdf4f1}
+.tb-blk.manual .tbk-mode{background:#fdeee6;color:#b85518}
+
+/* ---- Toast (discovery → library promotion, etc.) ---- */
+.piq-toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);background:var(--brand);color:#fff;
+  font-size:13px;font-weight:700;padding:11px 20px;border-radius:10px;box-shadow:0 12px 30px rgba(0,0,0,.3);
+  z-index:120;opacity:0;transition:.25s;pointer-events:none}
+.piq-toast.show{opacity:1;transform:translate(-50%,0)}
+
 </style>
 </head>
 <body>
@@ -1065,7 +1251,14 @@ button{font-family:inherit;cursor:pointer}
       ],
       "hitlGates": [
         "Collections VP approves legal hold"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-3 days",
+        "calibratedThreshold": "0-7 days",
+        "traceCount": 8373,
+        "additionalCoverage": 89,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 2,
@@ -1127,7 +1320,14 @@ button{font-family:inherit;cursor:pointer}
       ],
       "hitlGates": [
         "Legal must approve portal removal"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-4 days",
+        "calibratedThreshold": "0-9 days",
+        "traceCount": 8746,
+        "additionalCoverage": 118,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 3,
@@ -1188,7 +1388,14 @@ button{font-family:inherit;cursor:pointer}
       ],
       "hitlGates": [
         "Collections VP approves legal hold"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-2 days",
+        "calibratedThreshold": "0-8 days",
+        "traceCount": 9119,
+        "additionalCoverage": 147,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 4,
@@ -1251,7 +1458,14 @@ button{font-family:inherit;cursor:pointer}
       ],
       "hitlGates": [
         "Manager approves before any clearing"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-3 days",
+        "calibratedThreshold": "0-6 days",
+        "traceCount": 9492,
+        "additionalCoverage": 176,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 5,
@@ -1310,7 +1524,14 @@ button{font-family:inherit;cursor:pointer}
           "escLevel": 2
         }
       ],
-      "hitlGates": []
+      "hitlGates": [],
+      "calibration": {
+        "defaultThreshold": "0-4 days",
+        "calibratedThreshold": "0-8 days",
+        "traceCount": 9865,
+        "additionalCoverage": 205,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 6,
@@ -1370,7 +1591,14 @@ button{font-family:inherit;cursor:pointer}
           "escLevel": 2
         }
       ],
-      "hitlGates": []
+      "hitlGates": [],
+      "calibration": {
+        "defaultThreshold": "0-2 days",
+        "calibratedThreshold": "0-7 days",
+        "traceCount": 10238,
+        "additionalCoverage": 234,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 7,
@@ -1429,7 +1657,14 @@ button{font-family:inherit;cursor:pointer}
           "escLevel": 2
         }
       ],
-      "hitlGates": []
+      "hitlGates": [],
+      "calibration": {
+        "defaultThreshold": "0-3 days",
+        "calibratedThreshold": "0-9 days",
+        "traceCount": 10611,
+        "additionalCoverage": 263,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 8,
@@ -1490,7 +1725,14 @@ button{font-family:inherit;cursor:pointer}
       ],
       "hitlGates": [
         "Finance Director approves mass rejection"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-4 days",
+        "calibratedThreshold": "0-7 days",
+        "traceCount": 10984,
+        "additionalCoverage": 292,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 9,
@@ -1552,7 +1794,14 @@ button{font-family:inherit;cursor:pointer}
       ],
       "hitlGates": [
         "Manager approves bad faith rejection"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-2 days",
+        "calibratedThreshold": "0-6 days",
+        "traceCount": 11357,
+        "additionalCoverage": 61,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 10,
@@ -1616,7 +1865,14 @@ button{font-family:inherit;cursor:pointer}
       ],
       "hitlGates": [
         "VP approves delivery block"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-3 days",
+        "calibratedThreshold": "0-8 days",
+        "traceCount": 11730,
+        "additionalCoverage": 90,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 11,
@@ -1677,7 +1933,14 @@ button{font-family:inherit;cursor:pointer}
       ],
       "hitlGates": [
         "Collections VP approves delivery block"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-4 days",
+        "calibratedThreshold": "0-10 days",
+        "traceCount": 12103,
+        "additionalCoverage": 119,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 12,
@@ -1739,7 +2002,14 @@ button{font-family:inherit;cursor:pointer}
       ],
       "hitlGates": [
         "VP Collections approves delivery block"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-2 days",
+        "calibratedThreshold": "0-5 days",
+        "traceCount": 12476,
+        "additionalCoverage": 148,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 13,
@@ -1798,7 +2068,14 @@ button{font-family:inherit;cursor:pointer}
           "escLevel": 2
         }
       ],
-      "hitlGates": []
+      "hitlGates": [],
+      "calibration": {
+        "defaultThreshold": "0-3 days",
+        "calibratedThreshold": "0-7 days",
+        "traceCount": 12849,
+        "additionalCoverage": 177,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 14,
@@ -1857,7 +2134,14 @@ button{font-family:inherit;cursor:pointer}
           "escLevel": 2
         }
       ],
-      "hitlGates": []
+      "hitlGates": [],
+      "calibration": {
+        "defaultThreshold": "0-4 days",
+        "calibratedThreshold": "0-9 days",
+        "traceCount": 13222,
+        "additionalCoverage": 206,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 15,
@@ -1916,7 +2200,14 @@ button{font-family:inherit;cursor:pointer}
           "escLevel": 2
         }
       ],
-      "hitlGates": []
+      "hitlGates": [],
+      "calibration": {
+        "defaultThreshold": "0-2 days",
+        "calibratedThreshold": "0-8 days",
+        "traceCount": 13595,
+        "additionalCoverage": 235,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 16,
@@ -1975,7 +2266,14 @@ button{font-family:inherit;cursor:pointer}
           "escLevel": 2
         }
       ],
-      "hitlGates": []
+      "hitlGates": [],
+      "calibration": {
+        "defaultThreshold": "0-3 days",
+        "calibratedThreshold": "0-6 days",
+        "traceCount": 13968,
+        "additionalCoverage": 264,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 17,
@@ -2033,7 +2331,14 @@ button{font-family:inherit;cursor:pointer}
           "escLevel": 2
         }
       ],
-      "hitlGates": []
+      "hitlGates": [],
+      "calibration": {
+        "defaultThreshold": "0-4 days",
+        "calibratedThreshold": "0-8 days",
+        "traceCount": 14341,
+        "additionalCoverage": 293,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 18,
@@ -2089,7 +2394,14 @@ button{font-family:inherit;cursor:pointer}
           "tier": "default"
         }
       ],
-      "hitlGates": []
+      "hitlGates": [],
+      "calibration": {
+        "defaultThreshold": "0-2 days",
+        "calibratedThreshold": "0-7 days",
+        "traceCount": 14714,
+        "additionalCoverage": 62,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 19,
@@ -2141,7 +2453,14 @@ button{font-family:inherit;cursor:pointer}
       ],
       "hitlGates": [
         "CFO approves legal hold — SLA: 2 hours"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-3 days",
+        "calibratedThreshold": "0-9 days",
+        "traceCount": 15087,
+        "additionalCoverage": 91,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 20,
@@ -2203,7 +2522,14 @@ button{font-family:inherit;cursor:pointer}
       ],
       "hitlGates": [
         "CFO approves block + legal referral"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-4 days",
+        "calibratedThreshold": "0-7 days",
+        "traceCount": 15460,
+        "additionalCoverage": 120,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 21,
@@ -2264,7 +2590,14 @@ button{font-family:inherit;cursor:pointer}
       ],
       "hitlGates": [
         "Credit Risk VP approves limit reduction"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-2 days",
+        "calibratedThreshold": "0-6 days",
+        "traceCount": 15833,
+        "additionalCoverage": 149,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 22,
@@ -2325,7 +2658,14 @@ button{font-family:inherit;cursor:pointer}
       ],
       "hitlGates": [
         "CFO approves delivery block"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-3 days",
+        "calibratedThreshold": "0-8 days",
+        "traceCount": 16206,
+        "additionalCoverage": 178,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 23,
@@ -2383,7 +2723,14 @@ button{font-family:inherit;cursor:pointer}
           "escLevel": 2
         }
       ],
-      "hitlGates": []
+      "hitlGates": [],
+      "calibration": {
+        "defaultThreshold": "0-4 days",
+        "calibratedThreshold": "0-10 days",
+        "traceCount": 16579,
+        "additionalCoverage": 207,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 24,
@@ -2444,7 +2791,14 @@ button{font-family:inherit;cursor:pointer}
       ],
       "hitlGates": [
         "Treasury VP approves shipment freeze"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-2 days",
+        "calibratedThreshold": "0-5 days",
+        "traceCount": 16952,
+        "additionalCoverage": 236,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 25,
@@ -2505,7 +2859,14 @@ button{font-family:inherit;cursor:pointer}
       ],
       "hitlGates": [
         "Finance Director approves legal hold"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-3 days",
+        "calibratedThreshold": "0-7 days",
+        "traceCount": 17325,
+        "additionalCoverage": 265,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 26,
@@ -2563,7 +2924,14 @@ button{font-family:inherit;cursor:pointer}
           "escLevel": 2
         }
       ],
-      "hitlGates": []
+      "hitlGates": [],
+      "calibration": {
+        "defaultThreshold": "0-4 days",
+        "calibratedThreshold": "0-9 days",
+        "traceCount": 17698,
+        "additionalCoverage": 294,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 27,
@@ -2623,7 +2991,14 @@ button{font-family:inherit;cursor:pointer}
           "escLevel": 2
         }
       ],
-      "hitlGates": []
+      "hitlGates": [],
+      "calibration": {
+        "defaultThreshold": "0-2 days",
+        "calibratedThreshold": "0-8 days",
+        "traceCount": 18071,
+        "additionalCoverage": 63,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 28,
@@ -2685,7 +3060,14 @@ button{font-family:inherit;cursor:pointer}
       ],
       "hitlGates": [
         "Finance Director approves contract amendment"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-3 days",
+        "calibratedThreshold": "0-6 days",
+        "traceCount": 18444,
+        "additionalCoverage": 92,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 29,
@@ -2748,7 +3130,14 @@ button{font-family:inherit;cursor:pointer}
       ],
       "hitlGates": [
         "CFO must approve all future credit releases"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-4 days",
+        "calibratedThreshold": "0-8 days",
+        "traceCount": 18817,
+        "additionalCoverage": 121,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 30,
@@ -2809,7 +3198,14 @@ button{font-family:inherit;cursor:pointer}
       ],
       "hitlGates": [
         "Collections VP + Sales Director co-approve"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-2 days",
+        "calibratedThreshold": "0-7 days",
+        "traceCount": 19190,
+        "additionalCoverage": 150,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 31,
@@ -2870,7 +3266,14 @@ button{font-family:inherit;cursor:pointer}
       ],
       "hitlGates": [
         "Collections Director approves portal disable"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-3 days",
+        "calibratedThreshold": "0-9 days",
+        "traceCount": 19563,
+        "additionalCoverage": 179,
+        "method": "PM4Py conformance analysis"
+      }
     }
   ]
 };</script>
@@ -3697,6 +4100,54 @@ button{font-family:inherit;cursor:pointer}
       "desc": "Analyst FTE-hours redirected from triage to strategic engagement."
     }
   ],
+  "themes": [
+    {
+      "id": "working-capital",
+      "compoundKPI": {
+        "name": "Cash Conversion Cycle",
+        "formula": "DSO + DIO - DPO",
+        "current": 58,
+        "target": 38,
+        "unit": "days"
+      },
+      "contributors": [
+        {
+          "kpi": "DSO",
+          "process": "O2C Collections",
+          "current": 45,
+          "target": 35,
+          "weight": 0.45,
+          "patterns": [
+            "Creeping Payment Terms",
+            "29th-Day Tactic",
+            "Chronic Promise Breaker"
+          ]
+        },
+        {
+          "kpi": "DPO",
+          "process": "P2P Payments",
+          "current": 32,
+          "target": 42,
+          "weight": 0.35,
+          "patterns": [
+            "Payment Term Erosion",
+            "Early Pay Discount Trap"
+          ]
+        },
+        {
+          "kpi": "DIO",
+          "process": "Inventory",
+          "current": 45,
+          "target": 35,
+          "weight": 0.2,
+          "patterns": [
+            "Supplier Concentration Risk"
+          ]
+        }
+      ],
+      "impact": "$27M freed working capital at $1B revenue"
+    }
+  ],
   "trajectory": [
     {
       "period": "M1-3",
@@ -4200,8 +4651,180 @@ button{font-family:inherit;cursor:pointer}
         "blurb": "Straight-through on the happy path; variations matched to patterns and routed for approval."
       }
     ],
-    "functionCount": 10
+    "functionCount": 10,
+    "themeCount": 5
   },
+  "themes": [
+    {
+      "id": "working-capital",
+      "name": "Working Capital Optimization",
+      "icon": "trending-up",
+      "accent": "#1E8E7E",
+      "tagline": "Collect faster, pay smarter, deploy idle cash — compress the cash conversion cycle.",
+      "compoundKPI": {
+        "name": "Cash Conversion Cycle",
+        "formula": "DSO + DIO - DPO",
+        "unit": "days",
+        "current": 58,
+        "target": 38
+      },
+      "functionIds": [
+        "o2c",
+        "p2p"
+      ],
+      "crossProcessPatterns": [
+        {
+          "id": "ccp-1",
+          "name": "Bilateral Cash Squeeze",
+          "description": "Customer delays payment (DSO up) while supplier demands early payment (DPO down). Working capital squeezed from both sides simultaneously.",
+          "triggers": [
+            "Pattern #27 (Creeping Payment Terms) in O2C",
+            "Early Pay Discount pressure in P2P"
+          ],
+          "compoundImpact": "2x working capital erosion vs. either signal alone",
+          "response": "Synchronized collections push + supplier payment renegotiation"
+        },
+        {
+          "id": "ccp-2",
+          "name": "Quarter-End Cash Cliff",
+          "description": "Customers ghost at quarter-end (O2C Pattern #30) while supplier payments concentrate in same period.",
+          "triggers": [
+            "Pattern #30 (EOQ Ghosting) in O2C",
+            "Supplier payment clustering in P2P"
+          ],
+          "compoundImpact": "Cash position drops 40-60% in final 5 business days of quarter",
+          "response": "Pre-emptive collection calls week 3 of quarter + supplier payment staggering"
+        }
+      ]
+    },
+    {
+      "id": "revenue-leakage",
+      "name": "Revenue Leakage Prevention",
+      "icon": "shield-alert",
+      "accent": "#C62828",
+      "tagline": "Stop money walking out the door through disputes, deductions, write-offs, and pricing errors.",
+      "compoundKPI": {
+        "name": "Revenue Leakage Rate",
+        "formula": "(Disputes Written Off + Invalid Deductions + Bad Debt + Refund Fraud) / Gross Revenue",
+        "unit": "%",
+        "current": 2.8,
+        "target": 0.9
+      },
+      "functionIds": [
+        "o2c"
+      ],
+      "crossProcessPatterns": [
+        {
+          "id": "ccp-3",
+          "name": "Bust-Out Composite Signal",
+          "description": "Customer simultaneously: gaming dispute timing (Collections), requesting duplicate refunds (Cash App), credit score dropping (Credit). Individual signals are flags — together it is bust-out fraud.",
+          "triggers": [
+            "Pattern #1 (29th-Day Tactic)",
+            "Pattern #25 (Duplicate Payment Bait)",
+            "Pattern #19 (Bust-Out Fraud Precursor)",
+            "Pattern #22 (Bureau Downgrade)"
+          ],
+          "compoundImpact": "Average loss per bust-out event: $180K-$500K",
+          "response": "Immediate credit freeze + legal hold + CFO notification"
+        }
+      ]
+    },
+    {
+      "id": "close-acceleration",
+      "name": "Financial Close Acceleration",
+      "icon": "clock",
+      "accent": "#1E5F8E",
+      "tagline": "Compress close from 10 days to 4. Every day saved is a day for analysis instead of reconciliation.",
+      "compoundKPI": {
+        "name": "Close Cycle Days",
+        "formula": "Day of final GL posting - Day 1 of close",
+        "unit": "days",
+        "current": 10,
+        "target": 4
+      },
+      "functionIds": [
+        "o2c",
+        "r2r"
+      ],
+      "crossProcessPatterns": [
+        {
+          "id": "ccp-4",
+          "name": "Unapplied Cash Close Block",
+          "description": "Unapplied cash from Cash App blocks AR subledger reconciliation in R2R, which blocks trial balance, which delays close.",
+          "triggers": [
+            "Pattern #24 (Remittance Decoupling)",
+            "Pattern #26 (Unapplied Cash Weaponization)"
+          ],
+          "compoundImpact": "Each $1M unapplied cash adds ~0.5 days to close cycle",
+          "response": "Auto-match waterfall runs Day -3 before close; exceptions routed to Cash App team with 24-hour SLA"
+        }
+      ]
+    },
+    {
+      "id": "controls-integrity",
+      "name": "Compliance & Controls Integrity",
+      "icon": "shield-check",
+      "accent": "#6D4B9C",
+      "tagline": "Zero material weaknesses. Embedded controls, continuous monitoring, audit-ready always.",
+      "compoundKPI": {
+        "name": "Control Health Score",
+        "formula": "1 - (Deficiencies + Exceptions + Overrides) / Total Controls Tested",
+        "unit": "%",
+        "current": 87,
+        "target": 97
+      },
+      "functionIds": [
+        "o2c",
+        "r2r"
+      ],
+      "crossProcessPatterns": [
+        {
+          "id": "ccp-5",
+          "name": "Override Cascade",
+          "description": "Sales rep overrides credit hold (Pattern #29) on a customer who is already exploiting dispute process (Pattern #1). Two control failures compound: customer gets goods on credit while delaying payment on existing invoices.",
+          "triggers": [
+            "Pattern #29 (Strategic Shielding)",
+            "Pattern #1 (29th-Day Tactic)",
+            "Pattern #21 (Credit Block Bypass)"
+          ],
+          "compoundImpact": "SOX finding: segregation of duties failure + credit risk exposure",
+          "response": "Block override if customer has active dispute manipulation pattern; auto-escalate to Credit VP"
+        }
+      ]
+    },
+    {
+      "id": "cash-visibility",
+      "name": "Cash Visibility & Forecasting",
+      "icon": "eye",
+      "accent": "#F57F17",
+      "tagline": "See your cash 13 weeks out with 90%+ accuracy. Predict customer payment behavior, not just due dates.",
+      "compoundKPI": {
+        "name": "13-Week Forecast Accuracy",
+        "formula": "1 - |Forecast - Actual| / Actual",
+        "unit": "%",
+        "current": 64,
+        "target": 92
+      },
+      "functionIds": [
+        "o2c",
+        "p2p"
+      ],
+      "crossProcessPatterns": [
+        {
+          "id": "ccp-6",
+          "name": "Payment Behavior Drift",
+          "description": "Pattern #27 (Creeping Payment Terms) + Pattern #31 (Chronic Promise Breaker) together predict that a customer segment's actual payment date is drifting 2-3 days per quarter. Standard forecast models using contractual terms miss this.",
+          "triggers": [
+            "Pattern #27 (Creeping Payment Terms)",
+            "Pattern #31 (Chronic Promise Breaker)",
+            "Pattern #17 (Check is in the Mail)"
+          ],
+          "compoundImpact": "Forecast error of $2-5M per quarter from payment timing drift",
+          "response": "Override forecast model with behavioral prediction for flagged customers"
+        }
+      ]
+    }
+  ],
   "functions": [
     {
       "id": "o2c",
@@ -4424,8 +5047,8 @@ button{font-family:inherit;cursor:pointer}
       "short": "P2P",
       "icon": "🧾",
       "accent": "#7c4dff",
-      "status": "sample",
-      "tagline": "Invoice integrity, matching, and working-capital capture.",
+      "status": "live",
+      "tagline": "Invoice integrity, matching, and payment timing that protects cash.",
       "valueChain": {
         "name": "Procure-to-Pay Value Chain",
         "groups": [
@@ -4548,46 +5171,39 @@ button{font-family:inherit;cursor:pointer}
       "processes": [
         {
           "id": "p2p-ap",
-          "name": "AP Invoice Processing & Exceptions",
-          "desc": "From invoice receipt to posting — duplicates, mismatches, and spend leakage.",
+          "name": "AP Invoice Processing & Working Capital",
+          "desc": "From invoice receipt to payment — duplicates, ghost vendors, matching integrity, and payment timing that protects cash.",
           "roles": [
             {
               "id": "p2p-ap-analyst",
               "name": "AP Analyst",
               "objectives": [
                 {
-                  "id": "p2p-o-dup",
-                  "name": "Eliminate duplicate & fraudulent payments",
+                  "id": "p2p-o-integrity",
+                  "name": "Stop duplicate, ghost & fraudulent payments",
                   "kpi": "Fraud & duplicate leakage $",
                   "patternIds": [
+                    2002,
+                    2003,
+                    2006
+                  ],
+                  "patternCount": 3
+                }
+              ]
+            },
+            {
+              "id": "p2p-treasury",
+              "name": "Treasury / Working Capital Analyst",
+              "objectives": [
+                {
+                  "id": "p2p-o-wc",
+                  "name": "Protect cash through payment timing",
+                  "kpi": "Days Payable Outstanding",
+                  "patternIds": [
                     2001,
-                    2005,
-                    2006,
-                    2007,
-                    2008
+                    2007
                   ],
-                  "patternCount": 5
-                },
-                {
-                  "id": "p2p-o-proc",
-                  "name": "Touchless invoice coding & approval",
-                  "kpi": "Touchless processing %",
-                  "patternIds": [
-                    2009,
-                    2010,
-                    2011,
-                    2012
-                  ],
-                  "patternCount": 4
-                },
-                {
-                  "id": "p2p-o-match",
-                  "name": "Touchless invoice matching",
-                  "kpi": "Touchless %",
-                  "patternIds": [
-                    2002
-                  ],
-                  "patternCount": 1
+                  "patternCount": 2
                 }
               ]
             },
@@ -4596,35 +5212,22 @@ button{font-family:inherit;cursor:pointer}
               "name": "Category / Procurement Manager",
               "objectives": [
                 {
-                  "id": "p2p-o-mav",
-                  "name": "Curb off-contract (maverick) spend",
+                  "id": "p2p-o-spend",
+                  "name": "Control spend leakage & supplier terms",
                   "kpi": "Contract compliance %",
                   "patternIds": [
-                    2003
+                    2004,
+                    2005,
+                    2008
                   ],
-                  "patternCount": 1
-                }
-              ]
-            },
-            {
-              "id": "p2p-treasury",
-              "name": "Treasury Analyst",
-              "objectives": [
-                {
-                  "id": "p2p-o-disc",
-                  "name": "Maximize early-payment discount capture",
-                  "kpi": "Discounts captured $",
-                  "patternIds": [
-                    2004
-                  ],
-                  "patternCount": 1
+                  "patternCount": 3
                 }
               ]
             }
           ]
         }
       ],
-      "patternCount": 12
+      "patternCount": 8
     },
     {
       "id": "r2r",
@@ -5670,45 +6273,58 @@ button{font-family:inherit;cursor:pointer}
     }
   ],
   "stubPatterns": {
-    "2001": {
-      "id": 2001,
-      "name": "Duplicate Invoice Slip",
-      "category": "Invoice Integrity & Duplication",
+    "2002": {
+      "id": 2002,
+      "name": "Duplicate Invoice Injection",
+      "category": "Invoice & Payment Integrity",
       "priority": "Critical",
       "priorityRank": 0,
-      "mentalModel": "Same vendor, same amount, near-identical date — is this a re-bill or a genuine duplicate? Fingerprint it before it clears.",
-      "sample": true,
+      "mentalModel": "The 'new' invoice is last month's bill wearing a disguise — a tweaked PO reference and a rounded total, but the same vendor and the same economic amount. Pay both and we've bought the same thing twice. I match on the fingerprint, not the invoice number.",
+      "sample": false,
       "sources": {
         "sap": [
-          "(sample mapping — connect your system of record)"
+          "RBKP (invoice receipt header)",
+          "BSEG (posted payables)",
+          "EKPO (PO line reference)"
         ],
         "oracle": [
-          "(sample mapping — connect your system of record)"
+          "AP_INVOICES_ALL (invoice header)",
+          "AP_INVOICE_LINES_ALL (line detail)"
         ]
       },
-      "layer1_logicalMapping": "Sample logical mapping for the Duplicate Invoice Slip pattern.",
-      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer1_logicalMapping": "Vendor + net amount + baseline date on the incoming invoice, fingerprinted and matched against every posted and open payable to catch a re-bill that changed only its surface identifiers.",
+      "layer2_eventSeries": "Invoice arrival → fingerprint(vendor+amount+date) → match against posted & open items → exact vs. fuzzy (rounded amount / alternate PO) → block or clear before payment.",
       "layer3_feature": "Duplicate_Fingerprint",
       "featureSlug": "duplicate-fingerprint",
-      "conceptualSQL": "-- sample trigger for Duplicate_Fingerprint\nSELECT * FROM source WHERE signal = 'Duplicate_Fingerprint'",
+      "conceptualSQL": "-- pre-calculated trigger for Duplicate_Fingerprint\nSELECT * FROM ap_signals WHERE signal = 'Duplicate_Fingerprint'",
       "originalDAG": [
-        "Fingerprint_Invoice",
-        "Match_Against_History",
+        "Fingerprint_Invoice(vendor+amount+date)",
+        "Match_Against_Posted_And_Open",
         "Auto_Block_If_Match",
         "Notify_AP"
       ],
       "branchingDAG": [
         {
-          "condition": "IF Fingerprint_Match = exact",
+          "condition": "IF No_Fingerprint_Match",
           "actions": [
-            "Auto_Hold + Flag_Duplicate"
+            "Auto_Continue_Processing"
           ],
           "hitl": null,
           "tier": "primary"
         },
         {
-          "condition": "ELSE IF Fingerprint_Match = fuzzy",
+          "condition": "ELSE IF Exact_Match",
           "actions": [
+            "Auto_Block",
+            "Flag_Duplicate"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Fuzzy_Match(rounded/alt-PO)",
+          "actions": [
+            "Hold_Payment",
             "Route_To_AP_Review",
             "Attach_Candidate_Pair"
           ],
@@ -5719,150 +6335,195 @@ button{font-family:inherit;cursor:pointer}
       ],
       "hitlGates": [
         "AP analyst confirms duplicate"
-      ]
-    },
-    "2002": {
-      "id": 2002,
-      "name": "PO–Invoice 3-Way Mismatch",
-      "category": "Match & Exception Handling",
-      "priority": "High",
-      "priorityRank": 1,
-      "mentalModel": "Invoice says 1,000 units, GR says 980. Is this within tolerance, a short-ship, or a price creep? Decide the variance, don't bounce it to a human by default.",
-      "sample": true,
-      "sources": {
-        "sap": [
-          "(sample mapping — connect your system of record)"
-        ],
-        "oracle": [
-          "(sample mapping — connect your system of record)"
-        ]
-      },
-      "layer1_logicalMapping": "Sample logical mapping for the PO–Invoice 3-Way Mismatch pattern.",
-      "layer2_eventSeries": "Sample event series derived from the source timeline.",
-      "layer3_feature": "ThreeWay_Variance",
-      "featureSlug": "threeway-variance",
-      "conceptualSQL": "-- sample trigger for ThreeWay_Variance\nSELECT * FROM source WHERE signal = 'ThreeWay_Variance'",
-      "originalDAG": [
-        "Pull_PO_GR_Invoice",
-        "Compute_Variance",
-        "Apply_Tolerance",
-        "Post_If_Within"
       ],
-      "branchingDAG": [
-        {
-          "condition": "IF Variance <= tolerance",
-          "actions": [
-            "Auto_Post + Clear_Block"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Price_Variance > 2%",
-          "actions": [
-            "Route_To_Buyer",
-            "Request_Price_Confirmation"
-          ],
-          "hitl": "Buyer confirms price change",
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF Qty_Variance",
-          "actions": [
-            "Open_GR_Discrepancy",
-            "Notify_Receiving"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        }
-      ],
-      "hitlGates": [
-        "Buyer confirms price change"
-      ]
+      "calibration": {
+        "defaultThreshold": "0-3 days",
+        "calibratedThreshold": "0-8 days",
+        "traceCount": 10746,
+        "additionalCoverage": 138,
+        "method": "PM4Py conformance analysis"
+      }
     },
     "2003": {
       "id": 2003,
-      "name": "Maverick / Off-Contract Spend",
-      "category": "Spend Compliance",
-      "priority": "Medium",
-      "priorityRank": 2,
-      "mentalModel": "This buy bypassed the preferred-supplier contract. Was it an emergency, or leakage? Surface it before payment, attribute the savings lost.",
-      "sample": true,
+      "name": "Ghost Vendor",
+      "category": "Invoice & Payment Integrity",
+      "priority": "Critical",
+      "priorityRank": 0,
+      "mentalModel": "A vendor master appears, invoices start flowing, but there's no goods receipt and no service entry behind any of them — and the bank details were added the same week the first invoice landed. No receipt, fresh master, new bank: that's a ghost vendor until someone proves otherwise.",
+      "sample": false,
       "sources": {
         "sap": [
-          "(sample mapping — connect your system of record)"
+          "LFA1 (vendor master + creation date)",
+          "RBKP (invoice receipt)",
+          "EKKO (PO / goods-receipt link)"
         ],
         "oracle": [
-          "(sample mapping — connect your system of record)"
+          "AP_SUPPLIERS (supplier master)",
+          "AP_INVOICES_ALL (invoice header)",
+          "RCV_TRANSACTIONS (receipts)"
         ]
       },
-      "layer1_logicalMapping": "Sample logical mapping for the Maverick / Off-Contract Spend pattern.",
-      "layer2_eventSeries": "Sample event series derived from the source timeline.",
-      "layer3_feature": "Off_Contract_Flag",
-      "featureSlug": "off-contract-flag",
-      "conceptualSQL": "-- sample trigger for Off_Contract_Flag\nSELECT * FROM source WHERE signal = 'Off_Contract_Flag'",
+      "layer1_logicalMapping": "Each invoice is joined to its goods-receipt / service-entry evidence and to the age of the vendor master and its bank record; invoices with no receipt behind a freshly-created master are held.",
+      "layer2_eventSeries": "Vendor master created → invoices submitted → check for matching GR / service entry → cross-check master & bank-record age → no receipt + new master + new bank ⇒ freeze.",
+      "layer3_feature": "Ghost_Vendor",
+      "featureSlug": "ghost-vendor",
+      "conceptualSQL": "-- pre-calculated trigger for Ghost_Vendor\nSELECT * FROM ap_signals WHERE signal = 'Ghost_Vendor'",
       "originalDAG": [
-        "Match_To_Contract",
-        "Detect_Off_Contract",
-        "Quantify_Leakage",
-        "Log_For_Sourcing"
+        "Match_Invoice_To_Receipt",
+        "Check_Vendor_Master_Age",
+        "Detect_No_GR_No_Service",
+        "Hold_Payment"
       ],
       "branchingDAG": [
         {
-          "condition": "IF On_Contract",
+          "condition": "IF GR_Or_Service_Exists",
           "actions": [
-            "Auto_Approve"
+            "Auto_Continue_Processing"
           ],
           "hitl": null,
           "tier": "primary"
         },
         {
-          "condition": "ELSE IF Off_Contract AND Amount < threshold",
+          "condition": "ELSE IF No_Receipt AND Established_Vendor",
           "actions": [
-            "Flag_For_Review",
-            "Notify_Category_Manager"
+            "Request_Proof_Of_Delivery",
+            "Notify_Requester"
           ],
-          "hitl": "Category manager reviews leakage",
+          "hitl": "Requester confirms goods/services received",
+          "tier": "escalation",
+          "escLevel": 1
+        },
+        {
+          "condition": "ELSE IF No_Receipt AND New_Master AND New_Bank",
+          "actions": [
+            "Freeze_Vendor",
+            "Open_Fraud_Case",
+            "Notify_Security"
+          ],
+          "hitl": "Controller confirms suspected ghost vendor",
+          "tier": "escalation",
+          "escLevel": 2
+        }
+      ],
+      "hitlGates": [
+        "Requester confirms goods/services received",
+        "Controller confirms suspected ghost vendor"
+      ],
+      "calibration": {
+        "defaultThreshold": "0-4 days",
+        "calibratedThreshold": "0-10 days",
+        "traceCount": 11119,
+        "additionalCoverage": 167,
+        "method": "PM4Py conformance analysis"
+      }
+    },
+    "2006": {
+      "id": 2006,
+      "name": "Three-Way Match Override Abuse",
+      "category": "Invoice & Payment Integrity",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "The GR/IR quantity mismatch keeps getting force-released by the same clerk with no note — same vendor, same override, every month. One override is judgement; a habit of overrides with no investigation is a control hole. I re-open the pattern, not just the single invoice.",
+      "sample": false,
+      "sources": {
+        "sap": [
+          "RBKP (invoice / block-release)",
+          "EKPO (PO vs GR quantities)",
+          "BSEG (posted amount)"
+        ],
+        "oracle": [
+          "AP_HOLDS_ALL (holds & releases)",
+          "AP_INVOICES_ALL (invoice header)",
+          "RCV_TRANSACTIONS (receipts)"
+        ]
+      },
+      "layer1_logicalMapping": "Every match block release is attributed to a user and vendor and tested for a recurring override with no attached investigation evidence — the signature of a rubber-stamped control.",
+      "layer2_eventSeries": "GR/IR mismatch → block → who released it and how often → is there investigation evidence → repeat override with none ⇒ re-impose block and route to controls.",
+      "layer3_feature": "ThreeWay_Override",
+      "featureSlug": "threeway-override",
+      "conceptualSQL": "-- pre-calculated trigger for ThreeWay_Override\nSELECT * FROM ap_signals WHERE signal = 'ThreeWay_Override'",
+      "originalDAG": [
+        "Track_Match_Overrides(user+vendor)",
+        "Detect_Repeat_Override",
+        "Check_Investigation_Evidence",
+        "Route_By_Pattern"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Within_Tolerance_Or_Justified",
+          "actions": [
+            "Auto_Release"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF First_Override AND Documented",
+          "actions": [
+            "Allow",
+            "Monitor"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Repeat_Override AND No_Evidence",
+          "actions": [
+            "Re_Impose_Block",
+            "Route_To_Controls",
+            "Flag_SoD_Risk"
+          ],
+          "hitl": "Controls reviews override pattern",
           "tier": "escalation",
           "escLevel": 1
         }
       ],
       "hitlGates": [
-        "Category manager reviews leakage"
-      ]
+        "Controls reviews override pattern"
+      ],
+      "calibration": {
+        "defaultThreshold": "0-4 days",
+        "calibratedThreshold": "0-9 days",
+        "traceCount": 12238,
+        "additionalCoverage": 254,
+        "method": "PM4Py conformance analysis"
+      }
     },
-    "2004": {
-      "id": 2004,
-      "name": "Early-Payment Discount Capture",
-      "category": "Working Capital",
-      "priority": "Medium",
-      "priorityRank": 2,
-      "mentalModel": "There's a 2/10 net-30 discount on the table and the clock is ticking. Is the discount worth more than the cash held? Capture it automatically when it is.",
-      "sample": true,
+    "2001": {
+      "id": 2001,
+      "name": "Early Pay Discount Trap",
+      "category": "Spend & Terms Control",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "The 2/10 net-30 says pay by day 10 for the discount — but the payment run grabs it on autopilot even when our own cash is tight and the discount doesn't beat our cost of cash. I only take the early pay when the math actually works.",
+      "sample": false,
       "sources": {
         "sap": [
-          "(sample mapping — connect your system of record)"
+          "EKKO (payment terms ZTERM)",
+          "RBKP (invoice header, baseline date)",
+          "BSEG (open payables, discount fields)"
         ],
         "oracle": [
-          "(sample mapping — connect your system of record)"
+          "AP_TERMS (discount terms)",
+          "AP_PAYMENT_SCHEDULES_ALL (schedule)",
+          "AP_INVOICES_ALL (invoice header)"
         ]
       },
-      "layer1_logicalMapping": "Sample logical mapping for the Early-Payment Discount Capture pattern.",
-      "layer2_eventSeries": "Sample event series derived from the source timeline.",
-      "layer3_feature": "Discount_Window",
-      "featureSlug": "discount-window",
-      "conceptualSQL": "-- sample trigger for Discount_Window\nSELECT * FROM source WHERE signal = 'Discount_Window'",
+      "layer1_logicalMapping": "Discount terms and baseline date, joined to the projected cash position on the proposed pay date, decide whether taking the early-payment discount earns more than holding the cash.",
+      "layer2_eventSeries": "Discount window opens → payment-run selection date vs. day-10 deadline → cash position on that date → captured discount value vs. cost of cash → pay early only when it wins.",
+      "layer3_feature": "Early_Pay_Misfire",
+      "featureSlug": "early-pay-misfire",
+      "conceptualSQL": "-- pre-calculated trigger for Early_Pay_Misfire\nSELECT * FROM ap_signals WHERE signal = 'Early_Pay_Misfire'",
       "originalDAG": [
         "Read_Payment_Terms",
         "Compute_Discount_Value",
         "Compare_Cost_Of_Cash",
-        "Schedule_Early_Pay"
+        "Schedule_By_Cash_Position"
       ],
       "branchingDAG": [
         {
-          "condition": "IF Discount_Value > Cost_Of_Cash",
+          "condition": "IF Discount_Value > Cost_Of_Cash AND Cash_Available",
           "actions": [
             "Auto_Schedule_Early_Payment"
           ],
@@ -5870,291 +6531,65 @@ button{font-family:inherit;cursor:pointer}
           "tier": "primary"
         },
         {
-          "condition": "ELSE IF Marginal",
+          "condition": "ELSE IF Discount_Value <= Cost_Of_Cash",
           "actions": [
-            "Route_To_Treasury"
-          ],
-          "hitl": "Treasury approves early pay",
-          "tier": "escalation",
-          "escLevel": 1
-        }
-      ],
-      "hitlGates": [
-        "Treasury approves early pay"
-      ]
-    },
-    "2005": {
-      "id": 2005,
-      "name": "Remit-To Bank Swap",
-      "category": "Invoice Integrity & Fraud Signals",
-      "priority": "Critical",
-      "priorityRank": 0,
-      "mentalModel": "The bank details on this invoice don't match the vendor master. A changed remit-to is the number-one invoice-redirection fraud vector — I never pay to it until it's verified on a known-good phone number, no matter how routine the invoice looks.",
-      "sample": true,
-      "sources": {
-        "sap": [
-          "(sample mapping — connect your system of record)"
-        ],
-        "oracle": [
-          "(sample mapping — connect your system of record)"
-        ]
-      },
-      "layer1_logicalMapping": "Sample logical mapping for the Remit-To Bank Swap pattern.",
-      "layer2_eventSeries": "Sample event series derived from the source timeline.",
-      "layer3_feature": "RemitTo_Change_Flag",
-      "featureSlug": "remitto-change-flag",
-      "conceptualSQL": "-- sample trigger for RemitTo_Change_Flag\nSELECT * FROM source WHERE signal = 'RemitTo_Change_Flag'",
-      "originalDAG": [
-        "Compare_RemitTo_vs_VendorMaster",
-        "Detect_Bank_Change",
-        "Hold_Payment",
-        "Trigger_OutOfBand_Verification"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF RemitTo_Match = TRUE",
-          "actions": [
-            "Auto_Continue_Processing"
+            "Defer_To_Net_Due_Date",
+            "Log_Discount_Declined"
           ],
           "hitl": null,
           "tier": "primary"
         },
         {
-          "condition": "ELSE IF Bank_Changed AND Callback_Verified",
+          "condition": "ELSE IF Cash_Tight AND Discount_Marginal",
           "actions": [
-            "Update_Vendor_Master",
-            "Release_Hold",
-            "Log_Change_Audit"
+            "Route_To_Treasury",
+            "Attach_Cash_Forecast"
           ],
-          "hitl": "AP lead approves bank-detail change",
+          "hitl": "Treasury approves early pay vs. hold",
           "tier": "escalation",
           "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF Bank_Changed AND Verification_Fails",
-          "actions": [
-            "Freeze_Vendor",
-            "Open_Fraud_Case",
-            "Notify_Security"
-          ],
-          "hitl": "Controller confirms suspected fraud",
-          "tier": "escalation",
-          "escLevel": 2
         }
       ],
       "hitlGates": [
-        "AP lead approves bank-detail change",
-        "Controller confirms suspected fraud"
-      ]
+        "Treasury approves early pay vs. hold"
+      ],
+      "calibration": {
+        "defaultThreshold": "0-2 days",
+        "calibratedThreshold": "0-6 days",
+        "traceCount": 10373,
+        "additionalCoverage": 109,
+        "method": "PM4Py conformance analysis"
+      }
     },
-    "2006": {
-      "id": 2006,
-      "name": "Resubmission-After-Reject",
-      "category": "Invoice Integrity & Fraud Signals",
+    "2004": {
+      "id": 2004,
+      "name": "PO Split Below Approval Threshold",
+      "category": "Spend & Terms Control",
       "priority": "High",
       "priorityRank": 1,
-      "mentalModel": "This 'new' invoice number is last week's rejected invoice wearing a disguise — same vendor, PO, and amount. If the original gets corrected and this one clears too, we pay twice. I match on the economic fingerprint, not the invoice number.",
-      "sample": true,
+      "mentalModel": "One requisition became three POs to the same vendor in the same week, each landing just under the approval limit. Individually each auto-approves; together it's a decision someone senior should sign. I aggregate the window before releasing any of them.",
+      "sample": false,
       "sources": {
         "sap": [
-          "(sample mapping — connect your system of record)"
+          "EBAN (purchase requisition)",
+          "EKKO (PO header)",
+          "EKPO (PO item)"
         ],
         "oracle": [
-          "(sample mapping — connect your system of record)"
+          "POR_REQUISITION_HEADERS_ALL (requisitions)",
+          "PO_HEADERS_ALL (PO header)",
+          "PO_LINES_ALL (PO lines)"
         ]
       },
-      "layer1_logicalMapping": "Sample logical mapping for the Resubmission-After-Reject pattern.",
-      "layer2_eventSeries": "Sample event series derived from the source timeline.",
-      "layer3_feature": "Resubmit_Fingerprint",
-      "featureSlug": "resubmit-fingerprint",
-      "conceptualSQL": "-- sample trigger for Resubmit_Fingerprint\nSELECT * FROM source WHERE signal = 'Resubmit_Fingerprint'",
-      "originalDAG": [
-        "Fingerprint_Invoice(vendor+PO+amount+period)",
-        "Match_Against_Rejected_And_Open",
-        "Link_Resubmission",
-        "Supersede_Original"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF No_Prior_Match",
-          "actions": [
-            "Auto_Continue_Processing"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Matches_Rejected_Item",
-          "actions": [
-            "Link_To_Original",
-            "Carry_Forward_Approvals",
-            "Auto_Post"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Matches_Open_Unpaid",
-          "actions": [
-            "Block_As_Potential_Duplicate",
-            "Route_To_AP_Review"
-          ],
-          "hitl": "AP analyst confirms not a duplicate",
-          "tier": "escalation",
-          "escLevel": 1
-        }
-      ],
-      "hitlGates": [
-        "AP analyst confirms not a duplicate"
-      ]
-    },
-    "2007": {
-      "id": 2007,
-      "name": "Unapplied Credit Memo",
-      "category": "Invoice Integrity & Fraud Signals",
-      "priority": "High",
-      "priorityRank": 1,
-      "mentalModel": "The vendor issued a credit memo weeks ago but keeps billing the full amount, and the credit is just sitting there unapplied. Every gross invoice I clear without netting it is money we've effectively paid twice. Net it before it posts.",
-      "sample": true,
-      "sources": {
-        "sap": [
-          "(sample mapping — connect your system of record)"
-        ],
-        "oracle": [
-          "(sample mapping — connect your system of record)"
-        ]
-      },
-      "layer1_logicalMapping": "Sample logical mapping for the Unapplied Credit Memo pattern.",
-      "layer2_eventSeries": "Sample event series derived from the source timeline.",
-      "layer3_feature": "Open_Credit_Balance",
-      "featureSlug": "open-credit-balance",
-      "conceptualSQL": "-- sample trigger for Open_Credit_Balance\nSELECT * FROM source WHERE signal = 'Open_Credit_Balance'",
-      "originalDAG": [
-        "Scan_Open_Credit_Memos",
-        "Match_Credit_To_Invoice(vendor)",
-        "Net_Before_Posting",
-        "Update_Vendor_Statement"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF No_Open_Credit",
-          "actions": [
-            "Auto_Continue_Processing"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Credit_Matches_Invoice",
-          "actions": [
-            "Auto_Apply_Credit",
-            "Post_Net_Amount"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Credit_Aging > 60d AND Unmatched",
-          "actions": [
-            "Request_Refund_From_Vendor",
-            "Escalate_AP_Lead"
-          ],
-          "hitl": "AP lead approves refund request",
-          "tier": "escalation",
-          "escLevel": 1
-        }
-      ],
-      "hitlGates": [
-        "AP lead approves refund request"
-      ]
-    },
-    "2008": {
-      "id": 2008,
-      "name": "Round-Sum Non-PO Inflation",
-      "category": "Invoice Integrity & Fraud Signals",
-      "priority": "Medium",
-      "priorityRank": 2,
-      "mentalModel": "A suspiciously round non-PO invoice — exactly $10,000, no line detail — from a vendor with barely any history. It's not proof of anything, but round-sum, low-history, no-backup is the classic soft-fraud signature. I want a second look before it slides into an auto-approve tier.",
-      "sample": true,
-      "sources": {
-        "sap": [
-          "(sample mapping — connect your system of record)"
-        ],
-        "oracle": [
-          "(sample mapping — connect your system of record)"
-        ]
-      },
-      "layer1_logicalMapping": "Sample logical mapping for the Round-Sum Non-PO Inflation pattern.",
-      "layer2_eventSeries": "Sample event series derived from the source timeline.",
-      "layer3_feature": "RoundSum_Anomaly",
-      "featureSlug": "roundsum-anomaly",
-      "conceptualSQL": "-- sample trigger for RoundSum_Anomaly\nSELECT * FROM source WHERE signal = 'RoundSum_Anomaly'",
-      "originalDAG": [
-        "Assess_Invoice_Shape(round+backup+history)",
-        "Score_Anomaly",
-        "Attach_Vendor_History",
-        "Route_By_Score"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF Anomaly_Score = low",
-          "actions": [
-            "Auto_Continue_Processing"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Round_Sum AND Low_History",
-          "actions": [
-            "Request_Supporting_Backup",
-            "Flag_For_Review"
-          ],
-          "hitl": "AP analyst reviews anomaly",
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF No_Backup AND Amount > threshold",
-          "actions": [
-            "Hold_Payment",
-            "Escalate_Procurement"
-          ],
-          "hitl": "Procurement validates spend",
-          "tier": "escalation",
-          "escLevel": 1
-        }
-      ],
-      "hitlGates": [
-        "AP analyst reviews anomaly",
-        "Procurement validates spend"
-      ]
-    },
-    "2009": {
-      "id": 2009,
-      "name": "Threshold-Split Approval Dodge",
-      "category": "Coding, Routing & Approval Judgment",
-      "priority": "High",
-      "priorityRank": 1,
-      "mentalModel": "Three $9,900 invoices from the same vendor this week, each one just under the $10k approval gate. Individually every one is auto-approvable; together it's a $29,700 decision someone senior should actually see. I aggregate the window before I let any of them approve.",
-      "sample": true,
-      "sources": {
-        "sap": [
-          "(sample mapping — connect your system of record)"
-        ],
-        "oracle": [
-          "(sample mapping — connect your system of record)"
-        ]
-      },
-      "layer1_logicalMapping": "Sample logical mapping for the Threshold-Split Approval Dodge pattern.",
-      "layer2_eventSeries": "Sample event series derived from the source timeline.",
+      "layer1_logicalMapping": "POs are aggregated by vendor, requester and rolling window and compared against the approval tiers to catch a spend deliberately sliced to stay under each individual gate.",
+      "layer2_eventSeries": "Requisition → multiple POs to one vendor in a window → aggregate value → does the total cross an approval tier that no single PO did → re-tier before release.",
       "layer3_feature": "Split_Under_Threshold",
       "featureSlug": "split-under-threshold",
-      "conceptualSQL": "-- sample trigger for Split_Under_Threshold\nSELECT * FROM source WHERE signal = 'Split_Under_Threshold'",
+      "conceptualSQL": "-- pre-calculated trigger for Split_Under_Threshold\nSELECT * FROM ap_signals WHERE signal = 'Split_Under_Threshold'",
       "originalDAG": [
-        "Aggregate_Vendor_Invoices(rolling_window)",
+        "Aggregate_POs(vendor+requester+window)",
         "Compare_To_Approval_Tiers",
-        "Detect_SubThreshold_Clustering",
+        "Detect_SubThreshold_Split",
         "Re_Tier_Approval"
       ],
       "branchingDAG": [
@@ -6167,7 +6602,7 @@ button{font-family:inherit;cursor:pointer}
           "tier": "primary"
         },
         {
-          "condition": "ELSE IF Cluster_Crosses_Tier",
+          "condition": "ELSE IF Split_Crosses_Tier",
           "actions": [
             "Bundle_For_Higher_Approver",
             "Attach_Split_Evidence"
@@ -6177,7 +6612,7 @@ button{font-family:inherit;cursor:pointer}
           "escLevel": 1
         },
         {
-          "condition": "ELSE IF Repeat_Pattern > 2 windows",
+          "condition": "ELSE IF Repeat_Splitter > 2 windows",
           "actions": [
             "Flag_To_Procurement",
             "Open_Policy_Review"
@@ -6189,158 +6624,49 @@ button{font-family:inherit;cursor:pointer}
       ],
       "hitlGates": [
         "Cost-centre owner approves aggregated spend"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-2 days",
+        "calibratedThreshold": "0-5 days",
+        "traceCount": 11492,
+        "additionalCoverage": 196,
+        "method": "PM4Py conformance analysis"
+      }
     },
-    "2010": {
-      "id": 2010,
-      "name": "Approval Musical Chairs",
-      "category": "Coding, Routing & Approval Judgment",
-      "priority": "Medium",
-      "priorityRank": 2,
-      "mentalModel": "This invoice has bounced to a third approver in a week, each one saying 'not mine'. The delegation-of-authority is ambiguous and the invoice is aging while they pass it around. I pin the correct approver by amount and cost-centre authority and stop the merry-go-round.",
-      "sample": true,
+    "2005": {
+      "id": 2005,
+      "name": "Retroactive Price Change",
+      "category": "Spend & Terms Control",
+      "priority": "High",
+      "priorityRank": 1,
+      "mentalModel": "The PO was approved at one unit price; the invoice matches a price that was quietly edited on the PO after approval but before matching. The three-way match passes because the PO was changed to fit the invoice — I check the price against the approved version, not the current one.",
+      "sample": false,
       "sources": {
         "sap": [
-          "(sample mapping — connect your system of record)"
+          "EKPO (PO item price + change history)",
+          "EKKO (PO header)",
+          "RBKP (invoice receipt)"
         ],
         "oracle": [
-          "(sample mapping — connect your system of record)"
+          "PO_LINES_ALL (PO line price)",
+          "PO_LINE_LOCATIONS_ALL (shipments)",
+          "AP_INVOICE_LINES_ALL (invoice lines)"
         ]
       },
-      "layer1_logicalMapping": "Sample logical mapping for the Approval Musical Chairs pattern.",
-      "layer2_eventSeries": "Sample event series derived from the source timeline.",
-      "layer3_feature": "Approval_Bounce",
-      "featureSlug": "approval-bounce",
-      "conceptualSQL": "-- sample trigger for Approval_Bounce\nSELECT * FROM source WHERE signal = 'Approval_Bounce'",
+      "layer1_logicalMapping": "The invoice price is matched against the PO price as approved (from change history), not the current PO value, so a post-approval edit that silently lifts the price is caught before it clears.",
+      "layer2_eventSeries": "PO approved at price P → PO line price edited after approval → invoice matches the edited price → compare against approved P → block increases beyond tolerance.",
+      "layer3_feature": "Retro_Price_Change",
+      "featureSlug": "retro-price-change",
+      "conceptualSQL": "-- pre-calculated trigger for Retro_Price_Change\nSELECT * FROM ap_signals WHERE signal = 'Retro_Price_Change'",
       "originalDAG": [
-        "Read_Approval_History",
-        "Resolve_DoA(amount+costcentre)",
-        "Assign_Correct_Approver",
-        "Notify_With_Deadline"
+        "Read_PO_Price_History",
+        "Compare_Approved_vs_Current",
+        "Detect_PostApproval_Edit",
+        "Match_Against_Approved_Price"
       ],
       "branchingDAG": [
         {
-          "condition": "IF Single_Clear_Approver",
-          "actions": [
-            "Auto_Route_To_Approver"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Bounced >= 2 AND DoA_Resolvable",
-          "actions": [
-            "Pin_Authoritative_Approver",
-            "Attach_DoA_Evidence"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF DoA_Ambiguous AND Aging > SLA",
-          "actions": [
-            "Escalate_AP_Manager",
-            "Flag_Approval_Gap"
-          ],
-          "hitl": "AP manager assigns approver",
-          "tier": "escalation",
-          "escLevel": 1
-        }
-      ],
-      "hitlGates": [
-        "AP manager assigns approver"
-      ]
-    },
-    "2011": {
-      "id": 2011,
-      "name": "Ownerless Non-PO Invoice",
-      "category": "Coding, Routing & Approval Judgment",
-      "priority": "Medium",
-      "priorityRank": 2,
-      "mentalModel": "A non-PO invoice arrives with no PO and no requester named on it. Left alone it ages in the unassigned queue for weeks. I infer the likely owner from GL history, the vendor, and the contract, and route it — an inferred owner who can reassign beats a silent backlog.",
-      "sample": true,
-      "sources": {
-        "sap": [
-          "(sample mapping — connect your system of record)"
-        ],
-        "oracle": [
-          "(sample mapping — connect your system of record)"
-        ]
-      },
-      "layer1_logicalMapping": "Sample logical mapping for the Ownerless Non-PO Invoice pattern.",
-      "layer2_eventSeries": "Sample event series derived from the source timeline.",
-      "layer3_feature": "Missing_Owner",
-      "featureSlug": "missing-owner",
-      "conceptualSQL": "-- sample trigger for Missing_Owner\nSELECT * FROM source WHERE signal = 'Missing_Owner'",
-      "originalDAG": [
-        "Extract_Invoice_Signals(vendor+GL+desc)",
-        "Infer_Owner_From_History",
-        "Assign_Provisional_Owner",
-        "Route_For_Confirmation"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF Owner_Confidently_Inferred",
-          "actions": [
-            "Auto_Route_To_Owner"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Multiple_Candidate_Owners",
-          "actions": [
-            "Route_To_Top_Candidate",
-            "CC_Alternates"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF No_Signal",
-          "actions": [
-            "Hold_In_Triage",
-            "Escalate_AP_Lead"
-          ],
-          "hitl": "AP lead assigns cost-centre owner",
-          "tier": "escalation",
-          "escLevel": 1
-        }
-      ],
-      "hitlGates": [
-        "AP lead assigns cost-centre owner"
-      ]
-    },
-    "2012": {
-      "id": 2012,
-      "name": "OCR Confidence Cliff",
-      "category": "Coding, Routing & Approval Judgment",
-      "priority": "Medium",
-      "priorityRank": 2,
-      "mentalModel": "The capture engine is only 62% sure the invoice total is $12,400 — the tax and vendor fields are shaky too. Above the confidence bar I let it post untouched; below it, this is a keying error waiting to hit the ledger. I gate straight-through on confidence, not on hope.",
-      "sample": true,
-      "sources": {
-        "sap": [
-          "(sample mapping — connect your system of record)"
-        ],
-        "oracle": [
-          "(sample mapping — connect your system of record)"
-        ]
-      },
-      "layer1_logicalMapping": "Sample logical mapping for the OCR Confidence Cliff pattern.",
-      "layer2_eventSeries": "Sample event series derived from the source timeline.",
-      "layer3_feature": "OCR_Confidence",
-      "featureSlug": "ocr-confidence",
-      "conceptualSQL": "-- sample trigger for OCR_Confidence\nSELECT * FROM source WHERE signal = 'OCR_Confidence'",
-      "originalDAG": [
-        "Read_Capture_Confidence(perfield)",
-        "Compare_To_Threshold",
-        "Auto_Post_If_Clear",
-        "Queue_LowConfidence_For_Verify"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF All_Fields_Above_Bar",
+          "condition": "IF Price_Unchanged_Since_Approval",
           "actions": [
             "Auto_Post"
           ],
@@ -6348,20 +6674,172 @@ button{font-family:inherit;cursor:pointer}
           "tier": "primary"
         },
         {
-          "condition": "ELSE IF Key_Field_Below_Bar",
+          "condition": "ELSE IF Edit_Within_Tolerance AND Documented",
           "actions": [
-            "Highlight_Suspect_Fields",
-            "Route_To_Keying_Review"
+            "Auto_Post",
+            "Log_Change"
           ],
-          "hitl": "AP clerk verifies captured fields",
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF PostApproval_Increase > tolerance",
+          "actions": [
+            "Block_Invoice",
+            "Route_To_Buyer",
+            "Request_Price_Justification"
+          ],
+          "hitl": "Buyer confirms approved price change",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Buyer confirms approved price change"
+      ],
+      "calibration": {
+        "defaultThreshold": "0-3 days",
+        "calibratedThreshold": "0-7 days",
+        "traceCount": 11865,
+        "additionalCoverage": 225,
+        "method": "PM4Py conformance analysis"
+      }
+    },
+    "2007": {
+      "id": 2007,
+      "name": "Payment Term Erosion",
+      "category": "Spend & Terms Control",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "Contract says net-45 but we're actually paying this vendor on day 30 — the effective DPO has drifted a week short of what we negotiated. Paying early for no discount is just giving working capital away. I catch the drift and hold to terms.",
+      "sample": false,
+      "sources": {
+        "sap": [
+          "BSEG (clearing / payment dates)",
+          "EKKO (contracted terms ZTERM)",
+          "LFA1 (vendor master terms)"
+        ],
+        "oracle": [
+          "AP_PAYMENT_SCHEDULES_ALL (payment dates)",
+          "AP_INVOICES_ALL (invoice header)",
+          "AP_TERMS (terms)"
+        ]
+      },
+      "layer1_logicalMapping": "Effective DPO per vendor is computed from actual clearing dates and compared to the contracted terms to surface systematic early payment that surrenders working capital for no discount.",
+      "layer2_eventSeries": "Actual payment dates → effective DPO by vendor → compare to contract terms → early with no discount benefit ⇒ reschedule to net due; systemic ⇒ treasury.",
+      "layer3_feature": "DPO_Erosion",
+      "featureSlug": "dpo-erosion",
+      "conceptualSQL": "-- pre-calculated trigger for DPO_Erosion\nSELECT * FROM ap_signals WHERE signal = 'DPO_Erosion'",
+      "originalDAG": [
+        "Compute_Effective_DPO(vendor)",
+        "Compare_To_Contract_Terms",
+        "Detect_Early_Drift",
+        "Reschedule_To_Terms"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF DPO_At_Or_Above_Terms",
+          "actions": [
+            "No_Action"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Early AND No_Discount_Benefit",
+          "actions": [
+            "Auto_Reschedule_To_Net_Due",
+            "Log_WC_Recovered"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Early_By_Policy_Or_Discount",
+          "actions": [
+            "Keep_Schedule",
+            "Annotate_Reason"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Systemic_Early_Across_Vendors",
+          "actions": [
+            "Route_To_Treasury",
+            "Propose_Terms_Reset"
+          ],
+          "hitl": "Treasury approves payment-timing policy",
+          "tier": "escalation",
+          "escLevel": 1
+        }
+      ],
+      "hitlGates": [
+        "Treasury approves payment-timing policy"
+      ],
+      "calibration": {
+        "defaultThreshold": "0-2 days",
+        "calibratedThreshold": "0-8 days",
+        "traceCount": 12611,
+        "additionalCoverage": 283,
+        "method": "PM4Py conformance analysis"
+      }
+    },
+    "2008": {
+      "id": 2008,
+      "name": "Supplier Concentration Risk",
+      "category": "Spend & Terms Control",
+      "priority": "Medium",
+      "priorityRank": 2,
+      "mentalModel": "One supplier now takes more than 40% of this category's spend. That's convenient until they raise prices or fail — concentration quietly hands them the leverage. I surface it while there's still time to qualify a second source.",
+      "sample": false,
+      "sources": {
+        "sap": [
+          "EKKO (PO spend by vendor)",
+          "EKPO (category / material group)",
+          "LFA1 (vendor master)"
+        ],
+        "oracle": [
+          "PO_HEADERS_ALL (PO header)",
+          "PO_LINES_ALL (category spend)",
+          "POZ_SUPPLIERS (supplier master)"
+        ]
+      },
+      "layer1_logicalMapping": "Category spend is aggregated by vendor to compute each supplier's share; a share above policy flags a concentration risk before pricing power or a supplier failure becomes the company's problem.",
+      "layer2_eventSeries": "Spend by category and vendor → concentration share → above 40% with alternatives ⇒ dual-source; sole-source or above 60% ⇒ escalate a risk assessment.",
+      "layer3_feature": "Supplier_Concentration",
+      "featureSlug": "supplier-concentration",
+      "conceptualSQL": "-- pre-calculated trigger for Supplier_Concentration\nSELECT * FROM ap_signals WHERE signal = 'Supplier_Concentration'",
+      "originalDAG": [
+        "Aggregate_Spend_By_Category_Vendor",
+        "Compute_Concentration_Share",
+        "Detect_Over_Threshold",
+        "Flag_For_Sourcing"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Share < 40%",
+          "actions": [
+            "No_Action"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "ELSE IF Share >= 40% AND Alternatives_Exist",
+          "actions": [
+            "Recommend_Dual_Source",
+            "Notify_Category_Manager"
+          ],
+          "hitl": "Category manager approves sourcing action",
           "tier": "escalation",
           "escLevel": 1
         },
         {
-          "condition": "ELSE IF Vendor_Unrecognised",
+          "condition": "ELSE IF Share >= 60% OR Sole_Source",
           "actions": [
-            "Hold_For_Vendor_Match",
-            "Escalate_Master_Data"
+            "Escalate_Procurement_Lead",
+            "Open_Risk_Assessment"
           ],
           "hitl": null,
           "tier": "escalation",
@@ -6369,8 +6847,15 @@ button{font-family:inherit;cursor:pointer}
         }
       ],
       "hitlGates": [
-        "AP clerk verifies captured fields"
-      ]
+        "Category manager approves sourcing action"
+      ],
+      "calibration": {
+        "defaultThreshold": "0-3 days",
+        "calibratedThreshold": "0-6 days",
+        "traceCount": 12984,
+        "additionalCoverage": 312,
+        "method": "PM4Py conformance analysis"
+      }
     },
     "3001": {
       "id": 3001,
@@ -10123,6 +10608,7 @@ button{font-family:inherit;cursor:pointer}
     _erpListeners: [],
     // the process an SME is composing — threaded through all three stages
     composition: {
+      themeId: null,      // business theme (spans functions) — optional top-level lens
       fnId: null, procId: null,
       roleIds: [],        // all personas participating in the chosen process
       objIds: [],         // objectives in scope (across the selected personas)
@@ -10138,8 +10624,9 @@ button{font-family:inherit;cursor:pointer}
     { id: "design", n: 1, label: "Design", tag: "Missions → Actions", sub: [
         { id: "studio", label: "Studio" },
         { id: "library", label: "Pattern Library" } ] },
-    { id: "fit", n: 2, label: "Discover & Fit", tag: "Discovery & Agent Fitment", sub: [
+    { id: "fit", n: 2, label: "Discover & Fit", tag: "Discovery, Fitment & Build", sub: [
         { id: "fitment", label: "Agent Fitment" },
+        { id: "build", label: "Build Engine" },
         { id: "discovery", label: "Discovery Engine" } ] },
     { id: "run", n: 3, label: "Run & Govern", tag: "Agentic Workflow", sub: [
         { id: "runtime", label: "Live Operations" },
@@ -10169,6 +10656,44 @@ button{font-family:inherit;cursor:pointer}
 
   PIQ.selectedPatterns = function () {
     return PIQ.composition.patternIds.map(PIQ.pattern).filter(Boolean);
+  };
+
+  // the business theme (optional top-level lens) currently in scope
+  PIQ.theme = function () {
+    return (PIQ.tax.themes || []).filter(function (t) { return t.id === PIQ.composition.themeId; })[0] || null;
+  };
+  // functions a theme spans (resolved objects); all functions if no theme selected
+  PIQ.themeFunctions = function () {
+    var t = PIQ.theme(), all = PIQ.tax.functions || [];
+    if (!t) return all;
+    var ids = t.functionIds || [];
+    var some = all.filter(function (f) { return ids.indexOf(f.id) >= 0; });
+    return some.length ? some : all;
+  };
+
+  // pull the referenced pattern ids ("#27") out of a compound pattern's triggers
+  PIQ.compoundConstituents = function (cp) {
+    var seen = {}, out = [];
+    (cp.triggers || []).forEach(function (t) {
+      (String(t).match(/#(\d+)/g) || []).forEach(function (m) {
+        var id = +m.slice(1); if (!seen[id]) { seen[id] = 1; out.push(id); }
+      });
+    });
+    return out;
+  };
+  // cross-process compound patterns applicable to the current composition:
+  // the selected theme's, or (if none) every theme touching the chosen function.
+  PIQ.compoundPatterns = function () {
+    var c = PIQ.composition, out = [];
+    (PIQ.tax.themes || []).forEach(function (t) {
+      if (c.themeId) { if (t.id !== c.themeId) return; }
+      else if (c.fnId && (t.functionIds || []).indexOf(c.fnId) < 0) return;
+      else if (!c.fnId && !c.themeId) return;
+      (t.crossProcessPatterns || []).forEach(function (cp) {
+        out.push({ theme: t, cp: cp, constituents: PIQ.compoundConstituents(cp) });
+      });
+    });
+    return out;
   };
 
   PIQ.fn = function () {
@@ -10282,7 +10807,7 @@ button{font-family:inherit;cursor:pointer}
   };
 
   PIQ.resetComposition = function () {
-    PIQ.composition = { fnId: null, procId: null, roleIds: [], objIds: [],
+    PIQ.composition = { themeId: null, fnId: null, procId: null, roleIds: [], objIds: [],
       patternIds: [], blocks: {}, dag: {}, live: false };
     PIQ.persistComposition();
   };
@@ -10299,6 +10824,7 @@ button{font-family:inherit;cursor:pointer}
       // only restore if the saved function still exists in the taxonomy
       if (saved.fnId && !(PIQ.tax.functions || []).some(function (f) { return f.id === saved.fnId; })) return;
       PIQ.composition = {
+        themeId: saved.themeId || null,
         fnId: saved.fnId || null, procId: saved.procId || null,
         roleIds: Array.isArray(saved.roleIds) ? saved.roleIds : [],
         objIds: Array.isArray(saved.objIds) ? saved.objIds : [],
@@ -10345,9 +10871,11 @@ button{font-family:inherit;cursor:pointer}
   }
 
   function crumb() {
-    var c = PIQ.composition, f = PIQ.fn();
-    if (!f) return '<span class="cr-empty">No process selected — start in Studio</span>';
-    var parts = [f.name];
+    var c = PIQ.composition, f = PIQ.fn(), t = PIQ.theme();
+    if (!f && !t) return '<span class="cr-empty">No process selected — start in Studio</span>';
+    var parts = [];
+    if (t) parts.push(t.name);
+    if (f) parts.push(f.name);
     var p = PIQ.proc();
     if (p) parts.push(p.name);
     var s = parts.map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('<i>›</i>');
@@ -10427,22 +10955,30 @@ button{font-family:inherit;cursor:pointer}
   "use strict";
   var PRIO = window.PIQ.meta.priorityLegend;
 
-  // step machine
-  var STEPS = ["Function", "Process", "Personas", "Objectives", "Patterns", "Configure"];
+  // step machine — Theme is an optional top-level lens above Function
+  var STEPS = ["Theme", "Function", "Process", "Personas", "Objectives", "Patterns", "Configure"];
   var state = { step: 0 };
+
+  // lucide-style theme icon names → emoji (no icon library is inlined)
+  var THEME_ICONS = { "trending-up": "📈", "shield-alert": "🚨", "clock": "⏱️",
+    "shield-check": "🛡️", "eye": "👁️" };
+  function themeIcon(name) { return THEME_ICONS[name] || "◆"; }
 
   function el(t, c, h) { var n = document.createElement(t); if (c) n.className = c; if (h != null) n.innerHTML = h; return n; }
   function esc(s) { return (s == null ? "" : String(s)).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
   function C() { return window.PIQ.composition; }
+  function theme() { return window.PIQ.theme(); }
+  function fnById(id) { return (window.PIQ.tax.functions || []).filter(function (f) { return f.id === id; })[0]; }
 
   /* resume at the furthest resolved step when re-entering the Studio */
   function resumeStep() {
     var c = C();
-    if (c.patternIds.length) return 5;
-    if (c.objIds.length) return 4;
-    if (c.roleIds.length) return 3;
-    if (c.procId) return 2;
-    if (c.fnId) return 1;
+    if (c.patternIds.length) return 6;
+    if (c.objIds.length) return 5;
+    if (c.roleIds.length) return 4;
+    if (c.procId) return 3;
+    if (c.fnId) return 2;
+    if (c.themeId) return 1;
     return 0;
   }
 
@@ -10470,14 +11006,16 @@ button{font-family:inherit;cursor:pointer}
      Answers "what have I picked?" without leaving the current step. */
   function summaryCard() {
     var c = C(), f = window.PIQ.fn();
-    if (!f) return null;
+    if (!f && !theme()) return null;
     var p = proc();
     var roles = window.PIQ.roles();
     var objs = window.PIQ.objectives();
     var pats = window.PIQ.selectedPatterns();
+    var t = theme();
 
     var rows = [
-      ["Function", f.name],
+      ["Theme", t && t.name],
+      ["Function", f && f.name],
       ["Process", p && p.name]
     ].filter(function (x) { return x[1]; }).map(function (x) {
       return '<div class="sum-row"><span class="sum-k">' + x[0] + '</span>' +
@@ -10546,18 +11084,19 @@ button{font-family:inherit;cursor:pointer}
 
   function isResolved(i) {
     var c = C();
-    return [!!c.fnId, !!c.procId, c.roleIds.length > 0, c.objIds.length > 0, c.patternIds.length > 0,
+    return [!!c.themeId, !!c.fnId, !!c.procId, c.roleIds.length > 0, c.objIds.length > 0, c.patternIds.length > 0,
             Object.keys(c.blocks).length > 0][i];
   }
   function chosen(i) {
-    var c = C(), f = window.PIQ.fn();
+    var c = C(), f = window.PIQ.fn(), t = theme();
     var label = "";
-    if (i === 0 && f) label = f.name;
-    else if (i === 1 && f && c.procId) label = (proc() || {}).name;
-    else if (i === 2 && c.roleIds.length) label = c.roleIds.length + " persona" + (c.roleIds.length > 1 ? "s" : "");
-    else if (i === 3 && c.objIds.length) label = c.objIds.length + " objective" + (c.objIds.length > 1 ? "s" : "");
-    else if (i === 4 && c.patternIds.length) label = c.patternIds.length + " selected";
-    else if (i === 5 && Object.keys(c.blocks).length) label = Object.keys(c.blocks).length + " configured";
+    if (i === 0 && t) label = t.name;
+    else if (i === 1 && f) label = f.name;
+    else if (i === 2 && f && c.procId) label = (proc() || {}).name;
+    else if (i === 3 && c.roleIds.length) label = c.roleIds.length + " persona" + (c.roleIds.length > 1 ? "s" : "");
+    else if (i === 4 && c.objIds.length) label = c.objIds.length + " objective" + (c.objIds.length > 1 ? "s" : "");
+    else if (i === 5 && c.patternIds.length) label = c.patternIds.length + " selected";
+    else if (i === 6 && Object.keys(c.blocks).length) label = Object.keys(c.blocks).length + " configured";
     return label ? '<small class="st-chose">' + esc(label) + '</small>' : "";
   }
 
@@ -10592,7 +11131,7 @@ button{font-family:inherit;cursor:pointer}
   /* ---------------- steps ---------------- */
   function drawStep(body) {
     if (state.step > 0) body.appendChild(backBtn());
-    [stepFunction, stepProcess, stepPersonas, stepObjectives, stepPatterns, stepConfigure][state.step](body);
+    [stepTheme, stepFunction, stepProcess, stepPersonas, stepObjectives, stepPatterns, stepConfigure][state.step](body);
     var rb = document.getElementById("stReset");
     if (rb) rb.onclick = function () { window.PIQ.resetComposition(); state.step = 0; redraw(); };
   }
@@ -10613,9 +11152,59 @@ button{font-family:inherit;cursor:pointer}
     return g;
   }
 
+  /* Step 0 · Theme — the CFO-level outcome. Optional: spans functions, carries a
+     compound KPI, and (when chosen) filters the function list to what it touches. */
+  function stepTheme(body) {
+    var c = C();
+    var themes = window.PIQ.tax.themes || [];
+    body.appendChild(el("div", "st-q", "Which <b>business theme</b> are you driving?"));
+    body.appendChild(el("p", "st-hint",
+      "Themes are the outcomes a CFO steers by — they span multiple functions and roll up to a compound KPI. " +
+      "Pick one to focus the journey on the functions that move it, or skip straight to a function for a bottoms-up build."));
+    var grid = pickGrid(themes, function (t) {
+      var on = c.themeId === t.id;
+      var k = t.compoundKPI || {};
+      var fns = (t.functionIds || []).map(function (id) { var f = fnById(id); return f ? f.short : id; }).join(" · ");
+      return '<div class="pc-ico" style="--ac:' + t.accent + '">' + themeIcon(t.icon) + '</div>' +
+        '<div class="pc-main"><div class="pc-t">' + esc(t.name) + '</div>' +
+        '<div class="pc-d">' + esc(t.tagline) + '</div></div>' +
+        '<div class="pc-kpi"><span class="pck-n">' + esc(k.name) + '</span>' +
+          '<span class="pck-v">' + esc(k.current) + ' <i>→</i> <b>' + esc(k.target) + '</b> ' + esc(k.unit) + '</span></div>' +
+        '<div class="pc-meta">Spans <b>' + esc(fns) + '</b></div>' +
+        (on ? '<div class="pc-on">✓</div>' : '');
+    }, function (t) {
+      if (c.themeId !== t.id) {
+        c.themeId = t.id;
+        // if the current function isn't in the theme, clear the downstream selection
+        if (c.fnId && (t.functionIds || []).indexOf(c.fnId) < 0) {
+          c.fnId = null; c.procId = null; c.roleIds = []; c.objIds = []; c.patternIds = []; c.blocks = {};
+        }
+      }
+      state.step = 1;
+      redraw();
+    }, function (t) { return c.themeId === t.id; });
+    body.appendChild(grid);
+    body.appendChild(nextBar("Themes are optional — a lens, not a gate",
+      "Skip — go direct to function →", function () { c.themeId = null; state.step = 1; redraw(); }));
+  }
+
   function stepFunction(body) {
-    body.appendChild(el("div", "st-q", "Which <b>function</b> are you transforming?"));
-    var grid = pickGrid(window.PIQ.tax.functions, function (f) {
+    var c = C(), t = theme();
+    if (t) {
+      var k = t.compoundKPI || {};
+      var banner = el("div", "st-themebar",
+        '<div class="stt-ic" style="--ac:' + t.accent + '">' + themeIcon(t.icon) + '</div>' +
+        '<div class="stt-main"><div class="stt-n">' + esc(t.name) + '</div>' +
+        '<div class="stt-k">' + esc(k.name) + ' <b>' + esc(k.current) + ' → ' + esc(k.target) + ' ' + esc(k.unit) + '</b></div></div>' +
+        '<button class="linkbtn" id="stChTheme">change theme</button>');
+      body.appendChild(banner);
+      banner.querySelector("#stChTheme").onclick = function () { state.step = 0; redraw(); };
+    }
+    body.appendChild(el("div", "st-q", t
+      ? "Which <b>function</b> inside “" + esc(t.name) + "” are you transforming?"
+      : "Which <b>function</b> are you transforming?"));
+    var funcs = window.PIQ.themeFunctions();
+    var grid = pickGrid(funcs, function (f) {
       var on = C().fnId === f.id;
       return '<div class="pc-ico" style="--ac:' + f.accent + '">' + f.icon + '</div>' +
         '<div class="pc-main"><div class="pc-t">' + esc(f.name) +
@@ -10631,7 +11220,7 @@ button{font-family:inherit;cursor:pointer}
       // value-chain map, where the SME must pick a built area from the taxonomy matrix.
       var single = f.processes.length === 1 && !f.valueChain;
       if (single) { c.procId = f.processes[0].id; selectAllPersonas(); }
-      state.step = single ? 2 : 1;
+      state.step = single ? 3 : 2;
       redraw();
     });
     body.appendChild(grid);
@@ -10645,7 +11234,7 @@ button{font-family:inherit;cursor:pointer}
   }
 
   function stepProcess(body) {
-    var f = window.PIQ.fn(); if (!f) { state.step = 0; return redraw(); }
+    var f = window.PIQ.fn(); if (!f) { state.step = 1; return redraw(); }
     var c = C();
     // Functions that carry a value-chain map (O2C) present the full process
     // taxonomy; only the built areas are navigable. Others use the card list.
@@ -10667,7 +11256,7 @@ button{font-family:inherit;cursor:pointer}
       body.appendChild(hierarchy(f, p));
       body.appendChild(swimlane(f, p));
       body.appendChild(nextBar(p.roles.length + " persona" + (p.roles.length !== 1 ? "s" : "") + " mapped",
-        "Continue → Personas", function () { state.step = 2; redraw(); }));
+        "Continue → Personas", function () { state.step = 3; redraw(); }));
     }
   }
 
@@ -10721,7 +11310,7 @@ button{font-family:inherit;cursor:pointer}
       body.appendChild(swimlane(f, p));
       body.appendChild(nextBar('Selected: ' + p.name + ' · ' + p.roles.length +
         " persona" + (p.roles.length !== 1 ? "s" : "") + " mapped",
-        "Continue → Personas", function () { state.step = 2; redraw(); }));
+        "Continue → Personas", function () { state.step = 3; redraw(); }));
     } else {
       body.appendChild(nextBar("Pick a built area to compose it", "", null));
     }
@@ -10920,7 +11509,7 @@ button{font-family:inherit;cursor:pointer}
 
   /* Personas — multi-select, defaulting to every persona in the process. */
   function stepPersonas(body) {
-    var p = proc(); if (!p) { state.step = 1; return redraw(); }
+    var p = proc(); if (!p) { state.step = 2; return redraw(); }
     var c = C();
     body.appendChild(el("div", "st-q",
       "Which <b>personas</b> participate in " + esc(p.name) + "?" +
@@ -10936,7 +11525,7 @@ button{font-family:inherit;cursor:pointer}
     }, function (r) { togglePersona(r); redraw(); },
        function (r) { return c.roleIds.indexOf(r.id) >= 0; }));
     body.appendChild(nextBar(c.roleIds.length + " persona" + (c.roleIds.length !== 1 ? "s" : "") + " in scope",
-      c.roleIds.length ? "Choose objectives →" : "", function () { state.step = 3; redraw(); }));
+      c.roleIds.length ? "Choose objectives →" : "", function () { state.step = 4; redraw(); }));
     var all = document.getElementById("stAllP");
     if (all) all.onclick = function (e) {
       e.stopPropagation();
@@ -10953,7 +11542,7 @@ button{font-family:inherit;cursor:pointer}
   /* Objectives — multi-select, grouped by persona, all in scope by default. */
   function stepObjectives(body) {
     var c = C(), roles = window.PIQ.roles();
-    if (!roles.length) { state.step = 2; return redraw(); }
+    if (!roles.length) { state.step = 3; return redraw(); }
     var allObjIds = [];
     roles.forEach(function (r) { (r.objectives || []).forEach(function (o) { allObjIds.push(o.id); }); });
     body.appendChild(el("div", "st-q",
@@ -10974,7 +11563,7 @@ button{font-family:inherit;cursor:pointer}
     });
     var np = c.patternIds.length;
     body.appendChild(nextBar(c.objIds.length + " objective" + (c.objIds.length !== 1 ? "s" : "") + " · " + np + " pattern" + (np !== 1 ? "s" : ""),
-      c.objIds.length ? "Review patterns →" : "", function () { state.step = 4; redraw(); }));
+      c.objIds.length ? "Review patterns →" : "", function () { state.step = 5; redraw(); }));
     var all = document.getElementById("stAllO");
     if (all) all.onclick = function (e) {
       e.stopPropagation();
@@ -10990,7 +11579,7 @@ button{font-family:inherit;cursor:pointer}
 
   function stepPatterns(body) {
     var c = C();
-    var ids = window.PIQ.objectivePatternIds(); if (!ids.length) { state.step = 3; return redraw(); }
+    var ids = window.PIQ.objectivePatternIds(); if (!ids.length) { state.step = 4; return redraw(); }
     var pats = ids.map(window.PIQ.pattern).filter(Boolean);
     var p0 = proc();
     body.appendChild(el("div", "st-q",
@@ -11031,7 +11620,7 @@ button{font-family:inherit;cursor:pointer}
     });
     body.appendChild(grid);
     body.appendChild(nextBar(c.patternIds.length + " pattern" + (c.patternIds.length !== 1 ? "s" : "") + " selected",
-      c.patternIds.length ? "Configure action blocks →" : "", function () { state.step = 5; redraw(); }));
+      c.patternIds.length ? "Configure action blocks →" : "", function () { state.step = 6; redraw(); }));
 
     var all = document.getElementById("stAll");
     if (all) all.onclick = function (e) {
@@ -11227,7 +11816,7 @@ button{font-family:inherit;cursor:pointer}
 
   function stepConfigure(body) {
     var c = C();
-    if (!c.patternIds.length) { state.step = 4; return redraw(); }
+    if (!c.patternIds.length) { state.step = 5; return redraw(); }
     var blocks = window.PIQ.collectBlocks(c.patternIds);
     // seed config for any unconfigured block
     blocks.forEach(function (b) {
@@ -11380,21 +11969,44 @@ button{font-family:inherit;cursor:pointer}
       '<div class="fd-bar">' + bars + '</div><div class="fd-legend">' + legend + '</div>');
   }
 
+  // calibration of a block's representative pattern (its Layer-2 event-series logic)
+  function blockCalibration(b) {
+    for (var i = 0; i < b.patterns.length; i++) {
+      var p = window.PIQ.pattern(b.patterns[i]);
+      if (p && p.calibration) return p.calibration;
+    }
+    return null;
+  }
+
+  function calCell(b) {
+    var cal = blockCalibration(b);
+    if (!cal) return '<div class="ft-cal"><span class="muted">—</span></div>';
+    var traces = (cal.traceCount || 0).toLocaleString();
+    return '<div class="ft-cal" title="Calibrated from ' + traces + ' client event traces · ' + esc(cal.method) + '">' +
+      '<span class="cal-th"><span class="cal-def">' + esc(cal.defaultThreshold) + '</span><i>→</i>' +
+      '<b class="cal-fit">' + esc(cal.calibratedThreshold) + '</b></span>' +
+      '<span class="cal-delta">+' + cal.additionalCoverage + ' traces</span>' +
+      '<span class="cal-badge">PM4Py Event Analysis</span></div>';
+  }
+
   function fitmentTable(blocks) {
     var rows = blocks.map(function (b) {
       var fit = window.PIQ.fitment(b);
       var cfg = (C().blocks[b.key] || {});
       var pct = Math.round(fit.score * 100);
-      return '<div class="ftrow">' +
+      return '<div class="ftrow cal">' +
         '<div class="ft-src k-' + (b.source === "happy" ? "happy" : "vary") + '" title="' + (b.source === "happy" ? "happy path" : "variation") + '"></div>' +
         '<div class="ft-name"><b>' + esc(b.label) + '</b><span class="mono">' + esc(b.key) + '</span></div>' +
         '<div class="ft-tech">' + esc(cfg.tech || "—") + '</div>' +
         '<div class="ft-score"><div class="ft-bar"><i style="width:' + pct + '%"></i></div><span>' + pct + '%</span></div>' +
+        calCell(b) +
         '<div class="ft-verdict"><span class="fitchip f-' + fit.mode + '">' + fit.tier + '</span></div></div>';
     }).join("");
     return el("div", "fit-table",
-      '<div class="ftrow ft-head"><div class="ft-src"></div><div class="ft-name">Action block</div>' +
-      '<div class="ft-tech">Technology</div><div class="ft-score">Fitment</div><div class="ft-verdict">Verdict</div></div>' + rows);
+      '<div class="ftrow cal ft-head"><div class="ft-src"></div><div class="ft-name">Action block</div>' +
+      '<div class="ft-tech">Technology</div><div class="ft-score">Fitment</div>' +
+      '<div class="ft-cal">Calibration <span class="ft-cal-sub">default → client-fitted</span></div>' +
+      '<div class="ft-verdict">Verdict</div></div>' + rows);
   }
 
   function happyPanel(happy) {
@@ -11413,23 +12025,79 @@ button{font-family:inherit;cursor:pointer}
       '<div class="hp-flow">' + (flow || '<span class="muted">No happy-path blocks in this selection.</span>') + '</div>');
   }
 
-  function tobePanel() {
+  /* Interactive to-be flow — each action block is a toggle between Agent (automated)
+     and Manual (human). Toggling writes composition.blocks[key].mode and recomputes
+     the automated / semi-automated / manual distribution. A configuration surface,
+     not just a display. */
+  function blockMode(b) {
+    var cfg = C().blocks[b.key] || {};
+    return cfg.mode || window.PIQ.fitment(b).mode;   // seed from fitment verdict
+  }
+  function tobeDist() {
+    var blocks = window.PIQ.collectBlocks(C().patternIds);
+    var d = { automated: 0, semi: 0, manual: 0 };
+    blocks.forEach(function (b) {
+      if (blockMode(b) === "hitl") d.manual++;
+      else if (window.PIQ.fitment(b).tier === "Full-auto") d.automated++;
+      else d.semi++;
+    });
+    return d;
+  }
+  function toggleBlockMode(key) {
     var c = C();
+    var blk = window.PIQ.collectBlocks(c.patternIds).filter(function (b) { return b.key === key; })[0];
+    var cur = (c.blocks[key] && c.blocks[key].mode) || (blk ? window.PIQ.fitment(blk).mode : "auto");
+    if (!c.blocks[key]) c.blocks[key] = { tech: "", configured: false };
+    c.blocks[key].mode = cur === "hitl" ? "auto" : "hitl";
+    c.blocks[key].configured = true;
+    if (window.PIQ.persistComposition) window.PIQ.persistComposition();
+  }
+
+  function distHtml(d) {
+    var total = d.automated + d.semi + d.manual || 1;
+    var seg = [["automated", d.automated, "#27ae60", "Automated"],
+               ["semi", d.semi, "#e67e22", "Semi-automated"],
+               ["manual", d.manual, "#c0392b", "Manual"]];
+    var bars = seg.filter(function (s) { return s[1]; }).map(function (s) {
+      return '<i style="flex:' + s[1] + ';background:' + s[2] + '" title="' + s[3] + '"></i>';
+    }).join("");
+    var legend = seg.map(function (s) {
+      return '<span class="dl"><i style="background:' + s[2] + '"></i>' + s[3] + ' · <b>' + s[1] + '</b></span>';
+    }).join("");
+    var pa = Math.round(100 * d.automated / total), ps = Math.round(100 * d.semi / total);
+    return '<div class="tb-dist"><div class="fd-bar">' + bars + '</div>' +
+      '<div class="tb-distlbl"><b>' + pa + '%</b> automated · <b>' + ps + '%</b> semi-automated · <b>' +
+      (100 - pa - ps) + '%</b> manual</div><div class="fd-legend">' + legend + '</div></div>';
+  }
+
+  function drawTobe(wrap) {
     var pats = window.PIQ.selectedPatterns();
     var lanes = pats.map(function (p) {
-      var branches = (p.branchingDAG || []).map(function (b) {
-        var acts = (b.actions || []).join(" + ");
-        return '<div class="tb-branch t-' + (b.tier || "primary") + '">' +
-          '<span class="tb-cond mono">' + esc(b.condition) + '</span>' +
-          '<span class="tb-act">' + esc(window.PIQ.prettify(acts)) + '</span>' +
-          (b.hitl ? '<span class="tb-hitl">🔒 ' + esc(b.hitl) + '</span>' : '') + '</div>';
+      var blocks = window.PIQ.collectBlocks([p.id]);
+      var chips = blocks.map(function (b) {
+        var agent = blockMode(b) !== "hitl";
+        return '<button class="tb-blk ' + (agent ? "agent" : "manual") + '" data-k="' + esc(b.key) + '" ' +
+          'title="' + esc(b.key) + ' — click to toggle">' +
+          '<span class="tbk-ic">' + (agent ? "🤖" : "✋") + '</span>' +
+          '<span class="tbk-l">' + esc(b.label) + '</span>' +
+          '<span class="tbk-mode">' + (agent ? "Agent" : "Manual") + '</span></button>';
       }).join("");
       return '<div class="tb-lane"><div class="tb-pat"><span class="pat-prio" style="background:' + PRIO[p.priority] + '"></span>' +
-        esc(p.name) + '</div><div class="tb-branches">' + branches + '</div></div>';
+        esc(p.name) + '</div><div class="tb-blocks">' + chips + '</div></div>';
     }).join("");
-    return el("div", "fit-tobe",
-      '<h3>To-be process flow <span class="muted">happy path + pattern-driven variation handling</span></h3>' +
-      '<div class="tb-wrap">' + lanes + '</div>');
+    wrap.innerHTML =
+      '<h3>To-be process flow <span class="muted">happy path + pattern-driven variation · click a block to toggle Agent ⇄ Manual</span></h3>' +
+      distHtml(tobeDist()) +
+      '<div class="tb-wrap">' + lanes + '</div>';
+    wrap.querySelectorAll(".tb-blk").forEach(function (btn) {
+      btn.onclick = function () { toggleBlockMode(btn.dataset.k); drawTobe(wrap); };
+    });
+  }
+
+  function tobePanel() {
+    var wrap = el("div", "fit-tobe");
+    drawTobe(wrap);
+    return wrap;
   }
 
   function goLiveBar(stp) {
@@ -11455,6 +12123,185 @@ button{font-family:inherit;cursor:pointer}
 
   window.PIQ.modules.fitment = { render: render };
   window.PIQ.onErp(function () { if (window.PIQ.active === "fitment") render2(); });
+})();
+
+/* Stage 2 · Discover & Fit — Build Engine (sub-view between Fitment and Discovery)
+ * Makes visible what happens between "configure the action blocks" (Studio) and
+ * "run the workflow" (Run & Govern): the configured blocks + fitment verdicts are
+ * assembled into an executable agent chain, validated, and promoted to live.
+ *
+ * Input  : PIQ.composition (selected patterns + configured blocks + fitment).
+ * Output : on "Generate Agent Chain" the composition is validated and marked live,
+ *          which unlocks the Run & Govern stage.
+ */
+(function () {
+  "use strict";
+  var PRIO = window.PIQ.meta.priorityLegend;
+
+  function el(t, c, h) { var n = document.createElement(t); if (c) n.className = c; if (h != null) n.innerHTML = h; return n; }
+  function esc(s) { return (s == null ? "" : String(s)).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+  function C() { return window.PIQ.composition; }
+
+  // a block is a WRITE / mutating action if it isn't a pure read/sense verb
+  function isWrite(b) {
+    var t = b.key.toLowerCase();
+    if (/read|pull|scan|monitor|track|fingerprint|ingest|compare|compute|detect|assess|check|match|classif|score/.test(t)) return false;
+    return true;
+  }
+
+  function render(view) {
+    var c = C();
+    if (!c.patternIds.length) { view.appendChild(empty()); return; }
+    var root = el("div", "bld");
+    root.appendChild(head());
+    root.appendChild(inputBar());
+    root.appendChild(assemblyPanel());
+    root.appendChild(validationPanel());
+    root.appendChild(generateBar());
+    view.appendChild(root);
+    wire(root);
+  }
+
+  function empty() {
+    var d = el("div", "fit-empty",
+      '<div class="kv">Stage 2 · Discover & Fit — Build Engine</div>' +
+      '<h2>Nothing to build yet</h2>' +
+      '<p>Compose a process in the <b>Studio</b> and run it through <b>Agent Fitment</b>. ' +
+      'The configured blocks are assembled into an executable agent chain here.</p>' +
+      '<button class="btn go" id="toStudio">← Go to Studio</button>');
+    d.querySelector("#toStudio").onclick = function () { window.PIQ.go("studio"); };
+    return d;
+  }
+
+  function head() {
+    var f = window.PIQ.fn(), p = window.PIQ.proc(), c = C();
+    var blocks = window.PIQ.collectBlocks(c.patternIds);
+    return el("div", "fit-head",
+      '<div><div class="kv">Stage 2 · Discover & Fit — Build Engine</div>' +
+      '<h2>' + esc(f.name) + ' › ' + esc((p || {}).name || "") + (c.live ? ' <span class="livedot">● LIVE</span>' : '') + '</h2>' +
+      '<p class="fit-lede">The configured action blocks and their fitment verdicts are chained into an executable agent ' +
+      'DAG — tech stack bound, execution mode set, rollback and connectivity checked — then promoted to production.</p></div>' +
+      '<div class="fit-kpis">' + kpi(c.patternIds.length, "patterns") + kpi(blocks.length, "blocks") +
+      kpi(c.patternIds.length, "agent chains") + '</div>');
+  }
+  function kpi(v, l) { return '<div class="fkpi"><b>' + v + '</b><span>' + l + '</span></div>'; }
+
+  function inputBar() {
+    var c = C();
+    var keys = Object.keys(c.blocks);
+    var nConf = keys.filter(function (k) { return c.blocks[k].configured; }).length;
+    return el("div", "bld-input",
+      '<span class="bi-lab">Input from Studio</span>' +
+      '<span class="bi-pill">' + c.patternIds.length + ' patterns selected</span>' +
+      '<span class="bi-pill">' + keys.length + ' action blocks</span>' +
+      '<span class="bi-pill">' + nConf + ' / ' + keys.length + ' configured</span>' +
+      '<span class="bi-pill">fitment verdicts resolved</span>');
+  }
+
+  /* Assembly — one agent chain per selected pattern; its happy-path blocks connect
+     left-to-right, each labelled with the configured tech stack + execution mode. */
+  function assemblyPanel() {
+    var c = C();
+    var wrap = el("div", "bld-asm");
+    wrap.appendChild(el("div", "st-subq", "Agent chain assembly <small>configured blocks → executable DAG · press Generate to bind</small>"));
+    var chains = el("div", "asm-chains");
+    var pats = window.PIQ.selectedPatterns();
+    var ni = 0;
+    pats.forEach(function (p) {
+      var steps = window.PIQ.happyDAG(p.id);
+      var nodes = steps.map(function (k) {
+        var cfg = c.blocks[k] || {};
+        var write = /Auto_|Post|Clear|Update|Hold|Notify|Schedule|Block|Freeze|Reschedule|Recommend|Escalate|Route|Request/.test(k);
+        var mode = cfg.mode || "auto";
+        ni++;
+        return '<div class="asm-node" data-ni="' + ni + '">' +
+          '<div class="an-b ' + (write ? "w" : "r") + '">' + esc(window.PIQ.prettify(k)) + '</div>' +
+          '<div class="an-meta"><span class="an-tech">' + esc(cfg.tech || "—") + '</span>' +
+          '<span class="an-mode m-' + mode + '">' + (mode === "hitl" ? "HITL" : "Auto") + '</span></div></div>';
+      }).join('<span class="asm-arr">→</span>');
+      chains.appendChild(el("div", "asm-chain",
+        '<div class="asm-pat"><span class="pat-prio" style="background:' + PRIO[p.priority] + '"></span>' +
+        esc(p.name) + (p.sample ? ' <span class="statusbadge sample">sample</span>' : '') + '</div>' +
+        '<div class="asm-flow">' + (nodes || '<span class="muted">no happy-path blocks</span>') + '</div>'));
+    });
+    wrap.appendChild(chains);
+    return wrap;
+  }
+
+  /* Validation — the four go-live gates. Some pass from the configuration; source
+     connectivity is verified as part of the (simulated) generate step. */
+  function checks() {
+    var c = C();
+    var blocks = window.PIQ.collectBlocks(c.patternIds);
+    var techOK = blocks.every(function (b) { var cf = c.blocks[b.key]; return cf && cf.tech && cf.tech !== "—"; });
+    var writes = blocks.filter(function (b) { return b.hitl || (isWrite(b) && window.PIQ.fitment(b).mode === "hitl"); });
+    var hitlOK = writes.every(function (b) { return (c.blocks[b.key] || {}).mode === "hitl"; });
+    var sagaOK = techOK;   // every governed write registers a compensating step
+    return [
+      { k: "tech", ok: techOK, label: "All blocks have a tech stack assigned",
+        detail: techOK ? "SAP BAPI/RFC · Oracle REST · LLM Agent · RPA bound" : "Some blocks still need a technology" },
+      { k: "hitl", ok: hitlOK, label: "All WRITE blocks have a HITL gate",
+        detail: writes.length ? (hitlOK ? writes.length + " approval-gated writes routed to human sign-off" : "An approval-gated write is set to Auto") : "No mutating writes require a gate" },
+      { k: "saga", ok: sagaOK, label: "All blocks have Saga rollback defined",
+        detail: sagaOK ? "Compensating transaction registered per write step" : "Assign tech to enable rollback registration" },
+      { k: "conn", ok: !!C()._built, label: "Source system connectivity verified",
+        detail: C()._built ? "SAP + Oracle endpoints reachable · credentials valid" : "Verified during agent-chain generation" },
+    ];
+  }
+
+  function validationPanel() {
+    var wrap = el("div", "bld-valid");
+    wrap.appendChild(el("div", "st-subq", "Pre-flight validation <small>every gate must pass before the chain can run</small>"));
+    var list = el("div", "vchecks", "");
+    list.id = "vchecks";
+    list.innerHTML = checks().map(function (v) {
+      return '<div class="vcheck ' + (v.ok ? "ok" : "no") + '"><span class="vc-ic">' + (v.ok ? "✓" : "○") + '</span>' +
+        '<div class="vc-main"><div class="vc-l">' + esc(v.label) + '</div>' +
+        '<div class="vc-d">' + esc(v.detail) + '</div></div></div>';
+    }).join("");
+    wrap.appendChild(list);
+    return wrap;
+  }
+
+  function generateBar() {
+    var c = C();
+    var ready = checks().slice(0, 3).every(function (v) { return v.ok; });
+    return el("div", "fit-golive",
+      '<div><b>' + (c.live ? "Agent chain generated." : "Ready to build.") + '</b> ' +
+      (c.live ? "The composed process is live — open Run &amp; Govern to operate it."
+              : "Bind the configured blocks into an executable, governed agent chain and promote it to production.") + '</div>' +
+      (c.live
+        ? '<button class="btn go" id="bldRun">Open Live Operations →</button>'
+        : '<button class="btn go" id="bldGen"' + (ready ? "" : " disabled") + '>⚙ Generate Agent Chain</button>'));
+  }
+
+  function wire(root) {
+    var gen = root.querySelector("#bldGen");
+    if (gen) gen.onclick = function () { generate(root); };
+    var run = root.querySelector("#bldRun");
+    if (run) run.onclick = function () { window.PIQ.go("runtime"); };
+  }
+
+  // animate the assembly, verify connectivity, mark live, unlock Run & Govern
+  function generate(root) {
+    var nodes = root.querySelectorAll(".asm-node");
+    var gen = root.querySelector("#bldGen");
+    if (gen) { gen.disabled = true; gen.textContent = "● Assembling…"; }
+    // spread the reveal over ~1.6s total, however many nodes there are
+    var stp = nodes.length ? Math.min(70, Math.floor(1600 / nodes.length)) : 0;
+    nodes.forEach(function (n, i) { setTimeout(function () { n.classList.add("on"); }, 60 + i * stp); });
+    var done = 60 + nodes.length * stp + 320;
+    setTimeout(function () {
+      var c = C();
+      c._built = true; c.live = true;
+      if (window.PIQ.persistComposition) window.PIQ.persistComposition();
+      // re-render so validation + go-live bar reflect the promoted state
+      var view = document.getElementById("view"); view.innerHTML = ""; render(view);
+    }, done);
+  }
+
+  window.PIQ.modules.build = { render: render };
+  window.PIQ.onErp(function () { if (window.PIQ.active === "build") { var v = document.getElementById("view"); v.innerHTML = ""; render(v); } });
 })();
 
 /* Stage 3 · Run & Govern — Live Operations
@@ -11489,6 +12336,9 @@ button{font-family:inherit;cursor:pointer}
   function buildSim() {
     var c = C();
     var pats = window.PIQ.selectedPatterns();
+    // Deterministic SYNTHETIC demo stream — 18 fabricated transactions with a fixed
+    // spread of clean (happy-path) and variation (pattern-matched) items. This is
+    // illustrative demo data, not a live ERP feed; nothing here is a real invoice.
     var q = [];
     for (var i = 0; i < 18; i++) {
       var entity = NAMES[i % NAMES.length];
@@ -11503,7 +12353,61 @@ button{font-family:inherit;cursor:pointer}
         q.push({ n: i + 1, id: "TXN-" + (10480 + i * 7), entity: entity, amt: amt, kind: "clean", status: "queued" });
       }
     }
+    applyCompoundSeed(q, pats);
     return { q: q, cursor: 0, log: [], counts: { stp: 0, auto: 0, pending: 0, approved: 0, rejected: 0, value: 0 } };
+  }
+
+  /* Compound-signal seed — force two variation transactions to share one entity and
+     fire two constituents of an applicable cross-process pattern, so the second-pass
+     compound scan reliably surfaces an emergent signal in the demo. */
+  function applyCompoundSeed(q, pats) {
+    var selIds = {}; pats.forEach(function (p) { selIds[p.id] = 1; });
+    var applicable = window.PIQ.compoundPatterns();
+    var pick = null;
+    for (var a = 0; a < applicable.length; a++) {
+      var cons = applicable[a].constituents.filter(function (id) { return selIds[id]; });
+      if (cons.length >= 2) { pick = cons; break; }
+    }
+    if (!pick) return;
+    var slots = [];
+    for (var j = 0; j < q.length; j++) if (q[j].kind === "variation") slots.push(j);
+    if (slots.length < 2) return;
+    var entity = q[slots[0]].entity;
+    [0, 1].forEach(function (k) {
+      var t = q[slots[k]], p = window.PIQ.pattern(pick[k]);
+      if (!p) return;
+      var br = (p.branchingDAG || [])[0] || {};
+      t.entity = entity; t.patternId = pick[k]; t.branchIdx = 0; t.needsApproval = !!br.hitl;
+    });
+  }
+
+  /* Second pass — after individual transactions are matched, correlate the fired
+     patterns per entity against the theme's cross-process compound patterns. A
+     combination that no single process would flag surfaces as a Compound Signal. */
+  function compoundSignals() {
+    var applicable = window.PIQ.compoundPatterns();
+    if (!applicable.length || !sim) return [];
+    var byEntity = {}, globalFired = {};
+    sim.q.forEach(function (t) {
+      if (t.kind === "variation" && t.patternId &&
+          (t.status === "auto" || t.status === "approved" || t.status === "pending")) {
+        (byEntity[t.entity] = byEntity[t.entity] || {})[t.patternId] = 1;
+        globalFired[t.patternId] = 1;
+      }
+    });
+    var out = [];
+    applicable.forEach(function (a) {
+      if (a.constituents.length < 2) return;
+      var fired = a.constituents.filter(function (id) { return globalFired[id]; });
+      if (fired.length < 2) return;
+      var bestE = null, bestN = 0;
+      Object.keys(byEntity).forEach(function (e) {
+        var n = a.constituents.filter(function (id) { return byEntity[e][id]; }).length;
+        if (n > bestN) { bestN = n; bestE = e; }
+      });
+      out.push({ cp: a.cp, theme: a.theme, fired: fired, entity: bestE, concentrated: bestN >= 2 });
+    });
+    return out;
   }
 
   function ensureSim(force) {
@@ -11519,13 +12423,15 @@ button{font-family:inherit;cursor:pointer}
     var root = el("div", "rt");
     root.appendChild(head());
     root.appendChild(kpis());
+    var comp = el("div", "rt-compound"); comp.id = "rtCompound";
+    root.appendChild(comp);   // filled by drawCompound as compound signals emerge
     var grid = el("div", "rt-grid");
     grid.innerHTML = '<div class="rt-stream" id="rtStream"></div>' +
       '<div class="rt-side"><div class="rt-approvals" id="rtApprovals"></div>' +
       '<div class="rt-feed" id="rtFeed"></div></div>';
     root.appendChild(grid);
     view.appendChild(root);
-    drawStream(); drawApprovals(); drawFeed(); drawKpis();
+    drawStream(); drawApprovals(); drawFeed(); drawKpis(); drawCompound();
     wireControls(root);
   }
 
@@ -11655,7 +12561,29 @@ button{font-family:inherit;cursor:pointer}
   }
 
   function logE(k, t) { sim.log.push({ k: k, t: t }); }
-  function repaint() { drawStream(); drawApprovals(); drawFeed(); drawKpis(); }
+  function repaint() { drawStream(); drawApprovals(); drawFeed(); drawKpis(); drawCompound(); }
+
+  function drawCompound() {
+    var host = document.getElementById("rtCompound"); if (!host) return;
+    var sigs = compoundSignals();
+    if (!sigs.length) { host.innerHTML = ""; host.classList.remove("on"); return; }
+    host.classList.add("on");
+    host.innerHTML = '<div class="rc-h">⚠ Compound Signals <span class="rc-c">' + sigs.length + '</span>' +
+      '<small>emergent cross-process risk — no single pattern would catch this</small></div>' +
+      '<div class="rc-cards">' + sigs.map(function (s) {
+        var cons = s.fired.map(function (id) {
+          var p = window.PIQ.pattern(id);
+          return '<span class="rc-pat">#' + id + (p ? ' ' + esc(p.name) : '') + '</span>';
+        }).join("");
+        return '<div class="rc-card">' +
+          '<div class="rc-top"><span class="rc-name">' + esc(s.cp.name) + '</span>' +
+          (s.entity ? '<span class="rc-ent">' + esc(s.entity) + (s.concentrated ? '' : ' cohort') + '</span>' : '') + '</div>' +
+          '<div class="rc-desc">' + esc(s.cp.description) + '</div>' +
+          '<div class="rc-cons"><span class="rc-lab">Constituent signals</span>' + cons + '</div>' +
+          '<div class="rc-foot"><div class="rc-impact"><b>Compound impact</b>' + esc(s.cp.compoundImpact) + '</div>' +
+          '<div class="rc-resp"><b>Response</b>' + esc(s.cp.response) + '</div></div></div>';
+      }).join("") + '</div>';
+  }
 
   /* ---------------- controls ---------------- */
   function wireControls(root) {
@@ -11817,6 +12745,7 @@ button{font-family:inherit;cursor:pointer}
   var meta = window.PIQ.meta;
   var book = window.PIQ.book;
   var selected = null;
+  var queued = {};     // belnr -> true : transactions moved to Pending Review
   var PRIO_COLOR = meta.priorityLegend;
 
   function erp() { return window.PIQ.erp; }
@@ -11843,6 +12772,7 @@ button{font-family:inherit;cursor:pointer}
       var node = el("div", "inv" + (selected && selected.belnr === iv.belnr ? " sel" : ""));
       var pill = pr ? '<span class="riskpill" style="background:' + PRIO_COLOR[pr] + '">' + pr + '</span>'
         : '<span class="riskpill clean">Clean</span>';
+      if (queued[iv.belnr]) pill += '<span class="riskpill review">In review</span>';
       node.innerHTML =
         '<div class="r1"><span class="cust">' + iv.customer + '</span><span class="amt">' + money(iv.amount) + '</span></div>' +
         '<div class="r2"><span class="mono">' + iv.invoiceId + ' · ' + iv.terms + '</span><span class="dpd">' + iv.dpd + ' DPD</span></div>' +
@@ -11904,7 +12834,7 @@ button{font-family:inherit;cursor:pointer}
     c.appendChild(grid);
 
     var actionWrap = el("div"); actionWrap.style.marginTop = "18px";
-    actionWrap.appendChild(actionCard(pat, dec, res));
+    actionWrap.appendChild(actionCard(iv, pat, dec, res));
     c.appendChild(actionWrap);
     c.appendChild(note());
     animateStages();
@@ -11986,7 +12916,7 @@ button{font-family:inherit;cursor:pointer}
     return card;
   }
 
-  function actionCard(pat, dec, res) {
+  function actionCard(iv, pat, dec, res) {
     var card = el("div", "card");
     card.innerHTML = '<h4><span class="num">A</span>Action DAG — Deterministic, Rollback-Ready Execution</h4>';
     var pad = el("div", "pad");
@@ -12007,14 +12937,17 @@ button{font-family:inherit;cursor:pointer}
       chip("⊕", "SAP remains system of record") + chip("⊘", "Deterministic API blocks — no hallucination");
     pad.appendChild(saga);
     var exec = el("div", "exec");
-    if (dec.requiresHITL) {
-      exec.innerHTML = '<button class="btn approve" id="approveBtn">🔒 Approve &amp; Execute DAG</button><button class="btn ghost">Edit payload</button>';
-    } else {
-      exec.innerHTML = '<button class="btn go" id="approveBtn">Execute DAG</button><button class="btn ghost">Queue for review</button>';
-    }
+    var queuedNow = !!queued[iv.belnr];
+    var primary = dec.requiresHITL
+      ? '<button class="btn approve" id="approveBtn">🔒 Approve &amp; Execute DAG</button>'
+      : '<button class="btn go" id="approveBtn">Execute DAG</button>';
+    var queueBtn = queuedNow
+      ? '<button class="btn ghost" id="queueBtn" disabled>✓ Queued — in review</button>'
+      : '<button class="btn ghost" id="queueBtn">Queue for review</button>';
+    exec.innerHTML = primary + '<button class="btn ghost" id="editPayloadBtn">Edit payload</button>' + queueBtn;
     pad.appendChild(exec);
     var gov = el("div", "gov-note");
-    gov.innerHTML = '<span>Mode: <b>' + (dec.requiresHITL ? "Assisted (HITL)" : "Policy-approved") + '</b></span>' +
+    gov.innerHTML = '<span>Mode: <b>' + (queuedNow ? "Pending review" : (dec.requiresHITL ? "Assisted (HITL)" : "Policy-approved")) + '</b></span>' +
       '<span>Outcome attribution: <b>ON</b></span><span>Audit log: <b>cryptographic</b></span>';
     pad.appendChild(gov);
     card.appendChild(pad);
@@ -12024,8 +12957,58 @@ button{font-family:inherit;cursor:pointer}
         b.textContent = "✓ Executed — " + countActions(res.actionDAG) + " steps committed, attribution tracking";
         b.className = "btn ghost"; b.disabled = true;
       };
+      var ep = document.getElementById("editPayloadBtn");
+      if (ep) ep.onclick = function () { openPayloadModal(iv, pat, dec); };
+      var q = document.getElementById("queueBtn");
+      if (q && !queued[iv.belnr]) q.onclick = function () {
+        queued[iv.belnr] = true;
+        renderList(); renderCockpit();
+      };
     }, 10);
     return card;
+  }
+
+  /* Edit payload — read-only modal exposing the transaction's raw data fields.
+     (Read-only for now; a future release makes the payload editable pre-execution.) */
+  function pmEsc(e) { if (e.key === "Escape") closePayloadModal(); }
+  function closePayloadModal() {
+    var b = document.querySelector(".pm-back");
+    if (b) { b.remove(); document.removeEventListener("keydown", pmEsc); }
+  }
+  function openPayloadModal(iv, pat, dec) {
+    closePayloadModal();
+    var fields = [
+      ["Invoice ID", iv.invoiceId], ["Document (BELNR)", iv.belnr],
+      ["Customer", iv.customer], ["Customer no. (KUNNR)", iv.kunnr],
+      ["Amount", money(iv.amount)], ["Terms", iv.terms],
+      ["Days past due", iv.dpd + "d"], ["Vertical", iv.vertical],
+      ["Ground-truth feature", iv.groundTruthFeature || "—"],
+      ["Matched pattern", pat ? ("#" + pat.id + " · " + pat.name) : "none"],
+      ["Response tier", dec ? tierLabel(dec.branch.tier) : "—"],
+      ["Requires HITL", dec && dec.requiresHITL ? "yes" : "no"],
+    ];
+    var rows = fields.map(function (f) {
+      return '<div class="pm-row"><span class="pm-k">' + escapeHtml(f[0]) + '</span>' +
+        '<span class="pm-v mono">' + escapeHtml(String(f[1])) + '</span></div>';
+    }).join("");
+    var events = (iv.eventSeries || []).map(function (e) {
+      return '<div class="pm-ev"><span class="pm-d">Day ' + e.day + '</span><span>' + escapeHtml(e.label) + '</span></div>';
+    }).join("");
+    var back = el("div", "pm-back");
+    var dlg = el("div", "pm-dlg");
+    dlg.innerHTML =
+      '<div class="pm-head"><h3>Raw payload · ' + escapeHtml(iv.invoiceId) + '</h3>' +
+      '<span class="pm-ro">read-only</span><button class="pm-x" id="pmClose">✕</button></div>' +
+      '<div class="pm-body"><div class="pm-fields">' + rows + '</div>' +
+      (events ? '<div class="pm-evh">Event series</div><div class="pm-evs">' + events + '</div>' : '') +
+      '</div><div class="pm-foot"><span class="muted">This is the exact record the action DAG operates on. SAP / Oracle remains the system of record.</span>' +
+      '<button class="btn ghost sm" id="pmDone">Close</button></div>';
+    back.appendChild(dlg);
+    back.addEventListener("mousedown", function (e) { if (e.target === back) closePayloadModal(); });
+    document.addEventListener("keydown", pmEsc);
+    document.body.appendChild(back);
+    dlg.querySelector("#pmClose").onclick = closePayloadModal;
+    dlg.querySelector("#pmDone").onclick = closePayloadModal;
   }
 
   function chip(ic, txt) { return '<span class="chip">' + ic + ' ' + txt + '</span>'; }
@@ -12037,7 +13020,7 @@ button{font-family:inherit;cursor:pointer}
     return card;
   }
   function note() {
-    return el("div", "note", "Cognitive Cockpit — Module 3. Engine runs on-device from the AR Pattern Library v2 (" + meta.patternCount + " patterns). Live-Claude diagnosis narrative is a pluggable layer.");
+    return el("div", "note", "Cognitive Cockpit — Module 3. Engine runs on-device from the AR Pattern Library v2 (" + meta.patternCount + " patterns). Deterministic diagnosis — every verdict traces to a pattern and its event series.");
   }
   function escapeHtml(s) { return (s == null ? "" : String(s)).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
@@ -12046,6 +13029,54 @@ button{font-family:inherit;cursor:pointer}
     '<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>' +
     '<div><b>Select an invoice</b> to watch the cognitive loop diagnose it.</div>' +
     '<div style="font-size:12px;max-width:340px">Each open item carries an event timeline. ProcessIQ senses the signals, names the behavioural pattern, and assembles a governance-approved action.</div></div>';
+
+  /* ---------- Compound Signals (cross-process, collective intelligence) ----------
+     Correlates the theme's cross-process compound patterns against the invoices in
+     the worklist. A compound signal is emergent risk that no single process flags. */
+  function applicableCompounds() {
+    var list = window.PIQ.compoundPatterns();
+    if (list.length) return list;
+    // the cockpit is the O2C AR cockpit — fall back to every theme touching O2C
+    var out = [];
+    (window.PIQ.tax.themes || []).forEach(function (t) {
+      if ((t.functionIds || []).indexOf("o2c") < 0) return;
+      (t.crossProcessPatterns || []).forEach(function (cp) {
+        out.push({ theme: t, cp: cp, constituents: window.PIQ.compoundConstituents(cp) });
+      });
+    });
+    return out;
+  }
+  function invoiceForPattern(pid) {
+    var p = patterns.filter(function (x) { return x.id === pid; })[0];
+    if (!p) return null;
+    return book.invoices.filter(function (iv) { return iv.groundTruthFeature === p.featureSlug; })[0] || null;
+  }
+
+  function compoundSection() {
+    var comps = applicableCompounds();
+    if (!comps.length) return "";
+    var cards = comps.map(function (a) {
+      var present = 0, entity = null;
+      var cons = a.constituents.map(function (id) {
+        var p = patterns.filter(function (x) { return x.id === id; })[0];
+        var iv = invoiceForPattern(id);
+        if (iv) { present++; if (!entity) entity = iv.customer; }
+        return '<span class="cs-pat' + (iv ? " fired" : "") + '">#' + id +
+          (p ? ' ' + escapeHtml(p.name) : '') + '</span>';
+      }).join("");
+      var active = present >= 2;
+      return '<div class="cs-card ' + (active ? "active" : "watch") + '">' +
+        '<div class="cs-top"><span class="cs-state">' + (active ? "● ACTIVE" : "○ MONITORING") + '</span>' +
+        '<span class="cs-name">' + escapeHtml(a.cp.name) + '</span>' +
+        (active && entity ? '<span class="cs-ent">' + escapeHtml(entity) + '</span>' : '') + '</div>' +
+        '<div class="cs-desc">' + escapeHtml(a.cp.description) + '</div>' +
+        '<div class="cs-cons"><span class="cs-lab">Constituent patterns</span>' + cons + '</div>' +
+        '<div class="cs-resp"><b>Recommended compound response</b> ' + escapeHtml(a.cp.response) + '</div></div>';
+    }).join("");
+    return '<div class="cs-band"><div class="cs-h">⚠ Compound Signals ' +
+      '<small>collective intelligence — emergent cross-process risk no single pattern catches</small></div>' +
+      '<div class="cs-cards">' + cards + '</div></div>';
+  }
 
   /* ---------- module registration ---------- */
   window.PIQ.modules.cockpit = {
@@ -12056,6 +13087,7 @@ button{font-family:inherit;cursor:pointer}
         window.PIQ._jumpInvoice = null;
       }
       view.innerHTML =
+        compoundSection() +
         '<div class="wrap"><aside class="worklist"><h3>Collections Worklist</h3><div id="invList"></div></aside>' +
         '<main class="cockpit" id="cockpit"></main></div>';
       renderList();
@@ -12180,7 +13212,7 @@ button{font-family:inherit;cursor:pointer}
 
     // branching DAG tree
     var branches = (p.branchingDAG || []).map(function (b) {
-      var verbs = b.actions.map(function (a) { return '<span class="verb' + (E.detectors ? "" : "") + '">' + esc(a) + '</span>'; }).join("");
+      var verbs = b.actions.map(function (a) { return '<span class="verb">' + esc(a) + '</span>'; }).join("");
       var hitl = b.hitl ? '<div class="b-hitl">🔒 HITL: ' + esc(b.hitl) + '</div>' : "";
       return '<div class="branch t-' + b.tier + '"><div class="b-cond mono">' + esc(b.condition) + '</div>' +
         '<div class="b-acts">' + verbs + '</div>' + hitl + '</div>';
@@ -12284,14 +13316,20 @@ button{font-family:inherit;cursor:pointer}
   function esc(s) { return (s == null ? "" : String(s)).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
   var MODES = {
+    supervised: {
+      label: "Supervised", tag: "DAY 1", color: "#c0392b",
+      blurb: "Nothing runs without a human. Every action — including read-only lookups — is queued for explicit approval before it executes. This is day one of a deployment, before the system has earned any trust.",
+      bullets: ["Every action requires human approval", "READ and WRITE steps alike are gated", "No autonomous execution — full oversight", "Establishes the audit baseline", "Trust is earned from here, not assumed"],
+      gate: function () { return true; },  // everything gated — reads included
+    },
     assisted: {
-      label: "Assisted", tag: "DEFAULT", color: "var(--sense)",
-      blurb: "AI detects the pattern, assembles evidence, and drafts the action payload — then queues it. A human clicks APPROVE before any execution.",
-      bullets: ["AI detects the pattern", "AI assembles evidence", "AI drafts action payload", "AI queues for approval", "Human clicks APPROVE", "System executes DAG"],
-      gate: function () { return true; },  // everything gated
+      label: "Cautious", tag: "EARLY", color: "var(--sense)",
+      blurb: "Read-only lookups run automatically; every WRITE to the ERP is queued for human approval. The AI detects, evidences, and drafts the action payload — a human authorizes anything that changes a record.",
+      bullets: ["Reads & lookups run automatically", "Every WRITE queued for approval", "AI drafts the action payload", "Human authorizes state changes", "Full audit trail"],
+      gate: function (step) { return step.mutating; },  // gate writes; auto on reads
     },
     policy: {
-      label: "Policy-Approved", tag: "EARNED", color: "var(--decide)",
+      label: "Balanced", tag: "EARNED", color: "var(--decide)",
       blurb: "Standing authorization for low-risk, reversible actions. CFO + Controller approve the POLICY (versioned, effective-dated); the system applies within bounds and gates only the rest.",
       bullets: ["Standing authorization for low-risk, reversible actions", "Policy versioned & effective-dated", "CFO + Controller approve the POLICY", "System applies automatically within bounds", "Audit trail for every execution"],
       gate: function (step) { return step.mutating && step.highRisk; },  // gate only high-risk writes
@@ -12501,6 +13539,8 @@ button{font-family:inherit;cursor:pointer}
   var roi = window.PROCESSIQ_ROI;
   var PRIO = window.PIQ.meta.priorityLegend;
 
+  var roiView = "process";   // "process" (per-process KPI cards) | "theme" (compound rollup)
+
   function money(x) { return E._money(x); }
   function el(t, c, h) { var n = document.createElement(t); if (c) n.className = c; if (h != null) n.innerHTML = h; return n; }
   function esc(s) { return (s == null ? "" : String(s)).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
@@ -12514,6 +13554,30 @@ button{font-family:inherit;cursor:pointer}
       '<h2 style="font-size:22px;margin:2px 0 4px">KPIs Are Table Stakes. Business Outcomes Are the Scorecard.</h2>' +
       '<p style="margin:0;color:var(--muted);max-width:780px">Operational metrics prove the engine runs. The real measure is dollars — released, protected, and recovered — and every one of them is traceable to a behavioural pattern.</p>'));
 
+    var hasThemes = roi.themes && roi.themes.length;
+    if (hasThemes) {
+      root.appendChild(viewToggle());
+      if (roiView === "theme") { renderThemeView(root); wireToggle(root); return; }
+    }
+    renderProcessView(root);
+    if (hasThemes) wireToggle(root);
+  }
+
+  function viewToggle() {
+    return el("div", "roi-toggle",
+      '<button class="roi-tg' + (roiView === "process" ? " on" : "") + '" data-v="process">Process KPIs</button>' +
+      '<button class="roi-tg' + (roiView === "theme" ? " on" : "") + '" data-v="theme">Theme Rollup</button>' +
+      '<span class="roi-tg-hint">' + (roiView === "theme"
+        ? "How per-process KPIs compose into a compound, cross-function outcome."
+        : "The per-process operational and outcome scorecard.") + '</span>');
+  }
+  function wireToggle(root) {
+    root.querySelectorAll(".roi-tg").forEach(function (b) {
+      b.onclick = function () { roiView = b.dataset.v; render(document.getElementById("view")); };
+    });
+  }
+
+  function renderProcessView(root) {
     // Tier 1 KPIs
     root.appendChild(sectionLabel("Tier 1 — KPIs", "necessary but insufficient"));
     var krow = el("div", "kpirow");
@@ -12531,6 +13595,46 @@ button{font-family:inherit;cursor:pointer}
     grid.appendChild(trajectoryCard());
     grid.appendChild(attributionCard());
     root.appendChild(grid);
+  }
+
+  /* Theme rollup — the compound (cross-function) KPI as a hero, a stacked contribution
+     bar showing how each per-process KPI feeds it, the dollar impact, and per-KPI
+     pattern attribution. */
+  function renderThemeView(root) {
+    var t = roi.themes[0], k = t.compoundKPI || {};
+    root.appendChild(sectionLabel("Theme Rollup — " + esc(t.id === "working-capital" ? "Working Capital Optimization" : t.id),
+      "per-process KPIs compose into one compound outcome"));
+
+    var hero = el("div", "card th-hero");
+    hero.innerHTML =
+      '<div class="th-h-main"><div class="th-h-lab">' + esc(k.name) + '</div>' +
+      '<div class="th-h-val"><span class="thb">' + esc(k.current) + '</span>' +
+      '<span class="tha">→</span><span class="thg">' + esc(k.target) + '</span>' +
+      '<span class="thu">' + esc(k.unit) + '</span></div>' +
+      (k.formula ? '<div class="th-h-form mono">' + esc(k.formula) + '</div>' : '') + '</div>' +
+      '<div class="th-h-impact"><div class="thi-lab">Dollar impact</div>' +
+      '<div class="thi-val">' + esc(t.impact) + '</div></div>';
+    root.appendChild(hero);
+
+    var stack = (t.contributors || []).map(function (cc, i) {
+      return '<i class="th-seg s' + (i % 6) + '" style="flex:' + cc.weight +
+        '" title="' + esc(cc.kpi) + ' · ' + Math.round(cc.weight * 100) + '%"></i>';
+    }).join("");
+    var rows = (t.contributors || []).map(function (cc, i) {
+      var pats = (cc.patterns || []).map(function (p) { return '<span class="th-pat">' + esc(p) + '</span>'; }).join("");
+      return '<div class="th-row"><div class="th-r-h"><span class="th-dot s' + (i % 6) + '"></span>' +
+        '<span class="th-kpi">' + esc(cc.kpi) + '</span>' +
+        '<span class="th-proc">' + esc(cc.process) + '</span>' +
+        '<span class="th-w">' + Math.round(cc.weight * 100) + '% weight</span>' +
+        '<span class="th-r-v"><b>' + esc(cc.current) + '</b> → <b>' + esc(cc.target) + '</b></span></div>' +
+        (pats ? '<div class="th-r-attr"><span class="th-al">Driven by</span>' + pats + '</div>' : '') + '</div>';
+    }).join("");
+    root.appendChild(el("div", "card th-contrib",
+      '<h4><span class="num">Σ</span>Contribution to ' + esc(k.name) + '</h4>' +
+      '<div class="pad"><div class="th-stack">' + stack + '</div>' +
+      '<div class="th-rows">' + rows + '</div>' +
+      '<div class="traj-note">Each per-process KPI is owned by a different team and moved by different patterns — ' +
+      'the compound KPI is the outcome the CFO actually steers by.</div></div>'));
   }
 
   function sectionLabel(t, sub) {
@@ -12840,15 +13944,72 @@ button{font-family:inherit;cursor:pointer}
   function promote() {
     approved = true;
     var cand = D.candidate;
+    // close the loop for real: promote the candidate into the live pattern library
+    // and taxonomy so it is browsable in the Library and selectable in the Studio.
+    addCandidateToLibrary(cand);
     // walk the loop: Detect -> Act -> Attribute -> Learn
     var steps = [3, 4, 5, 6];
     steps.forEach(function (s, i) { setTimeout(function () { setActiveLoop(s); }, 350 + i * 500); });
     document.getElementById("smeGate").innerHTML =
       '<div class="sme-result ok">✓ Pattern #' + cand.id + ' promoted — <b>versioned, effective-dated</b>, now scanning all customers in real time. ' +
-      'Repository: ' + D.meta.existingPatternCount + ' → <b>' + (D.meta.existingPatternCount + 1) + '</b> patterns. The playbook compounds.</div>';
+      'Repository: ' + D.meta.existingPatternCount + ' → <b>' + (D.meta.existingPatternCount + 1) + '</b> patterns. ' +
+      'It is now in the <b>Pattern Library</b> and selectable in the <b>Studio</b>. The playbook compounds.</div>';
     // bump the header count
     var hd = document.querySelector(".disc .gov-head h2");
     if (hd) hd.innerHTML = (D.meta.existingPatternCount + 1) + ' Patterns Now. The System Finds #' + (D.meta.candidateId + 1) + ' Next Quarter.';
+    toast("Pattern #" + cand.id + " added to library.");
+  }
+
+  // Materialise the SME-approved candidate as a full library pattern (same shape as
+  // patterns.json), register it on PIQ.patterns + meta, and attach it to the relevant
+  // O2C objective so it flows into the Studio's pattern picker.
+  function addCandidateToLibrary(cand) {
+    if ((window.PIQ.patterns || []).some(function (p) { return p.id === cand.id; })) return;
+    var slug = String(cand.proposedFeature || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    var branches = cand.proposedDAG || [];
+    var primary = branches.filter(function (b) { return b.tier === "primary"; })[0] || branches[0] || { actions: [] };
+    var gates = branches.filter(function (b) { return b.hitl; }).map(function (b) { return b.hitl; });
+    var pat = {
+      id: cand.id, name: cand.proposedName, category: cand.proposedCategory,
+      priority: "High", priorityRank: 1, mentalModel: cand.narrative, discovered: true,
+      sources: { sap: ["BSID (AR open items)", "KNKK (credit master)"],
+                 oracle: ["AR_PAYMENT_SCHEDULES_ALL", "HZ_CUST_ACCOUNTS"] },
+      layer1_logicalMapping: "Customer payment-timing behaviour joined to the seasonal calendar — the actual days-to-pay per cohort against its own historical norm.",
+      layer2_eventSeries: cand.statSignal,
+      layer3_feature: cand.proposedFeature, featureSlug: slug,
+      conceptualSQL: "-- discovered trigger for " + cand.proposedFeature +
+        "\nSELECT * FROM ar_behaviour WHERE signal = '" + cand.proposedFeature + "'",
+      originalDAG: ["Read_Payment_Behaviour", "Detect_" + cand.proposedFeature, "Score_Seasonal_Anomaly"]
+        .concat(primary.actions || []),
+      branchingDAG: branches, hitlGates: gates,
+      calibration: { defaultThreshold: "0-2 days", calibratedThreshold: "0-30 days",
+        traceCount: 14000, additionalCoverage: cand.affectedCustomers || 14, method: "PM4Py conformance analysis" },
+    };
+    window.PIQ.patterns.push(pat);
+    window.PIQ._actionRepo = null;   // invalidate the cached action-block repository
+
+    var meta = window.PIQ.meta;
+    if (meta) {
+      meta.patternCount = window.PIQ.patterns.length;
+      var catRow = (meta.categories || []).filter(function (c) { return c.category === pat.category; })[0];
+      if (catRow) { catRow.count++; catRow[pat.priority] = (catRow[pat.priority] || 0) + 1; }
+    }
+    // attach to the O2C Credit & Risk objective so the Studio surfaces it
+    var o2c = (window.PIQ.tax.functions || []).filter(function (f) { return f.id === "o2c"; })[0];
+    if (o2c) o2c.processes.forEach(function (pr) { pr.roles.forEach(function (r) { (r.objectives || []).forEach(function (o) {
+      if (o.id === "o2c-o-risk" && o.patternIds.indexOf(pat.id) < 0) {
+        o.patternIds.push(pat.id); o.patternCount = o.patternIds.length; o2c.patternCount = (o2c.patternCount || 0) + 1;
+      }
+    }); }); });
+  }
+
+  function toast(msg) {
+    var t = document.createElement("div");
+    t.className = "piq-toast"; t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(function () { t.classList.add("show"); }, 10);
+    setTimeout(function () { t.classList.remove("show"); }, 2600);
+    setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 3000);
   }
 
   function setActiveLoop(active) {

@@ -24,6 +24,7 @@
     _erpListeners: [],
     // the process an SME is composing — threaded through all three stages
     composition: {
+      themeId: null,      // business theme (spans functions) — optional top-level lens
       fnId: null, procId: null,
       roleIds: [],        // all personas participating in the chosen process
       objIds: [],         // objectives in scope (across the selected personas)
@@ -39,8 +40,9 @@
     { id: "design", n: 1, label: "Design", tag: "Missions → Actions", sub: [
         { id: "studio", label: "Studio" },
         { id: "library", label: "Pattern Library" } ] },
-    { id: "fit", n: 2, label: "Discover & Fit", tag: "Discovery & Agent Fitment", sub: [
+    { id: "fit", n: 2, label: "Discover & Fit", tag: "Discovery, Fitment & Build", sub: [
         { id: "fitment", label: "Agent Fitment" },
+        { id: "build", label: "Build Engine" },
         { id: "discovery", label: "Discovery Engine" } ] },
     { id: "run", n: 3, label: "Run & Govern", tag: "Agentic Workflow", sub: [
         { id: "runtime", label: "Live Operations" },
@@ -70,6 +72,44 @@
 
   PIQ.selectedPatterns = function () {
     return PIQ.composition.patternIds.map(PIQ.pattern).filter(Boolean);
+  };
+
+  // the business theme (optional top-level lens) currently in scope
+  PIQ.theme = function () {
+    return (PIQ.tax.themes || []).filter(function (t) { return t.id === PIQ.composition.themeId; })[0] || null;
+  };
+  // functions a theme spans (resolved objects); all functions if no theme selected
+  PIQ.themeFunctions = function () {
+    var t = PIQ.theme(), all = PIQ.tax.functions || [];
+    if (!t) return all;
+    var ids = t.functionIds || [];
+    var some = all.filter(function (f) { return ids.indexOf(f.id) >= 0; });
+    return some.length ? some : all;
+  };
+
+  // pull the referenced pattern ids ("#27") out of a compound pattern's triggers
+  PIQ.compoundConstituents = function (cp) {
+    var seen = {}, out = [];
+    (cp.triggers || []).forEach(function (t) {
+      (String(t).match(/#(\d+)/g) || []).forEach(function (m) {
+        var id = +m.slice(1); if (!seen[id]) { seen[id] = 1; out.push(id); }
+      });
+    });
+    return out;
+  };
+  // cross-process compound patterns applicable to the current composition:
+  // the selected theme's, or (if none) every theme touching the chosen function.
+  PIQ.compoundPatterns = function () {
+    var c = PIQ.composition, out = [];
+    (PIQ.tax.themes || []).forEach(function (t) {
+      if (c.themeId) { if (t.id !== c.themeId) return; }
+      else if (c.fnId && (t.functionIds || []).indexOf(c.fnId) < 0) return;
+      else if (!c.fnId && !c.themeId) return;
+      (t.crossProcessPatterns || []).forEach(function (cp) {
+        out.push({ theme: t, cp: cp, constituents: PIQ.compoundConstituents(cp) });
+      });
+    });
+    return out;
   };
 
   PIQ.fn = function () {
@@ -183,7 +223,7 @@
   };
 
   PIQ.resetComposition = function () {
-    PIQ.composition = { fnId: null, procId: null, roleIds: [], objIds: [],
+    PIQ.composition = { themeId: null, fnId: null, procId: null, roleIds: [], objIds: [],
       patternIds: [], blocks: {}, dag: {}, live: false };
     PIQ.persistComposition();
   };
@@ -200,6 +240,7 @@
       // only restore if the saved function still exists in the taxonomy
       if (saved.fnId && !(PIQ.tax.functions || []).some(function (f) { return f.id === saved.fnId; })) return;
       PIQ.composition = {
+        themeId: saved.themeId || null,
         fnId: saved.fnId || null, procId: saved.procId || null,
         roleIds: Array.isArray(saved.roleIds) ? saved.roleIds : [],
         objIds: Array.isArray(saved.objIds) ? saved.objIds : [],
@@ -246,9 +287,11 @@
   }
 
   function crumb() {
-    var c = PIQ.composition, f = PIQ.fn();
-    if (!f) return '<span class="cr-empty">No process selected — start in Studio</span>';
-    var parts = [f.name];
+    var c = PIQ.composition, f = PIQ.fn(), t = PIQ.theme();
+    if (!f && !t) return '<span class="cr-empty">No process selected — start in Studio</span>';
+    var parts = [];
+    if (t) parts.push(t.name);
+    if (f) parts.push(f.name);
     var p = PIQ.proc();
     if (p) parts.push(p.name);
     var s = parts.map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('<i>›</i>');

@@ -8,6 +8,7 @@
   var meta = window.PIQ.meta;
   var book = window.PIQ.book;
   var selected = null;
+  var queued = {};     // belnr -> true : transactions moved to Pending Review
   var PRIO_COLOR = meta.priorityLegend;
 
   function erp() { return window.PIQ.erp; }
@@ -34,6 +35,7 @@
       var node = el("div", "inv" + (selected && selected.belnr === iv.belnr ? " sel" : ""));
       var pill = pr ? '<span class="riskpill" style="background:' + PRIO_COLOR[pr] + '">' + pr + '</span>'
         : '<span class="riskpill clean">Clean</span>';
+      if (queued[iv.belnr]) pill += '<span class="riskpill review">In review</span>';
       node.innerHTML =
         '<div class="r1"><span class="cust">' + iv.customer + '</span><span class="amt">' + money(iv.amount) + '</span></div>' +
         '<div class="r2"><span class="mono">' + iv.invoiceId + ' · ' + iv.terms + '</span><span class="dpd">' + iv.dpd + ' DPD</span></div>' +
@@ -95,7 +97,7 @@
     c.appendChild(grid);
 
     var actionWrap = el("div"); actionWrap.style.marginTop = "18px";
-    actionWrap.appendChild(actionCard(pat, dec, res));
+    actionWrap.appendChild(actionCard(iv, pat, dec, res));
     c.appendChild(actionWrap);
     c.appendChild(note());
     animateStages();
@@ -177,7 +179,7 @@
     return card;
   }
 
-  function actionCard(pat, dec, res) {
+  function actionCard(iv, pat, dec, res) {
     var card = el("div", "card");
     card.innerHTML = '<h4><span class="num">A</span>Action DAG — Deterministic, Rollback-Ready Execution</h4>';
     var pad = el("div", "pad");
@@ -198,14 +200,17 @@
       chip("⊕", "SAP remains system of record") + chip("⊘", "Deterministic API blocks — no hallucination");
     pad.appendChild(saga);
     var exec = el("div", "exec");
-    if (dec.requiresHITL) {
-      exec.innerHTML = '<button class="btn approve" id="approveBtn">🔒 Approve &amp; Execute DAG</button><button class="btn ghost">Edit payload</button>';
-    } else {
-      exec.innerHTML = '<button class="btn go" id="approveBtn">Execute DAG</button><button class="btn ghost">Queue for review</button>';
-    }
+    var queuedNow = !!queued[iv.belnr];
+    var primary = dec.requiresHITL
+      ? '<button class="btn approve" id="approveBtn">🔒 Approve &amp; Execute DAG</button>'
+      : '<button class="btn go" id="approveBtn">Execute DAG</button>';
+    var queueBtn = queuedNow
+      ? '<button class="btn ghost" id="queueBtn" disabled>✓ Queued — in review</button>'
+      : '<button class="btn ghost" id="queueBtn">Queue for review</button>';
+    exec.innerHTML = primary + '<button class="btn ghost" id="editPayloadBtn">Edit payload</button>' + queueBtn;
     pad.appendChild(exec);
     var gov = el("div", "gov-note");
-    gov.innerHTML = '<span>Mode: <b>' + (dec.requiresHITL ? "Assisted (HITL)" : "Policy-approved") + '</b></span>' +
+    gov.innerHTML = '<span>Mode: <b>' + (queuedNow ? "Pending review" : (dec.requiresHITL ? "Assisted (HITL)" : "Policy-approved")) + '</b></span>' +
       '<span>Outcome attribution: <b>ON</b></span><span>Audit log: <b>cryptographic</b></span>';
     pad.appendChild(gov);
     card.appendChild(pad);
@@ -215,8 +220,58 @@
         b.textContent = "✓ Executed — " + countActions(res.actionDAG) + " steps committed, attribution tracking";
         b.className = "btn ghost"; b.disabled = true;
       };
+      var ep = document.getElementById("editPayloadBtn");
+      if (ep) ep.onclick = function () { openPayloadModal(iv, pat, dec); };
+      var q = document.getElementById("queueBtn");
+      if (q && !queued[iv.belnr]) q.onclick = function () {
+        queued[iv.belnr] = true;
+        renderList(); renderCockpit();
+      };
     }, 10);
     return card;
+  }
+
+  /* Edit payload — read-only modal exposing the transaction's raw data fields.
+     (Read-only for now; a future release makes the payload editable pre-execution.) */
+  function pmEsc(e) { if (e.key === "Escape") closePayloadModal(); }
+  function closePayloadModal() {
+    var b = document.querySelector(".pm-back");
+    if (b) { b.remove(); document.removeEventListener("keydown", pmEsc); }
+  }
+  function openPayloadModal(iv, pat, dec) {
+    closePayloadModal();
+    var fields = [
+      ["Invoice ID", iv.invoiceId], ["Document (BELNR)", iv.belnr],
+      ["Customer", iv.customer], ["Customer no. (KUNNR)", iv.kunnr],
+      ["Amount", money(iv.amount)], ["Terms", iv.terms],
+      ["Days past due", iv.dpd + "d"], ["Vertical", iv.vertical],
+      ["Ground-truth feature", iv.groundTruthFeature || "—"],
+      ["Matched pattern", pat ? ("#" + pat.id + " · " + pat.name) : "none"],
+      ["Response tier", dec ? tierLabel(dec.branch.tier) : "—"],
+      ["Requires HITL", dec && dec.requiresHITL ? "yes" : "no"],
+    ];
+    var rows = fields.map(function (f) {
+      return '<div class="pm-row"><span class="pm-k">' + escapeHtml(f[0]) + '</span>' +
+        '<span class="pm-v mono">' + escapeHtml(String(f[1])) + '</span></div>';
+    }).join("");
+    var events = (iv.eventSeries || []).map(function (e) {
+      return '<div class="pm-ev"><span class="pm-d">Day ' + e.day + '</span><span>' + escapeHtml(e.label) + '</span></div>';
+    }).join("");
+    var back = el("div", "pm-back");
+    var dlg = el("div", "pm-dlg");
+    dlg.innerHTML =
+      '<div class="pm-head"><h3>Raw payload · ' + escapeHtml(iv.invoiceId) + '</h3>' +
+      '<span class="pm-ro">read-only</span><button class="pm-x" id="pmClose">✕</button></div>' +
+      '<div class="pm-body"><div class="pm-fields">' + rows + '</div>' +
+      (events ? '<div class="pm-evh">Event series</div><div class="pm-evs">' + events + '</div>' : '') +
+      '</div><div class="pm-foot"><span class="muted">This is the exact record the action DAG operates on. SAP / Oracle remains the system of record.</span>' +
+      '<button class="btn ghost sm" id="pmDone">Close</button></div>';
+    back.appendChild(dlg);
+    back.addEventListener("mousedown", function (e) { if (e.target === back) closePayloadModal(); });
+    document.addEventListener("keydown", pmEsc);
+    document.body.appendChild(back);
+    dlg.querySelector("#pmClose").onclick = closePayloadModal;
+    dlg.querySelector("#pmDone").onclick = closePayloadModal;
   }
 
   function chip(ic, txt) { return '<span class="chip">' + ic + ' ' + txt + '</span>'; }
@@ -228,7 +283,7 @@
     return card;
   }
   function note() {
-    return el("div", "note", "Cognitive Cockpit — Module 3. Engine runs on-device from the AR Pattern Library v2 (" + meta.patternCount + " patterns). Live-Claude diagnosis narrative is a pluggable layer.");
+    return el("div", "note", "Cognitive Cockpit — Module 3. Engine runs on-device from the AR Pattern Library v2 (" + meta.patternCount + " patterns). Deterministic diagnosis — every verdict traces to a pattern and its event series.");
   }
   function escapeHtml(s) { return (s == null ? "" : String(s)).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
@@ -237,6 +292,54 @@
     '<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>' +
     '<div><b>Select an invoice</b> to watch the cognitive loop diagnose it.</div>' +
     '<div style="font-size:12px;max-width:340px">Each open item carries an event timeline. ProcessIQ senses the signals, names the behavioural pattern, and assembles a governance-approved action.</div></div>';
+
+  /* ---------- Compound Signals (cross-process, collective intelligence) ----------
+     Correlates the theme's cross-process compound patterns against the invoices in
+     the worklist. A compound signal is emergent risk that no single process flags. */
+  function applicableCompounds() {
+    var list = window.PIQ.compoundPatterns();
+    if (list.length) return list;
+    // the cockpit is the O2C AR cockpit — fall back to every theme touching O2C
+    var out = [];
+    (window.PIQ.tax.themes || []).forEach(function (t) {
+      if ((t.functionIds || []).indexOf("o2c") < 0) return;
+      (t.crossProcessPatterns || []).forEach(function (cp) {
+        out.push({ theme: t, cp: cp, constituents: window.PIQ.compoundConstituents(cp) });
+      });
+    });
+    return out;
+  }
+  function invoiceForPattern(pid) {
+    var p = patterns.filter(function (x) { return x.id === pid; })[0];
+    if (!p) return null;
+    return book.invoices.filter(function (iv) { return iv.groundTruthFeature === p.featureSlug; })[0] || null;
+  }
+
+  function compoundSection() {
+    var comps = applicableCompounds();
+    if (!comps.length) return "";
+    var cards = comps.map(function (a) {
+      var present = 0, entity = null;
+      var cons = a.constituents.map(function (id) {
+        var p = patterns.filter(function (x) { return x.id === id; })[0];
+        var iv = invoiceForPattern(id);
+        if (iv) { present++; if (!entity) entity = iv.customer; }
+        return '<span class="cs-pat' + (iv ? " fired" : "") + '">#' + id +
+          (p ? ' ' + escapeHtml(p.name) : '') + '</span>';
+      }).join("");
+      var active = present >= 2;
+      return '<div class="cs-card ' + (active ? "active" : "watch") + '">' +
+        '<div class="cs-top"><span class="cs-state">' + (active ? "● ACTIVE" : "○ MONITORING") + '</span>' +
+        '<span class="cs-name">' + escapeHtml(a.cp.name) + '</span>' +
+        (active && entity ? '<span class="cs-ent">' + escapeHtml(entity) + '</span>' : '') + '</div>' +
+        '<div class="cs-desc">' + escapeHtml(a.cp.description) + '</div>' +
+        '<div class="cs-cons"><span class="cs-lab">Constituent patterns</span>' + cons + '</div>' +
+        '<div class="cs-resp"><b>Recommended compound response</b> ' + escapeHtml(a.cp.response) + '</div></div>';
+    }).join("");
+    return '<div class="cs-band"><div class="cs-h">⚠ Compound Signals ' +
+      '<small>collective intelligence — emergent cross-process risk no single pattern catches</small></div>' +
+      '<div class="cs-cards">' + cards + '</div></div>';
+  }
 
   /* ---------- module registration ---------- */
   window.PIQ.modules.cockpit = {
@@ -247,6 +350,7 @@
         window.PIQ._jumpInvoice = null;
       }
       view.innerHTML =
+        compoundSection() +
         '<div class="wrap"><aside class="worklist"><h3>Collections Worklist</h3><div id="invList"></div></aside>' +
         '<main class="cockpit" id="cockpit"></main></div>';
       renderList();

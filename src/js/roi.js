@@ -7,6 +7,8 @@
   var roi = window.PROCESSIQ_ROI;
   var PRIO = window.PIQ.meta.priorityLegend;
 
+  var roiView = "process";   // "process" (per-process KPI cards) | "theme" (compound rollup)
+
   function money(x) { return E._money(x); }
   function el(t, c, h) { var n = document.createElement(t); if (c) n.className = c; if (h != null) n.innerHTML = h; return n; }
   function esc(s) { return (s == null ? "" : String(s)).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
@@ -20,6 +22,30 @@
       '<h2 style="font-size:22px;margin:2px 0 4px">KPIs Are Table Stakes. Business Outcomes Are the Scorecard.</h2>' +
       '<p style="margin:0;color:var(--muted);max-width:780px">Operational metrics prove the engine runs. The real measure is dollars — released, protected, and recovered — and every one of them is traceable to a behavioural pattern.</p>'));
 
+    var hasThemes = roi.themes && roi.themes.length;
+    if (hasThemes) {
+      root.appendChild(viewToggle());
+      if (roiView === "theme") { renderThemeView(root); wireToggle(root); return; }
+    }
+    renderProcessView(root);
+    if (hasThemes) wireToggle(root);
+  }
+
+  function viewToggle() {
+    return el("div", "roi-toggle",
+      '<button class="roi-tg' + (roiView === "process" ? " on" : "") + '" data-v="process">Process KPIs</button>' +
+      '<button class="roi-tg' + (roiView === "theme" ? " on" : "") + '" data-v="theme">Theme Rollup</button>' +
+      '<span class="roi-tg-hint">' + (roiView === "theme"
+        ? "How per-process KPIs compose into a compound, cross-function outcome."
+        : "The per-process operational and outcome scorecard.") + '</span>');
+  }
+  function wireToggle(root) {
+    root.querySelectorAll(".roi-tg").forEach(function (b) {
+      b.onclick = function () { roiView = b.dataset.v; render(document.getElementById("view")); };
+    });
+  }
+
+  function renderProcessView(root) {
     // Tier 1 KPIs
     root.appendChild(sectionLabel("Tier 1 — KPIs", "necessary but insufficient"));
     var krow = el("div", "kpirow");
@@ -37,6 +63,46 @@
     grid.appendChild(trajectoryCard());
     grid.appendChild(attributionCard());
     root.appendChild(grid);
+  }
+
+  /* Theme rollup — the compound (cross-function) KPI as a hero, a stacked contribution
+     bar showing how each per-process KPI feeds it, the dollar impact, and per-KPI
+     pattern attribution. */
+  function renderThemeView(root) {
+    var t = roi.themes[0], k = t.compoundKPI || {};
+    root.appendChild(sectionLabel("Theme Rollup — " + esc(t.id === "working-capital" ? "Working Capital Optimization" : t.id),
+      "per-process KPIs compose into one compound outcome"));
+
+    var hero = el("div", "card th-hero");
+    hero.innerHTML =
+      '<div class="th-h-main"><div class="th-h-lab">' + esc(k.name) + '</div>' +
+      '<div class="th-h-val"><span class="thb">' + esc(k.current) + '</span>' +
+      '<span class="tha">→</span><span class="thg">' + esc(k.target) + '</span>' +
+      '<span class="thu">' + esc(k.unit) + '</span></div>' +
+      (k.formula ? '<div class="th-h-form mono">' + esc(k.formula) + '</div>' : '') + '</div>' +
+      '<div class="th-h-impact"><div class="thi-lab">Dollar impact</div>' +
+      '<div class="thi-val">' + esc(t.impact) + '</div></div>';
+    root.appendChild(hero);
+
+    var stack = (t.contributors || []).map(function (cc, i) {
+      return '<i class="th-seg s' + (i % 6) + '" style="flex:' + cc.weight +
+        '" title="' + esc(cc.kpi) + ' · ' + Math.round(cc.weight * 100) + '%"></i>';
+    }).join("");
+    var rows = (t.contributors || []).map(function (cc, i) {
+      var pats = (cc.patterns || []).map(function (p) { return '<span class="th-pat">' + esc(p) + '</span>'; }).join("");
+      return '<div class="th-row"><div class="th-r-h"><span class="th-dot s' + (i % 6) + '"></span>' +
+        '<span class="th-kpi">' + esc(cc.kpi) + '</span>' +
+        '<span class="th-proc">' + esc(cc.process) + '</span>' +
+        '<span class="th-w">' + Math.round(cc.weight * 100) + '% weight</span>' +
+        '<span class="th-r-v"><b>' + esc(cc.current) + '</b> → <b>' + esc(cc.target) + '</b></span></div>' +
+        (pats ? '<div class="th-r-attr"><span class="th-al">Driven by</span>' + pats + '</div>' : '') + '</div>';
+    }).join("");
+    root.appendChild(el("div", "card th-contrib",
+      '<h4><span class="num">Σ</span>Contribution to ' + esc(k.name) + '</h4>' +
+      '<div class="pad"><div class="th-stack">' + stack + '</div>' +
+      '<div class="th-rows">' + rows + '</div>' +
+      '<div class="traj-note">Each per-process KPI is owned by a different team and moved by different patterns — ' +
+      'the compound KPI is the outcome the CFO actually steers by.</div></div>'));
   }
 
   function sectionLabel(t, sub) {

@@ -12,22 +12,30 @@
   "use strict";
   var PRIO = window.PIQ.meta.priorityLegend;
 
-  // step machine
-  var STEPS = ["Function", "Process", "Personas", "Objectives", "Patterns", "Configure"];
+  // step machine — Theme is an optional top-level lens above Function
+  var STEPS = ["Theme", "Function", "Process", "Personas", "Objectives", "Patterns", "Configure"];
   var state = { step: 0 };
+
+  // lucide-style theme icon names → emoji (no icon library is inlined)
+  var THEME_ICONS = { "trending-up": "📈", "shield-alert": "🚨", "clock": "⏱️",
+    "shield-check": "🛡️", "eye": "👁️" };
+  function themeIcon(name) { return THEME_ICONS[name] || "◆"; }
 
   function el(t, c, h) { var n = document.createElement(t); if (c) n.className = c; if (h != null) n.innerHTML = h; return n; }
   function esc(s) { return (s == null ? "" : String(s)).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
   function C() { return window.PIQ.composition; }
+  function theme() { return window.PIQ.theme(); }
+  function fnById(id) { return (window.PIQ.tax.functions || []).filter(function (f) { return f.id === id; })[0]; }
 
   /* resume at the furthest resolved step when re-entering the Studio */
   function resumeStep() {
     var c = C();
-    if (c.patternIds.length) return 5;
-    if (c.objIds.length) return 4;
-    if (c.roleIds.length) return 3;
-    if (c.procId) return 2;
-    if (c.fnId) return 1;
+    if (c.patternIds.length) return 6;
+    if (c.objIds.length) return 5;
+    if (c.roleIds.length) return 4;
+    if (c.procId) return 3;
+    if (c.fnId) return 2;
+    if (c.themeId) return 1;
     return 0;
   }
 
@@ -55,14 +63,16 @@
      Answers "what have I picked?" without leaving the current step. */
   function summaryCard() {
     var c = C(), f = window.PIQ.fn();
-    if (!f) return null;
+    if (!f && !theme()) return null;
     var p = proc();
     var roles = window.PIQ.roles();
     var objs = window.PIQ.objectives();
     var pats = window.PIQ.selectedPatterns();
+    var t = theme();
 
     var rows = [
-      ["Function", f.name],
+      ["Theme", t && t.name],
+      ["Function", f && f.name],
       ["Process", p && p.name]
     ].filter(function (x) { return x[1]; }).map(function (x) {
       return '<div class="sum-row"><span class="sum-k">' + x[0] + '</span>' +
@@ -131,18 +141,19 @@
 
   function isResolved(i) {
     var c = C();
-    return [!!c.fnId, !!c.procId, c.roleIds.length > 0, c.objIds.length > 0, c.patternIds.length > 0,
+    return [!!c.themeId, !!c.fnId, !!c.procId, c.roleIds.length > 0, c.objIds.length > 0, c.patternIds.length > 0,
             Object.keys(c.blocks).length > 0][i];
   }
   function chosen(i) {
-    var c = C(), f = window.PIQ.fn();
+    var c = C(), f = window.PIQ.fn(), t = theme();
     var label = "";
-    if (i === 0 && f) label = f.name;
-    else if (i === 1 && f && c.procId) label = (proc() || {}).name;
-    else if (i === 2 && c.roleIds.length) label = c.roleIds.length + " persona" + (c.roleIds.length > 1 ? "s" : "");
-    else if (i === 3 && c.objIds.length) label = c.objIds.length + " objective" + (c.objIds.length > 1 ? "s" : "");
-    else if (i === 4 && c.patternIds.length) label = c.patternIds.length + " selected";
-    else if (i === 5 && Object.keys(c.blocks).length) label = Object.keys(c.blocks).length + " configured";
+    if (i === 0 && t) label = t.name;
+    else if (i === 1 && f) label = f.name;
+    else if (i === 2 && f && c.procId) label = (proc() || {}).name;
+    else if (i === 3 && c.roleIds.length) label = c.roleIds.length + " persona" + (c.roleIds.length > 1 ? "s" : "");
+    else if (i === 4 && c.objIds.length) label = c.objIds.length + " objective" + (c.objIds.length > 1 ? "s" : "");
+    else if (i === 5 && c.patternIds.length) label = c.patternIds.length + " selected";
+    else if (i === 6 && Object.keys(c.blocks).length) label = Object.keys(c.blocks).length + " configured";
     return label ? '<small class="st-chose">' + esc(label) + '</small>' : "";
   }
 
@@ -177,7 +188,7 @@
   /* ---------------- steps ---------------- */
   function drawStep(body) {
     if (state.step > 0) body.appendChild(backBtn());
-    [stepFunction, stepProcess, stepPersonas, stepObjectives, stepPatterns, stepConfigure][state.step](body);
+    [stepTheme, stepFunction, stepProcess, stepPersonas, stepObjectives, stepPatterns, stepConfigure][state.step](body);
     var rb = document.getElementById("stReset");
     if (rb) rb.onclick = function () { window.PIQ.resetComposition(); state.step = 0; redraw(); };
   }
@@ -198,9 +209,59 @@
     return g;
   }
 
+  /* Step 0 · Theme — the CFO-level outcome. Optional: spans functions, carries a
+     compound KPI, and (when chosen) filters the function list to what it touches. */
+  function stepTheme(body) {
+    var c = C();
+    var themes = window.PIQ.tax.themes || [];
+    body.appendChild(el("div", "st-q", "Which <b>business theme</b> are you driving?"));
+    body.appendChild(el("p", "st-hint",
+      "Themes are the outcomes a CFO steers by — they span multiple functions and roll up to a compound KPI. " +
+      "Pick one to focus the journey on the functions that move it, or skip straight to a function for a bottoms-up build."));
+    var grid = pickGrid(themes, function (t) {
+      var on = c.themeId === t.id;
+      var k = t.compoundKPI || {};
+      var fns = (t.functionIds || []).map(function (id) { var f = fnById(id); return f ? f.short : id; }).join(" · ");
+      return '<div class="pc-ico" style="--ac:' + t.accent + '">' + themeIcon(t.icon) + '</div>' +
+        '<div class="pc-main"><div class="pc-t">' + esc(t.name) + '</div>' +
+        '<div class="pc-d">' + esc(t.tagline) + '</div></div>' +
+        '<div class="pc-kpi"><span class="pck-n">' + esc(k.name) + '</span>' +
+          '<span class="pck-v">' + esc(k.current) + ' <i>→</i> <b>' + esc(k.target) + '</b> ' + esc(k.unit) + '</span></div>' +
+        '<div class="pc-meta">Spans <b>' + esc(fns) + '</b></div>' +
+        (on ? '<div class="pc-on">✓</div>' : '');
+    }, function (t) {
+      if (c.themeId !== t.id) {
+        c.themeId = t.id;
+        // if the current function isn't in the theme, clear the downstream selection
+        if (c.fnId && (t.functionIds || []).indexOf(c.fnId) < 0) {
+          c.fnId = null; c.procId = null; c.roleIds = []; c.objIds = []; c.patternIds = []; c.blocks = {};
+        }
+      }
+      state.step = 1;
+      redraw();
+    }, function (t) { return c.themeId === t.id; });
+    body.appendChild(grid);
+    body.appendChild(nextBar("Themes are optional — a lens, not a gate",
+      "Skip — go direct to function →", function () { c.themeId = null; state.step = 1; redraw(); }));
+  }
+
   function stepFunction(body) {
-    body.appendChild(el("div", "st-q", "Which <b>function</b> are you transforming?"));
-    var grid = pickGrid(window.PIQ.tax.functions, function (f) {
+    var c = C(), t = theme();
+    if (t) {
+      var k = t.compoundKPI || {};
+      var banner = el("div", "st-themebar",
+        '<div class="stt-ic" style="--ac:' + t.accent + '">' + themeIcon(t.icon) + '</div>' +
+        '<div class="stt-main"><div class="stt-n">' + esc(t.name) + '</div>' +
+        '<div class="stt-k">' + esc(k.name) + ' <b>' + esc(k.current) + ' → ' + esc(k.target) + ' ' + esc(k.unit) + '</b></div></div>' +
+        '<button class="linkbtn" id="stChTheme">change theme</button>');
+      body.appendChild(banner);
+      banner.querySelector("#stChTheme").onclick = function () { state.step = 0; redraw(); };
+    }
+    body.appendChild(el("div", "st-q", t
+      ? "Which <b>function</b> inside “" + esc(t.name) + "” are you transforming?"
+      : "Which <b>function</b> are you transforming?"));
+    var funcs = window.PIQ.themeFunctions();
+    var grid = pickGrid(funcs, function (f) {
       var on = C().fnId === f.id;
       return '<div class="pc-ico" style="--ac:' + f.accent + '">' + f.icon + '</div>' +
         '<div class="pc-main"><div class="pc-t">' + esc(f.name) +
@@ -216,7 +277,7 @@
       // value-chain map, where the SME must pick a built area from the taxonomy matrix.
       var single = f.processes.length === 1 && !f.valueChain;
       if (single) { c.procId = f.processes[0].id; selectAllPersonas(); }
-      state.step = single ? 2 : 1;
+      state.step = single ? 3 : 2;
       redraw();
     });
     body.appendChild(grid);
@@ -230,7 +291,7 @@
   }
 
   function stepProcess(body) {
-    var f = window.PIQ.fn(); if (!f) { state.step = 0; return redraw(); }
+    var f = window.PIQ.fn(); if (!f) { state.step = 1; return redraw(); }
     var c = C();
     // Functions that carry a value-chain map (O2C) present the full process
     // taxonomy; only the built areas are navigable. Others use the card list.
@@ -252,7 +313,7 @@
       body.appendChild(hierarchy(f, p));
       body.appendChild(swimlane(f, p));
       body.appendChild(nextBar(p.roles.length + " persona" + (p.roles.length !== 1 ? "s" : "") + " mapped",
-        "Continue → Personas", function () { state.step = 2; redraw(); }));
+        "Continue → Personas", function () { state.step = 3; redraw(); }));
     }
   }
 
@@ -306,7 +367,7 @@
       body.appendChild(swimlane(f, p));
       body.appendChild(nextBar('Selected: ' + p.name + ' · ' + p.roles.length +
         " persona" + (p.roles.length !== 1 ? "s" : "") + " mapped",
-        "Continue → Personas", function () { state.step = 2; redraw(); }));
+        "Continue → Personas", function () { state.step = 3; redraw(); }));
     } else {
       body.appendChild(nextBar("Pick a built area to compose it", "", null));
     }
@@ -505,7 +566,7 @@
 
   /* Personas — multi-select, defaulting to every persona in the process. */
   function stepPersonas(body) {
-    var p = proc(); if (!p) { state.step = 1; return redraw(); }
+    var p = proc(); if (!p) { state.step = 2; return redraw(); }
     var c = C();
     body.appendChild(el("div", "st-q",
       "Which <b>personas</b> participate in " + esc(p.name) + "?" +
@@ -521,7 +582,7 @@
     }, function (r) { togglePersona(r); redraw(); },
        function (r) { return c.roleIds.indexOf(r.id) >= 0; }));
     body.appendChild(nextBar(c.roleIds.length + " persona" + (c.roleIds.length !== 1 ? "s" : "") + " in scope",
-      c.roleIds.length ? "Choose objectives →" : "", function () { state.step = 3; redraw(); }));
+      c.roleIds.length ? "Choose objectives →" : "", function () { state.step = 4; redraw(); }));
     var all = document.getElementById("stAllP");
     if (all) all.onclick = function (e) {
       e.stopPropagation();
@@ -538,7 +599,7 @@
   /* Objectives — multi-select, grouped by persona, all in scope by default. */
   function stepObjectives(body) {
     var c = C(), roles = window.PIQ.roles();
-    if (!roles.length) { state.step = 2; return redraw(); }
+    if (!roles.length) { state.step = 3; return redraw(); }
     var allObjIds = [];
     roles.forEach(function (r) { (r.objectives || []).forEach(function (o) { allObjIds.push(o.id); }); });
     body.appendChild(el("div", "st-q",
@@ -559,7 +620,7 @@
     });
     var np = c.patternIds.length;
     body.appendChild(nextBar(c.objIds.length + " objective" + (c.objIds.length !== 1 ? "s" : "") + " · " + np + " pattern" + (np !== 1 ? "s" : ""),
-      c.objIds.length ? "Review patterns →" : "", function () { state.step = 4; redraw(); }));
+      c.objIds.length ? "Review patterns →" : "", function () { state.step = 5; redraw(); }));
     var all = document.getElementById("stAllO");
     if (all) all.onclick = function (e) {
       e.stopPropagation();
@@ -575,7 +636,7 @@
 
   function stepPatterns(body) {
     var c = C();
-    var ids = window.PIQ.objectivePatternIds(); if (!ids.length) { state.step = 3; return redraw(); }
+    var ids = window.PIQ.objectivePatternIds(); if (!ids.length) { state.step = 4; return redraw(); }
     var pats = ids.map(window.PIQ.pattern).filter(Boolean);
     var p0 = proc();
     body.appendChild(el("div", "st-q",
@@ -616,7 +677,7 @@
     });
     body.appendChild(grid);
     body.appendChild(nextBar(c.patternIds.length + " pattern" + (c.patternIds.length !== 1 ? "s" : "") + " selected",
-      c.patternIds.length ? "Configure action blocks →" : "", function () { state.step = 5; redraw(); }));
+      c.patternIds.length ? "Configure action blocks →" : "", function () { state.step = 6; redraw(); }));
 
     var all = document.getElementById("stAll");
     if (all) all.onclick = function (e) {
@@ -812,7 +873,7 @@
 
   function stepConfigure(body) {
     var c = C();
-    if (!c.patternIds.length) { state.step = 4; return redraw(); }
+    if (!c.patternIds.length) { state.step = 5; return redraw(); }
     var blocks = window.PIQ.collectBlocks(c.patternIds);
     // seed config for any unconfigured block
     blocks.forEach(function (b) {

@@ -28,6 +28,25 @@ def slug(s):
     return re.sub(r"[^a-z0-9]+", "-", s.strip().lower()).strip("-")
 
 
+def calibration_for(p):
+    """Simulated PM4Py calibration metadata: how the expert-defined default threshold
+    for this pattern's Layer-2 event-series logic widens once fitted to client event
+    traces, and the extra coverage that calibration buys. Deterministic per pattern id
+    so the demo is identical each build — display-only grounding, not a live model."""
+    seed = p["id"]
+    dhi = 2 + (seed % 3)                 # default window upper bound (2-4 days)
+    chi = dhi + 3 + (seed % 4)           # calibrated window is wider (fitted to data)
+    traces = 8000 + (seed * 373) % 12000
+    add_cov = 60 + (seed * 29) % 260
+    return {
+        "defaultThreshold": f"0-{dhi} days",
+        "calibratedThreshold": f"0-{chi} days",
+        "traceCount": traces,
+        "additionalCoverage": add_cov,
+        "method": "PM4Py conformance analysis",
+    }
+
+
 def col_idx(ref):
     m = re.match(r"([A-Z]+)", ref)
     n = 0
@@ -177,6 +196,10 @@ def main():
         })
 
     patterns.sort(key=lambda p: p["id"])
+
+    # attach simulated client-calibration metadata (PM4Py grounding, display-only)
+    for p in patterns:
+        p["calibration"] = calibration_for(p)
 
     # category roll-up for the library view / priority matrix (deck slide 6 & 11)
     cats = {}

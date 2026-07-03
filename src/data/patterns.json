@@ -120,7 +120,14 @@
       ],
       "hitlGates": [
         "Collections VP approves legal hold"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-3 days",
+        "calibratedThreshold": "0-7 days",
+        "traceCount": 8373,
+        "additionalCoverage": 89,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 2,
@@ -182,7 +189,14 @@
       ],
       "hitlGates": [
         "Legal must approve portal removal"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-4 days",
+        "calibratedThreshold": "0-9 days",
+        "traceCount": 8746,
+        "additionalCoverage": 118,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 3,
@@ -243,7 +257,14 @@
       ],
       "hitlGates": [
         "Collections VP approves legal hold"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-2 days",
+        "calibratedThreshold": "0-8 days",
+        "traceCount": 9119,
+        "additionalCoverage": 147,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 4,
@@ -306,7 +327,14 @@
       ],
       "hitlGates": [
         "Manager approves before any clearing"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-3 days",
+        "calibratedThreshold": "0-6 days",
+        "traceCount": 9492,
+        "additionalCoverage": 176,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 5,
@@ -365,7 +393,14 @@
           "escLevel": 2
         }
       ],
-      "hitlGates": []
+      "hitlGates": [],
+      "calibration": {
+        "defaultThreshold": "0-4 days",
+        "calibratedThreshold": "0-8 days",
+        "traceCount": 9865,
+        "additionalCoverage": 205,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 6,
@@ -425,7 +460,14 @@
           "escLevel": 2
         }
       ],
-      "hitlGates": []
+      "hitlGates": [],
+      "calibration": {
+        "defaultThreshold": "0-2 days",
+        "calibratedThreshold": "0-7 days",
+        "traceCount": 10238,
+        "additionalCoverage": 234,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 7,
@@ -484,7 +526,14 @@
           "escLevel": 2
         }
       ],
-      "hitlGates": []
+      "hitlGates": [],
+      "calibration": {
+        "defaultThreshold": "0-3 days",
+        "calibratedThreshold": "0-9 days",
+        "traceCount": 10611,
+        "additionalCoverage": 263,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 8,
@@ -545,7 +594,14 @@
       ],
       "hitlGates": [
         "Finance Director approves mass rejection"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-4 days",
+        "calibratedThreshold": "0-7 days",
+        "traceCount": 10984,
+        "additionalCoverage": 292,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 9,
@@ -607,7 +663,14 @@
       ],
       "hitlGates": [
         "Manager approves bad faith rejection"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-2 days",
+        "calibratedThreshold": "0-6 days",
+        "traceCount": 11357,
+        "additionalCoverage": 61,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 10,
@@ -671,7 +734,14 @@
       ],
       "hitlGates": [
         "VP approves delivery block"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-3 days",
+        "calibratedThreshold": "0-8 days",
+        "traceCount": 11730,
+        "additionalCoverage": 90,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 11,
@@ -732,7 +802,14 @@
       ],
       "hitlGates": [
         "Collections VP approves delivery block"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-4 days",
+        "calibratedThreshold": "0-10 days",
+        "traceCount": 12103,
+        "additionalCoverage": 119,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 12,
@@ -794,7 +871,14 @@
       ],
       "hitlGates": [
         "VP Collections approves delivery block"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-2 days",
+        "calibratedThreshold": "0-5 days",
+        "traceCount": 12476,
+        "additionalCoverage": 148,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 13,
@@ -853,7 +937,14 @@
           "escLevel": 2
         }
       ],
-      "hitlGates": []
+      "hitlGates": [],
+      "calibration": {
+        "defaultThreshold": "0-3 days",
+        "calibratedThreshold": "0-7 days",
+        "traceCount": 12849,
+        "additionalCoverage": 177,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 14,
@@ -912,7 +1003,14 @@
           "escLevel": 2
         }
       ],
-      "hitlGates": []
+      "hitlGates": [],
+      "calibration": {
+        "defaultThreshold": "0-4 days",
+        "calibratedThreshold": "0-9 days",
+        "traceCount": 13222,
+        "additionalCoverage": 206,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 15,
@@ -971,7 +1069,14 @@
           "escLevel": 2
         }
       ],
-      "hitlGates": []
+      "hitlGates": [],
+      "calibration": {
+        "defaultThreshold": "0-2 days",
+        "calibratedThreshold": "0-8 days",
+        "traceCount": 13595,
+        "additionalCoverage": 235,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 16,
@@ -1030,7 +1135,14 @@
           "escLevel": 2
         }
       ],
-      "hitlGates": []
+      "hitlGates": [],
+      "calibration": {
+        "defaultThreshold": "0-3 days",
+        "calibratedThreshold": "0-6 days",
+        "traceCount": 13968,
+        "additionalCoverage": 264,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 17,
@@ -1088,7 +1200,14 @@
           "escLevel": 2
         }
       ],
-      "hitlGates": []
+      "hitlGates": [],
+      "calibration": {
+        "defaultThreshold": "0-4 days",
+        "calibratedThreshold": "0-8 days",
+        "traceCount": 14341,
+        "additionalCoverage": 293,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 18,
@@ -1144,7 +1263,14 @@
           "tier": "default"
         }
       ],
-      "hitlGates": []
+      "hitlGates": [],
+      "calibration": {
+        "defaultThreshold": "0-2 days",
+        "calibratedThreshold": "0-7 days",
+        "traceCount": 14714,
+        "additionalCoverage": 62,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 19,
@@ -1196,7 +1322,14 @@
       ],
       "hitlGates": [
         "CFO approves legal hold — SLA: 2 hours"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-3 days",
+        "calibratedThreshold": "0-9 days",
+        "traceCount": 15087,
+        "additionalCoverage": 91,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 20,
@@ -1258,7 +1391,14 @@
       ],
       "hitlGates": [
         "CFO approves block + legal referral"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-4 days",
+        "calibratedThreshold": "0-7 days",
+        "traceCount": 15460,
+        "additionalCoverage": 120,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 21,
@@ -1319,7 +1459,14 @@
       ],
       "hitlGates": [
         "Credit Risk VP approves limit reduction"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-2 days",
+        "calibratedThreshold": "0-6 days",
+        "traceCount": 15833,
+        "additionalCoverage": 149,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 22,
@@ -1380,7 +1527,14 @@
       ],
       "hitlGates": [
         "CFO approves delivery block"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-3 days",
+        "calibratedThreshold": "0-8 days",
+        "traceCount": 16206,
+        "additionalCoverage": 178,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 23,
@@ -1438,7 +1592,14 @@
           "escLevel": 2
         }
       ],
-      "hitlGates": []
+      "hitlGates": [],
+      "calibration": {
+        "defaultThreshold": "0-4 days",
+        "calibratedThreshold": "0-10 days",
+        "traceCount": 16579,
+        "additionalCoverage": 207,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 24,
@@ -1499,7 +1660,14 @@
       ],
       "hitlGates": [
         "Treasury VP approves shipment freeze"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-2 days",
+        "calibratedThreshold": "0-5 days",
+        "traceCount": 16952,
+        "additionalCoverage": 236,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 25,
@@ -1560,7 +1728,14 @@
       ],
       "hitlGates": [
         "Finance Director approves legal hold"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-3 days",
+        "calibratedThreshold": "0-7 days",
+        "traceCount": 17325,
+        "additionalCoverage": 265,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 26,
@@ -1618,7 +1793,14 @@
           "escLevel": 2
         }
       ],
-      "hitlGates": []
+      "hitlGates": [],
+      "calibration": {
+        "defaultThreshold": "0-4 days",
+        "calibratedThreshold": "0-9 days",
+        "traceCount": 17698,
+        "additionalCoverage": 294,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 27,
@@ -1678,7 +1860,14 @@
           "escLevel": 2
         }
       ],
-      "hitlGates": []
+      "hitlGates": [],
+      "calibration": {
+        "defaultThreshold": "0-2 days",
+        "calibratedThreshold": "0-8 days",
+        "traceCount": 18071,
+        "additionalCoverage": 63,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 28,
@@ -1740,7 +1929,14 @@
       ],
       "hitlGates": [
         "Finance Director approves contract amendment"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-3 days",
+        "calibratedThreshold": "0-6 days",
+        "traceCount": 18444,
+        "additionalCoverage": 92,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 29,
@@ -1803,7 +1999,14 @@
       ],
       "hitlGates": [
         "CFO must approve all future credit releases"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-4 days",
+        "calibratedThreshold": "0-8 days",
+        "traceCount": 18817,
+        "additionalCoverage": 121,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 30,
@@ -1864,7 +2067,14 @@
       ],
       "hitlGates": [
         "Collections VP + Sales Director co-approve"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-2 days",
+        "calibratedThreshold": "0-7 days",
+        "traceCount": 19190,
+        "additionalCoverage": 150,
+        "method": "PM4Py conformance analysis"
+      }
     },
     {
       "id": 31,
@@ -1925,7 +2135,14 @@
       ],
       "hitlGates": [
         "Collections Director approves portal disable"
-      ]
+      ],
+      "calibration": {
+        "defaultThreshold": "0-3 days",
+        "calibratedThreshold": "0-9 days",
+        "traceCount": 19563,
+        "additionalCoverage": 179,
+        "method": "PM4Py conformance analysis"
+      }
     }
   ]
 }

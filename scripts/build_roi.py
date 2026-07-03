@@ -41,6 +41,25 @@ OUTCOMES = [
      "desc": "Analyst FTE-hours redirected from triage to strategic engagement."},
 ]
 
+# Theme-level KPI rollup — how per-process KPIs compose into a compound (cross-
+# function) KPI. Illustrative, at ~$1B revenue. Mirrors taxonomy.themes ids.
+THEMES = [
+    {
+        "id": "working-capital",
+        "compoundKPI": {"name": "Cash Conversion Cycle", "formula": "DSO + DIO - DPO",
+                        "current": 58, "target": 38, "unit": "days"},
+        "contributors": [
+            {"kpi": "DSO", "process": "O2C Collections", "current": 45, "target": 35, "weight": 0.45,
+             "patterns": ["Creeping Payment Terms", "29th-Day Tactic", "Chronic Promise Breaker"]},
+            {"kpi": "DPO", "process": "P2P Payments", "current": 32, "target": 42, "weight": 0.35,
+             "patterns": ["Payment Term Erosion", "Early Pay Discount Trap"]},
+            {"kpi": "DIO", "process": "Inventory", "current": 45, "target": 35, "weight": 0.20,
+             "patterns": ["Supplier Concentration Risk"]},
+        ],
+        "impact": "$27M freed working capital at $1B revenue",
+    },
+]
+
 # Cumulative trajectory (deck slide 20).
 TRAJECTORY = [
     {"period": "M1-3", "label": "Foundation", "cumulative": 0},
@@ -100,6 +119,7 @@ def main():
         },
         "kpis": KPIS,
         "outcomes": OUTCOMES,
+        "themes": THEMES,
         "trajectory": TRAJECTORY,
         "attribution": attribution,
     }

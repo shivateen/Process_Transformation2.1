@@ -30,14 +30,20 @@
   function esc(s) { return (s == null ? "" : String(s)).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
   var MODES = {
+    supervised: {
+      label: "Supervised", tag: "DAY 1", color: "#c0392b",
+      blurb: "Nothing runs without a human. Every action — including read-only lookups — is queued for explicit approval before it executes. This is day one of a deployment, before the system has earned any trust.",
+      bullets: ["Every action requires human approval", "READ and WRITE steps alike are gated", "No autonomous execution — full oversight", "Establishes the audit baseline", "Trust is earned from here, not assumed"],
+      gate: function () { return true; },  // everything gated — reads included
+    },
     assisted: {
-      label: "Assisted", tag: "DEFAULT", color: "var(--sense)",
-      blurb: "AI detects the pattern, assembles evidence, and drafts the action payload — then queues it. A human clicks APPROVE before any execution.",
-      bullets: ["AI detects the pattern", "AI assembles evidence", "AI drafts action payload", "AI queues for approval", "Human clicks APPROVE", "System executes DAG"],
-      gate: function () { return true; },  // everything gated
+      label: "Cautious", tag: "EARLY", color: "var(--sense)",
+      blurb: "Read-only lookups run automatically; every WRITE to the ERP is queued for human approval. The AI detects, evidences, and drafts the action payload — a human authorizes anything that changes a record.",
+      bullets: ["Reads & lookups run automatically", "Every WRITE queued for approval", "AI drafts the action payload", "Human authorizes state changes", "Full audit trail"],
+      gate: function (step) { return step.mutating; },  // gate writes; auto on reads
     },
     policy: {
-      label: "Policy-Approved", tag: "EARNED", color: "var(--decide)",
+      label: "Balanced", tag: "EARNED", color: "var(--decide)",
       blurb: "Standing authorization for low-risk, reversible actions. CFO + Controller approve the POLICY (versioned, effective-dated); the system applies within bounds and gates only the rest.",
       bullets: ["Standing authorization for low-risk, reversible actions", "Policy versioned & effective-dated", "CFO + Controller approve the POLICY", "System applies automatically within bounds", "Audit trail for every execution"],
       gate: function (step) { return step.mutating && step.highRisk; },  // gate only high-risk writes

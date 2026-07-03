@@ -192,15 +192,72 @@
   function promote() {
     approved = true;
     var cand = D.candidate;
+    // close the loop for real: promote the candidate into the live pattern library
+    // and taxonomy so it is browsable in the Library and selectable in the Studio.
+    addCandidateToLibrary(cand);
     // walk the loop: Detect -> Act -> Attribute -> Learn
     var steps = [3, 4, 5, 6];
     steps.forEach(function (s, i) { setTimeout(function () { setActiveLoop(s); }, 350 + i * 500); });
     document.getElementById("smeGate").innerHTML =
       '<div class="sme-result ok">✓ Pattern #' + cand.id + ' promoted — <b>versioned, effective-dated</b>, now scanning all customers in real time. ' +
-      'Repository: ' + D.meta.existingPatternCount + ' → <b>' + (D.meta.existingPatternCount + 1) + '</b> patterns. The playbook compounds.</div>';
+      'Repository: ' + D.meta.existingPatternCount + ' → <b>' + (D.meta.existingPatternCount + 1) + '</b> patterns. ' +
+      'It is now in the <b>Pattern Library</b> and selectable in the <b>Studio</b>. The playbook compounds.</div>';
     // bump the header count
     var hd = document.querySelector(".disc .gov-head h2");
     if (hd) hd.innerHTML = (D.meta.existingPatternCount + 1) + ' Patterns Now. The System Finds #' + (D.meta.candidateId + 1) + ' Next Quarter.';
+    toast("Pattern #" + cand.id + " added to library.");
+  }
+
+  // Materialise the SME-approved candidate as a full library pattern (same shape as
+  // patterns.json), register it on PIQ.patterns + meta, and attach it to the relevant
+  // O2C objective so it flows into the Studio's pattern picker.
+  function addCandidateToLibrary(cand) {
+    if ((window.PIQ.patterns || []).some(function (p) { return p.id === cand.id; })) return;
+    var slug = String(cand.proposedFeature || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    var branches = cand.proposedDAG || [];
+    var primary = branches.filter(function (b) { return b.tier === "primary"; })[0] || branches[0] || { actions: [] };
+    var gates = branches.filter(function (b) { return b.hitl; }).map(function (b) { return b.hitl; });
+    var pat = {
+      id: cand.id, name: cand.proposedName, category: cand.proposedCategory,
+      priority: "High", priorityRank: 1, mentalModel: cand.narrative, discovered: true,
+      sources: { sap: ["BSID (AR open items)", "KNKK (credit master)"],
+                 oracle: ["AR_PAYMENT_SCHEDULES_ALL", "HZ_CUST_ACCOUNTS"] },
+      layer1_logicalMapping: "Customer payment-timing behaviour joined to the seasonal calendar — the actual days-to-pay per cohort against its own historical norm.",
+      layer2_eventSeries: cand.statSignal,
+      layer3_feature: cand.proposedFeature, featureSlug: slug,
+      conceptualSQL: "-- discovered trigger for " + cand.proposedFeature +
+        "\nSELECT * FROM ar_behaviour WHERE signal = '" + cand.proposedFeature + "'",
+      originalDAG: ["Read_Payment_Behaviour", "Detect_" + cand.proposedFeature, "Score_Seasonal_Anomaly"]
+        .concat(primary.actions || []),
+      branchingDAG: branches, hitlGates: gates,
+      calibration: { defaultThreshold: "0-2 days", calibratedThreshold: "0-30 days",
+        traceCount: 14000, additionalCoverage: cand.affectedCustomers || 14, method: "PM4Py conformance analysis" },
+    };
+    window.PIQ.patterns.push(pat);
+    window.PIQ._actionRepo = null;   // invalidate the cached action-block repository
+
+    var meta = window.PIQ.meta;
+    if (meta) {
+      meta.patternCount = window.PIQ.patterns.length;
+      var catRow = (meta.categories || []).filter(function (c) { return c.category === pat.category; })[0];
+      if (catRow) { catRow.count++; catRow[pat.priority] = (catRow[pat.priority] || 0) + 1; }
+    }
+    // attach to the O2C Credit & Risk objective so the Studio surfaces it
+    var o2c = (window.PIQ.tax.functions || []).filter(function (f) { return f.id === "o2c"; })[0];
+    if (o2c) o2c.processes.forEach(function (pr) { pr.roles.forEach(function (r) { (r.objectives || []).forEach(function (o) {
+      if (o.id === "o2c-o-risk" && o.patternIds.indexOf(pat.id) < 0) {
+        o.patternIds.push(pat.id); o.patternCount = o.patternIds.length; o2c.patternCount = (o2c.patternCount || 0) + 1;
+      }
+    }); }); });
+  }
+
+  function toast(msg) {
+    var t = document.createElement("div");
+    t.className = "piq-toast"; t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(function () { t.classList.add("show"); }, 10);
+    setTimeout(function () { t.classList.remove("show"); }, 2600);
+    setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 3000);
   }
 
   function setActiveLoop(active) {

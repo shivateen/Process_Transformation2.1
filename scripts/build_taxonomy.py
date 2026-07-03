@@ -64,6 +64,180 @@ def br(condition, actions, tier, hitl=None, esc=None):
     return b
 
 
+def realpat(pid, name, category, priority, feature, mental, sap, oracle, l1, l2,
+            happy, branches, gates):
+    """A fully-specified pattern with real source mappings (not a sample stub).
+    Same shape as a library pattern in patterns.json so every downstream stage
+    renders it identically; sample=False so it carries no 'sample' badge."""
+    return {
+        "id": pid,
+        "name": name,
+        "category": category,
+        "priority": priority,
+        "priorityRank": {"Critical": 0, "High": 1, "Medium": 2, "Low": 3}[priority],
+        "mentalModel": mental,
+        "sample": False,
+        "sources": {"sap": sap, "oracle": oracle},
+        "layer1_logicalMapping": l1,
+        "layer2_eventSeries": l2,
+        "layer3_feature": feature,
+        "featureSlug": feature.lower().replace("_", "-"),
+        "conceptualSQL": "-- pre-calculated trigger for " + feature +
+                         "\nSELECT * FROM ap_signals WHERE signal = '" + feature + "'",
+        "originalDAG": happy,
+        "branchingDAG": branches,
+        "hitlGates": gates,
+        "calibration": {
+            "defaultThreshold": "0-%d days" % (2 + pid % 3),
+            "calibratedThreshold": "0-%d days" % (2 + pid % 3 + 3 + pid % 4),
+            "traceCount": 8000 + (pid * 373) % 12000,
+            "additionalCoverage": 60 + (pid * 29) % 260,
+            "method": "PM4Py conformance analysis",
+        },
+    }
+
+
+def build_themes():
+    """Business themes — the CFO-level outcomes a transformation drives. Each theme
+    spans multiple functions, carries a compound (cross-function) KPI, and names the
+    cross-process patterns that only emerge when per-process signals are correlated."""
+    return [
+        {
+            "id": "working-capital",
+            "name": "Working Capital Optimization",
+            "icon": "trending-up",
+            "accent": "#1E8E7E",
+            "tagline": "Collect faster, pay smarter, deploy idle cash — compress the cash conversion cycle.",
+            "compoundKPI": {
+                "name": "Cash Conversion Cycle",
+                "formula": "DSO + DIO - DPO",
+                "unit": "days",
+                "current": 58,
+                "target": 38,
+            },
+            "functionIds": ["o2c", "p2p"],
+            "crossProcessPatterns": [
+                {
+                    "id": "ccp-1",
+                    "name": "Bilateral Cash Squeeze",
+                    "description": "Customer delays payment (DSO up) while supplier demands early payment (DPO down). Working capital squeezed from both sides simultaneously.",
+                    "triggers": ["Pattern #27 (Creeping Payment Terms) in O2C", "Early Pay Discount pressure in P2P"],
+                    "compoundImpact": "2x working capital erosion vs. either signal alone",
+                    "response": "Synchronized collections push + supplier payment renegotiation",
+                },
+                {
+                    "id": "ccp-2",
+                    "name": "Quarter-End Cash Cliff",
+                    "description": "Customers ghost at quarter-end (O2C Pattern #30) while supplier payments concentrate in same period.",
+                    "triggers": ["Pattern #30 (EOQ Ghosting) in O2C", "Supplier payment clustering in P2P"],
+                    "compoundImpact": "Cash position drops 40-60% in final 5 business days of quarter",
+                    "response": "Pre-emptive collection calls week 3 of quarter + supplier payment staggering",
+                },
+            ],
+        },
+        {
+            "id": "revenue-leakage",
+            "name": "Revenue Leakage Prevention",
+            "icon": "shield-alert",
+            "accent": "#C62828",
+            "tagline": "Stop money walking out the door through disputes, deductions, write-offs, and pricing errors.",
+            "compoundKPI": {
+                "name": "Revenue Leakage Rate",
+                "formula": "(Disputes Written Off + Invalid Deductions + Bad Debt + Refund Fraud) / Gross Revenue",
+                "unit": "%",
+                "current": 2.8,
+                "target": 0.9,
+            },
+            "functionIds": ["o2c"],
+            "crossProcessPatterns": [
+                {
+                    "id": "ccp-3",
+                    "name": "Bust-Out Composite Signal",
+                    "description": "Customer simultaneously: gaming dispute timing (Collections), requesting duplicate refunds (Cash App), credit score dropping (Credit). Individual signals are flags — together it is bust-out fraud.",
+                    "triggers": ["Pattern #1 (29th-Day Tactic)", "Pattern #25 (Duplicate Payment Bait)", "Pattern #19 (Bust-Out Fraud Precursor)", "Pattern #22 (Bureau Downgrade)"],
+                    "compoundImpact": "Average loss per bust-out event: $180K-$500K",
+                    "response": "Immediate credit freeze + legal hold + CFO notification",
+                },
+            ],
+        },
+        {
+            "id": "close-acceleration",
+            "name": "Financial Close Acceleration",
+            "icon": "clock",
+            "accent": "#1E5F8E",
+            "tagline": "Compress close from 10 days to 4. Every day saved is a day for analysis instead of reconciliation.",
+            "compoundKPI": {
+                "name": "Close Cycle Days",
+                "formula": "Day of final GL posting - Day 1 of close",
+                "unit": "days",
+                "current": 10,
+                "target": 4,
+            },
+            "functionIds": ["o2c", "r2r"],
+            "crossProcessPatterns": [
+                {
+                    "id": "ccp-4",
+                    "name": "Unapplied Cash Close Block",
+                    "description": "Unapplied cash from Cash App blocks AR subledger reconciliation in R2R, which blocks trial balance, which delays close.",
+                    "triggers": ["Pattern #24 (Remittance Decoupling)", "Pattern #26 (Unapplied Cash Weaponization)"],
+                    "compoundImpact": "Each $1M unapplied cash adds ~0.5 days to close cycle",
+                    "response": "Auto-match waterfall runs Day -3 before close; exceptions routed to Cash App team with 24-hour SLA",
+                },
+            ],
+        },
+        {
+            "id": "controls-integrity",
+            "name": "Compliance & Controls Integrity",
+            "icon": "shield-check",
+            "accent": "#6D4B9C",
+            "tagline": "Zero material weaknesses. Embedded controls, continuous monitoring, audit-ready always.",
+            "compoundKPI": {
+                "name": "Control Health Score",
+                "formula": "1 - (Deficiencies + Exceptions + Overrides) / Total Controls Tested",
+                "unit": "%",
+                "current": 87,
+                "target": 97,
+            },
+            "functionIds": ["o2c", "r2r"],
+            "crossProcessPatterns": [
+                {
+                    "id": "ccp-5",
+                    "name": "Override Cascade",
+                    "description": "Sales rep overrides credit hold (Pattern #29) on a customer who is already exploiting dispute process (Pattern #1). Two control failures compound: customer gets goods on credit while delaying payment on existing invoices.",
+                    "triggers": ["Pattern #29 (Strategic Shielding)", "Pattern #1 (29th-Day Tactic)", "Pattern #21 (Credit Block Bypass)"],
+                    "compoundImpact": "SOX finding: segregation of duties failure + credit risk exposure",
+                    "response": "Block override if customer has active dispute manipulation pattern; auto-escalate to Credit VP",
+                },
+            ],
+        },
+        {
+            "id": "cash-visibility",
+            "name": "Cash Visibility & Forecasting",
+            "icon": "eye",
+            "accent": "#F57F17",
+            "tagline": "See your cash 13 weeks out with 90%+ accuracy. Predict customer payment behavior, not just due dates.",
+            "compoundKPI": {
+                "name": "13-Week Forecast Accuracy",
+                "formula": "1 - |Forecast - Actual| / Actual",
+                "unit": "%",
+                "current": 64,
+                "target": 92,
+            },
+            "functionIds": ["o2c", "p2p"],
+            "crossProcessPatterns": [
+                {
+                    "id": "ccp-6",
+                    "name": "Payment Behavior Drift",
+                    "description": "Pattern #27 (Creeping Payment Terms) + Pattern #31 (Chronic Promise Breaker) together predict that a customer segment's actual payment date is drifting 2-3 days per quarter. Standard forecast models using contractual terms miss this.",
+                    "triggers": ["Pattern #27 (Creeping Payment Terms)", "Pattern #31 (Chronic Promise Breaker)", "Pattern #17 (Check is in the Mail)"],
+                    "compoundImpact": "Forecast error of $2-5M per quarter from payment timing drift",
+                    "response": "Override forecast model with behavioral prediction for flagged customers",
+                },
+            ],
+        },
+    ]
+
+
 def build_stub_functions():
     """Four sample functions, each with a self-contained library of stub patterns."""
     stubs = {}        # id -> stub pattern
@@ -73,163 +247,180 @@ def build_stub_functions():
         stubs[str(pid)] = stub(pid, *args)
         return pid
 
-    # ---- 2000 · Procure-to-Pay -------------------------------------------------
+    def addr(pid, name, category, priority, feature, mental, sap, oracle, l1, l2,
+             happy, branches, gates):
+        stubs[str(pid)] = realpat(pid, name, category, priority, feature, mental,
+                                  sap, oracle, l1, l2, happy, branches, gates)
+        return pid
+
+    # ---- 2000 · Procure-to-Pay (real patterns — powers Working Capital theme) --
+    # Fully-specified P2P patterns with real SAP source mappings (EKKO, EKPO, BSEG,
+    # LFA1, EBAN, RBKP) so the Working Capital theme carries real patterns from both
+    # O2C and P2P. Same shape as the O2C library; no 'sample' badge; function is live.
+    OR_AP = ["AP_INVOICES_ALL (invoice header)", "AP_INVOICE_LINES_ALL (line detail)"]
     p2p = [
-        add(2001, "Duplicate Invoice Slip", "Invoice Integrity & Duplication", "Critical",
+        # Category A · Invoice & Payment Integrity
+        addr(2002, "Duplicate Invoice Injection", "Invoice & Payment Integrity", "Critical",
             "Duplicate_Fingerprint",
-            "Same vendor, same amount, near-identical date — is this a re-bill or a genuine duplicate? Fingerprint it before it clears.",
-            ["Fingerprint_Invoice", "Match_Against_History", "Auto_Block_If_Match", "Notify_AP"],
-            [br("IF Fingerprint_Match = exact", ["Auto_Hold + Flag_Duplicate"], "primary"),
-             br("ELSE IF Fingerprint_Match = fuzzy", ["Route_To_AP_Review", "Attach_Candidate_Pair"], "escalation",
-                hitl="AP analyst confirms duplicate", esc=1)],
+            "The 'new' invoice is last month's bill wearing a disguise — a tweaked PO reference and a rounded total, "
+            "but the same vendor and the same economic amount. Pay both and we've bought the same thing twice. I match "
+            "on the fingerprint, not the invoice number.",
+            ["RBKP (invoice receipt header)", "BSEG (posted payables)", "EKPO (PO line reference)"],
+            OR_AP,
+            "Vendor + net amount + baseline date on the incoming invoice, fingerprinted and matched against every "
+            "posted and open payable to catch a re-bill that changed only its surface identifiers.",
+            "Invoice arrival → fingerprint(vendor+amount+date) → match against posted & open items → exact vs. fuzzy "
+            "(rounded amount / alternate PO) → block or clear before payment.",
+            ["Fingerprint_Invoice(vendor+amount+date)", "Match_Against_Posted_And_Open", "Auto_Block_If_Match", "Notify_AP"],
+            [br("IF No_Fingerprint_Match", ["Auto_Continue_Processing"], "primary"),
+             br("ELSE IF Exact_Match", ["Auto_Block", "Flag_Duplicate"], "primary"),
+             br("ELSE IF Fuzzy_Match(rounded/alt-PO)", ["Hold_Payment", "Route_To_AP_Review", "Attach_Candidate_Pair"],
+                "escalation", hitl="AP analyst confirms duplicate", esc=1)],
             ["AP analyst confirms duplicate"]),
-        add(2002, "PO–Invoice 3-Way Mismatch", "Match & Exception Handling", "High",
-            "ThreeWay_Variance",
-            "Invoice says 1,000 units, GR says 980. Is this within tolerance, a short-ship, or a price creep? Decide the variance, don't bounce it to a human by default.",
-            ["Pull_PO_GR_Invoice", "Compute_Variance", "Apply_Tolerance", "Post_If_Within"],
-            [br("IF Variance <= tolerance", ["Auto_Post + Clear_Block"], "primary"),
-             br("ELSE IF Price_Variance > 2%", ["Route_To_Buyer", "Request_Price_Confirmation"], "escalation",
-                hitl="Buyer confirms price change", esc=1),
-             br("ELSE IF Qty_Variance", ["Open_GR_Discrepancy", "Notify_Receiving"], "escalation", esc=1)],
-            ["Buyer confirms price change"]),
-        add(2003, "Maverick / Off-Contract Spend", "Spend Compliance", "Medium",
-            "Off_Contract_Flag",
-            "This buy bypassed the preferred-supplier contract. Was it an emergency, or leakage? Surface it before payment, attribute the savings lost.",
-            ["Match_To_Contract", "Detect_Off_Contract", "Quantify_Leakage", "Log_For_Sourcing"],
-            [br("IF On_Contract", ["Auto_Approve"], "primary"),
-             br("ELSE IF Off_Contract AND Amount < threshold", ["Flag_For_Review", "Notify_Category_Manager"], "escalation",
-                hitl="Category manager reviews leakage", esc=1)],
-            ["Category manager reviews leakage"]),
-        add(2004, "Early-Payment Discount Capture", "Working Capital", "Medium",
-            "Discount_Window",
-            "There's a 2/10 net-30 discount on the table and the clock is ticking. Is the discount worth more than the cash held? Capture it automatically when it is.",
-            ["Read_Payment_Terms", "Compute_Discount_Value", "Compare_Cost_Of_Cash", "Schedule_Early_Pay"],
-            [br("IF Discount_Value > Cost_Of_Cash", ["Auto_Schedule_Early_Payment"], "primary"),
-             br("ELSE IF Marginal", ["Route_To_Treasury"], "escalation", hitl="Treasury approves early pay", esc=1)],
-            ["Treasury approves early pay"]),
+        addr(2003, "Ghost Vendor", "Invoice & Payment Integrity", "Critical",
+            "Ghost_Vendor",
+            "A vendor master appears, invoices start flowing, but there's no goods receipt and no service entry behind "
+            "any of them — and the bank details were added the same week the first invoice landed. No receipt, fresh "
+            "master, new bank: that's a ghost vendor until someone proves otherwise.",
+            ["LFA1 (vendor master + creation date)", "RBKP (invoice receipt)", "EKKO (PO / goods-receipt link)"],
+            ["AP_SUPPLIERS (supplier master)", "AP_INVOICES_ALL (invoice header)", "RCV_TRANSACTIONS (receipts)"],
+            "Each invoice is joined to its goods-receipt / service-entry evidence and to the age of the vendor master "
+            "and its bank record; invoices with no receipt behind a freshly-created master are held.",
+            "Vendor master created → invoices submitted → check for matching GR / service entry → cross-check master & "
+            "bank-record age → no receipt + new master + new bank ⇒ freeze.",
+            ["Match_Invoice_To_Receipt", "Check_Vendor_Master_Age", "Detect_No_GR_No_Service", "Hold_Payment"],
+            [br("IF GR_Or_Service_Exists", ["Auto_Continue_Processing"], "primary"),
+             br("ELSE IF No_Receipt AND Established_Vendor", ["Request_Proof_Of_Delivery", "Notify_Requester"],
+                "escalation", hitl="Requester confirms goods/services received", esc=1),
+             br("ELSE IF No_Receipt AND New_Master AND New_Bank", ["Freeze_Vendor", "Open_Fraud_Case", "Notify_Security"],
+                "escalation", hitl="Controller confirms suspected ghost vendor", esc=2)],
+            ["Requester confirms goods/services received", "Controller confirms suspected ghost vendor"]),
+        addr(2006, "Three-Way Match Override Abuse", "Invoice & Payment Integrity", "High",
+            "ThreeWay_Override",
+            "The GR/IR quantity mismatch keeps getting force-released by the same clerk with no note — same vendor, same "
+            "override, every month. One override is judgement; a habit of overrides with no investigation is a control "
+            "hole. I re-open the pattern, not just the single invoice.",
+            ["RBKP (invoice / block-release)", "EKPO (PO vs GR quantities)", "BSEG (posted amount)"],
+            ["AP_HOLDS_ALL (holds & releases)", "AP_INVOICES_ALL (invoice header)", "RCV_TRANSACTIONS (receipts)"],
+            "Every match block release is attributed to a user and vendor and tested for a recurring override with no "
+            "attached investigation evidence — the signature of a rubber-stamped control.",
+            "GR/IR mismatch → block → who released it and how often → is there investigation evidence → repeat override "
+            "with none ⇒ re-impose block and route to controls.",
+            ["Track_Match_Overrides(user+vendor)", "Detect_Repeat_Override", "Check_Investigation_Evidence", "Route_By_Pattern"],
+            [br("IF Within_Tolerance_Or_Justified", ["Auto_Release"], "primary"),
+             br("ELSE IF First_Override AND Documented", ["Allow", "Monitor"], "primary"),
+             br("ELSE IF Repeat_Override AND No_Evidence", ["Re_Impose_Block", "Route_To_Controls", "Flag_SoD_Risk"],
+                "escalation", hitl="Controls reviews override pattern", esc=1)],
+            ["Controls reviews override pattern"]),
 
-        # --- Invoice Processing library (AP Analyst) --------------------------
-        # Two behavioural categories, mirroring the AR analyst: adversarial
-        # integrity/fraud signals, and non-adversarial coding/routing judgment.
-
-        # Category A · Invoice Integrity & Fraud Signals
-        add(2005, "Remit-To Bank Swap", "Invoice Integrity & Fraud Signals", "Critical",
-            "RemitTo_Change_Flag",
-            "The bank details on this invoice don't match the vendor master. A changed remit-to is the number-one "
-            "invoice-redirection fraud vector — I never pay to it until it's verified on a known-good phone number, "
-            "no matter how routine the invoice looks.",
-            ["Compare_RemitTo_vs_VendorMaster", "Detect_Bank_Change", "Hold_Payment", "Trigger_OutOfBand_Verification"],
-            [br("IF RemitTo_Match = TRUE", ["Auto_Continue_Processing"], "primary"),
-             br("ELSE IF Bank_Changed AND Callback_Verified", ["Update_Vendor_Master", "Release_Hold", "Log_Change_Audit"],
-                "escalation", hitl="AP lead approves bank-detail change", esc=1),
-             br("ELSE IF Bank_Changed AND Verification_Fails", ["Freeze_Vendor", "Open_Fraud_Case", "Notify_Security"],
-                "escalation", hitl="Controller confirms suspected fraud", esc=2)],
-            ["AP lead approves bank-detail change", "Controller confirms suspected fraud"]),
-        add(2006, "Resubmission-After-Reject", "Invoice Integrity & Fraud Signals", "High",
-            "Resubmit_Fingerprint",
-            "This 'new' invoice number is last week's rejected invoice wearing a disguise — same vendor, PO, and amount. "
-            "If the original gets corrected and this one clears too, we pay twice. I match on the economic fingerprint, "
-            "not the invoice number.",
-            ["Fingerprint_Invoice(vendor+PO+amount+period)", "Match_Against_Rejected_And_Open", "Link_Resubmission", "Supersede_Original"],
-            [br("IF No_Prior_Match", ["Auto_Continue_Processing"], "primary"),
-             br("ELSE IF Matches_Rejected_Item", ["Link_To_Original", "Carry_Forward_Approvals", "Auto_Post"], "primary"),
-             br("ELSE IF Matches_Open_Unpaid", ["Block_As_Potential_Duplicate", "Route_To_AP_Review"],
-                "escalation", hitl="AP analyst confirms not a duplicate", esc=1)],
-            ["AP analyst confirms not a duplicate"]),
-        add(2007, "Unapplied Credit Memo", "Invoice Integrity & Fraud Signals", "High",
-            "Open_Credit_Balance",
-            "The vendor issued a credit memo weeks ago but keeps billing the full amount, and the credit is just sitting "
-            "there unapplied. Every gross invoice I clear without netting it is money we've effectively paid twice. "
-            "Net it before it posts.",
-            ["Scan_Open_Credit_Memos", "Match_Credit_To_Invoice(vendor)", "Net_Before_Posting", "Update_Vendor_Statement"],
-            [br("IF No_Open_Credit", ["Auto_Continue_Processing"], "primary"),
-             br("ELSE IF Credit_Matches_Invoice", ["Auto_Apply_Credit", "Post_Net_Amount"], "primary"),
-             br("ELSE IF Credit_Aging > 60d AND Unmatched", ["Request_Refund_From_Vendor", "Escalate_AP_Lead"],
-                "escalation", hitl="AP lead approves refund request", esc=1)],
-            ["AP lead approves refund request"]),
-        add(2008, "Round-Sum Non-PO Inflation", "Invoice Integrity & Fraud Signals", "Medium",
-            "RoundSum_Anomaly",
-            "A suspiciously round non-PO invoice — exactly $10,000, no line detail — from a vendor with barely any history. "
-            "It's not proof of anything, but round-sum, low-history, no-backup is the classic soft-fraud signature. "
-            "I want a second look before it slides into an auto-approve tier.",
-            ["Assess_Invoice_Shape(round+backup+history)", "Score_Anomaly", "Attach_Vendor_History", "Route_By_Score"],
-            [br("IF Anomaly_Score = low", ["Auto_Continue_Processing"], "primary"),
-             br("ELSE IF Round_Sum AND Low_History", ["Request_Supporting_Backup", "Flag_For_Review"],
-                "escalation", hitl="AP analyst reviews anomaly", esc=1),
-             br("ELSE IF No_Backup AND Amount > threshold", ["Hold_Payment", "Escalate_Procurement"],
-                "escalation", hitl="Procurement validates spend", esc=1)],
-            ["AP analyst reviews anomaly", "Procurement validates spend"]),
-
-        # Category B · Coding, Routing & Approval Judgment
-        add(2009, "Threshold-Split Approval Dodge", "Coding, Routing & Approval Judgment", "High",
+        # Category B · Spend & Terms Control (working-capital levers)
+        addr(2001, "Early Pay Discount Trap", "Spend & Terms Control", "High",
+            "Early_Pay_Misfire",
+            "The 2/10 net-30 says pay by day 10 for the discount — but the payment run grabs it on autopilot even when "
+            "our own cash is tight and the discount doesn't beat our cost of cash. I only take the early pay when the "
+            "math actually works.",
+            ["EKKO (payment terms ZTERM)", "RBKP (invoice header, baseline date)", "BSEG (open payables, discount fields)"],
+            ["AP_TERMS (discount terms)", "AP_PAYMENT_SCHEDULES_ALL (schedule)", "AP_INVOICES_ALL (invoice header)"],
+            "Discount terms and baseline date, joined to the projected cash position on the proposed pay date, decide "
+            "whether taking the early-payment discount earns more than holding the cash.",
+            "Discount window opens → payment-run selection date vs. day-10 deadline → cash position on that date → "
+            "captured discount value vs. cost of cash → pay early only when it wins.",
+            ["Read_Payment_Terms", "Compute_Discount_Value", "Compare_Cost_Of_Cash", "Schedule_By_Cash_Position"],
+            [br("IF Discount_Value > Cost_Of_Cash AND Cash_Available", ["Auto_Schedule_Early_Payment"], "primary"),
+             br("ELSE IF Discount_Value <= Cost_Of_Cash", ["Defer_To_Net_Due_Date", "Log_Discount_Declined"], "primary"),
+             br("ELSE IF Cash_Tight AND Discount_Marginal", ["Route_To_Treasury", "Attach_Cash_Forecast"],
+                "escalation", hitl="Treasury approves early pay vs. hold", esc=1)],
+            ["Treasury approves early pay vs. hold"]),
+        addr(2004, "PO Split Below Approval Threshold", "Spend & Terms Control", "High",
             "Split_Under_Threshold",
-            "Three $9,900 invoices from the same vendor this week, each one just under the $10k approval gate. Individually "
-            "every one is auto-approvable; together it's a $29,700 decision someone senior should actually see. I aggregate "
-            "the window before I let any of them approve.",
-            ["Aggregate_Vendor_Invoices(rolling_window)", "Compare_To_Approval_Tiers", "Detect_SubThreshold_Clustering", "Re_Tier_Approval"],
+            "One requisition became three POs to the same vendor in the same week, each landing just under the approval "
+            "limit. Individually each auto-approves; together it's a decision someone senior should sign. I aggregate the "
+            "window before releasing any of them.",
+            ["EBAN (purchase requisition)", "EKKO (PO header)", "EKPO (PO item)"],
+            ["POR_REQUISITION_HEADERS_ALL (requisitions)", "PO_HEADERS_ALL (PO header)", "PO_LINES_ALL (PO lines)"],
+            "POs are aggregated by vendor, requester and rolling window and compared against the approval tiers to catch "
+            "a spend deliberately sliced to stay under each individual gate.",
+            "Requisition → multiple POs to one vendor in a window → aggregate value → does the total cross an approval "
+            "tier that no single PO did → re-tier before release.",
+            ["Aggregate_POs(vendor+requester+window)", "Compare_To_Approval_Tiers", "Detect_SubThreshold_Split", "Re_Tier_Approval"],
             [br("IF Aggregate < threshold", ["Auto_Approve_Each"], "primary"),
-             br("ELSE IF Cluster_Crosses_Tier", ["Bundle_For_Higher_Approver", "Attach_Split_Evidence"],
+             br("ELSE IF Split_Crosses_Tier", ["Bundle_For_Higher_Approver", "Attach_Split_Evidence"],
                 "escalation", hitl="Cost-centre owner approves aggregated spend", esc=1),
-             br("ELSE IF Repeat_Pattern > 2 windows", ["Flag_To_Procurement", "Open_Policy_Review"], "escalation", esc=1)],
+             br("ELSE IF Repeat_Splitter > 2 windows", ["Flag_To_Procurement", "Open_Policy_Review"], "escalation", esc=1)],
             ["Cost-centre owner approves aggregated spend"]),
-        add(2010, "Approval Musical Chairs", "Coding, Routing & Approval Judgment", "Medium",
-            "Approval_Bounce",
-            "This invoice has bounced to a third approver in a week, each one saying 'not mine'. The delegation-of-authority "
-            "is ambiguous and the invoice is aging while they pass it around. I pin the correct approver by amount and "
-            "cost-centre authority and stop the merry-go-round.",
-            ["Read_Approval_History", "Resolve_DoA(amount+costcentre)", "Assign_Correct_Approver", "Notify_With_Deadline"],
-            [br("IF Single_Clear_Approver", ["Auto_Route_To_Approver"], "primary"),
-             br("ELSE IF Bounced >= 2 AND DoA_Resolvable", ["Pin_Authoritative_Approver", "Attach_DoA_Evidence"], "primary"),
-             br("ELSE IF DoA_Ambiguous AND Aging > SLA", ["Escalate_AP_Manager", "Flag_Approval_Gap"],
-                "escalation", hitl="AP manager assigns approver", esc=1)],
-            ["AP manager assigns approver"]),
-        add(2011, "Ownerless Non-PO Invoice", "Coding, Routing & Approval Judgment", "Medium",
-            "Missing_Owner",
-            "A non-PO invoice arrives with no PO and no requester named on it. Left alone it ages in the unassigned queue "
-            "for weeks. I infer the likely owner from GL history, the vendor, and the contract, and route it — an inferred "
-            "owner who can reassign beats a silent backlog.",
-            ["Extract_Invoice_Signals(vendor+GL+desc)", "Infer_Owner_From_History", "Assign_Provisional_Owner", "Route_For_Confirmation"],
-            [br("IF Owner_Confidently_Inferred", ["Auto_Route_To_Owner"], "primary"),
-             br("ELSE IF Multiple_Candidate_Owners", ["Route_To_Top_Candidate", "CC_Alternates"], "primary"),
-             br("ELSE IF No_Signal", ["Hold_In_Triage", "Escalate_AP_Lead"],
-                "escalation", hitl="AP lead assigns cost-centre owner", esc=1)],
-            ["AP lead assigns cost-centre owner"]),
-        add(2012, "OCR Confidence Cliff", "Coding, Routing & Approval Judgment", "Medium",
-            "OCR_Confidence",
-            "The capture engine is only 62% sure the invoice total is $12,400 — the tax and vendor fields are shaky too. "
-            "Above the confidence bar I let it post untouched; below it, this is a keying error waiting to hit the ledger. "
-            "I gate straight-through on confidence, not on hope.",
-            ["Read_Capture_Confidence(perfield)", "Compare_To_Threshold", "Auto_Post_If_Clear", "Queue_LowConfidence_For_Verify"],
-            [br("IF All_Fields_Above_Bar", ["Auto_Post"], "primary"),
-             br("ELSE IF Key_Field_Below_Bar", ["Highlight_Suspect_Fields", "Route_To_Keying_Review"],
-                "escalation", hitl="AP clerk verifies captured fields", esc=1),
-             br("ELSE IF Vendor_Unrecognised", ["Hold_For_Vendor_Match", "Escalate_Master_Data"], "escalation", esc=1)],
-            ["AP clerk verifies captured fields"]),
+        addr(2005, "Retroactive Price Change", "Spend & Terms Control", "High",
+            "Retro_Price_Change",
+            "The PO was approved at one unit price; the invoice matches a price that was quietly edited on the PO after "
+            "approval but before matching. The three-way match passes because the PO was changed to fit the invoice — I "
+            "check the price against the approved version, not the current one.",
+            ["EKPO (PO item price + change history)", "EKKO (PO header)", "RBKP (invoice receipt)"],
+            ["PO_LINES_ALL (PO line price)", "PO_LINE_LOCATIONS_ALL (shipments)", "AP_INVOICE_LINES_ALL (invoice lines)"],
+            "The invoice price is matched against the PO price as approved (from change history), not the current PO "
+            "value, so a post-approval edit that silently lifts the price is caught before it clears.",
+            "PO approved at price P → PO line price edited after approval → invoice matches the edited price → compare "
+            "against approved P → block increases beyond tolerance.",
+            ["Read_PO_Price_History", "Compare_Approved_vs_Current", "Detect_PostApproval_Edit", "Match_Against_Approved_Price"],
+            [br("IF Price_Unchanged_Since_Approval", ["Auto_Post"], "primary"),
+             br("ELSE IF Edit_Within_Tolerance AND Documented", ["Auto_Post", "Log_Change"], "primary"),
+             br("ELSE IF PostApproval_Increase > tolerance", ["Block_Invoice", "Route_To_Buyer", "Request_Price_Justification"],
+                "escalation", hitl="Buyer confirms approved price change", esc=1)],
+            ["Buyer confirms approved price change"]),
+        addr(2007, "Payment Term Erosion", "Spend & Terms Control", "Medium",
+            "DPO_Erosion",
+            "Contract says net-45 but we're actually paying this vendor on day 30 — the effective DPO has drifted a week "
+            "short of what we negotiated. Paying early for no discount is just giving working capital away. I catch the "
+            "drift and hold to terms.",
+            ["BSEG (clearing / payment dates)", "EKKO (contracted terms ZTERM)", "LFA1 (vendor master terms)"],
+            ["AP_PAYMENT_SCHEDULES_ALL (payment dates)", "AP_INVOICES_ALL (invoice header)", "AP_TERMS (terms)"],
+            "Effective DPO per vendor is computed from actual clearing dates and compared to the contracted terms to "
+            "surface systematic early payment that surrenders working capital for no discount.",
+            "Actual payment dates → effective DPO by vendor → compare to contract terms → early with no discount benefit "
+            "⇒ reschedule to net due; systemic ⇒ treasury.",
+            ["Compute_Effective_DPO(vendor)", "Compare_To_Contract_Terms", "Detect_Early_Drift", "Reschedule_To_Terms"],
+            [br("IF DPO_At_Or_Above_Terms", ["No_Action"], "primary"),
+             br("ELSE IF Early AND No_Discount_Benefit", ["Auto_Reschedule_To_Net_Due", "Log_WC_Recovered"], "primary"),
+             br("ELSE IF Early_By_Policy_Or_Discount", ["Keep_Schedule", "Annotate_Reason"], "primary"),
+             br("ELSE IF Systemic_Early_Across_Vendors", ["Route_To_Treasury", "Propose_Terms_Reset"],
+                "escalation", hitl="Treasury approves payment-timing policy", esc=1)],
+            ["Treasury approves payment-timing policy"]),
+        addr(2008, "Supplier Concentration Risk", "Spend & Terms Control", "Medium",
+            "Supplier_Concentration",
+            "One supplier now takes more than 40% of this category's spend. That's convenient until they raise prices or "
+            "fail — concentration quietly hands them the leverage. I surface it while there's still time to qualify a "
+            "second source.",
+            ["EKKO (PO spend by vendor)", "EKPO (category / material group)", "LFA1 (vendor master)"],
+            ["PO_HEADERS_ALL (PO header)", "PO_LINES_ALL (category spend)", "POZ_SUPPLIERS (supplier master)"],
+            "Category spend is aggregated by vendor to compute each supplier's share; a share above policy flags a "
+            "concentration risk before pricing power or a supplier failure becomes the company's problem.",
+            "Spend by category and vendor → concentration share → above 40% with alternatives ⇒ dual-source; sole-source "
+            "or above 60% ⇒ escalate a risk assessment.",
+            ["Aggregate_Spend_By_Category_Vendor", "Compute_Concentration_Share", "Detect_Over_Threshold", "Flag_For_Sourcing"],
+            [br("IF Share < 40%", ["No_Action"], "primary"),
+             br("ELSE IF Share >= 40% AND Alternatives_Exist", ["Recommend_Dual_Source", "Notify_Category_Manager"],
+                "escalation", hitl="Category manager approves sourcing action", esc=1),
+             br("ELSE IF Share >= 60% OR Sole_Source", ["Escalate_Procurement_Lead", "Open_Risk_Assessment"], "escalation", esc=1)],
+            ["Category manager approves sourcing action"]),
     ]
     functions.append({
         "id": "p2p", "name": "Procure-to-Pay", "short": "P2P", "icon": "🧾",
-        "accent": "#7c4dff", "status": "sample",
-        "tagline": "Invoice integrity, matching, and working-capital capture.",
+        "accent": "#7c4dff", "status": "live",
+        "tagline": "Invoice integrity, matching, and payment timing that protects cash.",
         "valueChain": build_p2p_value_chain(),
         "processes": [{
-            "id": "p2p-ap", "name": "AP Invoice Processing & Exceptions",
-            "desc": "From invoice receipt to posting — duplicates, mismatches, and spend leakage.",
+            "id": "p2p-ap", "name": "AP Invoice Processing & Working Capital",
+            "desc": "From invoice receipt to payment — duplicates, ghost vendors, matching integrity, and payment timing that protects cash.",
             "roles": [
                 {"id": "p2p-ap-analyst", "name": "AP Analyst", "objectives": [
-                    {"id": "p2p-o-dup", "name": "Eliminate duplicate & fraudulent payments",
-                     "kpi": "Fraud & duplicate leakage $", "patternIds": [2001, 2005, 2006, 2007, 2008]},
-                    {"id": "p2p-o-proc", "name": "Touchless invoice coding & approval",
-                     "kpi": "Touchless processing %", "patternIds": [2009, 2010, 2011, 2012]},
-                    {"id": "p2p-o-match", "name": "Touchless invoice matching",
-                     "kpi": "Touchless %", "patternIds": [2002]},
+                    {"id": "p2p-o-integrity", "name": "Stop duplicate, ghost & fraudulent payments",
+                     "kpi": "Fraud & duplicate leakage $", "patternIds": [2002, 2003, 2006]},
+                ]},
+                {"id": "p2p-treasury", "name": "Treasury / Working Capital Analyst", "objectives": [
+                    {"id": "p2p-o-wc", "name": "Protect cash through payment timing",
+                     "kpi": "Days Payable Outstanding", "patternIds": [2001, 2007]},
                 ]},
                 {"id": "p2p-buyer", "name": "Category / Procurement Manager", "objectives": [
-                    {"id": "p2p-o-mav", "name": "Curb off-contract (maverick) spend",
-                     "kpi": "Contract compliance %", "patternIds": [2003]},
-                ]},
-                {"id": "p2p-treasury", "name": "Treasury Analyst", "objectives": [
-                    {"id": "p2p-o-disc", "name": "Maximize early-payment discount capture",
-                     "kpi": "Discounts captured $", "patternIds": [2004]},
+                    {"id": "p2p-o-spend", "name": "Control spend leakage & supplier terms",
+                     "kpi": "Contract compliance %", "patternIds": [2004, 2005, 2008]},
                 ]},
             ],
         }],
@@ -1372,6 +1563,7 @@ def main():
     ar = build_ar_function(patterns)
     stub_funcs, stub_patterns = build_stub_functions()
     functions = [ar] + stub_funcs
+    themes = build_themes()
 
     # roll up counts for the picker chrome
     for f in functions:
@@ -1400,7 +1592,9 @@ def main():
                  "blurb": "Straight-through on the happy path; variations matched to patterns and routed for approval."},
             ],
             "functionCount": len(functions),
+            "themeCount": len(themes),
         },
+        "themes": themes,
         "functions": functions,
         "stubPatterns": stub_patterns,
     }
@@ -1409,7 +1603,7 @@ def main():
     with open(path, "w", encoding="utf-8") as f:
         json.dump(out, f, indent=2, ensure_ascii=False)
     print("Built", os.path.relpath(path, ROOT),
-          "(%d functions, %d sample patterns)" % (len(functions), len(stub_patterns)))
+          "(%d themes, %d functions, %d sample patterns)" % (len(themes), len(functions), len(stub_patterns)))
 
 
 if __name__ == "__main__":

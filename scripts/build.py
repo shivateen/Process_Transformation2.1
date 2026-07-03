@@ -37,6 +37,7 @@ def main():
         read("src", "js", "shell.js"),
         read("src", "js", "studio.js"),
         read("src", "js", "fitment.js"),
+        read("src", "js", "build.js"),
         read("src", "js", "runtime.js"),
         read("src", "js", "provocation.js"),
         read("src", "js", "cockpit.js"),

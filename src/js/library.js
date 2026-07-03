@@ -113,7 +113,7 @@
 
     // branching DAG tree
     var branches = (p.branchingDAG || []).map(function (b) {
-      var verbs = b.actions.map(function (a) { return '<span class="verb' + (E.detectors ? "" : "") + '">' + esc(a) + '</span>'; }).join("");
+      var verbs = b.actions.map(function (a) { return '<span class="verb">' + esc(a) + '</span>'; }).join("");
       var hitl = b.hitl ? '<div class="b-hitl">🔒 HITL: ' + esc(b.hitl) + '</div>' : "";
       return '<div class="branch t-' + b.tier + '"><div class="b-cond mono">' + esc(b.condition) + '</div>' +
         '<div class="b-acts">' + verbs + '</div>' + hitl + '</div>';
