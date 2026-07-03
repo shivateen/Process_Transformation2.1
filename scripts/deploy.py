@@ -11,7 +11,7 @@ left completely untouched.
 
   python scripts/deploy.py          (or: npm run deploy)
 
-Live site: https://shivateen.github.io/Process_Transformation2.0/
+Live site: https://shivateen.github.io/Process_Transformation2.1/
 """
 import os, sys, shutil, subprocess
 
@@ -19,7 +19,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PUB = os.path.join(ROOT, "public")
 TMP = os.path.join(ROOT, ".deploy-gh-pages")
 BRANCH = "gh-pages"
-URL = "https://shivateen.github.io/Process_Transformation2.0/"
+URL = "https://shivateen.github.io/Process_Transformation2.1/"
 PUBLISH = ["index.html", "processiq.html"]  # + .nojekyll, written below
 
 
