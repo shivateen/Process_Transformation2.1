@@ -8,6 +8,13 @@
   --shadow:0 1px 3px rgba(38,28,18,.09),0 8px 24px rgba(38,28,18,.07);
   --radius:14px; --mono:'SFMono-Regular',ui-monospace,'Cascadia Code',Consolas,monospace;
 }
+body.dark{
+  --bg:#090b11; --panel:#111827; --ink:#e2e8f0; --muted:#94a3b8; --line:#2f4c6f;
+  --brand:#0f172a; --brand2:#38bdf8; --accent:#a78bfa;
+  --crit:#f472b6; --high:#fb923c; --med:#34d399; --low:#60a5fa;
+  --sense:#38bdf8; --diag:#7c3aed; --decide:#f59e0b; --act:#22c55e;
+  --shadow:0 1px 3px rgba(0,0,0,.2),0 12px 32px rgba(0,0,0,.2);
+}
 *{box-sizing:border-box}
 html,body{margin:0;height:100%}
 body{font-family:'Inter',-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
@@ -38,6 +45,9 @@ button{font-family:inherit;cursor:pointer}
 .erp-toggle{display:flex;background:rgba(255,255,255,.12);border-radius:9px;padding:3px;gap:2px}
 .erp-toggle button{background:none;border:0;color:#ecd8c1;padding:6px 12px;border-radius:7px;font-size:12px;font-weight:600}
 .erp-toggle button.on{background:#fff;color:var(--brand)}
+.theme-toggle{display:flex;background:rgba(255,255,255,.12);border-radius:9px;padding:3px;gap:2px}
+.theme-toggle button{background:none;border:0;color:#ecd8c1;padding:6px 12px;border-radius:7px;font-size:12px;font-weight:600}
+.theme-toggle button.on{background:#fff;color:var(--brand)}
 
 /* ---- layout ---- */
 .wrap{display:grid;grid-template-columns:340px 1fr;gap:0;height:calc(100vh - 53px)}
