@@ -230,9 +230,30 @@
 
   /* ---- composition persistence (survives reloads) ---------------------- */
   var STORE_KEY = "piq.composition.v1";
+  var THEME_KEY = "piq.theme.v1";
+  PIQ.themeMode = "light";
   PIQ.persistComposition = function () {
     try { localStorage.setItem(STORE_KEY, JSON.stringify(PIQ.composition)); } catch (e) {}
   };
+  function persistTheme() {
+    try { localStorage.setItem(THEME_KEY, PIQ.themeMode); } catch (e) {}
+  }
+  function setTheme(mode) {
+    PIQ.themeMode = mode === "dark" ? "dark" : "light";
+    document.body.classList.toggle("dark", PIQ.themeMode === "dark");
+    var toggle = document.getElementById("themeToggle");
+    if (!toggle) return;
+    toggle.querySelectorAll("button").forEach(function (btn) {
+      btn.classList.toggle("on", btn.dataset.theme === PIQ.themeMode);
+    });
+    persistTheme();
+  }
+  function restoreTheme() {
+    try {
+      var raw = localStorage.getItem(THEME_KEY);
+      setTheme(raw === "dark" ? "dark" : "light");
+    } catch (e) { setTheme("light"); }
+  }
   PIQ.restoreComposition = function () {
     try {
       var raw = localStorage.getItem(STORE_KEY); if (!raw) return;
@@ -349,9 +370,16 @@
     });
   }
 
+  document.getElementById("themeToggle").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    setTheme(b.dataset.theme);
+  });
+
   /* boot */
   document.getElementById("varStat").textContent = PIQ.E._money(PIQ.book.meta.valueAtRisk);
   document.getElementById("dateStat").textContent = PIQ.book.meta.asOfDate;
+
+  restoreTheme();
 
   // Open on the Studio — the SME's front door into the journey.
   PIQ.boot = function () { PIQ.restoreComposition(); go("studio"); };
