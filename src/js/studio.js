@@ -21,6 +21,12 @@
     "shield-check": "🛡️", "eye": "👁️" };
   function themeIcon(name) { return THEME_ICONS[name] || "◆"; }
 
+  // Friendly short labels for the theme "Spans" badge (readable CFO-facing names).
+  // Falls back to the taxonomy function's own short, then the raw id.
+  var FN_SHORT = { o2c: "O2C", p2p: "P2P", r2r: "R2R", sc: "SC", tcm: "Treasury",
+    icc: "GRC", fpa: "FP&A", tax: "Tax", tne: "T&E", h2r: "HR" };
+  function fnShort(id) { return FN_SHORT[id] || (fnById(id) ? fnById(id).short : id); }
+
   function el(t, c, h) { var n = document.createElement(t); if (c) n.className = c; if (h != null) n.innerHTML = h; return n; }
   function esc(s) { return (s == null ? "" : String(s)).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
   function C() { return window.PIQ.composition; }
@@ -221,7 +227,7 @@
     var grid = pickGrid(themes, function (t) {
       var on = c.themeId === t.id;
       var k = t.compoundKPI || {};
-      var fns = (t.functionIds || []).map(function (id) { var f = fnById(id); return f ? f.short : id; }).join(" · ");
+      var fns = (t.functionIds || []).map(fnShort).join(" · ");
       return '<div class="pc-ico" style="--ac:' + t.accent + '">' + themeIcon(t.icon) + '</div>' +
         '<div class="pc-main"><div class="pc-t">' + esc(t.name) + '</div>' +
         '<div class="pc-d">' + esc(t.tagline) + '</div></div>' +
@@ -349,7 +355,15 @@
                  : '<span class="vc-badge ctx">Roadmap</span>')));
         var subs = el("div", "vc-subs");
         (a.sub || []).forEach(function (s) {
-          subs.appendChild(el("div", "vc-sub", '<span class="vc-lvl">L4</span>' + esc(s)));
+          var pm = window.PIQ.processMap;
+          var hasMap = pm && pm.has(s);
+          var sub = el("div", "vc-sub" + (hasMap ? " hasmap" : ""),
+            '<span class="vc-lvl">L4</span>' + esc(s) +
+            (hasMap ? '<span class="vc-map" title="View process map">⤢</span>' : ''));
+          if (hasMap) {
+            sub.onclick = function (ev) { ev.stopPropagation(); pm.open(s); };
+          }
+          subs.appendChild(sub);
         });
         col.appendChild(subs);
         if (built) col.onclick = function () { pickBuiltArea(a); };
