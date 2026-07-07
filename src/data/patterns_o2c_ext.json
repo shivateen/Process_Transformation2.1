@@ -1,2205 +1,9 @@
 {
   "meta": {
-    "title": "ProcessIQ — Order-to-Cash Pattern Library",
-    "source": "AR_Pattern_Library_v2_Complete.xlsx + patterns_o2c_ext.json",
-    "patternCount": 101,
-    "categories": [
-      {
-        "category": "Dispute & Deduction Manipulation",
-        "count": 9,
-        "Critical": 0,
-        "High": 5,
-        "Medium": 4,
-        "Low": 0
-      },
-      {
-        "category": "Intentional Stalling & Delay Tactics",
-        "count": 9,
-        "Critical": 0,
-        "High": 4,
-        "Medium": 4,
-        "Low": 1
-      },
-      {
-        "category": "Credit Risk & Insolvency Indicators",
-        "count": 5,
-        "Critical": 3,
-        "High": 1,
-        "Medium": 1,
-        "Low": 0
-      },
-      {
-        "category": "Cash Application & Remittance Friction",
-        "count": 3,
-        "Critical": 0,
-        "High": 2,
-        "Medium": 1,
-        "Low": 0
-      },
-      {
-        "category": "Relationship & Contractual Abuse",
-        "count": 5,
-        "Critical": 0,
-        "High": 3,
-        "Medium": 2,
-        "Low": 0
-      },
-      {
-        "category": "Credit Risk & Exposure Control",
-        "count": 10,
-        "Critical": 3,
-        "High": 5,
-        "Medium": 2,
-        "Low": 0
-      },
-      {
-        "category": "Cash Application & Matching Integrity",
-        "count": 10,
-        "Critical": 1,
-        "High": 5,
-        "Medium": 3,
-        "Low": 1
-      },
-      {
-        "category": "Dispute Lifecycle Management",
-        "count": 10,
-        "Critical": 2,
-        "High": 4,
-        "Medium": 3,
-        "Low": 1
-      },
-      {
-        "category": "Deductions & Trade-Claim Recovery",
-        "count": 10,
-        "Critical": 1,
-        "High": 5,
-        "Medium": 3,
-        "Low": 1
-      },
-      {
-        "category": "Billing Accuracy & Revenue Integrity",
-        "count": 10,
-        "Critical": 3,
-        "High": 5,
-        "Medium": 2,
-        "Low": 0
-      },
-      {
-        "category": "Order Integrity & Fulfilment Control",
-        "count": 10,
-        "Critical": 2,
-        "High": 5,
-        "Medium": 2,
-        "Low": 1
-      },
-      {
-        "category": "Cross-Process AR Governance",
-        "count": 10,
-        "Critical": 3,
-        "High": 6,
-        "Medium": 1,
-        "Low": 0
-      }
-    ],
-    "priorityLegend": {
-      "Critical": "#c0392b",
-      "High": "#e67e22",
-      "Medium": "#27ae60",
-      "Low": "#2980b9"
-    },
-    "erp": {
-      "primary": "SAP",
-      "toggle": [
-        "SAP",
-        "Oracle Fusion / EBS"
-      ]
-    }
+    "note": "Hand-authored O2C Pattern Studio output for 7 O2C roles (Credit, Cash App, Dispute, Deductions, Billing, Order Mgmt, AR Controller). Merged into patterns.json at build time.",
+    "count": 70
   },
   "patterns": [
-    {
-      "id": 1,
-      "name": "29th-Day Tactic",
-      "category": "Dispute & Deduction Manipulation",
-      "priority": "High",
-      "priorityRank": 1,
-      "mentalModel": "The invoice is due tomorrow. Why wait 29 days to raise a 'Missing POD' dispute? Let me check their history — they likely do this to freeze the dunning clock and steal another 14 days of terms.",
-      "sources": {
-        "sap": [
-          "BSID (ZFBDT), UDM_DISPUTE (CREATE_TIME)"
-        ],
-        "oracle": [
-          "AR_PAYMENT_SCHEDULES_ALL (DUE_DATE, AMOUNT_DUE_REMAINING)",
-          "AR_DISPUTES (CREATION_DATE, DISPUTE_REASON) [Fusion]",
-          "RA_CUSTOMER_TRX_ALL (TRX_DATE) — invoice context"
-        ]
-      },
-      "layer1_logicalMapping": "Join Open AR to Dispute Case via BELNR.",
-      "layer2_eventSeries": "Map Invoice_Due_Date vs Dispute_Create_Date.",
-      "layer3_feature": "Dispute_Proximity",
-      "featureSlug": "dispute-proximity",
-      "conceptualSQL": "SELECT DATEDIFF(day, UDM.CREATE_TIME, BSID.ZFBDT)\nAS Proximity WHERE Proximity BETWEEN 0 AND 2",
-      "originalDAG": [
-        "Generate_Contextual_Email",
-        "Update_SAP_Dispute(Reject)",
-        "Toggle_Dunning_Block(Remove)",
-        "Send_SMTP_Email"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF Strategic_Account AND Dispute_Count_YTD = 1",
-          "actions": [
-            "Soft_Email + Alert_AE_Only"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Dispute_Count_YTD >= 2",
-          "actions": [
-            "Reject_Dispute(Auto) + Remove_Dunning_Block",
-            "Escalate_Collections_Manager"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF DPD > 45 AND Pattern_Count > 3",
-          "actions": [
-            "Apply_Legal_Hold + Trigger_Credit_Review",
-            "Notify_CFO_Office"
-          ],
-          "hitl": "Collections VP approves legal hold",
-          "tier": "escalation",
-          "escLevel": 2
-        }
-      ],
-      "hitlGates": [
-        "Collections VP approves legal hold"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-7 days",
-        "traceCount": 8373,
-        "additionalCoverage": 89,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 2,
-      "name": "Dispute Code Hopping",
-      "category": "Dispute & Deduction Manipulation",
-      "priority": "High",
-      "priorityRank": 1,
-      "mentalModel": "I just sent them the proof resolving their 'Pricing Error' dispute yesterday, and today they opened a new 'Short Shipment' dispute on the exact same invoice? They are just throwing excuses at the wall to buy time.",
-      "sources": {
-        "sap": [
-          "UDM_DISPUTE (CASE_GUID), CDHDR (UDATE)"
-        ],
-        "oracle": [
-          "AR_DISPUTES (DISPUTE_REASON, CREATION_DATE, DISPUTE_AMOUNT) [Fusion]",
-          "RA_CUSTOMER_TRX_ALL (TRX_NUMBER) — invoice linkage",
-          "HZ_CUST_ACCOUNTS (ACCOUNT_NUMBER) — customer anchor"
-        ]
-      },
-      "layer1_logicalMapping": "Track unique Dispute IDs per Invoice BELNR.",
-      "layer2_eventSeries": "Log frequency of REASON_CODE changes over time.",
-      "layer3_feature": "Sequential_Dispute_Count",
-      "featureSlug": "sequential-dispute-count",
-      "conceptualSQL": "SELECT COUNT(DISTINCT REASON_CODE)\nFROM UDM_DISPUTE GROUP BY BELNR\nHAVING COUNT > 1",
-      "originalDAG": [
-        "Update_SAP_Master_Data(Flag Account)",
-        "Update_CRM_Task(Escalate to Manager)"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF Distinct_Reason_Codes = 2 (within 30 days)",
-          "actions": [
-            "Email_Evidence_Package (all docs)",
-            "Reject_Second_Dispute"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Distinct_Reason_Codes >= 3",
-          "actions": [
-            "Flag_Account (Bad Faith = TRUE)",
-            "Escalate_Collections_Manager",
-            "Trigger_Legal_Hold_Review"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF >= 5 Codes OR Pattern > 90 days",
-          "actions": [
-            "Disable_Portal_Dispute_Access",
-            "Refer_to_Legal"
-          ],
-          "hitl": "Legal must approve portal removal",
-          "tier": "escalation",
-          "escLevel": 2
-        }
-      ],
-      "hitlGates": [
-        "Legal must approve portal removal"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-9 days",
-        "traceCount": 8746,
-        "additionalCoverage": 118,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 3,
-      "name": "Dispute Splitting",
-      "category": "Dispute & Deduction Manipulation",
-      "priority": "High",
-      "priorityRank": 1,
-      "mentalModel": "Why did they submit ten separate $9,500 disputes instead of one $95,000 dispute? They must have figured out that our automated write-off or junior analyst approval threshold is $10,000.",
-      "sources": {
-        "sap": [
-          "UDM_DISPUTE (AMT_DISPUTED), BSID (WRBTR)"
-        ],
-        "oracle": [
-          "AR_DISPUTES (DISPUTE_AMOUNT, CREATION_DATE) [Fusion]",
-          "AR_PAYMENT_SCHEDULES_ALL (AMOUNT_DUE_ORIGINAL) — threshold comparison",
-          "HZ_CUST_ACCOUNTS — customer grouping for aggregate view"
-        ]
-      },
-      "layer1_logicalMapping": "Link multiple disputes to one parent Customer KUNNR.",
-      "layer2_eventSeries": "Sum dispute creation events within a 24-hour window.",
-      "layer3_feature": "Volume_vs_Threshold",
-      "featureSlug": "volume-vs-threshold",
-      "conceptualSQL": "SELECT SUM(AMT_DISPUTED) FROM UDM_DISPUTE\nWHERE CREATE_TIME = TODAY\nGROUP BY KUNNR",
-      "originalDAG": [
-        "Update_SAP_Dispute(Merge Cases)",
-        "Generate_Contextual_Email",
-        "Send_SMTP_Email"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF Total_Split_Amount < $10K AND First_Instance",
-          "actions": [
-            "Merge_Disputes + Warn_Email"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Total $10K–$100K OR Second_Instance",
-          "actions": [
-            "Merge + Flag_Account + Manager_Alert",
-            "Email_Formal_Warning"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF Amount > $100K OR Pattern_Count > 3",
-          "actions": [
-            "Merge + Legal_Hold + Credit_Review",
-            "Director_Alert"
-          ],
-          "hitl": "Collections VP approves legal hold",
-          "tier": "escalation",
-          "escLevel": 2
-        }
-      ],
-      "hitlGates": [
-        "Collections VP approves legal hold"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-8 days",
-        "traceCount": 9119,
-        "additionalCoverage": 147,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 4,
-      "name": "Friday Afternoon Slicing",
-      "category": "Dispute & Deduction Manipulation",
-      "priority": "High",
-      "priorityRank": 1,
-      "mentalModel": "It's 4 PM on the last Friday of the month. They just dumped a massive batch payment riddled with $40 micro-deductions. They know I am rushed for financial close and hoping I'll just write them off rather than reconcile 50 line items.",
-      "sources": {
-        "sap": [
-          "BSAD (AUGDT), BSEG (WRBTR), FEBEP (VALUT)"
-        ],
-        "oracle": [
-          "AR_RECEIVABLE_APPLICATIONS_ALL (APPLY_DATE, AMOUNT_APPLIED) — clearing event",
-          "AR_CASH_RECEIPTS_ALL (RECEIPT_DATE) — payment date flag",
-          "AR_ADJUSTMENTS_ALL (APPLY_DATE, AMOUNT) — micro-deductions posted"
-        ]
-      },
-      "layer1_logicalMapping": "Link Bank Statement Items to Cleared Line Items.",
-      "layer2_eventSeries": "Flag AUGDT (Clearing Date) falling on Month-End Friday.",
-      "layer3_feature": "Micro_Deduction_Density",
-      "featureSlug": "micro-deduction-density",
-      "conceptualSQL": "SELECT COUNT(BELNR) FROM BSAD\nWHERE DAYOFWEEK(AUGDT)=6 AND WRBTR < 50\nGROUP BY KUNNR",
-      "originalDAG": [
-        "Update_SAP_Dispute(Auto-Deny)",
-        "Execute_SAP_Clearing(Offset Undisputed)",
-        "Send_SMTP_Email"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF Deduction_Count < 10 AND Total < $500",
-          "actions": [
-            "Auto_Deny_All + Clear_Undisputed",
-            "Email_Deduction_Summary"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Count 10–50 OR Total $500–$5K",
-          "actions": [
-            "Queue_Monday_Review (no auto-clear)",
-            "Notify_Team_Lead"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF Count > 50 OR Total > $5K",
-          "actions": [
-            "Freeze_Clearing_Run",
-            "Escalate_Collections_Manager",
-            "Formal_Demand_Letter"
-          ],
-          "hitl": "Manager approves before any clearing",
-          "tier": "escalation",
-          "escLevel": 2
-        }
-      ],
-      "hitlGates": [
-        "Manager approves before any clearing"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-6 days",
-        "traceCount": 9492,
-        "additionalCoverage": 176,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 5,
-      "name": "Price Tolerance Exploitation",
-      "category": "Dispute & Deduction Manipulation",
-      "priority": "Medium",
-      "priorityRank": 2,
-      "mentalModel": "This customer consistently short-pays by exactly $48 or $49. It's not a real pricing error; they have reverse-engineered our $50 standard tolerance limit and are skimming the difference on every order.",
-      "sources": {
-        "sap": [
-          "BSAD (RSTGR), BSEG (WRBTR)"
-        ],
-        "oracle": [
-          "AR_ADJUSTMENTS_ALL (REASON_CODE, AMOUNT) — short-pay classification",
-          "AR_RECEIVABLE_APPLICATIONS_ALL (EARNED_DISCOUNT_TAKEN) — tolerance comparison",
-          "HZ_CUSTOMER_PROFILES_ALL (TOLERANCE_AMOUNT) — current limit"
-        ]
-      },
-      "layer1_logicalMapping": "Map Reason Code (RSTGR) to short-pay amount.",
-      "layer2_eventSeries": "Track historical short-pay amounts upon clearing.",
-      "layer3_feature": "Write_Off_Threshold_Delta",
-      "featureSlug": "write-off-threshold-delta",
-      "conceptualSQL": "SELECT (50 - WRBTR_SHORTPAY) AS Delta\nWHERE Delta BETWEEN 0 AND 5\nAND RSTGR = 'TOLERANCE'",
-      "originalDAG": [
-        "Update_SAP_Master_Data(Lower Tolerance Limit)",
-        "Update_CRM_Task(Notify AE)"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF Delta < $10 AND First_Time",
-          "actions": [
-            "Lower_Tolerance_Limit + Internal_AE_Alert (no customer email)"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Delta $10–$50 OR Repeat_Count >= 2",
-          "actions": [
-            "Lower_Tolerance + Email_Customer_Notice",
-            "Flag_Account"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF Repeat_Count >= 5 OR Annual_Impact > $5K",
-          "actions": [
-            "Remove_Tolerance_Entirely",
-            "Legal_Demand_Recovery",
-            "Director_Alert"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 2
-        }
-      ],
-      "hitlGates": [],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-8 days",
-        "traceCount": 9865,
-        "additionalCoverage": 205,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 6,
-      "name": "Attachment Omission",
-      "category": "Dispute & Deduction Manipulation",
-      "priority": "Medium",
-      "priorityRank": 2,
-      "mentalModel": "They logged a dispute in the portal but attached zero backup documentation. They know it will take me 3 days to email them for the proof, and another week for them to reply, securing them 10 days of free float.",
-      "sources": {
-        "sap": [
-          "UDM_DISPUTE (CASE_GUID), BDS_CONN (Attachments)"
-        ],
-        "oracle": [
-          "AR_DISPUTES (DISPUTE_ID, DISPUTE_SUPPORTING_DOCS) [Fusion]",
-          "FND_ATTACHED_DOCUMENTS (ENTITY_NAME, PK1_VALUE) [EBS]",
-          "AR_PAYMENT_SCHEDULES_ALL (DUE_DATE) — dunning context"
-        ]
-      },
-      "layer1_logicalMapping": "Link Dispute ID to Business Document Service.",
-      "layer2_eventSeries": "Check for document attachment event at CREATE_TIME.",
-      "layer3_feature": "Evidence_Completeness",
-      "featureSlug": "evidence-completeness",
-      "conceptualSQL": "SELECT CASE WHEN COUNT(BDS.DOC_ID)=0\nTHEN 'Null' ELSE 'Attached' END\nFROM UDM_DISPUTE",
-      "originalDAG": [
-        "Generate_Contextual_Email(Request Docs)",
-        "Send_SMTP_Email",
-        "Toggle_Dunning_Block(Remove)"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF First_Omission AND Amount < $10K",
-          "actions": [
-            "Auto_Request_Email + 3_Day_Reminder_Flag"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF No_Response_3_Days OR Amount > $10K",
-          "actions": [
-            "Remove_Dunning_Block",
-            "Escalate_Email (Manager CC'd)"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF No_Response_7_Days AND Amount > $50K",
-          "actions": [
-            "Reject_Dispute (no docs = no dispute)",
-            "Legal_Notice",
-            "Toggle_Dunning_Block(Remove)"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 2
-        }
-      ],
-      "hitlGates": [],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-7 days",
-        "traceCount": 10238,
-        "additionalCoverage": 234,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 7,
-      "name": "Freight/Tax Skimming",
-      "category": "Dispute & Deduction Manipulation",
-      "priority": "Medium",
-      "priorityRank": 2,
-      "mentalModel": "The payment perfectly matches the goods value, but the freight and tax lines are left unpaid. They are hoping the cash app team just clears the product line and leaves the tax to rot in a dispute queue.",
-      "sources": {
-        "sap": [
-          "VBRP (POSNR), BSEG (WRBTR), PRCD_ELEMENTS"
-        ],
-        "oracle": [
-          "RA_CUSTOMER_TRX_LINES_ALL (LINE_TYPE = 'FREIGHT'/'TAX') [Fusion and EBS]",
-          "AR_PAYMENT_SCHEDULES_ALL (AMOUNT_DUE_REMAINING)",
-          "OE_PRICE_ADJUSTMENTS (tax/freight components) [EBS]"
-        ]
-      },
-      "layer1_logicalMapping": "Map AR line items to SD condition types (Freight/Tax).",
-      "layer2_eventSeries": "Match partial payment specifically against Freight condition.",
-      "layer3_feature": "Line_Item_Short_Pay",
-      "featureSlug": "line-item-short-pay",
-      "conceptualSQL": "SELECT * FROM BSEG JOIN PRCD_ELEMENTS\nWHERE BSEG.WRBTR=(PRCD.NET_VALUE-PRCD.TAX)",
-      "originalDAG": [
-        "Update_SAP_Dispute(Reject Tax Exemption)",
-        "Generate_Contextual_Email",
-        "Send_SMTP_Email"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF Tax_Skimmed < $500 AND First_Time",
-          "actions": [
-            "Auto_Reject_Dispute + Email_Notice"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Tax_Skimmed $500–$5K",
-          "actions": [
-            "Reject_Dispute + Open_Chargeback",
-            "AE_Alert"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF Tax_Skimmed > $5K OR Repeat > 3",
-          "actions": [
-            "Legal_Notice + Director_Alert",
-            "Remove_Tax_Exemption_Flag"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 2
-        }
-      ],
-      "hitlGates": [],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-9 days",
-        "traceCount": 10611,
-        "additionalCoverage": 263,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 8,
-      "name": "Month-End RMA Dump",
-      "category": "Dispute & Deduction Manipulation",
-      "priority": "High",
-      "priorityRank": 1,
-      "mentalModel": "Why is this customer requesting 50 Return Material Authorizations on the 28th of the month? They aren't actually returning the goods; they just want the credits to hit so their month-end statement looks clean.",
-      "sources": {
-        "sap": [
-          "VBAK (AUART), VBAP (ERDAT)"
-        ],
-        "oracle": [
-          "OE_ORDER_HEADERS_ALL (ORDER_TYPE='RETURN', ORDERED_DATE) [EBS]",
-          "DOO_HEADERS_ALL (ORDER_TYPE) [Fusion SCM]",
-          "OE_ORDER_LINES_ALL (SHIP_FROM_ORG_ID) — physical return validation"
-        ]
-      },
-      "layer1_logicalMapping": "Identify Return Orders (AUART='RE') by Customer.",
-      "layer2_eventSeries": "Count RMAs created in the last 3 days of the month.",
-      "layer3_feature": "RMA_Velocity_EOM",
-      "featureSlug": "rma-velocity-eom",
-      "conceptualSQL": "SELECT COUNT(VBELN) FROM VBAK\nWHERE AUART='RE' AND DAY(ERDAT)>=28\nGROUP BY KUNNR",
-      "originalDAG": [
-        "Update_SAP_Master_Data(Flag RMA Abuse)",
-        "Update_CRM_Task(Escalate to Supply Chain)"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF RMA_Count < 5 AND End_of_Month",
-          "actions": [
-            "Flag + Supply_Chain_Alert",
-            "Request_Physical_Return_Confirmation"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF RMA_Count 5–20 OR No_Physical_Returns_Expected",
-          "actions": [
-            "Flag_RMA_Abuse + Escalate_Supply_Chain",
-            "Hold_Credit_Note_Processing"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF RMA_Count > 20 OR Quarterly_Pattern",
-          "actions": [
-            "Reject_All_Unconfirmed_RMAs",
-            "Legal_Review + Director_Alert"
-          ],
-          "hitl": "Finance Director approves mass rejection",
-          "tier": "escalation",
-          "escLevel": 2
-        }
-      ],
-      "hitlGates": [
-        "Finance Director approves mass rejection"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-7 days",
-        "traceCount": 10984,
-        "additionalCoverage": 292,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 9,
-      "name": "'Missing Backup' Loop",
-      "category": "Dispute & Deduction Manipulation",
-      "priority": "Medium",
-      "priorityRank": 2,
-      "mentalModel": "First they asked for the POD. I sent it. Then they asked for the original PO. I sent it. Now they want the signed contract. They are intentionally drip-feeding requests to string this out for weeks.",
-      "sources": {
-        "sap": [
-          "STXL (Text), UDM_DISPUTE (FIN_STATE)"
-        ],
-        "oracle": [
-          "AR_DISPUTES (NOTES, CREATION_DATE) [Fusion]",
-          "IEX_NOTES_TL (NOTE_TEXT, NOTE_DATE) [EBS]",
-          "FND_ATTACHED_DOCUMENTS (DOCUMENT_TYPE) — tracks each doc request round"
-        ]
-      },
-      "layer1_logicalMapping": "Link CRM/Dispute notes to Invoice.",
-      "layer2_eventSeries": "NLP parse text for sequence: 'POD' then 'Contract'.",
-      "layer3_feature": "Doc_Request_Frequency",
-      "featureSlug": "doc-request-frequency",
-      "conceptualSQL": "SELECT COUNT(Text_Pattern) FROM STXL\nWHERE Text LIKE '%POD%' OR Text LIKE '%PO%'\nGROUP BY BELNR",
-      "originalDAG": [
-        "Parse_Document_Evidence(Fetch ALL docs)",
-        "Generate_Contextual_Email(Attach ALL)",
-        "Update_SAP_Dispute(Close)"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF Request_Count = 2",
-          "actions": [
-            "Bundle_ALL_Docs + Send_Complete_Package",
-            "Pre-empt next request proactively"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Request_Count = 3",
-          "actions": [
-            "Bundle_ALL + Formal_Deadline_Email",
-            "Update_Dispute_Status(Bad Faith Warning)"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF Request_Count >= 4 OR Loop > 30 Days",
-          "actions": [
-            "Reject_Dispute (bad faith documented)",
-            "Legal_Notice + Flag_Account"
-          ],
-          "hitl": "Manager approves bad faith rejection",
-          "tier": "escalation",
-          "escLevel": 2
-        }
-      ],
-      "hitlGates": [
-        "Manager approves bad faith rejection"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-6 days",
-        "traceCount": 11357,
-        "additionalCoverage": 61,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 10,
-      "name": "Missing PO Trap",
-      "category": "Intentional Stalling & Delay Tactics",
-      "priority": "High",
-      "priorityRank": 1,
-      "mentalModel": "They placed an urgent order without a PO number 30 days ago, and now they are rejecting the invoice because 'it lacks a PO'. They knew this would happen and are using their own internal compliance as a shield.",
-      "sources": {
-        "sap": [
-          "VBAK (BSTNK), UDM_DISPUTE"
-        ],
-        "oracle": [
-          "OE_ORDER_HEADERS_ALL (CUST_PO_NUMBER IS NULL) [EBS]",
-          "DOO_HEADERS_ALL (CUST_PO_NUMBER) [Fusion SCM]",
-          "RA_CUSTOMER_TRX_ALL (REFERENCE) — invoice PO reference",
-          "AR_DISPUTES (DISPUTE_REASON='NO PO') [Fusion]"
-        ]
-      },
-      "layer1_logicalMapping": "Map Sales Order PO field to Dispute Reason.",
-      "layer2_eventSeries": "Track if SO was created with Null PO, disputed 30 days later.",
-      "layer3_feature": "PO_Mismatch_Flag",
-      "featureSlug": "po-mismatch-flag",
-      "conceptualSQL": "SELECT 1 FROM VBAK JOIN UDM_DISPUTE\nWHERE VBAK.BSTNK IS NULL\nAND UDM.REASON = 'NO PO'",
-      "originalDAG": [
-        "Parse_Document_Evidence(Find original email PO)",
-        "Generate_Contextual_Email",
-        "Update_SAP_Dispute(Close)"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF Email_PO_Evidence_Found = TRUE",
-          "actions": [
-            "Attach_Email_Evidence",
-            "Reject_Dispute (bad faith)",
-            "Remove_Dunning_Block"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF No_Evidence AND Sales_Rep_Confirms_Verbal_PO",
-          "actions": [
-            "Escalate_Sales_Director",
-            "Request_Retroactive_PO"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF Customer_Refuses AND DPD > 45",
-          "actions": [
-            "Mandate_Prepayment_Future_Orders",
-            "Apply_Delivery_Block + Refer_to_Legal"
-          ],
-          "hitl": "VP approves delivery block",
-          "tier": "escalation",
-          "escLevel": 2
-        }
-      ],
-      "hitlGates": [
-        "VP approves delivery block"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-8 days",
-        "traceCount": 11730,
-        "additionalCoverage": 90,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 11,
-      "name": "Approval Musical Chairs",
-      "category": "Intentional Stalling & Delay Tactics",
-      "priority": "High",
-      "priorityRank": 1,
-      "mentalModel": "I emailed AP, they told me to ask Procurement. Procurement told me to ask the Plant Manager. The Plant Manager told me to go back to AP. They are passing the buck to intentionally run out the collection timer.",
-      "sources": {
-        "sap": [
-          "CDHDR (OBJECTID), CDPOS (FNAME)"
-        ],
-        "oracle": [
-          "HZ_CUST_ACCOUNT_ROLES (ROLE_TYPE, END_DATE) — contact ownership tracking",
-          "AR_COLLECTOR_ACTIVITIES (ACTION_DATE, ACTION_TYPE, NOTES) [Fusion]",
-          "IEX_ACTIVITY_LOG_ALL (ACTIVITY_TYPE, NOTES) [EBS Collections]"
-        ]
-      },
-      "layer1_logicalMapping": "Link Change Docs to Customer/Invoice owner.",
-      "layer2_eventSeries": "Count changes to Contact_Person or Owner field.",
-      "layer3_feature": "Contact_Shift_Frequency",
-      "featureSlug": "contact-shift-frequency",
-      "conceptualSQL": "SELECT COUNT(CHANGENR) FROM CDPOS\nWHERE FNAME='CONTACT'\nGROUP BY OBJECTID HAVING > 2",
-      "originalDAG": [
-        "Extract_CRM_Context(Find Exec Sponsor)",
-        "Generate_Contextual_Email(Escalation)",
-        "Update_CRM_Task"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF Contact_Shifts <= 2",
-          "actions": [
-            "Email_All_Active_Contacts (CC: AP Director)"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Shifts >= 3 AND Amount <= $50K",
-          "actions": [
-            "Extract_Exec_Sponsor + Escalation_Email",
-            "Update_CRM_Task (Priority: HIGH)"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF Shifts >= 3 AND Amount > $50K",
-          "actions": [
-            "Apply_Delivery_Block (all open SOs)",
-            "Generate_Legal_Notice_Email"
-          ],
-          "hitl": "Collections VP approves delivery block",
-          "tier": "escalation",
-          "escLevel": 2
-        }
-      ],
-      "hitlGates": [
-        "Collections VP approves delivery block"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-10 days",
-        "traceCount": 12103,
-        "additionalCoverage": 119,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 12,
-      "name": "System Migration Stall",
-      "category": "Intentional Stalling & Delay Tactics",
-      "priority": "High",
-      "priorityRank": 1,
-      "mentalModel": "They claim their 'new ERP is going live' and they can't process payments for 3 weeks. It might be true, but it's not my problem to fund their IT project. We need a hard Promise-to-Pay date.",
-      "sources": {
-        "sap": [
-          "STXL (Text), FDM_DCOLL (Notes)"
-        ],
-        "oracle": [
-          "AR_COLLECTOR_ACTIVITIES (NOTE_TEXT) — NLP on migration keywords [Fusion]",
-          "IEX_NOTES_TL (NOTE_TEXT) [EBS]",
-          "AR_PAYMENT_SCHEDULES_ALL (DUE_DATE) — overdue calculation"
-        ]
-      },
-      "layer1_logicalMapping": "Extract Collection notes linked to Customer KUNNR.",
-      "layer2_eventSeries": "Parse text timeline for migration excuses.",
-      "layer3_feature": "NLP_Keyword_Flag",
-      "featureSlug": "nlp-keyword-flag",
-      "conceptualSQL": "SELECT KUNNR FROM FDM_DCOLL\nWHERE NOTE_TEXT LIKE '%ERP%'\nOR NOTE_TEXT LIKE '%Migration%'",
-      "originalDAG": [
-        "Generate_Contextual_Email(Request firm P2P date)",
-        "Update_SAP_Master_Data(Set Dunning Block until P2P)"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF Stall_Duration < 14 days",
-          "actions": [
-            "Email_P2P_Date_Request (5-day deadline)",
-            "Set_CRM_Reminder_Flag"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Stall 14–30 days",
-          "actions": [
-            "Remove_Dunning_Block_Pause",
-            "Alert_AE + Warn_Delivery_Block_in_7_Days"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF Stall > 30 days",
-          "actions": [
-            "Apply_Delivery_Block",
-            "Mandate_Prepayment_Future_Orders",
-            "Send_Legal_Notice"
-          ],
-          "hitl": "VP Collections approves delivery block",
-          "tier": "escalation",
-          "escLevel": 2
-        }
-      ],
-      "hitlGates": [
-        "VP Collections approves delivery block"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-5 days",
-        "traceCount": 12476,
-        "additionalCoverage": 148,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 13,
-      "name": "Legal Entity Shell Game",
-      "category": "Intentional Stalling & Delay Tactics",
-      "priority": "High",
-      "priorityRank": 1,
-      "mentalModel": "They ordered the goods under Subsidiary A, but rejected the invoice saying it should be billed to Subsidiary B. They do this to force a cancel-and-rebill, restarting the 30-day payment term from scratch.",
-      "sources": {
-        "sap": [
-          "VBAK (KUNNR), BSEG (KUNNR), UDM_DISPUTE"
-        ],
-        "oracle": [
-          "HZ_CUST_ACCOUNTS (ACCOUNT_NUMBER, STATUS) — multiple accounts same parent",
-          "HZ_RELATIONSHIPS (OBJECT_ID, SUBJECT_ID) — parent-child hierarchy",
-          "AR_DISPUTES (DISPUTE_REASON='WRONG_ENTITY') [Fusion]"
-        ]
-      },
-      "layer1_logicalMapping": "Map Sold-To vs. Bill-To vs. Payer entities.",
-      "layer2_eventSeries": "Track disputes triggered specifically by Payer mismatch.",
-      "layer3_feature": "Entity_Mismatch_Rate",
-      "featureSlug": "entity-mismatch-rate",
-      "conceptualSQL": "SELECT COUNT(*) FROM UDM_DISPUTE\nWHERE REASON='WRONG ENTITY'\nGROUP BY PARENT_KUNNR",
-      "originalDAG": [
-        "Extract_SAP_Context",
-        "Update_CRM_Task(Alert Master Data Team to fix Entity routing)"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF First_Occurrence",
-          "actions": [
-            "Fix_Entity_Routing + Email_Customer",
-            "Master_Data_Alert"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Repeat_Occurrence",
-          "actions": [
-            "Block_New_Orders_Until_Corrected",
-            "Director_Alert + Master_Data_Review"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF Pattern > 3 Times",
-          "actions": [
-            "Mandate_Single_Entity_Invoicing",
-            "Legal_Notice + Credit_Review"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 2
-        }
-      ],
-      "hitlGates": [],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-7 days",
-        "traceCount": 12849,
-        "additionalCoverage": 177,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 14,
-      "name": "Portal Sabotage",
-      "category": "Intentional Stalling & Delay Tactics",
-      "priority": "Medium",
-      "priorityRank": 2,
-      "mentalModel": "They keep uploading our invoices to their Ariba portal using the wrong XML format, causing an auto-rejection. They then blame 'system errors' for the payment delay.",
-      "sources": {
-        "sap": [
-          "External API (Ariba/Coupa)"
-        ],
-        "oracle": [
-          "Oracle iSupplier Portal logs (external)",
-          "AP_INVOICES_ALL (INVOICE_ID, SOURCE) [Fusion]",
-          "Custom portal rejection log table"
-        ]
-      },
-      "layer1_logicalMapping": "Map external portal status to SAP VBRK (Invoice).",
-      "layer2_eventSeries": "Count portal rejections and re-submissions.",
-      "layer3_feature": "Portal_Rejection_Count",
-      "featureSlug": "portal-rejection-count",
-      "conceptualSQL": "SELECT COUNT(Status) FROM Portal_Logs\nWHERE Status='REJECTED'\nGROUP BY Invoice_ID",
-      "originalDAG": [
-        "Generate_Contextual_Email(Provide correct XML format)",
-        "Send_SMTP_Email"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF Rejection_Count < 3",
-          "actions": [
-            "Email_Correct_Format_Guide + Resend_Invoice"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Rejection_Count 3–6",
-          "actions": [
-            "Escalate_AP_Manager",
-            "Manual_Portal_Bypass + Email_Notice"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF Rejection_Count > 6",
-          "actions": [
-            "Bypass_Portal_Completely",
-            "Email_Alternative_Submission_Method",
-            "Flag_Account"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 2
-        }
-      ],
-      "hitlGates": [],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-9 days",
-        "traceCount": 13222,
-        "additionalCoverage": 206,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 15,
-      "name": "Invoice Format Grievance",
-      "category": "Intentional Stalling & Delay Tactics",
-      "priority": "Medium",
-      "priorityRank": 2,
-      "mentalModel": "The invoice was sent 45 days ago. Why are they waiting until it is 15 days overdue to complain that our PDF doesn't have their preferred cost center code on it? This is a stall.",
-      "sources": {
-        "sap": [
-          "VBRK (ERDAT), UDM_DISPUTE (CREATE_TIME)"
-        ],
-        "oracle": [
-          "RA_CUSTOMER_TRX_ALL (TRX_DATE) — invoice creation date",
-          "AR_DISPUTES (CREATION_DATE, DISPUTE_REASON='FORMAT') [Fusion]",
-          "IEX_NOTES_TL — collector notes on format complaints [EBS]"
-        ]
-      },
-      "layer1_logicalMapping": "Map Invoice creation to format-specific dispute.",
-      "layer2_eventSeries": "Calculate lag between delivery and format complaint.",
-      "layer3_feature": "Format_Dispute_Lag",
-      "featureSlug": "format-dispute-lag",
-      "conceptualSQL": "SELECT DATEDIFF(day, VBRK.ERDAT, UDM.CREATE_TIME)\nWHERE UDM.REASON='FORMAT' AND Diff > 30",
-      "originalDAG": [
-        "Update_SAP_Dispute(Reject timeline)",
-        "Toggle_Dunning_Block(Remove)",
-        "Send_SMTP_Email"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF Lag < 30 Days AND First_Time",
-          "actions": [
-            "Reject_Format_Dispute + Explain_Timeline_Email"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Lag > 30 Days",
-          "actions": [
-            "Reject_Dispute + Remove_Dunning_Block",
-            "Formal_Email (citing contractual acceptance)"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF Chronic_Format_Complaints (> 3 same customer)",
-          "actions": [
-            "Update_Invoice_Template for this customer",
-            "Manager_Review + Flag_Account"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 2
-        }
-      ],
-      "hitlGates": [],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-8 days",
-        "traceCount": 13595,
-        "additionalCoverage": 235,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 16,
-      "name": "Disconnected AP Alias",
-      "category": "Intentional Stalling & Delay Tactics",
-      "priority": "Medium",
-      "priorityRank": 2,
-      "mentalModel": "Every time I email 'AP@company.com', I get an auto-reply or a bounce-back. They gave us a dead inbox on purpose so they can claim they 'never received the invoice'.",
-      "sources": {
-        "sap": [
-          "Exchange/O365 Logs"
-        ],
-        "oracle": [
-          "HZ_CONTACT_POINTS (EMAIL_ADDRESS, STATUS, CONTACT_POINT_TYPE='EMAIL')",
-          "HZ_CUST_ACCOUNT_ROLES (ROLE_TYPE='AP_CONTACT') — role validation",
-          "[Both Fusion and EBS via HZ schema]"
-        ]
-      },
-      "layer1_logicalMapping": "Map collector email logs to Customer KNA1.",
-      "layer2_eventSeries": "Track automated bounce-backs or generic out-of-office.",
-      "layer3_feature": "Bounce_Ratio",
-      "featureSlug": "bounce-ratio",
-      "conceptualSQL": "SELECT COUNT(Bounce)/COUNT(Sent)\nFROM Email_Logs\nWHERE Customer_ID=KNA1.KUNNR",
-      "originalDAG": [
-        "Extract_CRM_Context(Find alternative contact)",
-        "Update_SAP_Master_Data(Update AP Email)"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF First_Bounce",
-          "actions": [
-            "Extract_Alt_Contact + Update_Master_Data",
-            "Resend_Invoice to verified contact"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF All_Known_Contacts_Invalid",
-          "actions": [
-            "Escalate_Exec_Sponsor",
-            "Formal_Letter (physical mail) + Flag_Account"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF No_Valid_Contact_Found",
-          "actions": [
-            "Certified_Mail_Notice",
-            "Legal_Notice_Preparation + Credit_Hold"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 2
-        }
-      ],
-      "hitlGates": [],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-6 days",
-        "traceCount": 13968,
-        "additionalCoverage": 264,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 17,
-      "name": "Check is in the Mail",
-      "category": "Intentional Stalling & Delay Tactics",
-      "priority": "Medium",
-      "priorityRank": 2,
-      "mentalModel": "They always promise a check is cut, but it takes 14 days to arrive. They are intentionally exploiting postal float time to hold onto their cash longer. I need to force them to ACH.",
-      "sources": {
-        "sap": [
-          "FDM_P2P (Promised Date), BSAD (AUGDT)"
-        ],
-        "oracle": [
-          "IEX_PROMISE_DETAILS (PROMISE_DATE, STATUS, METHOD='CHECK') [EBS]",
-          "AR_PROMISES (PROMISE_DATE, METHOD) [Fusion]",
-          "AR_RECEIVABLE_APPLICATIONS_ALL (APPLY_DATE) — actual vs promised clearing"
-        ]
-      },
-      "layer1_logicalMapping": "Map Promise-to-Pay to actual Clearing Date.",
-      "layer2_eventSeries": "Measure variance between promised check date and clearing.",
-      "layer3_feature": "Float_Variance",
-      "featureSlug": "float-variance",
-      "conceptualSQL": "SELECT AVG(DATEDIFF(day, P2P_DATE, AUGDT))\nFROM FDM_P2P JOIN BSAD\nWHERE METHOD='CHECK'",
-      "originalDAG": [
-        "Generate_Contextual_Email(Mandate ACH Transfer next time)",
-        "Update_CRM_Task"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF Check_Float < 7 Days AND First_Time",
-          "actions": [
-            "Email_Requesting_ACH_for_Next_Payment"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Float 7–14 Days OR Repeat_Check_Promises",
-          "actions": [
-            "Mandate_ACH_Email + AE_Alert",
-            "Update_Account_Terms"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF Float > 14 Days OR 3rd_Occurrence",
-          "actions": [
-            "Mandate_ACH_in_Contract",
-            "Legal_Notice + Credit_Hold"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 2
-        }
-      ],
-      "hitlGates": [],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-8 days",
-        "traceCount": 14341,
-        "additionalCoverage": 293,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 18,
-      "name": "Bank Holiday Arbitrage",
-      "category": "Intentional Stalling & Delay Tactics",
-      "priority": "Low",
-      "priorityRank": 3,
-      "mentalModel": "They blame a local bank holiday in their country for the wire delay, even though our contract mandates payment to our US entity. They use global holidays as a convenient excuse for 3-4 day delays.",
-      "sources": {
-        "sap": [
-          "SCAL (Factory Calendar), BSID"
-        ],
-        "oracle": [
-          "FND_DATES (HOLIDAY_FLAG, CALENDAR_DATE) [EBS]",
-          "HZ_PARTIES (COUNTRY) — customer country",
-          "AR_PAYMENT_SCHEDULES_ALL (DUE_DATE) — adjusted calendar"
-        ]
-      },
-      "layer1_logicalMapping": "Map Customer Country (KNA1-LAND1) to Calendar.",
-      "layer2_eventSeries": "Cross-reference late payment dates with regional bank holidays.",
-      "layer3_feature": "Holiday_Overlap_Flag",
-      "featureSlug": "holiday-overlap-flag",
-      "conceptualSQL": "SELECT 1 FROM BSID JOIN SCAL\nWHERE BSID.ZFBDT=SCAL.HOLIDAY_DATE\nAND SCAL.LAND1=KNA1.LAND1",
-      "originalDAG": [
-        "Update_SAP_Master_Data(Adjust Base Due Date to avoid regional holidays)"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF Overlap_Count < 3",
-          "actions": [
-            "Adjust_Due_Date_Config + Email_Contract_Terms_Clarification"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Overlap_Count >= 3",
-          "actions": [
-            "Update_Contract_Terms (require payment before holiday)",
-            "Formal_Notice to AP team"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "Default",
-          "actions": [
-            "Adjust_Base_Due_Date in Master Data",
-            "Update_Customer_Payment_Calendar"
-          ],
-          "hitl": null,
-          "tier": "default"
-        }
-      ],
-      "hitlGates": [],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-7 days",
-        "traceCount": 14714,
-        "additionalCoverage": 62,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 19,
-      "name": "Bust-Out Fraud Precursor",
-      "category": "Credit Risk & Insolvency Indicators",
-      "priority": "Critical",
-      "priorityRank": 0,
-      "mentalModel": "They usually order $10k a month. Suddenly they placed 5 orders totaling $99k, right up to their $100k credit limit, and are dodging calls. They are about to go bankrupt or default, trying to grab as much product as possible.",
-      "sources": {
-        "sap": [
-          "KNKK (KLIMK), VBAK (NETWR)"
-        ],
-        "oracle": [
-          "AR_CMGT_CREDIT_REQUESTS_ALL (CREDIT_LIMIT) [Fusion]",
-          "OE_ORDER_HEADERS_ALL (ORDERED_AMOUNT, CREATION_DATE) [EBS]",
-          "DOO_HEADERS_ALL [Fusion]",
-          "HZ_PARTIES (D_U_N_S_NUMBER) — external credit check trigger"
-        ]
-      },
-      "layer1_logicalMapping": "Map Credit Limit to recent Sales Order volumes.",
-      "layer2_eventSeries": "Track order volume spike relative to historical monthly average.",
-      "layer3_feature": "Credit_Limit_Velocity",
-      "featureSlug": "credit-limit-velocity",
-      "conceptualSQL": "SELECT SUM(NETWR)/KNKK.KLIMK\nFROM VBAK WHERE ERDAT>TODAY-7\nGROUP BY KUNNR",
-      "originalDAG": [
-        "Toggle_SAP_Delivery_Block(Apply immediately)",
-        "Update_CRM_Task(URGENT: Alert Credit Risk VP)"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF Velocity_Ratio > 0.80 (orders vs limit)",
-          "actions": [
-            "Immediate_Delivery_Block (ALL SOs)",
-            "Credit_Risk_VP_Alert (NO DELAY)",
-            "External_Credit_Check_Trigger"
-          ],
-          "hitl": null,
-          "tier": "immediate"
-        },
-        {
-          "condition": "IF Any_Contact_Refusing_Calls",
-          "actions": [
-            "Add_Legal_Hold",
-            "CFO_Alert + External_Fraud_Register"
-          ],
-          "hitl": "CFO approves legal hold — SLA: 2 hours",
-          "tier": "immediate"
-        }
-      ],
-      "hitlGates": [
-        "CFO approves legal hold — SLA: 2 hours"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-9 days",
-        "traceCount": 15087,
-        "additionalCoverage": 91,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 20,
-      "name": "Partial Breadcrumbing",
-      "category": "Credit Risk & Insolvency Indicators",
-      "priority": "Critical",
-      "priorityRank": 0,
-      "mentalModel": "They owe $200k but wired exactly $5k. They aren't trying to clear the debt; they are throwing us crumbs just to reset the automated dunning system so their account doesn't go on credit hold.",
-      "sources": {
-        "sap": [
-          "BSAD (WRBTR), BSID (WRBTR)"
-        ],
-        "oracle": [
-          "AR_CASH_RECEIPTS_ALL (AMOUNT, RECEIPT_DATE)",
-          "AR_PAYMENT_SCHEDULES_ALL (AMOUNT_DUE_REMAINING)",
-          "AR_RECEIVABLE_APPLICATIONS_ALL (AMOUNT_APPLIED) — matching"
-        ]
-      },
-      "layer1_logicalMapping": "Link Cleared amount vs. Original Open amount.",
-      "layer2_eventSeries": "Track payments that are exactly <5% of total due.",
-      "layer3_feature": "Min_Viable_Payment",
-      "featureSlug": "min-viable-payment",
-      "conceptualSQL": "SELECT (BSAD.WRBTR/Original_Amt) AS Ratio\nWHERE Ratio < 0.05",
-      "originalDAG": [
-        "Toggle_SAP_Dunning_Block(Remove)",
-        "Generate_Contextual_Email(Demand full balance)"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF Payment_Ratio < 5% AND First_Instance",
-          "actions": [
-            "Remove_Dunning_Block",
-            "Email_Full_Balance_Demand (7-day firm deadline)"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Repeat >= 2x (rolling 90 days)",
-          "actions": [
-            "Remove_Dunning_Block",
-            "Trigger_Credit_Review (reduce limit 30%)",
-            "Alert_AE + Collections_Director"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF Repeat >= 3x OR D&B_Score_Declining",
-          "actions": [
-            "Apply_Delivery_Block + CFO_Alert",
-            "Refer_to_Legal"
-          ],
-          "hitl": "CFO approves block + legal referral",
-          "tier": "escalation",
-          "escLevel": 2
-        }
-      ],
-      "hitlGates": [
-        "CFO approves block + legal referral"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-7 days",
-        "traceCount": 15460,
-        "additionalCoverage": 120,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 21,
-      "name": "Credit Block Bypass",
-      "category": "Credit Risk & Insolvency Indicators",
-      "priority": "High",
-      "priorityRank": 1,
-      "mentalModel": "Their credit limit is $50k. Instead of one $60k order (which would block), they placed six $9k orders across different days. They are circumventing our automated credit controls.",
-      "sources": {
-        "sap": [
-          "VBAK (NETWR), VBAK (CMGST)"
-        ],
-        "oracle": [
-          "OE_ORDER_HEADERS_ALL (ORDERED_AMOUNT, CREDIT_HOLD_FLAG, BOOKED_DATE) [EBS]",
-          "DOO_HEADERS_ALL (CREDIT_HOLD_FLAG) [Fusion]",
-          "HZ_CUSTOMER_PROFILES_ALL (CREDIT_LIMIT) — threshold comparison"
-        ]
-      },
-      "layer1_logicalMapping": "Map SO values to Credit Status.",
-      "layer2_eventSeries": "Count multiple orders placed just under the block limit.",
-      "layer3_feature": "Sub_Threshold_Density",
-      "featureSlug": "sub-threshold-density",
-      "conceptualSQL": "SELECT COUNT(VBELN) FROM VBAK\nWHERE NETWR BETWEEN (Limit*0.90) AND Limit\nGROUP BY KUNNR",
-      "originalDAG": [
-        "Toggle_SAP_Delivery_Block(Apply to all pending SOs)",
-        "Update_CRM_Task(Alert AE)"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF Sub_Threshold_Orders < 5",
-          "actions": [
-            "Block_All_Open_SOs + AE_Alert",
-            "Email_Customer"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Orders >= 5 OR Pattern_Duration > 30 Days",
-          "actions": [
-            "Block_All + Reduce_Credit_Limit_30%",
-            "Director_Alert"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF Pattern_Persists OR Customer_Disputes_Block",
-          "actions": [
-            "Legal_Notice + CFO_Alert",
-            "External_Credit_Review"
-          ],
-          "hitl": "Credit Risk VP approves limit reduction",
-          "tier": "escalation",
-          "escLevel": 2
-        }
-      ],
-      "hitlGates": [
-        "Credit Risk VP approves limit reduction"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-6 days",
-        "traceCount": 15833,
-        "additionalCoverage": 149,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 22,
-      "name": "Bureau Downgrade",
-      "category": "Credit Risk & Insolvency Indicators",
-      "priority": "Critical",
-      "priorityRank": 0,
-      "mentalModel": "D&B just downgraded their risk score last week, and instantly I'm seeing their payment velocity slow down by 8 days. Their liquidity is drying up fast; we need to cut credit exposure immediately.",
-      "sources": {
-        "sap": [
-          "External API (D&B), BSID"
-        ],
-        "oracle": [
-          "HZ_PARTIES (D_U_N_S_NUMBER) → External D&B/Experian API",
-          "HZ_CUSTOMER_PROFILES_ALL (CREDIT_LIMIT, CREDIT_HOLD_FLAG)",
-          "AR_PAYMENT_SCHEDULES_ALL — DSO trend correlation [Fusion and EBS]"
-        ]
-      },
-      "layer1_logicalMapping": "Map external credit score to SAP Customer KNA1.",
-      "layer2_eventSeries": "Track Delta of D&B score vs Delta of DSO over 30 days.",
-      "layer3_feature": "Score_vs_DSO_Delta",
-      "featureSlug": "score-vs-dso-delta",
-      "conceptualSQL": "SELECT (Current_Score-Past_Score),\n(Current_DSO-Past_DSO)\nFROM Risk_Model",
-      "originalDAG": [
-        "Update_SAP_Master_Data(Lower Credit Limit to 50%)",
-        "Generate_Contextual_Email(Notify Customer)"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF Score_Drop < 10 Points",
-          "actions": [
-            "Internal_Alert_Only + Weekly_Monitor (no customer action)"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Score_Drop 10–30 Points",
-          "actions": [
-            "Reduce_Credit_Limit_30%",
-            "Email_Customer + AE_Alert"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF Score_Drop > 30 Points OR Below_Threshold",
-          "actions": [
-            "Reduce_Credit_Limit_50%",
-            "Apply_Delivery_Block",
-            "CFO_Alert"
-          ],
-          "hitl": "CFO approves delivery block",
-          "tier": "escalation",
-          "escLevel": 2
-        }
-      ],
-      "hitlGates": [
-        "CFO approves delivery block"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-8 days",
-        "traceCount": 16206,
-        "additionalCoverage": 178,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 23,
-      "name": "Threshold Skimming",
-      "category": "Credit Risk & Insolvency Indicators",
-      "priority": "Medium",
-      "priorityRank": 2,
-      "mentalModel": "Our manual review limit is $10k. Their overdue balance keeps hitting $9,800, then they make a tiny payment, then order more. They are intentionally flying under the radar of manual credit reviews.",
-      "sources": {
-        "sap": [
-          "BSID (WRBTR)"
-        ],
-        "oracle": [
-          "AR_PAYMENT_SCHEDULES_ALL (AMOUNT_DUE_REMAINING) — aggregate open",
-          "HZ_CUSTOMER_PROFILES_ALL (CREDIT_LIMIT) — review threshold",
-          "AR_RECEIVABLE_APPLICATIONS_ALL — partial payment pattern"
-        ]
-      },
-      "layer1_logicalMapping": "Aggregate Total Open AR per Customer.",
-      "layer2_eventSeries": "Monitor total AR hovering just below the manual review limit.",
-      "layer3_feature": "Threshold_Proximity",
-      "featureSlug": "threshold-proximity",
-      "conceptualSQL": "SELECT SUM(WRBTR) FROM BSID\nGROUP BY KUNNR\nHAVING SUM BETWEEN 9500 AND 9999",
-      "originalDAG": [
-        "Extract_SAP_Context",
-        "Update_CRM_Task(Force manual portfolio review)"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF Skimming_Duration < 60 Days",
-          "actions": [
-            "Queue_Manual_Review + Internal_Manager_Alert"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Duration 60–120 Days",
-          "actions": [
-            "Force_Manual_Portfolio_Review",
-            "Email_Formal_Notice"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF Duration > 120 Days",
-          "actions": [
-            "Trigger_Credit_Review",
-            "Reduce_Review_Threshold + Director_Alert"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 2
-        }
-      ],
-      "hitlGates": [],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-10 days",
-        "traceCount": 16579,
-        "additionalCoverage": 207,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 24,
-      "name": "Remittance Decoupling",
-      "category": "Cash Application & Remittance Friction",
-      "priority": "High",
-      "priorityRank": 1,
-      "mentalModel": "They wired $1M but didn't send the remittance PDF detailing which 40 invoices to pay. They do this knowing the cash sits 'unapplied' on our ledger, making it look like they paid while we spend weeks guessing what to clear.",
-      "sources": {
-        "sap": [
-          "FEBEP (Bank Item), External Email"
-        ],
-        "oracle": [
-          "CE_STATEMENT_LINES_GT (STATEMENT_DATE, TRX_AMOUNT) — bank receipt",
-          "AR_CASH_RECEIPTS_ALL (STATUS='UNAPP', RECEIPT_DATE) — unapplied",
-          "IBY_DOCS_PAYABLE_ALL or custom remittance inbox log"
-        ]
-      },
-      "layer1_logicalMapping": "Map Unapplied Cash (FEBEP) to Remittance Inbox.",
-      "layer2_eventSeries": "Calculate lag between wire receipt and remittance PDF receipt.",
-      "layer3_feature": "Remittance_Lag",
-      "featureSlug": "remittance-lag",
-      "conceptualSQL": "SELECT DATEDIFF(day, Bank_Date, Email_Receipt_Date)\nFROM Cash_App_Logs",
-      "originalDAG": [
-        "Generate_Contextual_Email(Auto-request remittance for unapplied wire)",
-        "Send_SMTP_Email"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF Remittance_Lag < 2 Business_Days",
-          "actions": [
-            "Auto_Request_Remittance_Email (templated)"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Lag 2–5 Days AND Amount < $500K",
-          "actions": [
-            "Escalate_Treasury_Team",
-            "Email_AP_Director (CC: Relationship Manager)"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF Lag > 5 Days OR Amount > $500K",
-          "actions": [
-            "CFO_Flash_Alert",
-            "Assign_Manual_Application_Team",
-            "Freeze_New_Order_Shipments until remittance received"
-          ],
-          "hitl": "Treasury VP approves shipment freeze",
-          "tier": "escalation",
-          "escLevel": 2
-        }
-      ],
-      "hitlGates": [
-        "Treasury VP approves shipment freeze"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-5 days",
-        "traceCount": 16952,
-        "additionalCoverage": 236,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 25,
-      "name": "Duplicate Payment Bait",
-      "category": "Cash Application & Remittance Friction",
-      "priority": "High",
-      "priorityRank": 1,
-      "mentalModel": "They paid an invoice twice, immediately demanded a cash refund for the overpayment, and then two weeks later disputed the original invoice. They are trying to extract physical cash from us while leaving the AR open.",
-      "sources": {
-        "sap": [
-          "BSAD, UDM_DISPUTE"
-        ],
-        "oracle": [
-          "AR_CASH_RECEIPTS_ALL (RECEIPT_NUMBER, AMOUNT, RECEIPT_DATE) — duplicate detection",
-          "AR_ADJUSTMENTS_ALL (ADJUSTMENT_TYPE='REFUND') — refund tracking",
-          "AR_DISPUTES (CREATION_DATE) — subsequent dispute timing"
-        ]
-      },
-      "layer1_logicalMapping": "Link overpayments to refund requests and subsequent disputes.",
-      "layer2_eventSeries": "Track refund issue date vs new dispute creation date.",
-      "layer3_feature": "Refund_Velocity",
-      "featureSlug": "refund-velocity",
-      "conceptualSQL": "SELECT COUNT(*) FROM BSAD JOIN UDM_DISPUTE\nWHERE REASON='DUPLICATE'\nGROUP BY KUNNR",
-      "originalDAG": [
-        "Update_SAP_Master_Data(Freeze Cash Refunds)",
-        "Execute_SAP_Clearing(Force On-Account Credit instead)"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF Refund_Not_Yet_Issued",
-          "actions": [
-            "Freeze_Cash_Refund",
-            "Force_On_Account_Credit + Email_Explanation"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Refund_Issued AND New_Dispute_Raised",
-          "actions": [
-            "Legal_Hold + Fraud_Review_Flag",
-            "CFO_Alert"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF Pattern_Repeat",
-          "actions": [
-            "Permanent_Refund_Hold_Policy",
-            "Legal_Notice + External_Fraud_Register"
-          ],
-          "hitl": "Finance Director approves legal hold",
-          "tier": "escalation",
-          "escLevel": 2
-        }
-      ],
-      "hitlGates": [
-        "Finance Director approves legal hold"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-7 days",
-        "traceCount": 17325,
-        "additionalCoverage": 265,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 26,
-      "name": "Unapplied Cash Weaponization",
-      "category": "Cash Application & Remittance Friction",
-      "priority": "Medium",
-      "priorityRank": 2,
-      "mentalModel": "They have $5k of old unapplied credit sitting on their account. They are using that as an excuse not to pay their $100k overdue balance, saying 'Apply the credit first' just to stall the larger payment.",
-      "sources": {
-        "sap": [
-          "BSID (UMSKZ = Special GL)"
-        ],
-        "oracle": [
-          "AR_CASH_RECEIPTS_ALL (STATUS='UNAPP', AMOUNT) — unapplied credits",
-          "AR_PAYMENT_SCHEDULES_ALL (AMOUNT_DUE_REMAINING) — open balance",
-          "AR_RECEIVABLE_APPLICATIONS_ALL — auto-offset capability"
-        ]
-      },
-      "layer1_logicalMapping": "Map On-Account cash to overdue invoices.",
-      "layer2_eventSeries": "Track customer requests to manually offset old credit vs paying.",
-      "layer3_feature": "Credit_Offset_Ratio",
-      "featureSlug": "credit-offset-ratio",
-      "conceptualSQL": "SELECT SUM(Unapplied)/SUM(Overdue)\nFROM BSID GROUP BY KUNNR",
-      "originalDAG": [
-        "Execute_SAP_Clearing(Auto-offset historical credit against oldest AR)",
-        "Generate_Contextual_Email"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF Unapplied_Credit < 10% of_Open_Balance",
-          "actions": [
-            "Auto_Offset + Email_Confirmation (no approval needed)"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Unapplied_Credit >= 10% of_Open_Balance",
-          "actions": [
-            "Offset_After_Manager_Review",
-            "Email_Formal_Notice + Demand_Full_Remaining_Balance"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF Customer_Objects_to_Offset",
-          "actions": [
-            "Hold_Offset + Legal_Review",
-            "Director_Alert"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 2
-        }
-      ],
-      "hitlGates": [],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-9 days",
-        "traceCount": 17698,
-        "additionalCoverage": 294,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 27,
-      "name": "Creeping Payment Terms",
-      "category": "Relationship & Contractual Abuse",
-      "priority": "Medium",
-      "priorityRank": 2,
-      "mentalModel": "I am looking at their 12-month trend. They used to pay in 30 days, then 34, now 41. They haven't asked for a contract change; they are just silently stretching their terms to see if we notice.",
-      "sources": {
-        "sap": [
-          "BSAD (AUGDT), BSAD (ZFBDT)"
-        ],
-        "oracle": [
-          "AR_RECEIVABLE_APPLICATIONS_ALL (APPLY_DATE) — actual clearing",
-          "AR_PAYMENT_SCHEDULES_ALL (DUE_DATE) — contractual due",
-          "RA_CUSTOMER_TRX_ALL (TRX_DATE) — invoice date anchor"
-        ]
-      },
-      "layer1_logicalMapping": "Map Cleared invoices by Quarter.",
-      "layer2_eventSeries": "Calculate moving average of actual days to pay across 4 quarters.",
-      "layer3_feature": "Velocity_of_Delay",
-      "featureSlug": "velocity-of-delay",
-      "conceptualSQL": "SELECT QUARTER, AVG(DATEDIFF(day, AUGDT, ZFBDT))\nFROM BSAD GROUP BY QUARTER",
-      "originalDAG": [
-        "Extract_SAP_Context",
-        "Generate_Contextual_Email(Internal Summary)",
-        "Update_CRM_Task(Escalate to AE)"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF Velocity_Delta 1–9 days over 2 quarters",
-          "actions": [
-            "Internal_Alert_to_AE (no customer action yet)"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Delta 10–20 days over 3 quarters",
-          "actions": [
-            "Formal_Notice_Email (reference contract terms)",
-            "Flag_Account + Update_CRM_Task"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF Delta > 20 days OR 4+ quarters",
-          "actions": [
-            "Trigger_Contract_Review",
-            "Reduce_Credit_Limit_30%",
-            "Escalate_AE_Director + Finance_Leadership"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 2
-        }
-      ],
-      "hitlGates": [],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-8 days",
-        "traceCount": 18071,
-        "additionalCoverage": 63,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 28,
-      "name": "Unearned Discount Harvesting",
-      "category": "Relationship & Contractual Abuse",
-      "priority": "Medium",
-      "priorityRank": 2,
-      "mentalModel": "They paid on Day 45, but they manually short-paid by 2%, claiming the early-pay cash discount meant for Day 10. They are just trying to harvest margin and dare us to charge them back for it.",
-      "sources": {
-        "sap": [
-          "BSAD (SKFBT), BSAD (AUGDT)"
-        ],
-        "oracle": [
-          "AR_RECEIVABLE_APPLICATIONS_ALL (UNEARNED_DISCOUNT_TAKEN, EARNED_DISCOUNT_TAKEN)",
-          "AR_RECEIVABLE_APPLICATIONS_ALL (APPLY_DATE vs DISCOUNT_DATE) — timing check",
-          "RA_CUSTOMER_TRX_ALL (TERMS_SEQUENCE_NUMBER)"
-        ]
-      },
-      "layer1_logicalMapping": "Map Cash Discount Taken to Clearing Date.",
-      "layer2_eventSeries": "Compare Clearing Date to the allowed Discount Date (ZBD1T).",
-      "layer3_feature": "Discount_Date_Delta",
-      "featureSlug": "discount-date-delta",
-      "conceptualSQL": "SELECT KUNNR FROM BSAD\nWHERE SKFBT > 0 AND AUGDT > ZBD1T",
-      "originalDAG": [
-        "Execute_SAP_Clearing(Reverse Discount)",
-        "Update_SAP_Dispute(Open Chargeback)",
-        "Send_SMTP_Email"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF Unearned_Discount < $500",
-          "actions": [
-            "Auto_Open_Chargeback + Email_Notice (automated)"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Amount $500–$5K",
-          "actions": [
-            "Formal_Demand_Email + Open_Chargeback",
-            "Alert_AE"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF Amount > $5K OR Repeat_Count > 3",
-          "actions": [
-            "Legal_Deduction_Recovery",
-            "Update_Contract_Terms (remove discount clause)",
-            "Escalate_AE_Director"
-          ],
-          "hitl": "Finance Director approves contract amendment",
-          "tier": "escalation",
-          "escLevel": 2
-        }
-      ],
-      "hitlGates": [
-        "Finance Director approves contract amendment"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-6 days",
-        "traceCount": 18444,
-        "additionalCoverage": 92,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 29,
-      "name": "Strategic Shielding",
-      "category": "Relationship & Contractual Abuse",
-      "priority": "High",
-      "priorityRank": 1,
-      "mentalModel": "Every time the system puts this client on credit hold, the Sales Executive logs in and manually overrides it, overriding our risk controls because they want their commission on the new order.",
-      "sources": {
-        "sap": [
-          "VKM1 (Blocked SD), CDHDR"
-        ],
-        "oracle": [
-          "OE_ORDER_HEADERS_ALL (CREDIT_HOLD_FLAG, LAST_UPDATED_BY, LAST_UPDATE_DATE) [EBS]",
-          "DOO_HEADERS_ALL (CREDIT_HOLD_FLAG) [Fusion]",
-          "FND_USER (USER_NAME) — identify which Sales Rep overrode",
-          "WF_ITEM_ACTIVITY_STATUSES — approval workflow tracking"
-        ]
-      },
-      "layer1_logicalMapping": "Map Sales Orders on Credit Hold to User IDs.",
-      "layer2_eventSeries": "Track how often Sales Reps manually release holds (CMGST).",
-      "layer3_feature": "Sales_Override_Freq",
-      "featureSlug": "sales-override-freq",
-      "conceptualSQL": "SELECT USERNAME, COUNT(*)\nFROM CDHDR WHERE TCODE='VKM1'\nGROUP BY USERNAME",
-      "originalDAG": [
-        "Extract_CRM_Context",
-        "Update_CRM_Task(Alert Sales Director of override policy breach)"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF Override_Count = 1",
-          "actions": [
-            "Internal_Alert_Sales_Director",
-            "Document_Override (no customer action)"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Override_Count 2–3",
-          "actions": [
-            "Formal_Policy_Breach_Notice_to_Sales_Director",
-            "Require_CFO_Approval_for_Future_Overrides"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF Override_Count > 3",
-          "actions": [
-            "Escalate_to_EVP_Sales",
-            "Block_Self_Service_Override_Capability",
-            "AR_Policy_Enforcement_Legal"
-          ],
-          "hitl": "CFO must approve all future credit releases",
-          "tier": "escalation",
-          "escLevel": 2
-        }
-      ],
-      "hitlGates": [
-        "CFO must approve all future credit releases"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-8 days",
-        "traceCount": 18817,
-        "additionalCoverage": 121,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 30,
-      "name": "End-of-Quarter Ghosting",
-      "category": "Relationship & Contractual Abuse",
-      "priority": "High",
-      "priorityRank": 1,
-      "mentalModel": "It's the last 2 weeks of the quarter. They know our Sales team is desperate to hit numbers and won't dare put them on credit hold, so they completely stop paying and ignore all my emails until Q1 begins.",
-      "sources": {
-        "sap": [
-          "BSID (ZFBDT), FDM_DCOLL"
-        ],
-        "oracle": [
-          "AR_PAYMENT_SCHEDULES_ALL (DUE_DATE) — overdue in Q-end period",
-          "AR_COLLECTOR_ACTIVITIES (ACTION_DATE, RESPONSE_RECEIVED) [Fusion]",
-          "IEX_ACTIVITY_LOG_ALL [EBS] — communication tracking"
-        ]
-      },
-      "layer1_logicalMapping": "Map Overdue items to Quarter-End dates.",
-      "layer2_eventSeries": "Track drop in communication/payments in the final 2 weeks of Q.",
-      "layer3_feature": "EOQ_Delinquency_Spike",
-      "featureSlug": "eoq-delinquency-spike",
-      "conceptualSQL": "SELECT COUNT(BELNR) FROM BSID\nWHERE MONTH(ZFBDT) IN (3,6,9,12)\nAND DAY(ZFBDT) > 15",
-      "originalDAG": [
-        "Toggle_Dunning_Block(Remove)",
-        "Generate_Contextual_Email(Firm EOQ Demand)",
-        "Send_SMTP_Email"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF Ghosting_Duration < 7 Days",
-          "actions": [
-            "Remove_Dunning_Block + Firm_EOQ_Email"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Duration 7–14 Days AND Amount > $100K",
-          "actions": [
-            "Remove_Dunning_Block",
-            "Delivery_Block_Warning + Director_Alert"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF Amount > $500K OR Ghosting_Into_New_Quarter",
-          "actions": [
-            "Apply_Delivery_Block",
-            "Legal_Notice + CFO_Alert"
-          ],
-          "hitl": "Collections VP + Sales Director co-approve",
-          "tier": "escalation",
-          "escLevel": 2
-        }
-      ],
-      "hitlGates": [
-        "Collections VP + Sales Director co-approve"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-7 days",
-        "traceCount": 19190,
-        "additionalCoverage": 150,
-        "method": "PM4Py conformance analysis"
-      }
-    },
-    {
-      "id": 31,
-      "name": "Chronic Promise Breaker",
-      "category": "Relationship & Contractual Abuse",
-      "priority": "High",
-      "priorityRank": 1,
-      "mentalModel": "They went into the customer portal and logged a 'Promise to Pay' for next Friday. But looking at their history, they have broken their last 4 promises. I can't trust this date to pause dunning.",
-      "sources": {
-        "sap": [
-          "FDM_P2P (STATE)"
-        ],
-        "oracle": [
-          "IEX_PROMISE_DETAILS (STATUS='BROKEN', PROMISE_DATE, PROMISE_AMOUNT) [EBS]",
-          "AR_PROMISES (STATUS='BROKEN') [Fusion]",
-          "IEX_DELINQUENCIES_ALL — delinquency history [EBS]"
-        ]
-      },
-      "layer1_logicalMapping": "Map Promises to Pay to Clearing Status.",
-      "layer2_eventSeries": "Calculate percentage of Promises marked 'Broken'.",
-      "layer3_feature": "Broken_P2P_Ratio",
-      "featureSlug": "broken-p2p-ratio",
-      "conceptualSQL": "SELECT SUM(CASE WHEN STATE='BROKEN'\nTHEN 1 ELSE 0 END)/COUNT(*)\nFROM FDM_P2P",
-      "originalDAG": [
-        "Update_SAP_Master_Data(Disable self-service portal P2P options)",
-        "Toggle_SAP_Delivery_Block"
-      ],
-      "branchingDAG": [
-        {
-          "condition": "IF Broken_P2P_Ratio 30–50%",
-          "actions": [
-            "Disable_Self_Service_P2P",
-            "Require_Analyst_Approval_for_All_P2P"
-          ],
-          "hitl": null,
-          "tier": "primary"
-        },
-        {
-          "condition": "ELSE IF Broken_P2P_Ratio > 50%",
-          "actions": [
-            "Disable_P2P_Portal_Entirely",
-            "Apply_Delivery_Block + Director_Alert"
-          ],
-          "hitl": null,
-          "tier": "escalation",
-          "escLevel": 1
-        },
-        {
-          "condition": "ELSE IF 4+ Broken_Promises in 90 Days",
-          "actions": [
-            "Legal_Hold + CFO_Alert",
-            "External_Credit_Review"
-          ],
-          "hitl": "Collections Director approves portal disable",
-          "tier": "escalation",
-          "escLevel": 2
-        }
-      ],
-      "hitlGates": [
-        "Collections Director approves portal disable"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-9 days",
-        "traceCount": 19563,
-        "additionalCoverage": 179,
-        "method": "PM4Py conformance analysis"
-      }
-    },
     {
       "id": 32,
       "name": "Limit Increase Farming",
@@ -2262,14 +66,7 @@
       "hitlGates": [
         "Credit Committee approves exposure cap",
         "Credit Manager approves limit freeze"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-7 days",
-        "traceCount": 19936,
-        "additionalCoverage": 208,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 33,
@@ -2333,14 +130,7 @@
       "hitlGates": [
         "Credit Analyst approves risk downgrade",
         "Credit Manager approves credit hold"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-6 days",
-        "traceCount": 8309,
-        "additionalCoverage": 237,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 34,
@@ -2405,14 +195,7 @@
       "hitlGates": [
         "Credit Analyst approves deferral of limit request",
         "Credit Manager approves conditional limit"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-8 days",
-        "traceCount": 8682,
-        "additionalCoverage": 266,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 35,
@@ -2479,14 +262,7 @@
       "hitlGates": [
         "Credit Committee approves account block for suspected fraud",
         "Credit Manager approves order hold"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-10 days",
-        "traceCount": 9055,
-        "additionalCoverage": 295,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 36,
@@ -2552,14 +328,7 @@
       "hitlGates": [
         "CFO office approves revocation of release authority",
         "Credit Manager approves block reinstatement"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-5 days",
-        "traceCount": 9428,
-        "additionalCoverage": 64,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 37,
@@ -2626,14 +395,7 @@
       "hitlGates": [
         "Credit Committee approves group exposure freeze",
         "Credit Manager approves group credit limit"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-7 days",
-        "traceCount": 9801,
-        "additionalCoverage": 93,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 38,
@@ -2699,14 +461,7 @@
       "hitlGates": [
         "Credit Analyst approves seasonal order hold",
         "Credit Manager approves permanent limit reduction"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-9 days",
-        "traceCount": 10174,
-        "additionalCoverage": 122,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 39,
@@ -2772,14 +527,7 @@
       "hitlGates": [
         "Credit Analyst approves order cap at insured limit",
         "Credit Manager approves uninsured exposure hold"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-8 days",
-        "traceCount": 10547,
-        "additionalCoverage": 151,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 40,
@@ -2846,14 +594,7 @@
       "hitlGates": [
         "Credit Analyst approves order restriction pending collateral renewal",
         "Credit Manager approves reclassification to unsecured and freeze"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-6 days",
-        "traceCount": 10920,
-        "additionalCoverage": 180,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 41,
@@ -2918,14 +659,7 @@
       "hitlGates": [
         "Credit Manager approves rerouting to higher authority",
         "Internal Audit approves suspension of approval authority"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-8 days",
-        "traceCount": 11293,
-        "additionalCoverage": 209,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 42,
@@ -2986,14 +720,7 @@
       ],
       "hitlGates": [
         "Cash App Lead approves on-account hold"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-7 days",
-        "traceCount": 11666,
-        "additionalCoverage": 238,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 43,
@@ -3056,14 +783,7 @@
       "hitlGates": [
         "Cash App Lead approves on-account parking",
         "Controller approves refund release after fraud review"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-9 days",
-        "traceCount": 12039,
-        "additionalCoverage": 267,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 44,
@@ -3124,14 +844,7 @@
       ],
       "hitlGates": [
         "Deductions Analyst approves deduction case creation"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-7 days",
-        "traceCount": 12412,
-        "additionalCoverage": 296,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 45,
@@ -3194,14 +907,7 @@
       "hitlGates": [
         "Collections Lead approves account flag for review",
         "Credit Manager approves order hold"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-6 days",
-        "traceCount": 12785,
-        "additionalCoverage": 65,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 46,
@@ -3262,14 +968,7 @@
       ],
       "hitlGates": [
         "Cash App Lead approves parse template override"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-8 days",
-        "traceCount": 13158,
-        "additionalCoverage": 94,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 47,
@@ -3330,14 +1029,7 @@
       ],
       "hitlGates": [
         "Deductions Analyst approves residual deduction"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-10 days",
-        "traceCount": 13531,
-        "additionalCoverage": 123,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 48,
@@ -3398,14 +1090,7 @@
       ],
       "hitlGates": [
         "Collections Lead approves forced application over customer instruction"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-5 days",
-        "traceCount": 13904,
-        "additionalCoverage": 152,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 49,
@@ -3466,14 +1151,7 @@
       ],
       "hitlGates": [
         "Cash App Lead approves intercompany fund transfer"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-7 days",
-        "traceCount": 14277,
-        "additionalCoverage": 181,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 50,
@@ -3536,14 +1214,7 @@
       "hitlGates": [
         "Credit Manager approves credit review for netting abuse",
         "Deductions Analyst approves unapproved-netting reversal"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-9 days",
-        "traceCount": 14650,
-        "additionalCoverage": 210,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 51,
@@ -3604,14 +1275,7 @@
       ],
       "hitlGates": [
         "Cash App Lead approves standard-format request to payer"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-8 days",
-        "traceCount": 15023,
-        "additionalCoverage": 239,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 52,
@@ -3682,14 +1346,7 @@
       "hitlGates": [
         "Collections VP approves credit review",
         "Dispute Manager approves serial-filer flag"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-6 days",
-        "traceCount": 15396,
-        "additionalCoverage": 268,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 53,
@@ -3750,14 +1407,7 @@
       ],
       "hitlGates": [
         "Dispute Manager approves reason-lock"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-8 days",
-        "traceCount": 15769,
-        "additionalCoverage": 297,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 54,
@@ -3818,14 +1468,7 @@
       ],
       "hitlGates": [
         "Dispute Manager approves promo-claim rejection"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-7 days",
-        "traceCount": 16142,
-        "additionalCoverage": 66,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 55,
@@ -3886,14 +1529,7 @@
       ],
       "hitlGates": [
         "Dispute Manager approves POD-backed rejection"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-9 days",
-        "traceCount": 16515,
-        "additionalCoverage": 95,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 56,
@@ -3964,14 +1600,7 @@
       "hitlGates": [
         "Dispute Manager approves full-reject hold",
         "Quality Manager approves partial-credit cap"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-7 days",
-        "traceCount": 16888,
-        "additionalCoverage": 124,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 57,
@@ -4032,14 +1661,7 @@
       ],
       "hitlGates": [
         "Dispute Manager approves case merge"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-6 days",
-        "traceCount": 17261,
-        "additionalCoverage": 153,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 58,
@@ -4110,14 +1732,7 @@
       "hitlGates": [
         "Collections VP approves auto-credit rule freeze",
         "Dispute Manager approves auto-credit hold"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-8 days",
-        "traceCount": 17634,
-        "additionalCoverage": 182,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 59,
@@ -4178,14 +1793,7 @@
       ],
       "hitlGates": [
         "Dispute Manager approves claim netting"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-10 days",
-        "traceCount": 18007,
-        "additionalCoverage": 211,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 60,
@@ -4256,14 +1864,7 @@
       "hitlGates": [
         "Collections VP approves fraud escalation",
         "Dispute Manager approves phantom-RMA rejection"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-5 days",
-        "traceCount": 18380,
-        "additionalCoverage": 240,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 61,
@@ -4326,14 +1927,7 @@
       ],
       "hitlGates": [
         "Dispute Manager approves goodwill credit"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-7 days",
-        "traceCount": 18753,
-        "additionalCoverage": 269,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 62,
@@ -4395,14 +1989,7 @@
       ],
       "hitlGates": [
         "Deductions Manager approves overclaim recovery"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-9 days",
-        "traceCount": 19126,
-        "additionalCoverage": 298,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 63,
@@ -4466,14 +2053,7 @@
       "hitlGates": [
         "Deductions Manager approves stacking recovery",
         "Trade Marketing Lead approves program-stack ruling"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-8 days",
-        "traceCount": 19499,
-        "additionalCoverage": 67,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 64,
@@ -4537,14 +2117,7 @@
       "hitlGates": [
         "Collections VP approves organized-leakage escalation",
         "Deductions Manager approves write-off block"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-6 days",
-        "traceCount": 19872,
-        "additionalCoverage": 96,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 65,
@@ -4606,14 +2179,7 @@
       ],
       "hitlGates": [
         "Deductions Manager approves expired-promo recovery"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-8 days",
-        "traceCount": 8245,
-        "additionalCoverage": 125,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 66,
@@ -4677,14 +2243,7 @@
       "hitlGates": [
         "Deductions Manager approves freight recovery case",
         "Logistics Manager approves freight-claim denial"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-7 days",
-        "traceCount": 8618,
-        "additionalCoverage": 154,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 67,
@@ -4746,14 +2305,7 @@
       ],
       "hitlGates": [
         "Category Manager approves slotting-fee denial"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-9 days",
-        "traceCount": 8991,
-        "additionalCoverage": 183,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 68,
@@ -4817,14 +2369,7 @@
       "hitlGates": [
         "Deductions Manager approves scan-cap recovery",
         "Trade Marketing Lead approves POS data audit"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-7 days",
-        "traceCount": 9364,
-        "additionalCoverage": 212,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 69,
@@ -4886,14 +2431,7 @@
       ],
       "hitlGates": [
         "Trade Marketing Lead approves co-op overdraw review"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-6 days",
-        "traceCount": 9737,
-        "additionalCoverage": 241,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 70,
@@ -4955,14 +2493,7 @@
       ],
       "hitlGates": [
         "Pricing Manager approves protection-window ruling"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-8 days",
-        "traceCount": 10110,
-        "additionalCoverage": 270,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 71,
@@ -5024,14 +2555,7 @@
       ],
       "hitlGates": [
         "Deductions Manager approves ageing escalation"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-10 days",
-        "traceCount": 10483,
-        "additionalCoverage": 299,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 72,
@@ -5101,14 +2625,7 @@
       "hitlGates": [
         "AR Manager approves dunning restart",
         "Billing Supervisor approves endpoint change"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-5 days",
-        "traceCount": 10856,
-        "additionalCoverage": 68,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 73,
@@ -5171,14 +2688,7 @@
       "hitlGates": [
         "Billing Supervisor approves reissue",
         "Pricing Manager approves condition record fix"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-7 days",
-        "traceCount": 11229,
-        "additionalCoverage": 97,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 74,
@@ -5241,14 +2751,7 @@
       "hitlGates": [
         "Tax Analyst approves withholding correction",
         "Tax Manager approves cross-border tax reissue"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-9 days",
-        "traceCount": 11602,
-        "additionalCoverage": 126,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 75,
@@ -5311,14 +2814,7 @@
       "hitlGates": [
         "Billing Supervisor approves reversal justification",
         "Controller approves reversal-right suspension"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-8 days",
-        "traceCount": 11975,
-        "additionalCoverage": 155,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 76,
@@ -5379,14 +2875,7 @@
       ],
       "hitlGates": [
         "Revenue Accountant approves period-end acceleration"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-6 days",
-        "traceCount": 12348,
-        "additionalCoverage": 184,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 77,
@@ -5449,14 +2938,7 @@
       "hitlGates": [
         "Finance Controller approves rebate condition remediation",
         "Revenue Accountant approves rebate accrual adjustment"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-8 days",
-        "traceCount": 12721,
-        "additionalCoverage": 213,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 78,
@@ -5519,14 +3001,7 @@
       "hitlGates": [
         "Billing Supervisor approves credit memo",
         "Controller approves high-value credit memo"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-7 days",
-        "traceCount": 13094,
-        "additionalCoverage": 242,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 79,
@@ -5588,14 +3063,7 @@
       "hitlGates": [
         "Project Manager approves milestone billing release",
         "Revenue Accountant approves unbilled revenue accrual"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-9 days",
-        "traceCount": 13467,
-        "additionalCoverage": 271,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 80,
@@ -5658,14 +3126,7 @@
       "hitlGates": [
         "AR Manager approves duplicate resolution",
         "Billing Supervisor approves duplicate cancellation"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-7 days",
-        "traceCount": 13840,
-        "additionalCoverage": 300,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 81,
@@ -5728,14 +3189,7 @@
       "hitlGates": [
         "Intercompany Accountant approves transfer-price correction",
         "Tax Manager approves transfer-price policy review"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-6 days",
-        "traceCount": 14213,
-        "additionalCoverage": 69,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 82,
@@ -5795,14 +3249,7 @@
       ],
       "hitlGates": [
         "Order Management Lead approves pricing-snapshot revert"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-8 days",
-        "traceCount": 14586,
-        "additionalCoverage": 98,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 83,
@@ -5864,14 +3311,7 @@
       "hitlGates": [
         "Collections VP approves rep release-right freeze",
         "Credit Manager approves override revocation"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-10 days",
-        "traceCount": 14959,
-        "additionalCoverage": 127,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 84,
@@ -5923,14 +3363,7 @@
       ],
       "hitlGates": [
         "Order Management Lead approves aggregate order review"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-5 days",
-        "traceCount": 15332,
-        "additionalCoverage": 156,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 85,
@@ -5990,14 +3423,7 @@
       ],
       "hitlGates": [
         "Order Management Lead approves priority downgrade"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-7 days",
-        "traceCount": 15705,
-        "additionalCoverage": 185,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 86,
@@ -6049,14 +3475,7 @@
       ],
       "hitlGates": [
         "Sales Manager approves free-goods exception"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-9 days",
-        "traceCount": 16078,
-        "additionalCoverage": 214,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 87,
@@ -6118,14 +3537,7 @@
       "hitlGates": [
         "Order Management Lead approves reorder pricing hold",
         "Sales Manager approves promo eligibility block"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-8 days",
-        "traceCount": 16451,
-        "additionalCoverage": 243,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 88,
@@ -6178,14 +3590,7 @@
       ],
       "hitlGates": [
         "Credit Manager approves re-check on new region"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-6 days",
-        "traceCount": 16824,
-        "additionalCoverage": 272,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 89,
@@ -6248,14 +3653,7 @@
       "hitlGates": [
         "Order Management Lead approves contract amendment",
         "Sales Manager approves release block on overdrawn contract"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-8 days",
-        "traceCount": 17197,
-        "additionalCoverage": 301,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 90,
@@ -6316,14 +3714,7 @@
       ],
       "hitlGates": [
         "Sales Manager approves delivery-date repricing"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-7 days",
-        "traceCount": 17570,
-        "additionalCoverage": 70,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 91,
@@ -6376,14 +3767,7 @@
       ],
       "hitlGates": [
         "Sales Manager approves pricing-authority review"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-9 days",
-        "traceCount": 17943,
-        "additionalCoverage": 99,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 92,
@@ -6455,14 +3839,7 @@
       "hitlGates": [
         "AR Controller approves ageing restatement",
         "CFO approves DSO restatement to the board"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-7 days",
-        "traceCount": 18316,
-        "additionalCoverage": 128,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 93,
@@ -6534,14 +3911,7 @@
       "hitlGates": [
         "AR Controller approves write-off reversal",
         "Audit Committee approves provision restatement"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-6 days",
-        "traceCount": 18689,
-        "additionalCoverage": 157,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 94,
@@ -6613,14 +3983,7 @@
       "hitlGates": [
         "AR Controller approves single-name exposure freeze",
         "Credit Manager approves consolidated limit"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-8 days",
-        "traceCount": 19062,
-        "additionalCoverage": 186,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 95,
@@ -6692,14 +4055,7 @@
       "hitlGates": [
         "AR Controller approves ageing baseline restore",
         "Audit Committee approves ageing report restatement"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-10 days",
-        "traceCount": 19435,
-        "additionalCoverage": 215,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 96,
@@ -6771,14 +4127,7 @@
       "hitlGates": [
         "AR Controller approves cash-timing adjustment",
         "CFO approves cash-position restatement"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-5 days",
-        "traceCount": 19808,
-        "additionalCoverage": 244,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 97,
@@ -6850,14 +4199,7 @@
       "hitlGates": [
         "AR Controller approves netting unbundle",
         "CFO approves intercompany elimination restatement"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-7 days",
-        "traceCount": 8181,
-        "additionalCoverage": 273,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 98,
@@ -6929,14 +4271,7 @@
       "hitlGates": [
         "AR Controller approves shipment hold on flagged account",
         "Credit Manager approves reinstated risk condition"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-9 days",
-        "traceCount": 8554,
-        "additionalCoverage": 302,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 99,
@@ -7008,14 +4343,7 @@
       "hitlGates": [
         "AR Controller approves duplicate reserve release",
         "Audit Committee approves deduction loss restatement"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-2 days",
-        "calibratedThreshold": "0-8 days",
-        "traceCount": 8927,
-        "additionalCoverage": 71,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 100,
@@ -7087,14 +4415,7 @@
       "hitlGates": [
         "AR Controller approves forced cash application",
         "CFO approves cash-position reclassification"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-3 days",
-        "calibratedThreshold": "0-6 days",
-        "traceCount": 9300,
-        "additionalCoverage": 100,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     },
     {
       "id": 101,
@@ -7166,14 +4487,7 @@
       "hitlGates": [
         "AR Controller approves aggregated write-off",
         "Audit Committee approves authority freeze and forensic review"
-      ],
-      "calibration": {
-        "defaultThreshold": "0-4 days",
-        "calibratedThreshold": "0-8 days",
-        "traceCount": 9673,
-        "additionalCoverage": 129,
-        "method": "PM4Py conformance analysis"
-      }
+      ]
     }
   ]
 }

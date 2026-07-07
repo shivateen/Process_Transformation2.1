@@ -224,7 +224,9 @@
                   "Data collection & validation",
                   "Approval & Syndication",
                   "Ongoing Data Maintenance"
-                ]
+                ],
+                "built": true,
+                "procId": "o2c-arops"
               }
             ]
           },
@@ -240,7 +242,9 @@
                   "Order Modification / Cancellation",
                   "Credit Check & Approval",
                   "Outbound Delivery & fulfilment"
-                ]
+                ],
+                "built": true,
+                "procId": "o2c-order"
               },
               {
                 "name": "Order Fulfilment",
@@ -258,7 +262,9 @@
                   "Invoice validation & dispute handling",
                   "Credit Note / Debit Note processing",
                   "Billing adjustments"
-                ]
+                ],
+                "built": true,
+                "procId": "o2c-billing"
               }
             ]
           },
@@ -288,7 +294,7 @@
                   "Cash posting & adjustment"
                 ],
                 "built": true,
-                "procId": "o2c-ar"
+                "procId": "o2c-cash"
               }
             ]
           },
@@ -412,9 +418,205 @@
               ]
             }
           ]
+        },
+        {
+          "id": "o2c-order",
+          "name": "Sales Order Processing & Credit Control",
+          "desc": "The front of the cycle: clean orders and disciplined credit so problems never enter billing or collections downstream.",
+          "roles": [
+            {
+              "id": "o2c-om",
+              "name": "Order Management Specialist",
+              "objectives": [
+                {
+                  "id": "o2c-o-order",
+                  "name": "Keep orders clean & handoff-ready",
+                  "kpi": "Order rework %",
+                  "patternIds": [
+                    82,
+                    83,
+                    84,
+                    85,
+                    86,
+                    87,
+                    88,
+                    89,
+                    90,
+                    91
+                  ],
+                  "patternCount": 10
+                }
+              ]
+            },
+            {
+              "id": "o2c-creditan",
+              "name": "Credit Analyst",
+              "objectives": [
+                {
+                  "id": "o2c-o-credit",
+                  "name": "Contain credit exposure before losses",
+                  "kpi": "Bad-debt exposure $",
+                  "patternIds": [
+                    32,
+                    33,
+                    34,
+                    35,
+                    36,
+                    37,
+                    38,
+                    39,
+                    40,
+                    41
+                  ],
+                  "patternCount": 10
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "o2c-billing",
+          "name": "Billing & Dispute Management",
+          "desc": "Bill it right the first time, and resolve the disputes that slip through - the two sides of invoice integrity.",
+          "roles": [
+            {
+              "id": "o2c-billspec",
+              "name": "Billing Specialist",
+              "objectives": [
+                {
+                  "id": "o2c-o-billing",
+                  "name": "Bill accurately, on time, first time",
+                  "kpi": "Billing error rate %",
+                  "patternIds": [
+                    72,
+                    73,
+                    74,
+                    75,
+                    76,
+                    77,
+                    78,
+                    79,
+                    80,
+                    81
+                  ],
+                  "patternCount": 10
+                }
+              ]
+            },
+            {
+              "id": "o2c-disputean",
+              "name": "Dispute Analyst",
+              "objectives": [
+                {
+                  "id": "o2c-o-disputes",
+                  "name": "Resolve disputes within SLA, maximise recovery",
+                  "kpi": "Dispute cycle time",
+                  "patternIds": [
+                    52,
+                    53,
+                    54,
+                    55,
+                    56,
+                    57,
+                    58,
+                    59,
+                    60,
+                    61
+                  ],
+                  "patternCount": 10
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "o2c-cash",
+          "name": "Cash Application & Deductions",
+          "desc": "Apply every payment and recover every invalid deduction - lift auto-match and stop leakage at the point of cash.",
+          "roles": [
+            {
+              "id": "o2c-cashspec",
+              "name": "Cash Application Specialist",
+              "objectives": [
+                {
+                  "id": "o2c-o-cashapp",
+                  "name": "Lift auto-match, cut unapplied cash",
+                  "kpi": "Auto-match %",
+                  "patternIds": [
+                    42,
+                    43,
+                    44,
+                    45,
+                    46,
+                    47,
+                    48,
+                    49,
+                    50,
+                    51
+                  ],
+                  "patternCount": 10
+                }
+              ]
+            },
+            {
+              "id": "o2c-deductan",
+              "name": "Deductions Analyst",
+              "objectives": [
+                {
+                  "id": "o2c-o-deduct",
+                  "name": "Recover invalid deductions, find the leakage root",
+                  "kpi": "Deduction recovery %",
+                  "patternIds": [
+                    62,
+                    63,
+                    64,
+                    65,
+                    66,
+                    67,
+                    68,
+                    69,
+                    70,
+                    71
+                  ],
+                  "patternCount": 10
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "o2c-arops",
+          "name": "AR Operations & Working Capital",
+          "desc": "The supervisory view: steer DSO, govern provisions and master data, and catch compound issues that span every AR sub-process.",
+          "roles": [
+            {
+              "id": "o2c-controller",
+              "name": "AR Controller",
+              "objectives": [
+                {
+                  "id": "o2c-o-arops",
+                  "name": "Steer DSO & govern cross-process AR",
+                  "kpi": "DSO (days)",
+                  "patternIds": [
+                    92,
+                    93,
+                    94,
+                    95,
+                    96,
+                    97,
+                    98,
+                    99,
+                    100,
+                    101
+                  ],
+                  "patternCount": 10
+                }
+              ]
+            }
+          ]
         }
       ],
-      "patternCount": 31
+      "patternCount": 101
     },
     {
       "id": "p2p",

@@ -1178,18 +1178,21 @@ def build_o2c_value_chain():
             {"id": "md", "name": "Master Data", "tone": "md", "areas": [
                 area("Master Data", [
                     "Data Prep & Request Validation", "Data collection & validation",
-                    "Approval & Syndication", "Ongoing Data Maintenance"]),
+                    "Approval & Syndication", "Ongoing Data Maintenance"],
+                    procId="o2c-arops"),
             ]},
             {"id": "o2d", "name": "Order to Deliver", "tone": "o2d", "areas": [
                 area("Order Mgmt", [
                     "Order Intake & validation", "Order Modification / Cancellation",
-                    "Credit Check & Approval", "Outbound Delivery & fulfilment"]),
+                    "Credit Check & Approval", "Outbound Delivery & fulfilment"],
+                    procId="o2c-order"),
                 area("Order Fulfilment", [
                     "Stock Allocation & Mgmt", "Delivery Creation",
                     "Logistics Operations", "Warehouse Mgmt & Logistics"]),
                 area("Customer Billing", [
                     "Invoice Generation", "Invoice validation & dispute handling",
-                    "Credit Note / Debit Note processing", "Billing adjustments"]),
+                    "Credit Note / Debit Note processing", "Billing adjustments"],
+                    procId="o2c-billing"),
             ]},
             {"id": "b2c", "name": "Bill to Cash", "note": "Collections & Cash apps",
              "tone": "b2c", "areas": [
@@ -1200,7 +1203,7 @@ def build_o2c_value_chain():
                 area("Cash Application", [
                     "Payment Identification", "Payment matching & reconciliation",
                     "Deduction identification", "Cash posting & adjustment"],
-                    procId="o2c-ar"),
+                    procId="o2c-cash"),
             ]},
             {"id": "claims", "name": "Claims", "tone": "claims", "areas": [
                 area("Claims Mgmt", [
@@ -1550,6 +1553,54 @@ def build_ar_function(patterns):
                     {"id": "o2c-o-rel", "name": "Curb contractual & relationship abuse",
                      "kpi": "Margin leakage $",
                      "patternIds": cat("Relationship & Contractual Abuse")},
+                ]},
+            ],
+        }, {
+            "id": "o2c-order", "name": "Sales Order Processing & Credit Control",
+            "desc": "The front of the cycle: clean orders and disciplined credit so problems never enter billing or collections downstream.",
+            "roles": [
+                {"id": "o2c-om", "name": "Order Management Specialist", "objectives": [
+                    {"id": "o2c-o-order", "name": "Keep orders clean & handoff-ready",
+                     "kpi": "Order rework %", "patternIds": list(range(82, 92))},
+                ]},
+                {"id": "o2c-creditan", "name": "Credit Analyst", "objectives": [
+                    {"id": "o2c-o-credit", "name": "Contain credit exposure before losses",
+                     "kpi": "Bad-debt exposure $", "patternIds": list(range(32, 42))},
+                ]},
+            ],
+        }, {
+            "id": "o2c-billing", "name": "Billing & Dispute Management",
+            "desc": "Bill it right the first time, and resolve the disputes that slip through - the two sides of invoice integrity.",
+            "roles": [
+                {"id": "o2c-billspec", "name": "Billing Specialist", "objectives": [
+                    {"id": "o2c-o-billing", "name": "Bill accurately, on time, first time",
+                     "kpi": "Billing error rate %", "patternIds": list(range(72, 82))},
+                ]},
+                {"id": "o2c-disputean", "name": "Dispute Analyst", "objectives": [
+                    {"id": "o2c-o-disputes", "name": "Resolve disputes within SLA, maximise recovery",
+                     "kpi": "Dispute cycle time", "patternIds": list(range(52, 62))},
+                ]},
+            ],
+        }, {
+            "id": "o2c-cash", "name": "Cash Application & Deductions",
+            "desc": "Apply every payment and recover every invalid deduction - lift auto-match and stop leakage at the point of cash.",
+            "roles": [
+                {"id": "o2c-cashspec", "name": "Cash Application Specialist", "objectives": [
+                    {"id": "o2c-o-cashapp", "name": "Lift auto-match, cut unapplied cash",
+                     "kpi": "Auto-match %", "patternIds": list(range(42, 52))},
+                ]},
+                {"id": "o2c-deductan", "name": "Deductions Analyst", "objectives": [
+                    {"id": "o2c-o-deduct", "name": "Recover invalid deductions, find the leakage root",
+                     "kpi": "Deduction recovery %", "patternIds": list(range(62, 72))},
+                ]},
+            ],
+        }, {
+            "id": "o2c-arops", "name": "AR Operations & Working Capital",
+            "desc": "The supervisory view: steer DSO, govern provisions and master data, and catch compound issues that span every AR sub-process.",
+            "roles": [
+                {"id": "o2c-controller", "name": "AR Controller", "objectives": [
+                    {"id": "o2c-o-arops", "name": "Steer DSO & govern cross-process AR",
+                     "kpi": "DSO (days)", "patternIds": list(range(92, 102))},
                 ]},
             ],
         }],

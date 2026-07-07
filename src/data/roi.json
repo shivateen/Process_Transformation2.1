@@ -2,7 +2,7 @@
   "meta": {
     "title": "ProcessIQ — ROI & Attribution",
     "year1Total": 8400000,
-    "patternCount": 31,
+    "patternCount": 101,
     "note": "Illustrative model. Figures are attributed to patterns, decisions, and actions — every dollar is traceable."
   },
   "kpis": [
@@ -150,13 +150,76 @@
   ],
   "attribution": [
     {
+      "patternId": 92,
+      "name": "Phantom DSO Compression",
+      "category": "Cross-Process AR Governance",
+      "featureSlug": "phantom-dso-compression",
+      "priority": "Critical",
+      "recovery": 758000.0,
+      "customers": 9
+    },
+    {
       "patternId": 20,
       "name": "Partial Breadcrumbing",
       "category": "Credit Risk & Insolvency Indicators",
       "featureSlug": "min-viable-payment",
       "priority": "Critical",
-      "recovery": 1131000.0,
-      "customers": 13
+      "recovery": 756000.0,
+      "customers": 9
+    },
+    {
+      "patternId": 64,
+      "name": "Threshold Splitting",
+      "category": "Deductions & Trade-Claim Recovery",
+      "featureSlug": "sub-threshold-split-cluster",
+      "priority": "Critical",
+      "recovery": 753000.0,
+      "customers": 7
+    },
+    {
+      "patternId": 78,
+      "name": "Unapproved Credit Memo",
+      "category": "Billing Accuracy & Revenue Integrity",
+      "featureSlug": "credit-memo-approval-bypass",
+      "priority": "Critical",
+      "recovery": 735000.0,
+      "customers": 8
+    },
+    {
+      "patternId": 83,
+      "name": "Serial Credit-Hold Override",
+      "category": "Order Integrity & Fulfilment Control",
+      "featureSlug": "credit-hold-override-rate",
+      "priority": "Critical",
+      "recovery": 710000.0,
+      "customers": 6
+    },
+    {
+      "patternId": 88,
+      "name": "Post-Approval Ship Swap",
+      "category": "Order Integrity & Fulfilment Control",
+      "featureSlug": "post-approval-address-change",
+      "priority": "Critical",
+      "recovery": 703000.0,
+      "customers": 8
+    },
+    {
+      "patternId": 73,
+      "name": "Exploitable Price Seed",
+      "category": "Billing Accuracy & Revenue Integrity",
+      "featureSlug": "price-condition-variance",
+      "priority": "Critical",
+      "recovery": 646000.0,
+      "customers": 6
+    },
+    {
+      "patternId": 60,
+      "name": "RMA Phantom Items",
+      "category": "Dispute Lifecycle Management",
+      "featureSlug": "phantom-return-authorization",
+      "priority": "Critical",
+      "recovery": 635000.0,
+      "customers": 6
     },
     {
       "patternId": 19,
@@ -164,89 +227,26 @@
       "category": "Credit Risk & Insolvency Indicators",
       "featureSlug": "credit-limit-velocity",
       "priority": "Critical",
-      "recovery": 907000.0,
-      "customers": 8
+      "recovery": 606000.0,
+      "customers": 9
     },
     {
-      "patternId": 22,
-      "name": "Bureau Downgrade",
-      "category": "Credit Risk & Insolvency Indicators",
-      "featureSlug": "score-vs-dso-delta",
+      "patternId": 43,
+      "name": "Duplicate Refund Bait",
+      "category": "Cash Application & Matching Integrity",
+      "featureSlug": "duplicate-payment-fingerprint",
       "priority": "Critical",
-      "recovery": 768000.0,
-      "customers": 13
-    },
-    {
-      "patternId": 10,
-      "name": "Missing PO Trap",
-      "category": "Intentional Stalling & Delay Tactics",
-      "featureSlug": "po-mismatch-flag",
-      "priority": "High",
-      "recovery": 627000.0,
-      "customers": 7
-    },
-    {
-      "patternId": 11,
-      "name": "Approval Musical Chairs",
-      "category": "Intentional Stalling & Delay Tactics",
-      "featureSlug": "contact-shift-frequency",
-      "priority": "High",
-      "recovery": 624000.0,
-      "customers": 6
-    },
-    {
-      "patternId": 29,
-      "name": "Strategic Shielding",
-      "category": "Relationship & Contractual Abuse",
-      "featureSlug": "sales-override-freq",
-      "priority": "High",
-      "recovery": 614000.0,
-      "customers": 6
-    },
-    {
-      "patternId": 25,
-      "name": "Duplicate Payment Bait",
-      "category": "Cash Application & Remittance Friction",
-      "featureSlug": "refund-velocity",
-      "priority": "High",
-      "recovery": 603000.0,
-      "customers": 7
-    },
-    {
-      "patternId": 3,
-      "name": "Dispute Splitting",
-      "category": "Dispute & Deduction Manipulation",
-      "featureSlug": "volume-vs-threshold",
-      "priority": "High",
-      "recovery": 552000.0,
-      "customers": 6
-    },
-    {
-      "patternId": 8,
-      "name": "Month-End RMA Dump",
-      "category": "Dispute & Deduction Manipulation",
-      "featureSlug": "rma-velocity-eom",
-      "priority": "High",
-      "recovery": 539000.0,
-      "customers": 6
-    },
-    {
-      "patternId": 4,
-      "name": "Friday Afternoon Slicing",
-      "category": "Dispute & Deduction Manipulation",
-      "featureSlug": "micro-deduction-density",
-      "priority": "High",
-      "recovery": 523000.0,
-      "customers": 7
+      "recovery": 586000.0,
+      "customers": 9
     },
     {
       "patternId": null,
-      "name": "21 other patterns",
+      "name": "91 other patterns",
       "category": "Long tail",
       "featureSlug": null,
       "priority": null,
       "recovery": 1512000.0,
-      "customers": 45,
+      "customers": 63,
       "isOther": true
     }
   ]
