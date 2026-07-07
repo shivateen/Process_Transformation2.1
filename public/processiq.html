@@ -1463,6 +1463,174 @@ textarea.pmi-in{resize:vertical;line-height:1.45}
 /* full-screen expansion */
 .pm-map-back.maximized{padding:0}
 .pm-map-back.maximized .pm-map-dlg{width:100%;max-width:none;height:100vh;max-height:100vh;border-radius:0}
+
+/* ===================================================================== */
+/* Stage 5 · CFO Consumption Layer + persona nav locking                 */
+/* ===================================================================== */
+
+/* nav: separator before the CFO stage + locked (persona) stages */
+.stage-sep{display:inline-flex;align-items:center;padding:0 10px}
+.stage-sep .sep-line{width:1px;height:26px;background:var(--line)}
+.stagetab.locked{opacity:.4;cursor:not-allowed}
+.stagetab.locked:hover{transform:none}
+.stagetab .stlock{margin-left:6px;font-size:11px;opacity:.8}
+
+.cfo-wrap{max-width:1180px;margin:0 auto;padding:18px 4px 60px}
+.cfo-section{margin:26px 0 12px}
+.cfo-section h3{font-size:18px;font-weight:800;margin:0;letter-spacing:-.01em}
+.cfo-section .cfo-sub{font-size:13px;color:var(--muted);margin-top:3px}
+.cfo-empty{font-size:13px;color:var(--muted);font-style:italic;padding:10px 2px}
+.ax{fill:var(--muted);font-size:9px;font-family:Inter,sans-serif}
+.ax.b{fill:var(--act);font-weight:700}
+
+/* theme KPI tiles */
+.cfo-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-bottom:8px}
+.cfo-tile{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--ac,var(--accent));border-radius:12px;
+  padding:14px 15px;cursor:pointer;transition:.14s;box-shadow:var(--shadow)}
+.cfo-tile:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(38,28,18,.12)}
+.cfo-tile .tile-icon{font-size:19px;display:flex;align-items:center}
+.cfo-tile .tile-light{width:8px;height:8px;border-radius:50%;margin-left:auto}
+.cfo-tile .tile-light.green{background:var(--med)} .cfo-tile .tile-light.amber{background:var(--high)} .cfo-tile .tile-light.red{background:var(--crit)}
+.cfo-tile .tile-name{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin:6px 0 2px}
+.cfo-tile .tile-kpi{font-size:26px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.cfo-tile .tile-kpi i{font-style:normal;color:var(--muted);font-size:18px} .cfo-tile .tile-kpi small{font-size:12px;color:var(--muted);font-weight:600}
+.cfo-tile .tile-delta{display:inline-block;margin-top:8px;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:5px}
+.cfo-tile .tile-delta.good{background:rgba(39,174,96,.14);color:var(--med)}
+.cfo-tile .tile-delta.bad{background:rgba(192,57,43,.12);color:var(--crit)}
+
+.cfo-cols{display:grid;grid-template-columns:300px 1fr;gap:18px;align-items:stretch}
+@media(max-width:900px){.cfo-cols{grid-template-columns:1fr}}
+
+/* autonomy gauge */
+.cfo-gauge{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 16px 20px;text-align:center;box-shadow:var(--shadow);height:100%;box-sizing:border-box}
+.cfo-gauge .gauge-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.gauge-svg{width:100%;max-width:260px;display:block;margin:0 auto}
+.gauge-pct{fill:var(--brand2);font-size:34px;font-weight:800;font-family:Inter,sans-serif}
+.cfo-gauge .gauge-meta{font-size:12px;color:var(--muted);margin:2px 0 6px}
+.cfo-gauge .gauge-meta b{color:var(--ink)}
+.gauge-spark{width:80%;max-width:200px;display:block;margin:0 auto;height:34px}
+
+/* forecast / big charts */
+.cfo-forecast{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow)}
+.cfo-forecast svg{width:100%;display:block;height:auto}
+.fc-legend{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:6px;font-size:11px;font-weight:650;color:var(--muted)}
+.fc-legend .lg{display:inline-flex;align-items:center;gap:6px}
+.fc-legend .lg::before{content:"";width:12px;height:3px;border-radius:2px;background:currentColor;display:inline-block}
+.fc-legend .in::before,.fc-legend .at::before{background:var(--act)}
+.fc-legend .out::before,.fc-legend .mn::before{background:var(--crit)}
+.fc-legend .net::before{background:var(--brand2)}
+.fc-legend .band::before{background:var(--muted);opacity:.5}
+.fc-legend .hl::before{background:var(--high)}
+
+/* decision queue */
+.cfo-queue{margin-top:6px}
+.dq-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:12px;box-shadow:var(--shadow);transition:opacity .3s,transform .3s}
+.dq-card.dismissed{opacity:0;transform:translateX(40px);pointer-events:none}
+.dq-header{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.dq-urgency{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:2px 8px;border-radius:5px}
+.dq-urgency.critical{background:rgba(192,57,43,.14);color:var(--crit)}
+.dq-urgency.high{background:rgba(230,126,34,.15);color:var(--high)}
+.dq-urgency.medium{background:rgba(39,174,96,.14);color:var(--med)}
+.dq-urgency.low{background:rgba(41,128,185,.14);color:var(--low)}
+.dq-title{font-size:15px;font-weight:750}
+.dq-summary{font-size:13px;color:var(--muted);line-height:1.5;margin:5px 0}
+.dq-meta{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:6px 0}
+.dq-confidence{font-size:11.5px;font-weight:700;color:var(--brand2)}
+.dq-exposure{font-size:11.5px;font-weight:700;font-variant-numeric:tabular-nums}
+.dq-ago{font-size:11.5px;color:var(--muted)}
+.dq-patterns{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0}
+.dq-pat{font-size:10.5px;font-weight:650;padding:2px 8px;border-radius:5px;background:var(--bg);border:1px solid var(--line);cursor:pointer;transition:.12s}
+.dq-pat:hover{border-color:var(--brand2);color:var(--brand2)}
+.dq-actions{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.dq-btn{font-size:11.5px;font-weight:700;padding:6px 15px;border-radius:8px;border:1px solid var(--line);cursor:pointer;transition:.12s;text-transform:capitalize;background:var(--panel);color:var(--ink)}
+.dq-btn.approve{background:rgba(39,174,96,.12);color:var(--med);border-color:rgba(39,174,96,.3)}
+.dq-btn.override{background:rgba(230,126,34,.12);color:var(--high);border-color:rgba(230,126,34,.3)}
+.dq-btn:hover{filter:brightness(.96);transform:translateY(-1px)}
+
+/* insight feed */
+.ins-feed{display:flex;flex-direction:column;gap:12px}
+.ins-card{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow)}
+.ins-card.alert{border-left-color:var(--crit)} .ins-card.warn{border-left-color:var(--high)} .ins-card.good{border-left-color:var(--med)} .ins-card.info{border-left-color:var(--low)}
+.ins-sev{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:2px 8px;border-radius:5px;margin-right:8px}
+.ins-sev.alert{background:rgba(192,57,43,.14);color:var(--crit)} .ins-sev.warn{background:rgba(230,126,34,.15);color:var(--high)} .ins-sev.good{background:rgba(39,174,96,.14);color:var(--med)} .ins-sev.info{background:rgba(41,128,185,.14);color:var(--low)}
+.ins-theme{font-size:11px;font-weight:700;color:var(--muted)}
+.ins-headline{font-size:16px;font-weight:750;margin:6px 0 3px}
+.ins-narrative{font-size:13px;color:var(--muted);line-height:1.55}
+.ins-foot{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:9px}
+.ins-impact{font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:6px;background:var(--bg);border:1px solid var(--line)}
+.ins-impact b{color:var(--ink)}
+.ins-pills{display:inline-flex;gap:6px;flex-wrap:wrap}
+.ins-week{font-size:11px;color:var(--muted);margin-left:auto}
+.cfo-filter{font-size:12.5px;color:var(--muted);margin:6px 0 12px}
+.cfo-filter b{color:var(--ink)}
+.cfo-clear{margin-left:8px;border:1px solid var(--line);background:var(--panel);color:var(--brand2);font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px;cursor:pointer}
+
+/* compound radar */
+.cmp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px}
+.cmp-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow)}
+.cmp-top{display:flex;align-items:center;gap:10px;justify-content:space-between}
+.cmp-name{font-size:14px;font-weight:750}
+.cmp-status{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:2px 8px;border-radius:5px}
+.cmp-status.new{background:rgba(41,128,185,.14);color:var(--low)} .cmp-status.monitoring{background:rgba(230,126,34,.15);color:var(--high)} .cmp-status.escalated{background:rgba(192,57,43,.14);color:var(--crit)}
+.cmp-desc{font-size:12.5px;color:var(--muted);line-height:1.5;margin:6px 0}
+.cmp-stat{display:flex;gap:16px;font-size:12px;font-weight:700;margin-bottom:6px}
+
+/* explanation chain */
+.cfo-chain{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:26px 0 0;padding:14px;background:var(--bg);border:1px dashed var(--line);border-radius:12px}
+.ec-lead{font-size:11.5px;font-weight:700;color:var(--muted);margin-right:6px}
+.ec-box{font-size:12px;font-weight:700;padding:5px 12px;border-radius:8px;background:var(--panel);border:1px solid var(--line)}
+.ec-box.ec-0{border-color:var(--sense);color:var(--sense)} .ec-box.ec-1{border-color:var(--act);color:var(--act)} .ec-box.ec-2{border-color:var(--diag);color:var(--diag)} .ec-box.ec-3{border-color:var(--decide);color:var(--decide)} .ec-box.ec-4{border-color:var(--brand2);color:var(--brand2)}
+.ec-arr{color:var(--muted);font-weight:800}
+
+/* scenarios */
+.scn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.scn-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;cursor:pointer;transition:.14s;box-shadow:var(--shadow)}
+.scn-card:hover{transform:translateY(-2px)} .scn-card.sel{box-shadow:0 0 0 2px var(--brand2);border-color:var(--brand2)}
+.scn-name{font-size:14.5px;font-weight:750}
+.scn-desc{font-size:12.5px;color:var(--muted);margin:4px 0 8px;line-height:1.45}
+.scn-chips{display:flex;gap:6px;flex-wrap:wrap}
+.scn-chip{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:5px}
+.scn-chip.good{background:rgba(39,174,96,.14);color:var(--med)} .scn-chip.bad{background:rgba(192,57,43,.12);color:var(--crit)}
+.scn-detail{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-top:16px;box-shadow:var(--shadow)}
+.scn-detail h4{margin:0 0 8px;font-size:16px}
+.scn-slider{display:flex;align-items:center;gap:14px;margin:12px 0}
+.scn-slider label{font-size:12.5px;font-weight:700;min-width:150px;text-transform:capitalize}
+.scn-slider input[type=range]{flex:1;accent-color:var(--brand2)}
+.scn-slider .scn-val{font-size:14px;font-weight:800;font-variant-numeric:tabular-nums;min-width:72px;text-align:right}
+.scn-impacts{margin:14px 0}
+.scn-impacts table{width:100%;border-collapse:collapse;font-size:13px}
+.scn-impacts th{text-align:left;font-weight:700;padding:7px 8px;border-bottom:1px solid var(--line);color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.03em}
+.scn-impacts td{padding:7px 8px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.scn-impacts td.imp-good{color:var(--med);font-weight:700} .scn-impacts td.imp-bad{color:var(--crit);font-weight:700}
+.scn-tradeoff{font-size:13px;color:var(--ink);background:var(--bg);padding:12px 14px;border-radius:8px;border-left:3px solid var(--high);margin:14px 0;line-height:1.5}
+.scn-tradeoff b{color:var(--high)}
+
+/* trajectory */
+.phase-bar{display:flex;gap:8px}
+.phase-seg{flex:1;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--panel)}
+.phase-seg.complete{background:rgba(39,174,96,.09);border-color:rgba(39,174,96,.3)}
+.phase-seg.active{background:rgba(211,96,15,.08);border-color:var(--brand2)}
+.phase-name{font-weight:750;font-size:13px}
+.phase-period{color:var(--muted);font-size:11px;margin:1px 0 6px}
+.phase-fill{height:5px;border-radius:3px;background:var(--line);overflow:hidden}
+.phase-fill span{display:block;height:100%;background:var(--act)}
+.phase-pct{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-top:5px}
+.cfo-sm{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:900px){.cfo-sm{grid-template-columns:1fr}}
+.cfo-sm-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow)}
+.cfo-sm-card svg{width:100%;display:block}
+.cfo-sm-title{font-size:13px;font-weight:750;margin-bottom:2px}
+.cfo-sm-title small{font-size:11px;color:var(--muted);font-weight:600}
+.board-table{width:100%;border-collapse:collapse;font-size:13px}
+.board-table th{text-align:left;font-weight:700;padding:9px 10px;border-bottom:2px solid var(--line);color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.03em}
+.board-table td{padding:9px 10px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.board-status{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:2px 8px;border-radius:5px}
+.board-status.on-track{background:rgba(39,174,96,.14);color:var(--med)} .board-status.at-risk{background:rgba(230,126,34,.15);color:var(--high)} .board-status.behind{background:rgba(192,57,43,.14);color:var(--crit)}
+
+/* toast */
+.cfo-toast{position:fixed;bottom:26px;right:26px;background:var(--act);color:#fff;padding:11px 20px;border-radius:10px;font-size:13px;font-weight:700;
+  opacity:0;transform:translateY(10px);transition:.25s;pointer-events:none;z-index:400;box-shadow:0 10px 28px rgba(0,0,0,.3)}
+.cfo-toast.show{opacity:1;transform:translateY(0)}
 .pm-edges{position:absolute;left:0;top:0;pointer-events:none;z-index:1}
 .pm-edge{fill:none;stroke:#9aa6b4;stroke-width:1.6}
 .pm-arrowhead{fill:#9aa6b4}
@@ -41689,6 +41857,870 @@ body.dark .pm-export-h code{background:#1c2431}
     }
   }
 };</script>
+<script>window.PROCESSIQ_CFO = {
+  "meta": {
+    "title": "ProcessIQ — CFO Consumption Layer",
+    "asOfDate": "2025-06-27",
+    "asOfWeek": "W26"
+  },
+  "compounds": {
+    "CP-001": {
+      "name": "Bust-Out Fraud Setup",
+      "description": "Dispute-timing gaming, duplicate refund requests and credit deterioration firing together — the classic bust-out precursor.",
+      "patternIds": [
+        1,
+        22,
+        25
+      ]
+    },
+    "CP-002": {
+      "name": "Bilateral Cash Squeeze",
+      "description": "Customer stretches payment while a supplier demands early payment — working capital squeezed from both sides at once.",
+      "patternIds": [
+        27
+      ]
+    },
+    "CP-004": {
+      "name": "Override Cascade",
+      "description": "A credit-hold override on a customer already gaming the dispute process — two control failures compounding into SOX + credit-risk exposure.",
+      "patternIds": [
+        29,
+        1,
+        21
+      ]
+    },
+    "CP-007": {
+      "name": "Payment Behaviour Drift",
+      "description": "Creeping payment terms plus chronic broken promises signal a segment whose actual pay date drifts every quarter — invisible to term-based forecasts.",
+      "patternIds": [
+        27,
+        31,
+        17
+      ]
+    },
+    "CP-008": {
+      "name": "Coordinated Payment Avoidance",
+      "description": "Legal-entity shell game, portal sabotage and partial breadcrumbing all active for one customer — deliberate, orchestrated avoidance.",
+      "patternIds": [
+        13,
+        14,
+        20
+      ]
+    }
+  },
+  "commandCenter": {
+    "agentAutonomy": {
+      "current": 0.73,
+      "target": 0.9,
+      "trend": [
+        0.45,
+        0.52,
+        0.58,
+        0.63,
+        0.68,
+        0.73
+      ],
+      "trendLabels": [
+        "W21",
+        "W22",
+        "W23",
+        "W24",
+        "W25",
+        "W26"
+      ]
+    },
+    "decisionQueue": [
+      {
+        "id": "DQ-001",
+        "type": "credit-override",
+        "title": "Credit limit override — Acme Industrial",
+        "summary": "Sales requested a $2.1M limit increase. Agent recommends approval with conditions: 90-day review and enhanced monitoring.",
+        "agentRecommendation": "approve-conditional",
+        "confidence": 0.87,
+        "exposure": 2100000,
+        "urgency": "high",
+        "triggeringPatterns": [
+          19,
+          20
+        ],
+        "themeId": "controls-integrity",
+        "submittedAgo": "2h",
+        "actions": [
+          "approve",
+          "override",
+          "defer"
+        ]
+      },
+      {
+        "id": "DQ-002",
+        "type": "write-off",
+        "title": "Write-off approval — $340K aged balance",
+        "summary": "Meridian Corp balance aged 180+ days, all collection attempts exhausted. Agent recommends write-off with bad-debt provision. Patterns #20 (breadcrumbing) and #22 (bureau downgrade) both active.",
+        "agentRecommendation": "approve",
+        "confidence": 0.92,
+        "exposure": 340000,
+        "urgency": "medium",
+        "triggeringPatterns": [
+          20,
+          22
+        ],
+        "themeId": "controls-integrity",
+        "submittedAgo": "1d",
+        "actions": [
+          "approve",
+          "override",
+          "defer"
+        ]
+      },
+      {
+        "id": "DQ-003",
+        "type": "policy-change",
+        "title": "Auto-resolve threshold — disputes under $5K",
+        "summary": "Agent proposes auto-resolving disputes under $5,000 where root cause is a pricing error and the customer is in good standing. Projected: 40% smaller dispute queue, $180K annual savings, 0.3% revenue exposure.",
+        "agentRecommendation": "approve",
+        "confidence": 0.78,
+        "exposure": 180000,
+        "urgency": "low",
+        "triggeringPatterns": [
+          3,
+          4
+        ],
+        "themeId": "revenue-leakage",
+        "submittedAgo": "3d",
+        "actions": [
+          "approve",
+          "reject",
+          "modify-threshold"
+        ]
+      },
+      {
+        "id": "DQ-004",
+        "type": "compound-alert",
+        "title": "Compound pattern alert — Bust-Out Fraud Setup",
+        "summary": "GlobalTech showing simultaneous dispute-timing gaming (#1), duplicate refund requests (#25) and credit deterioration (#22). Classic bust-out precursor. Agent has placed a credit hold pending review.",
+        "agentRecommendation": "escalate",
+        "confidence": 0.94,
+        "exposure": 2500000,
+        "urgency": "critical",
+        "triggeringPatterns": [
+          1,
+          22,
+          25
+        ],
+        "compoundId": "CP-001",
+        "themeId": "controls-integrity",
+        "submittedAgo": "45m",
+        "actions": [
+          "confirm-hold",
+          "release",
+          "investigate"
+        ]
+      },
+      {
+        "id": "DQ-005",
+        "type": "new-pattern",
+        "title": "New pattern discovered — Seasonal credit-line stacking",
+        "summary": "Discovery Engine identified a recurring pattern: 3 customers request temporary Q4 credit increases, draw down fully, then dispute 15% of invoices in Q1. Not in the current library. Agent recommends adding it as pattern #32.",
+        "agentRecommendation": "add-to-library",
+        "confidence": 0.71,
+        "exposure": 890000,
+        "urgency": "low",
+        "triggeringPatterns": [],
+        "themeId": "controls-integrity",
+        "submittedAgo": "5d",
+        "actions": [
+          "approve",
+          "reject",
+          "investigate"
+        ]
+      }
+    ]
+  },
+  "intelligence": {
+    "insights": [
+      {
+        "id": "INS-001",
+        "severity": "warn",
+        "headline": "DSO increased 3 days this week",
+        "narrative": "Two strategic accounts (Acme Industrial, GlobalTech) delayed payments past 60 days — together $4.2M in open AR. Pattern #29 (Strategic Shielding) detected for Acme; Pattern #20 (Partial Breadcrumbing) for GlobalTech. Collections agents have escalated both.",
+        "themeId": "working-capital",
+        "patternIds": [
+          29,
+          20
+        ],
+        "impact": {
+          "metric": "DSO",
+          "delta": "+3 days",
+          "direction": "worse"
+        },
+        "weekOf": "W26"
+      },
+      {
+        "id": "INS-002",
+        "severity": "good",
+        "headline": "Cash auto-match rate crossed 80%",
+        "narrative": "Auto-match reached 82% this week, up from 35% at go-live. The matching layer now handles 3,200 of 3,900 weekly payment lines untouched. Remaining exceptions concentrate in 4 customers who change remittance formats monthly.",
+        "themeId": "cash-visibility",
+        "patternIds": [
+          24,
+          25,
+          26
+        ],
+        "impact": {
+          "metric": "Auto-Match",
+          "delta": "+47% since go-live",
+          "direction": "better"
+        },
+        "weekOf": "W26"
+      },
+      {
+        "id": "INS-003",
+        "severity": "alert",
+        "headline": "New compound pattern — coordinated payment avoidance",
+        "narrative": "Compound CP-008 fired for the first time: legal-entity shell game (#13), portal sabotage (#14) and partial breadcrumbing (#20) all active for NorthStar Holdings. Total exposure $850K. Agent has flagged it for CFO review.",
+        "themeId": "controls-integrity",
+        "patternIds": [
+          13,
+          14,
+          20
+        ],
+        "compoundId": "CP-008",
+        "impact": {
+          "metric": "Bad Debt",
+          "delta": "$850K exposure",
+          "direction": "worse"
+        },
+        "weekOf": "W26"
+      },
+      {
+        "id": "INS-004",
+        "severity": "good",
+        "headline": "Deduction recovery rate up 12% this month",
+        "narrative": "Invalid deduction recovery improved to 52% from 40%. Driver: the Trade Promo Matching agent now auto-validates 65% of trade deductions against TPM records. Non-trade deductions — mostly pricing errors — still need manual investigation.",
+        "themeId": "revenue-leakage",
+        "patternIds": [
+          3,
+          4,
+          8
+        ],
+        "impact": {
+          "metric": "Deduction Recovery",
+          "delta": "+12%",
+          "direction": "better"
+        },
+        "weekOf": "W26"
+      },
+      {
+        "id": "INS-005",
+        "severity": "info",
+        "headline": "Decision queue shrinking — 40% fewer escalations",
+        "narrative": "CFO-level escalations dropped from 23/week to 14/week over the last month as confidence thresholds self-adjust. Credit-override approvals are now 89% aligned with agent recommendations.",
+        "themeId": "close-acceleration",
+        "patternIds": [],
+        "impact": {
+          "metric": "Autonomy",
+          "delta": "-40% escalations",
+          "direction": "better"
+        },
+        "weekOf": "W26"
+      },
+      {
+        "id": "INS-006",
+        "severity": "warn",
+        "headline": "Dispute volume spike — 3 customers filing at once",
+        "narrative": "Pricing disputes from customers #204, #318 and #412 rose 4x this week, all referencing the same Q1 promotional schedule that expired 90 days ago. Pattern #7 (Stale Promo Exploitation) detected. Agent recommends updating the pricing master and issuing clarification notices.",
+        "themeId": "revenue-leakage",
+        "patternIds": [
+          7,
+          8
+        ],
+        "impact": {
+          "metric": "Dispute Cycle",
+          "delta": "+8 days avg",
+          "direction": "worse"
+        },
+        "weekOf": "W26"
+      }
+    ],
+    "compoundRadar": [
+      {
+        "compoundId": "CP-001",
+        "activeCustomers": 1,
+        "totalExposure": 2500000,
+        "status": "escalated"
+      },
+      {
+        "compoundId": "CP-002",
+        "activeCustomers": 3,
+        "totalExposure": 1400000,
+        "status": "monitoring"
+      },
+      {
+        "compoundId": "CP-004",
+        "activeCustomers": 2,
+        "totalExposure": 1100000,
+        "status": "monitoring"
+      },
+      {
+        "compoundId": "CP-007",
+        "activeCustomers": 1,
+        "totalExposure": 1600000,
+        "status": "escalated"
+      },
+      {
+        "compoundId": "CP-008",
+        "activeCustomers": 1,
+        "totalExposure": 850000,
+        "status": "new"
+      }
+    ]
+  },
+  "scenarios": {
+    "available": [
+      {
+        "id": "SCN-001",
+        "name": "Tighten credit limits 20%",
+        "description": "Reduce all credit limits by 20% across the portfolio.",
+        "lever": "credit-limit",
+        "parameters": [
+          {
+            "name": "reduction",
+            "type": "slider",
+            "min": 5,
+            "max": 40,
+            "default": 20,
+            "unit": "%",
+            "step": 1
+          }
+        ],
+        "impacts": [
+          {
+            "metric": "DSO",
+            "baseCase": 42,
+            "projected": 38,
+            "unit": "days",
+            "direction": "better"
+          },
+          {
+            "metric": "Bad Debt",
+            "baseCase": 2100000,
+            "projected": 1400000,
+            "unit": "$",
+            "direction": "better"
+          },
+          {
+            "metric": "Revenue at Risk",
+            "baseCase": 0,
+            "projected": 3200000,
+            "unit": "$",
+            "direction": "worse"
+          }
+        ],
+        "tradeoff": "Lower bad debt and DSO, but $3.2M revenue at risk from customers who may not accept tighter terms."
+      },
+      {
+        "id": "SCN-002",
+        "name": "Auto-resolve disputes under $5K",
+        "description": "Automatically accept dispute claims below threshold when root cause is internal (pricing error, late delivery).",
+        "lever": "dispute-threshold",
+        "parameters": [
+          {
+            "name": "threshold",
+            "type": "slider",
+            "min": 1000,
+            "max": 25000,
+            "default": 5000,
+            "unit": "$",
+            "step": 1000
+          }
+        ],
+        "impacts": [
+          {
+            "metric": "Dispute Cycle",
+            "baseCase": 25,
+            "projected": 12,
+            "unit": "days",
+            "direction": "better"
+          },
+          {
+            "metric": "Dispute Queue",
+            "baseCase": 340,
+            "projected": 204,
+            "unit": "cases",
+            "direction": "better"
+          },
+          {
+            "metric": "Revenue Leakage",
+            "baseCase": 0,
+            "projected": 180000,
+            "unit": "$",
+            "direction": "worse"
+          }
+        ],
+        "tradeoff": "40% smaller dispute queue and faster resolution, but $180K annual exposure from auto-accepted claims."
+      },
+      {
+        "id": "SCN-003",
+        "name": "Move top-10 customers to prepay/COD",
+        "description": "Require prepayment or COD for the 10 highest-risk customers currently on net terms.",
+        "lever": "payment-terms",
+        "parameters": [
+          {
+            "name": "customerCount",
+            "type": "slider",
+            "min": 5,
+            "max": 20,
+            "default": 10,
+            "unit": "customers",
+            "step": 1
+          }
+        ],
+        "impacts": [
+          {
+            "metric": "DSO",
+            "baseCase": 42,
+            "projected": 36,
+            "unit": "days",
+            "direction": "better"
+          },
+          {
+            "metric": "Bad Debt",
+            "baseCase": 2100000,
+            "projected": 1100000,
+            "unit": "$",
+            "direction": "better"
+          },
+          {
+            "metric": "Customer Churn",
+            "baseCase": 0,
+            "projected": 3,
+            "unit": "customers",
+            "direction": "worse"
+          }
+        ],
+        "tradeoff": "Significant DSO and bad-debt improvement, but risk losing 3 customers ($1.8M combined revenue)."
+      },
+      {
+        "id": "SCN-004",
+        "name": "Increase agent autonomy threshold",
+        "description": "Raise the confidence threshold below which agents must escalate to human review.",
+        "lever": "autonomy-threshold",
+        "parameters": [
+          {
+            "name": "confidenceThreshold",
+            "type": "slider",
+            "min": 60,
+            "max": 95,
+            "default": 80,
+            "unit": "%",
+            "step": 1
+          }
+        ],
+        "impacts": [
+          {
+            "metric": "Decision Queue",
+            "baseCase": 14,
+            "projected": 8,
+            "unit": "/week",
+            "direction": "better"
+          },
+          {
+            "metric": "Analyst Capacity",
+            "baseCase": 9600,
+            "projected": 11200,
+            "unit": "hrs freed",
+            "direction": "better"
+          },
+          {
+            "metric": "Error Rate",
+            "baseCase": 2.1,
+            "projected": 3.8,
+            "unit": "%",
+            "direction": "worse"
+          }
+        ],
+        "tradeoff": "43% fewer escalations and more analyst capacity, but agent-decision error rate rises from 2.1% to 3.8%."
+      }
+    ]
+  },
+  "trajectory": {
+    "phases": [
+      {
+        "id": 1,
+        "name": "Trust Foundation",
+        "period": "M1–M3",
+        "status": "complete",
+        "pctComplete": 100
+      },
+      {
+        "id": 2,
+        "name": "Collections + Cash App",
+        "period": "M4–M6",
+        "status": "complete",
+        "pctComplete": 100
+      },
+      {
+        "id": 3,
+        "name": "Disputes + Deductions",
+        "period": "M7–M9",
+        "status": "active",
+        "pctComplete": 65
+      },
+      {
+        "id": 4,
+        "name": "Autonomous AR",
+        "period": "M10–M12",
+        "status": "upcoming",
+        "pctComplete": 0
+      }
+    ],
+    "agentMaturity": {
+      "labels": [
+        "M1",
+        "M2",
+        "M3",
+        "M4",
+        "M5",
+        "M6",
+        "M7",
+        "M8",
+        "M9"
+      ],
+      "manual": [
+        85,
+        72,
+        60,
+        45,
+        35,
+        28,
+        22,
+        18,
+        15
+      ],
+      "hitl": [
+        12,
+        22,
+        30,
+        35,
+        38,
+        37,
+        35,
+        32,
+        28
+      ],
+      "autonomous": [
+        3,
+        6,
+        10,
+        20,
+        27,
+        35,
+        43,
+        50,
+        57
+      ]
+    },
+    "kpiTrajectory": [
+      {
+        "metric": "DSO",
+        "unit": "days",
+        "target": 35,
+        "actual": [
+          45,
+          44,
+          43,
+          42,
+          41,
+          40,
+          39,
+          38,
+          42
+        ],
+        "forecast": [
+          42,
+          40,
+          38,
+          37,
+          36,
+          35
+        ],
+        "confidenceBand": {
+          "upper": [
+            44,
+            43,
+            42,
+            41,
+            40,
+            39
+          ],
+          "lower": [
+            40,
+            37,
+            34,
+            33,
+            32,
+            31
+          ]
+        }
+      },
+      {
+        "metric": "CEI",
+        "unit": "%",
+        "target": 90,
+        "actual": [
+          72,
+          74,
+          76,
+          78,
+          80,
+          82,
+          83,
+          84,
+          85
+        ],
+        "forecast": [
+          85,
+          86,
+          87,
+          88,
+          89,
+          90
+        ],
+        "confidenceBand": {
+          "upper": [
+            87,
+            89,
+            91,
+            92,
+            93,
+            94
+          ],
+          "lower": [
+            83,
+            83,
+            83,
+            84,
+            85,
+            86
+          ]
+        }
+      },
+      {
+        "metric": "Auto-Match",
+        "unit": "%",
+        "target": 85,
+        "actual": [
+          35,
+          42,
+          50,
+          58,
+          65,
+          70,
+          75,
+          78,
+          82
+        ],
+        "forecast": [
+          82,
+          83,
+          84,
+          84,
+          85,
+          85
+        ],
+        "confidenceBand": {
+          "upper": [
+            84,
+            86,
+            88,
+            89,
+            90,
+            90
+          ],
+          "lower": [
+            80,
+            80,
+            80,
+            79,
+            80,
+            80
+          ]
+        }
+      }
+    ],
+    "cumulativeROI": {
+      "labels": [
+        "M1",
+        "M2",
+        "M3",
+        "M4",
+        "M5",
+        "M6",
+        "M7",
+        "M8",
+        "M9",
+        "M10",
+        "M11",
+        "M12"
+      ],
+      "investment": [
+        500000,
+        900000,
+        1200000,
+        1400000,
+        1500000,
+        1600000,
+        1650000,
+        1700000,
+        1750000,
+        1800000,
+        1850000,
+        1900000
+      ],
+      "returns": [
+        0,
+        0,
+        200000,
+        700000,
+        1500000,
+        2600000,
+        3800000,
+        5100000,
+        6500000,
+        7500000,
+        8200000,
+        8400000
+      ],
+      "breakeven": "M5"
+    },
+    "boardScorecard": [
+      {
+        "metric": "Working Capital Released",
+        "target": 4200000,
+        "actual": 3100000,
+        "status": "on-track"
+      },
+      {
+        "metric": "Revenue Leakage Prevented",
+        "target": 2100000,
+        "actual": 1800000,
+        "status": "on-track"
+      },
+      {
+        "metric": "Bad Debt Reduction",
+        "target": 2100000,
+        "actual": 1400000,
+        "status": "at-risk"
+      },
+      {
+        "metric": "Agent Autonomy",
+        "target": 0.9,
+        "actual": 0.73,
+        "status": "on-track"
+      },
+      {
+        "metric": "Decision Queue Reduction",
+        "target": 5,
+        "actual": 14,
+        "status": "on-track"
+      }
+    ]
+  },
+  "cashForecast": {
+    "weeks": [
+      "W27",
+      "W28",
+      "W29",
+      "W30",
+      "W31",
+      "W32",
+      "W33",
+      "W34",
+      "W35",
+      "W36",
+      "W37",
+      "W38",
+      "W39"
+    ],
+    "inflows": [
+      2800000,
+      3100000,
+      2400000,
+      3500000,
+      2900000,
+      2700000,
+      3200000,
+      2600000,
+      3800000,
+      3400000,
+      2500000,
+      3100000,
+      2900000
+    ],
+    "outflows": [
+      2200000,
+      2400000,
+      2100000,
+      2800000,
+      2300000,
+      2500000,
+      2600000,
+      2200000,
+      2900000,
+      2700000,
+      2300000,
+      2500000,
+      2400000
+    ],
+    "netPosition": [
+      600000,
+      700000,
+      300000,
+      700000,
+      600000,
+      200000,
+      600000,
+      400000,
+      900000,
+      700000,
+      200000,
+      600000,
+      500000
+    ],
+    "confidenceBand": {
+      "upper": [
+        800000,
+        1000000,
+        600000,
+        1100000,
+        1000000,
+        600000,
+        1100000,
+        900000,
+        1400000,
+        1200000,
+        700000,
+        1100000,
+        1000000
+      ],
+      "lower": [
+        400000,
+        400000,
+        0,
+        300000,
+        200000,
+        -200000,
+        100000,
+        -100000,
+        400000,
+        200000,
+        -300000,
+        100000,
+        0
+      ]
+    }
+  }
+};</script>
 <script>
 /* ============================================================================
  * ProcessIQ — Cognitive Engine
@@ -42067,8 +43099,33 @@ body.dark .pm-export-h code{background:#1c2431}
         { id: "cockpit", label: "Cognitive Cockpit" },
         { id: "governance", label: "Governance" },
         { id: "roi", label: "ROI & Attribution" } ] },
+    { id: "cfo", n: 5, label: "CFO Layer", tag: "Executive Consumption", sub: [
+        { id: "command", label: "Command Center" },
+        { id: "intelligence", label: "Intelligence" },
+        { id: "scenarios", label: "Scenarios" },
+        { id: "trajectory", label: "Trajectory" } ] },
   ];
   PIQ.STAGES = STAGES;
+
+  /* ---- personas: a landing-page lens that opens the app on one part of the
+     journey and greys the rest. Passed as ?persona=<id>; a null persona = full
+     workspace. Non-allowed stages render locked (non-navigable). ------------ */
+  var PERSONAS = {
+    cfo:      { label: "CFO / Finance Lead",       stages: ["cfo"],           entry: "command" },
+    designer: { label: "Transformation Designer",  stages: ["design"],        entry: "studio" },
+    studio:   { label: "Implementation Studio",    stages: ["fit", "build"],  entry: "fitment" },
+    manage:   { label: "Manage & Operate",         stages: ["run"],           entry: "runtime" },
+  };
+  PIQ.persona = null;
+  function personaAllows(stageId) {
+    if (!PIQ.persona) return true;
+    var p = PERSONAS[PIQ.persona];
+    return !p || p.stages.indexOf(stageId) >= 0;
+  }
+  function readPersona() {
+    try { var m = /[?&]persona=([a-z]+)/i.exec(window.location.search); return m ? m[1].toLowerCase() : null; }
+    catch (e) { return null; }
+  }
 
   function stageOf(viewId) {
     for (var i = 0; i < STAGES.length; i++) {
@@ -42297,13 +43354,22 @@ body.dark .pm-export-h code{background:#1c2431}
     var stage = stageOf(PIQ.active);
     nav.innerHTML = "";
     STAGES.forEach(function (st, i) {
+      // the CFO layer is the consumption surface, not part of the build pipeline —
+      // separate it visually from stages 1–4.
+      if (st.id === "cfo") {
+        var sep = document.createElement("span"); sep.className = "stage-sep";
+        sep.innerHTML = '<span class="sep-line"></span>'; nav.appendChild(sep);
+      }
+      var allowed = personaAllows(st.id);
       var b = document.createElement("button");
-      b.className = "stagetab" + (stage && stage.id === st.id ? " on" : "");
+      b.className = "stagetab" + (stage && stage.id === st.id ? " on" : "") + (allowed ? "" : " locked");
       b.innerHTML = '<span class="stnum">' + st.n + '</span>' +
-        '<span class="stlbl">' + st.label + '<small>' + st.tag + '</small></span>';
-      b.onclick = function () { go(st.sub[0].id); };
+        '<span class="stlbl">' + st.label + '<small>' + st.tag + '</small></span>' +
+        (allowed ? '' : '<span class="stlock">🔒</span>');
+      if (allowed) b.onclick = function () { go(st.sub[0].id); };
+      else b.title = "Locked for this persona — open the full workspace from the landing page";
       nav.appendChild(b);
-      if (i < STAGES.length - 1) {
+      if (i < STAGES.length - 1 && STAGES[i + 1].id !== "cfo") {
         var a = document.createElement("span"); a.className = "stage-arrow"; a.textContent = "→";
         nav.appendChild(a);
       }
@@ -42399,8 +43465,14 @@ body.dark .pm-export-h code{background:#1c2431}
 
   restoreTheme();
 
-  // Open on the Studio — the SME's front door into the journey.
-  PIQ.boot = function () { PIQ.restoreComposition(); go("studio"); };
+  // Boot: a persona (from the landing page) opens the app on its slice of the
+  // journey; otherwise start on the Studio — the SME's front door.
+  PIQ.boot = function () {
+    PIQ.restoreComposition();
+    var persona = readPersona();
+    if (persona && PERSONAS[persona]) { PIQ.persona = persona; go(PERSONAS[persona].entry); }
+    else go("studio");
+  };
 })();
 
 /* Stage 1 · Design — Studio
@@ -45988,6 +47060,431 @@ body.dark .pm-export-h code{background:#1c2431}
   }
 
   window.PIQ.processMap = { has: function (n) { return !!seed(n); }, open: open, slug: slug, close: close, edited: isEdited };
+})();
+
+/* Stage 5 · CFO Consumption Layer — the executive's top-down surface.
+ *
+ * The inverse of the Studio: outcomes first, patterns underneath. Four sub-views —
+ * Command Center (daily pulse), Intelligence (weekly briefing), Scenarios (what-if),
+ * Trajectory (quarterly strategic). Every number carries a pattern-backed explanation
+ * chain (KPI -> Theme -> Patterns -> Evidence -> Agent Action); pattern pills deep-link
+ * to the Cognitive Cockpit.
+ *
+ * Reads window.PROCESSIQ_CFO (generated) + PIQ.tax.themes (the 5 real themes) +
+ * PIQ.pattern()/PIQ.book for deep-links. All charts are inline SVG — no external libs.
+ */
+(function () {
+  "use strict";
+
+  var CFO = window.PROCESSIQ_CFO || {};
+  var CMP = CFO.compounds || {};
+  var THEME_ICONS = { "trending-up": "📈", "shield-alert": "🚨", "clock": "⏱️",
+    "shield-check": "🛡️", "eye": "👁️" };
+  var _intelFilter = null;   // themeId set when a Command Center tile is clicked
+
+  function el(t, c, h) { var n = document.createElement(t); if (c) n.className = c; if (h != null) n.innerHTML = h; return n; }
+  function esc(s) { return (s == null ? "" : String(s)).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+  function themes() { return (window.PIQ.tax && window.PIQ.tax.themes) || []; }
+  function themeById(id) { return themes().filter(function (t) { return t.id === id; })[0] || null; }
+  function icon(name) { return THEME_ICONS[name] || "◆"; }
+  function money(x) {
+    var n = Math.abs(x), s = x < 0 ? "-" : "";
+    if (n >= 1e6) return s + "$" + (n / 1e6).toFixed(1) + "M";
+    if (n >= 1e3) return s + "$" + Math.round(n / 1e3) + "K";
+    return s + "$" + n;
+  }
+
+  function toast(msg) {
+    var t = document.querySelector(".cfo-toast");
+    if (!t) { t = el("div", "cfo-toast"); document.body.appendChild(t); }
+    t.textContent = msg; t.classList.add("show");
+    clearTimeout(t._t); t._t = setTimeout(function () { t.classList.remove("show"); }, 1900);
+  }
+
+  function onPatternClick(patId) {
+    var p = window.PIQ.pattern(patId);
+    if (p && window.PIQ.book) {
+      var iv = (window.PIQ.book.invoices || []).filter(function (x) { return x.groundTruthFeature === p.featureSlug; })[0];
+      if (iv) window.PIQ._jumpInvoice = iv.belnr;
+    }
+    window.PIQ.go("cockpit");
+  }
+  function patPill(id) {
+    var p = window.PIQ.pattern(id);
+    return '<span class="dq-pat" data-pat="' + id + '" title="See it live in the Cognitive Cockpit">#' + id +
+      (p ? ' ' + esc(p.name) : '') + '</span>';
+  }
+  function bindPatterns(root) {
+    root.querySelectorAll(".dq-pat").forEach(function (e) {
+      e.onclick = function (ev) { ev.stopPropagation(); onPatternClick(+e.dataset.pat); };
+    });
+  }
+
+  /* ---- inline SVG helpers ---------------------------------------------- */
+  function sx(i, n, w, pad) { return pad + (n <= 1 ? 0 : (i / (n - 1)) * (w - 2 * pad)); }
+  function sy(v, mn, mx, h, pad) { return h - pad - (mx === mn ? 0 : ((v - mn) / (mx - mn)) * (h - 2 * pad)); }
+  function linePath(d, mn, mx, w, h, pad, x0) {
+    return d.map(function (v, i) { return (i ? "L" : "M") + sx((x0 || 0) + i, (x0 || 0) + d.length, w, pad).toFixed(1) + "," + sy(v, mn, mx, h, pad).toFixed(1); }).join(" ");
+  }
+  function areaPath(d, mn, mx, w, h, pad) {
+    var line = linePath(d, mn, mx, w, h, pad);
+    var yb = sy(mn < 0 ? 0 : mn, mn, mx, h, pad);
+    return line + " L" + sx(d.length - 1, d.length, w, pad).toFixed(1) + "," + yb.toFixed(1) +
+      " L" + sx(0, d.length, w, pad).toFixed(1) + "," + yb.toFixed(1) + " Z";
+  }
+  // band between upper[] and lower[] across n points
+  function bandPath(upper, lower, mn, mx, w, h, pad, x0) {
+    x0 = x0 || 0; var n = x0 + upper.length;
+    var up = upper.map(function (v, i) { return (i ? "L" : "M") + sx(x0 + i, n, w, pad).toFixed(1) + "," + sy(v, mn, mx, h, pad).toFixed(1); }).join(" ");
+    var lo = lower.map(function (v, i) { var j = lower.length - 1 - i; return "L" + sx(x0 + j, n, w, pad).toFixed(1) + "," + sy(lower[j], mn, mx, h, pad).toFixed(1); }).join(" ");
+    return up + " " + lo + " Z";
+  }
+  function polar(cx, cy, r, deg) { var a = (deg - 90) * Math.PI / 180; return [cx + r * Math.cos(a), cy + r * Math.sin(a)]; }
+  function arc(cx, cy, r, a0, a1) {
+    var s = polar(cx, cy, r, a1), e = polar(cx, cy, r, a0), large = a1 - a0 <= 180 ? 0 : 1;
+    return "M" + s[0].toFixed(1) + "," + s[1].toFixed(1) + " A" + r + "," + r + " 0 " + large + " 0 " + e[0].toFixed(1) + "," + e[1].toFixed(1);
+  }
+  function mnmx() { var a = [].concat.apply([], arguments); return [Math.min.apply(null, a), Math.max.apply(null, a)]; }
+
+  function section(title, sub) {
+    return '<div class="cfo-section"><h3>' + esc(title) + '</h3>' + (sub ? '<div class="cfo-sub">' + esc(sub) + '</div>' : '') + '</div>';
+  }
+
+  /* ====================================================================== */
+  /* 1 · COMMAND CENTER                                                      */
+  /* ====================================================================== */
+  function themeTile(t) {
+    var k = t.compoundKPI || {};
+    var cur = +k.current, tgt = +k.target, reduce = tgt < cur;
+    var impr = cur ? Math.abs(tgt - cur) / cur : 0;
+    var light = impr >= 0.2 ? "green" : impr >= 0.08 ? "amber" : "red";
+    var deltaCls = reduce ? "good" : "good";   // both directions are improvements toward target
+    var deltaTxt = (reduce ? "▼ " : "▲ ") + Math.round(impr * 100) + "%";
+    return '<div class="cfo-tile" data-theme="' + t.id + '" style="--ac:' + t.accent + '">' +
+      '<div class="tile-icon">' + icon(t.icon) + '<span class="tile-light ' + light + '"></span></div>' +
+      '<div class="tile-name">' + esc(t.name) + '</div>' +
+      '<div class="tile-kpi">' + esc(k.current) + '<i> → </i>' + esc(k.target) + ' <small>' + esc(k.unit) + '</small></div>' +
+      '<span class="tile-delta ' + deltaCls + '">' + deltaTxt + ' vs target · ' + esc(k.name) + '</span></div>';
+  }
+
+  function autonomyGauge(a) {
+    var w = 260, h = 168, cx = 130, cy = 140, r = 96;
+    var f = a.current, tf = a.target;
+    var bg = arc(cx, cy, r, 0, 180);
+    var val = arc(cx, cy, r, 0, 180 * f);
+    var tick = polar(cx, cy, r, 180 * tf);           // target marker on the arc
+    var tin = polar(cx, cy, r - 14, 180 * tf);
+    // sparkline
+    var tr = a.trend, mm = mnmx(tr), spW = 220, spH = 34;
+    var sp = linePath(tr, mm[0] - 0.02, mm[1] + 0.02, spW, spH, 4);
+    return '<div class="cfo-gauge">' +
+      '<div class="gauge-label">Agent Autonomy</div>' +
+      '<svg viewBox="0 0 ' + w + ' ' + h + '" class="gauge-svg">' +
+        '<path d="' + bg + '" fill="none" stroke="var(--line)" stroke-width="14" stroke-linecap="round"/>' +
+        '<path d="' + val + '" fill="none" stroke="var(--act)" stroke-width="14" stroke-linecap="round"/>' +
+        '<line x1="' + tick[0].toFixed(1) + '" y1="' + tick[1].toFixed(1) + '" x2="' + tin[0].toFixed(1) + '" y2="' + tin[1].toFixed(1) + '" stroke="var(--brand2)" stroke-width="2.5"/>' +
+        '<text x="' + cx + '" y="' + (cy - 8) + '" text-anchor="middle" class="gauge-pct">' + Math.round(f * 100) + '%</text>' +
+      '</svg>' +
+      '<div class="gauge-meta">Target <b>' + Math.round(tf * 100) + '%</b> · 6-week trend</div>' +
+      '<svg viewBox="0 0 ' + spW + ' ' + spH + '" class="gauge-spark"><path d="' + sp + '" fill="none" stroke="var(--act)" stroke-width="2"/></svg>' +
+      '</div>';
+  }
+
+  function cashForecast(cf) {
+    var w = 620, h = 240, pad = 30;
+    var all = cf.inflows.concat(cf.outflows, cf.netPosition, cf.confidenceBand.upper, cf.confidenceBand.lower);
+    var mm = mnmx(all); var mn = Math.min(mm[0], 0), mx = mm[1];
+    var n = cf.weeks.length;
+    var band = bandPath(cf.confidenceBand.upper, cf.confidenceBand.lower, mn, mx, w, h, pad);
+    var inA = areaPath(cf.inflows, mn, mx, w, h, pad);
+    var outA = areaPath(cf.outflows, mn, mx, w, h, pad);
+    var netL = linePath(cf.netPosition, mn, mx, w, h, pad);
+    var y0 = sy(0, mn, mx, h, pad);
+    var labels = cf.weeks.map(function (wk, i) { return i % 2 === 0 ? '<text x="' + sx(i, n, w, pad).toFixed(1) + '" y="' + (h - 8) + '" text-anchor="middle" class="ax">' + wk + '</text>' : ''; }).join("");
+    return '<div class="cfo-forecast"><div class="fc-legend">' +
+        '<span class="lg in">Inflows</span><span class="lg out">Outflows</span><span class="lg net">Net position</span><span class="lg band">Confidence</span></div>' +
+      '<svg viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none">' +
+        '<line x1="' + pad + '" y1="' + y0.toFixed(1) + '" x2="' + (w - pad) + '" y2="' + y0.toFixed(1) + '" stroke="var(--line)" stroke-dasharray="3 3"/>' +
+        '<path d="' + inA + '" fill="var(--act)" opacity="0.12"/>' +
+        '<path d="' + outA + '" fill="var(--crit)" opacity="0.10"/>' +
+        '<path d="' + band + '" fill="var(--muted)" opacity="0.16"/>' +
+        '<path d="' + netL + '" fill="none" stroke="var(--brand2)" stroke-width="2.5"/>' +
+        labels +
+      '</svg></div>';
+  }
+
+  var URG = { critical: 0, high: 1, medium: 2, low: 3 };
+  function dqCard(d) {
+    var t = themeById(d.themeId);
+    var pills = (d.triggeringPatterns || []).map(patPill).join("");
+    var acts = (d.actions || []).map(function (a) {
+      var cls = /approve|confirm|add/.test(a) ? "approve" : /override|modify|investigate|escalate/.test(a) ? "override" : "defer";
+      return '<button class="dq-btn ' + cls + '" data-act="' + esc(a) + '">' + esc(a.replace(/-/g, " ")) + '</button>';
+    }).join("");
+    return '<div class="dq-card" data-id="' + d.id + '">' +
+      '<div class="dq-header"><span class="dq-urgency ' + d.urgency + '">' + d.urgency + '</span>' +
+        '<span class="dq-title">' + esc(d.title) + '</span></div>' +
+      '<div class="dq-summary">' + esc(d.summary) + '</div>' +
+      '<div class="dq-meta">' +
+        '<span class="dq-confidence">Agent: ' + esc(d.agentRecommendation.replace(/-/g, " ")) + ' · ' + Math.round(d.confidence * 100) + '% conf</span>' +
+        '<span class="dq-exposure">Exposure ' + money(d.exposure) + '</span>' +
+        (t ? '<span class="dq-ago">' + esc(t.name) + '</span>' : '') +
+        '<span class="dq-ago">' + esc(d.submittedAgo) + ' ago</span></div>' +
+      (pills ? '<div class="dq-patterns">' + pills + '</div>' : '') +
+      '<div class="dq-actions">' + acts + '</div></div>';
+  }
+
+  function renderCommand(view) {
+    var cc = CFO.commandCenter || {}, ts = themes();
+    var q = (cc.decisionQueue || []).slice().sort(function (a, b) { return (URG[a.urgency] - URG[b.urgency]); });
+    var html =
+      section("Command Center", "Your daily 5-minute pulse — outcomes, autonomy, cash, and only what needs your judgment.") +
+      '<div class="cfo-tiles">' + ts.map(themeTile).join("") + '</div>' +
+      '<div class="cfo-cols"><div>' + autonomyGauge(cc.agentAutonomy || {}) + '</div>' +
+        '<div>' + section("13-Week Cash Forecast", "Net position with confidence band.") + cashForecast(CFO.cashForecast || {}) + '</div></div>' +
+      section("Decision Queue", q.length + " item" + (q.length !== 1 ? "s" : "") + " need your call — sorted by urgency.") +
+      '<div class="cfo-queue">' + q.map(dqCard).join("") + '</div>';
+    view.innerHTML = '<div class="cfo-wrap">' + html + '</div>';
+
+    // tile click -> filter Intelligence by theme
+    view.querySelectorAll(".cfo-tile").forEach(function (e) {
+      e.onclick = function () { _intelFilter = e.dataset.theme; window.PIQ.go("intelligence"); };
+    });
+    bindPatterns(view);
+    // decision actions (display-only): animate out + toast
+    view.querySelectorAll(".dq-card").forEach(function (card) {
+      card.querySelectorAll(".dq-btn").forEach(function (b) {
+        b.onclick = function () {
+          card.classList.add("dismissed");
+          toast("Decision recorded — " + b.dataset.act.replace(/-/g, " "));
+          setTimeout(function () { card.style.display = "none"; }, 320);
+        };
+      });
+    });
+  }
+
+  /* ====================================================================== */
+  /* 2 · INTELLIGENCE                                                        */
+  /* ====================================================================== */
+  var SEV = { alert: 0, warn: 1, info: 2, good: 3 };
+  function insCard(ins) {
+    var t = themeById(ins.themeId), im = ins.impact || {};
+    var arrow = im.direction === "worse" ? "↑" : "↓";
+    var pills = (ins.patternIds || []).map(patPill).join("");
+    return '<div class="ins-card ' + ins.severity + '">' +
+      '<span class="ins-sev ' + ins.severity + '">' + ins.severity + '</span>' +
+      (t ? '<span class="ins-theme">' + esc(t.name) + '</span>' : '') +
+      '<div class="ins-headline">' + esc(ins.headline) + '</div>' +
+      '<div class="ins-narrative">' + esc(ins.narrative) + '</div>' +
+      '<div class="ins-foot"><span class="ins-impact">' + esc(im.metric) + ' <b>' + esc(im.delta) + '</b> ' + arrow + '</span>' +
+        (pills ? '<span class="ins-pills">' + pills + '</span>' : '') +
+        '<span class="ins-week">' + esc(ins.weekOf) + '</span></div></div>';
+  }
+
+  function cmpCard(r) {
+    var c = CMP[r.compoundId] || { name: r.compoundId, description: "", patternIds: [] };
+    var pills = (c.patternIds || []).map(patPill).join("");
+    return '<div class="cmp-card">' +
+      '<div class="cmp-top"><span class="cmp-name">' + esc(c.name) + '</span>' +
+        '<span class="cmp-status ' + r.status + '">' + r.status + '</span></div>' +
+      '<div class="cmp-desc">' + esc(c.description) + '</div>' +
+      '<div class="cmp-stat"><span>' + r.activeCustomers + ' customer' + (r.activeCustomers !== 1 ? "s" : "") + '</span>' +
+        '<span>' + money(r.totalExposure) + ' exposure</span></div>' +
+      '<div class="dq-patterns">' + pills + '</div></div>';
+  }
+
+  function explanationChain() {
+    var steps = ["KPI", "Theme", "Patterns", "Evidence", "Agent Action"];
+    var boxes = steps.map(function (s, i) {
+      return '<span class="ec-box ec-' + i + '">' + s + '</span>' + (i < steps.length - 1 ? '<span class="ec-arr">→</span>' : '');
+    }).join("");
+    return '<div class="cfo-chain"><span class="ec-lead">How to read this page:</span>' + boxes + '</div>';
+  }
+
+  function renderIntelligence(view) {
+    var intel = CFO.intelligence || {};
+    var ins = (intel.insights || []).slice();
+    var filt = _intelFilter;
+    if (filt) ins = ins.filter(function (x) { return x.themeId === filt; });
+    ins.sort(function (a, b) { return SEV[a.severity] - SEV[b.severity]; });
+    var ft = filt ? themeById(filt) : null;
+    var html =
+      section("Intelligence", "The weekly briefing — the system writes the story behind every move.") +
+      (ft ? '<div class="cfo-filter">Filtered to <b>' + esc(ft.name) + '</b> <button class="cfo-clear">show all</button></div>' : '') +
+      '<div class="ins-feed">' + (ins.length ? ins.map(insCard).join("") : '<div class="cfo-empty">No insights for this theme this week.</div>') + '</div>' +
+      section("Compound Pattern Radar", "Cross-process behavioural risk no single analyst can see.") +
+      '<div class="cmp-grid">' + (intel.compoundRadar || []).map(cmpCard).join("") + '</div>' +
+      explanationChain();
+    view.innerHTML = '<div class="cfo-wrap">' + html + '</div>';
+    var clr = view.querySelector(".cfo-clear");
+    if (clr) clr.onclick = function () { _intelFilter = null; renderIntelligence(view); };
+    bindPatterns(view);
+  }
+
+  /* ====================================================================== */
+  /* 3 · SCENARIOS                                                           */
+  /* ====================================================================== */
+  var _scn = null;
+  function scnCard(s) {
+    var chips = s.impacts.map(function (im) {
+      return '<span class="scn-chip ' + (im.direction === "better" ? "good" : "bad") + '">' + esc(im.metric) + '</span>';
+    }).join("");
+    return '<div class="scn-card' + (_scn === s.id ? " sel" : "") + '" data-id="' + s.id + '">' +
+      '<div class="scn-name">' + esc(s.name) + '</div>' +
+      '<div class="scn-desc">' + esc(s.description) + '</div>' +
+      '<div class="scn-chips">' + chips + '</div></div>';
+  }
+  function fmtVal(v, unit) {
+    if (unit === "$") return money(v);
+    if (unit === "%") return (Math.round(v * 10) / 10) + "%";
+    return (Math.round(v * 10) / 10) + (unit && unit !== "customers" && unit !== "cases" ? " " + unit : (unit ? " " + unit : ""));
+  }
+  function scnDetail(s, factor) {
+    var rows = s.impacts.map(function (im) {
+      var proj = im.baseCase + (im.projected - im.baseCase) * factor;
+      var better = im.direction === "better";
+      var arrow = (proj < im.baseCase ? "▼" : proj > im.baseCase ? "▲" : "–");
+      return '<tr><td>' + esc(im.metric) + '</td><td>' + fmtVal(im.baseCase, im.unit) + '</td>' +
+        '<td class="' + (better ? "imp-good" : "imp-bad") + '">' + arrow + " " + fmtVal(proj, im.unit) + '</td></tr>';
+    }).join("");
+    var sliders = s.parameters.map(function (p) {
+      return '<div class="scn-slider"><label>' + esc(p.name) + '</label>' +
+        '<input type="range" data-p min="' + p.min + '" max="' + p.max + '" step="' + (p.step || 1) + '" value="' + p.default + '"/>' +
+        '<span class="scn-val">' + esc(p.default) + (p.unit === "%" ? "%" : p.unit === "$" ? "" : "") + '</span></div>';
+    }).join("");
+    return '<div class="scn-detail" data-id="' + s.id + '"><h4>' + esc(s.name) + '</h4>' + sliders +
+      '<div class="scn-impacts"><table><thead><tr><th>Metric</th><th>Base case</th><th>Projected</th></tr></thead>' +
+        '<tbody>' + rows + '</tbody></table></div>' +
+      '<div class="scn-tradeoff"><b>Trade-off:</b> ' + esc(s.tradeoff) + '</div>' +
+      '<button class="btn go scn-apply">Apply to model</button></div>';
+  }
+  function renderScenarios(view) {
+    var list = (CFO.scenarios && CFO.scenarios.available) || [];
+    var sel = _scn && list.filter(function (x) { return x.id === _scn; })[0];
+    var html = section("Scenarios", "The monthly what-if engine — move a lever, see the trade-off before you commit.") +
+      '<div class="scn-grid">' + list.map(scnCard).join("") + '</div>' +
+      (sel ? scnDetail(sel, 1) : '<div class="cfo-empty">Select a scenario to model its impact.</div>');
+    view.innerHTML = '<div class="cfo-wrap">' + html + '</div>';
+    view.querySelectorAll(".scn-card").forEach(function (c) {
+      c.onclick = function () { _scn = c.dataset.id; renderScenarios(view); };
+    });
+    var det = view.querySelector(".scn-detail");
+    if (det && sel) {
+      var p = sel.parameters[0], slider = det.querySelector('input[type=range]'), val = det.querySelector(".scn-val");
+      var tbody = det.querySelector("tbody");
+      slider.oninput = function () {
+        var v = +slider.value;
+        val.textContent = (p.unit === "$" ? money(v) : v + (p.unit === "%" ? "%" : ""));
+        var factor = p.default ? v / p.default : 1;
+        tbody.innerHTML = sel.impacts.map(function (im) {
+          var proj = im.baseCase + (im.projected - im.baseCase) * factor;
+          var better = im.direction === "better";
+          var arrow = (proj < im.baseCase ? "▼" : proj > im.baseCase ? "▲" : "–");
+          return '<tr><td>' + esc(im.metric) + '</td><td>' + fmtVal(im.baseCase, im.unit) + '</td>' +
+            '<td class="' + (better ? "imp-good" : "imp-bad") + '">' + arrow + " " + fmtVal(proj, im.unit) + '</td></tr>';
+        }).join("");
+      };
+      det.querySelector(".scn-apply").onclick = function () { toast("Scenario submitted for review"); };
+    }
+  }
+
+  /* ====================================================================== */
+  /* 4 · TRAJECTORY                                                          */
+  /* ====================================================================== */
+  function phaseBar(phases) {
+    return '<div class="phase-bar">' + phases.map(function (p) {
+      return '<div class="phase-seg ' + p.status + '"><div class="phase-name">' + esc(p.name) + '</div>' +
+        '<div class="phase-period">' + esc(p.period) + '</div>' +
+        '<div class="phase-fill"><span style="width:' + p.pctComplete + '%"></span></div>' +
+        '<div class="phase-pct">' + p.status + ' · ' + p.pctComplete + '%</div></div>';
+    }).join("") + '</div>';
+  }
+
+  function maturityChart(m) {
+    var w = 620, h = 220, pad = 30, n = m.labels.length;
+    // stack bottom->top: autonomous, hitl, manual (sum 100)
+    var auto = m.autonomous, hitl = m.hitl.map(function (v, i) { return auto[i] + v; }), man = hitl.map(function (v, i) { return v + m.manual[i]; });
+    function poly(top, bot, fill, op) {
+      var up = top.map(function (v, i) { return (i ? "L" : "M") + sx(i, n, w, pad).toFixed(1) + "," + sy(v, 0, 100, h, pad).toFixed(1); }).join(" ");
+      var lo = bot.map(function (v, i) { var j = bot.length - 1 - i; return "L" + sx(j, n, w, pad).toFixed(1) + "," + sy(bot[j], 0, 100, h, pad).toFixed(1); }).join(" ");
+      return '<path d="' + up + " " + lo + ' Z" fill="' + fill + '" opacity="' + op + '"/>';
+    }
+    var zero = auto.map(function () { return 0; });
+    var lbl = m.labels.map(function (L, i) { return '<text x="' + sx(i, n, w, pad).toFixed(1) + '" y="' + (h - 8) + '" text-anchor="middle" class="ax">' + L + '</text>'; }).join("");
+    return '<div class="cfo-forecast"><div class="fc-legend"><span class="lg mn">Manual</span><span class="lg hl">HITL</span><span class="lg at">Autonomous</span></div>' +
+      '<svg viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none">' +
+        poly(auto, zero, "var(--act)", "0.85") + poly(hitl, auto, "var(--high)", "0.7") + poly(man, hitl, "var(--muted)", "0.45") + lbl +
+      '</svg></div>';
+  }
+
+  function kpiSmall(k) {
+    var w = 300, h = 170, pad = 26;
+    var act = k.actual, fc = k.forecast, up = k.confidenceBand.upper, lo = k.confidenceBand.lower;
+    var na = act.length;                      // 9 actual (index 0..8)
+    var fcLead = [act[na - 1]].concat(fc);    // connect forecast to last actual (index 8..8+fc)
+    var mm = mnmx(act, fc, up, lo, [k.target]); var mn = mm[0] - 2, mx = mm[1] + 2;
+    var total = na + fc.length;               // total x slots
+    // band over forecast x-range (index na..total-1)
+    var band = bandPath(up, lo, mn, mx, w, h, pad, na);
+    var actL = linePath(act, mn, mx, w, h, pad, 0);
+    var fcL = linePath(fcLead, mn, mx, w, h, pad, na - 1);
+    var ty = sy(k.target, mn, mx, h, pad);
+    return '<div class="cfo-sm-card"><div class="cfo-sm-title">' + esc(k.metric) + ' <small>target ' + k.target + esc(k.unit === "%" ? "%" : "") + '</small></div>' +
+      '<svg viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none">' +
+        '<path d="' + band + '" fill="var(--brand2)" opacity="0.12"/>' +
+        '<line x1="' + pad + '" y1="' + ty.toFixed(1) + '" x2="' + (w - pad) + '" y2="' + ty.toFixed(1) + '" stroke="var(--muted)" stroke-dasharray="2 3"/>' +
+        '<path d="' + actL + '" fill="none" stroke="var(--brand2)" stroke-width="2.2"/>' +
+        '<path d="' + fcL + '" fill="none" stroke="var(--brand2)" stroke-width="2" stroke-dasharray="5 4" opacity="0.75"/>' +
+      '</svg></div>';
+  }
+
+  function roiChart(r) {
+    var w = 620, h = 230, pad = 34, n = r.labels.length;
+    var mm = mnmx(r.investment, r.returns); var mn = 0, mx = mm[1];
+    var invA = areaPath(r.investment, mn, mx, w, h, pad);
+    var retA = areaPath(r.returns, mn, mx, w, h, pad);
+    var bi = r.labels.indexOf(r.breakeven);
+    var bx = bi >= 0 ? sx(bi, n, w, pad) : null;
+    var be = bx != null ? '<line x1="' + bx.toFixed(1) + '" y1="' + pad + '" x2="' + bx.toFixed(1) + '" y2="' + (h - pad) + '" stroke="var(--act)" stroke-dasharray="4 3"/>' +
+      '<text x="' + bx.toFixed(1) + '" y="' + (pad - 6) + '" text-anchor="middle" class="ax b">break-even ' + esc(r.breakeven) + '</text>' : "";
+    var lbl = r.labels.map(function (L, i) { return i % 2 === 0 ? '<text x="' + sx(i, n, w, pad).toFixed(1) + '" y="' + (h - 10) + '" text-anchor="middle" class="ax">' + L + '</text>' : ''; }).join("");
+    return '<div class="cfo-forecast"><div class="fc-legend"><span class="lg out">Cumulative investment</span><span class="lg at">Cumulative returns</span></div>' +
+      '<svg viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none">' +
+        '<path d="' + retA + '" fill="var(--act)" opacity="0.16"/>' +
+        '<path d="' + linePath(r.returns, mn, mx, w, h, pad) + '" fill="none" stroke="var(--act)" stroke-width="2.4"/>' +
+        '<path d="' + linePath(r.investment, mn, mx, w, h, pad) + '" fill="none" stroke="var(--crit)" stroke-width="2.2"/>' +
+        be + lbl +
+      '</svg></div>';
+  }
+
+  function scorecard(rows) {
+    var body = rows.map(function (r) {
+      var t = r.metric.toLowerCase().indexOf("autonomy") >= 0 || r.target <= 1 ? Math.round(r.actual * 100) + "% / " + Math.round(r.target * 100) + "%" :
+        (r.metric.indexOf("Queue") >= 0 ? r.actual + " / " + r.target : money(r.actual) + " / " + money(r.target));
+      return '<tr><td>' + esc(r.metric) + '</td><td>' + t + '</td>' +
+        '<td><span class="board-status ' + r.status + '">' + r.status.replace("-", " ") + '</span></td></tr>';
+    }).join("");
+    return '<table class="board-table"><thead><tr><th>Metric</th><th>Actual / Target</th><th>Status</th></tr></thead><tbody>' + body + '</tbody></table>';
+  }
+
+  function renderTrajectory(view) {
+    var tr = CFO.trajectory || {};
+    var kpis = (tr.kpiTrajectory || []).map(kpiSmall).join("");
+    var html =
+      section("Trajectory", "The quarterly strategic view — where the transformation is heading, with confidence.") +
+      section("Phase Progress", "") + phaseBar(tr.phases || []) +
+      section("Agent Maturity", "The shift from manual to autonomous over the first 9 months.") + maturityChart(tr.agentMaturity || {}) +
+      section("KPI Trajectory", "Actual, forecast (dashed) and target (dotted) with confidence bands.") + '<div class="cfo-sm">' + kpis + '</div>' +
+      section("ROI Waterfall", "Cumulative investment vs returns.") + roiChart(tr.cumulativeROI || {}) +
+      section("Board Scorecard", "") + scorecard(tr.boardScorecard || []);
+    view.innerHTML = '<div class="cfo-wrap">' + html + '</div>';
+  }
+
+  /* ---- register the 4 sub-views ---------------------------------------- */
+  window.PIQ.modules.command = { render: renderCommand };
+  window.PIQ.modules.intelligence = { render: renderIntelligence };
+  window.PIQ.modules.scenarios = { render: renderScenarios };
+  window.PIQ.modules.trajectory = { render: renderTrajectory };
 })();
 
 </script>

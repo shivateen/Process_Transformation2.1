@@ -22,12 +22,13 @@ def read(*parts):
 
 def main():
     # Re-generate data first so the build is always current with the xlsx.
-    import build_patterns, build_portfolio, build_roi, build_discovery, build_taxonomy  # noqa
+    import build_patterns, build_portfolio, build_roi, build_discovery, build_taxonomy, build_cfo  # noqa
     build_patterns.main()
     build_portfolio.main()
     build_roi.main()
     build_discovery.main()
     build_taxonomy.main()   # depends on patterns.json above
+    build_cfo.main()        # depends on patterns.json above
 
     css = read("src", "css", "app.css")
     body = read("src", "html", "cockpit_body.html")
@@ -46,6 +47,7 @@ def main():
         read("src", "js", "roi.js"),
         read("src", "js", "discovery.js"),
         read("src", "js", "processmap.js"),
+        read("src", "js", "cfo.js"),
     ])
     patterns = read("src", "data", "patterns.json")
     portfolio = read("src", "data", "portfolio.json")
@@ -53,6 +55,7 @@ def main():
     discovery = read("src", "data", "discovery.json")
     taxonomy = read("src", "data", "taxonomy.json")
     processmaps = read("src", "data", "processmaps.json")
+    cfo = read("src", "data", "cfo.json")
 
     html = """<!DOCTYPE html>
 <html lang="en">
@@ -74,6 +77,7 @@ def main():
 <script>window.PROCESSIQ_DISCOVERY = {discovery};</script>
 <script>window.PROCESSIQ_TAXONOMY = {taxonomy};</script>
 <script>window.PROCESSIQ_PROCESSMAPS = {processmaps};</script>
+<script>window.PROCESSIQ_CFO = {cfo};</script>
 <script>
 {engine}
 </script>
@@ -84,7 +88,7 @@ def main():
 </body>
 </html>
 """.format(css=css, body=body, patterns=patterns, portfolio=portfolio, roi=roi,
-           discovery=discovery, taxonomy=taxonomy, processmaps=processmaps,
+           discovery=discovery, taxonomy=taxonomy, processmaps=processmaps, cfo=cfo,
            engine=engine, js_modules=js_modules)
 
     os.makedirs(PUB, exist_ok=True)

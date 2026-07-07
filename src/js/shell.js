@@ -50,8 +50,33 @@
         { id: "cockpit", label: "Cognitive Cockpit" },
         { id: "governance", label: "Governance" },
         { id: "roi", label: "ROI & Attribution" } ] },
+    { id: "cfo", n: 5, label: "CFO Layer", tag: "Executive Consumption", sub: [
+        { id: "command", label: "Command Center" },
+        { id: "intelligence", label: "Intelligence" },
+        { id: "scenarios", label: "Scenarios" },
+        { id: "trajectory", label: "Trajectory" } ] },
   ];
   PIQ.STAGES = STAGES;
+
+  /* ---- personas: a landing-page lens that opens the app on one part of the
+     journey and greys the rest. Passed as ?persona=<id>; a null persona = full
+     workspace. Non-allowed stages render locked (non-navigable). ------------ */
+  var PERSONAS = {
+    cfo:      { label: "CFO / Finance Lead",       stages: ["cfo"],           entry: "command" },
+    designer: { label: "Transformation Designer",  stages: ["design"],        entry: "studio" },
+    studio:   { label: "Implementation Studio",    stages: ["fit", "build"],  entry: "fitment" },
+    manage:   { label: "Manage & Operate",         stages: ["run"],           entry: "runtime" },
+  };
+  PIQ.persona = null;
+  function personaAllows(stageId) {
+    if (!PIQ.persona) return true;
+    var p = PERSONAS[PIQ.persona];
+    return !p || p.stages.indexOf(stageId) >= 0;
+  }
+  function readPersona() {
+    try { var m = /[?&]persona=([a-z]+)/i.exec(window.location.search); return m ? m[1].toLowerCase() : null; }
+    catch (e) { return null; }
+  }
 
   function stageOf(viewId) {
     for (var i = 0; i < STAGES.length; i++) {
@@ -280,13 +305,22 @@
     var stage = stageOf(PIQ.active);
     nav.innerHTML = "";
     STAGES.forEach(function (st, i) {
+      // the CFO layer is the consumption surface, not part of the build pipeline —
+      // separate it visually from stages 1–4.
+      if (st.id === "cfo") {
+        var sep = document.createElement("span"); sep.className = "stage-sep";
+        sep.innerHTML = '<span class="sep-line"></span>'; nav.appendChild(sep);
+      }
+      var allowed = personaAllows(st.id);
       var b = document.createElement("button");
-      b.className = "stagetab" + (stage && stage.id === st.id ? " on" : "");
+      b.className = "stagetab" + (stage && stage.id === st.id ? " on" : "") + (allowed ? "" : " locked");
       b.innerHTML = '<span class="stnum">' + st.n + '</span>' +
-        '<span class="stlbl">' + st.label + '<small>' + st.tag + '</small></span>';
-      b.onclick = function () { go(st.sub[0].id); };
+        '<span class="stlbl">' + st.label + '<small>' + st.tag + '</small></span>' +
+        (allowed ? '' : '<span class="stlock">🔒</span>');
+      if (allowed) b.onclick = function () { go(st.sub[0].id); };
+      else b.title = "Locked for this persona — open the full workspace from the landing page";
       nav.appendChild(b);
-      if (i < STAGES.length - 1) {
+      if (i < STAGES.length - 1 && STAGES[i + 1].id !== "cfo") {
         var a = document.createElement("span"); a.className = "stage-arrow"; a.textContent = "→";
         nav.appendChild(a);
       }
@@ -382,6 +416,12 @@
 
   restoreTheme();
 
-  // Open on the Studio — the SME's front door into the journey.
-  PIQ.boot = function () { PIQ.restoreComposition(); go("studio"); };
+  // Boot: a persona (from the landing page) opens the app on its slice of the
+  // journey; otherwise start on the Studio — the SME's front door.
+  PIQ.boot = function () {
+    PIQ.restoreComposition();
+    var persona = readPersona();
+    if (persona && PERSONAS[persona]) { PIQ.persona = persona; go(PERSONAS[persona].entry); }
+    else go("studio");
+  };
 })();
