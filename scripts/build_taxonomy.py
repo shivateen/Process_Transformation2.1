@@ -115,7 +115,7 @@ def build_themes():
                 "current": 58,
                 "target": 38,
             },
-            "functionIds": ["o2c", "p2p"],
+            "functionIds": ["o2c", "sc", "p2p"],
             "crossProcessPatterns": [
                 {
                     "id": "ccp-1",
@@ -148,7 +148,7 @@ def build_themes():
                 "current": 2.8,
                 "target": 0.9,
             },
-            "functionIds": ["o2c"],
+            "functionIds": ["o2c", "tax"],
             "crossProcessPatterns": [
                 {
                     "id": "ccp-3",
@@ -198,7 +198,7 @@ def build_themes():
                 "current": 87,
                 "target": 97,
             },
-            "functionIds": ["o2c", "r2r"],
+            "functionIds": ["icc", "o2c", "r2r"],
             "crossProcessPatterns": [
                 {
                     "id": "ccp-5",
@@ -223,7 +223,7 @@ def build_themes():
                 "current": 64,
                 "target": 92,
             },
-            "functionIds": ["o2c", "p2p"],
+            "functionIds": ["o2c", "p2p", "tcm"],
             "crossProcessPatterns": [
                 {
                     "id": "ccp-6",

@@ -45,6 +45,7 @@
       },
       "functionIds": [
         "o2c",
+        "sc",
         "p2p"
       ],
       "crossProcessPatterns": [
@@ -86,7 +87,8 @@
         "target": 0.9
       },
       "functionIds": [
-        "o2c"
+        "o2c",
+        "tax"
       ],
       "crossProcessPatterns": [
         {
@@ -149,6 +151,7 @@
         "target": 97
       },
       "functionIds": [
+        "icc",
         "o2c",
         "r2r"
       ],
@@ -182,7 +185,8 @@
       },
       "functionIds": [
         "o2c",
-        "p2p"
+        "p2p",
+        "tcm"
       ],
       "crossProcessPatterns": [
         {

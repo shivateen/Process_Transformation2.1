@@ -45,12 +45,14 @@ def main():
         read("src", "js", "governance.js"),
         read("src", "js", "roi.js"),
         read("src", "js", "discovery.js"),
+        read("src", "js", "processmap.js"),
     ])
     patterns = read("src", "data", "patterns.json")
     portfolio = read("src", "data", "portfolio.json")
     roi = read("src", "data", "roi.json")
     discovery = read("src", "data", "discovery.json")
     taxonomy = read("src", "data", "taxonomy.json")
+    processmaps = read("src", "data", "processmaps.json")
 
     html = """<!DOCTYPE html>
 <html lang="en">
@@ -71,6 +73,7 @@ def main():
 <script>window.PROCESSIQ_ROI = {roi};</script>
 <script>window.PROCESSIQ_DISCOVERY = {discovery};</script>
 <script>window.PROCESSIQ_TAXONOMY = {taxonomy};</script>
+<script>window.PROCESSIQ_PROCESSMAPS = {processmaps};</script>
 <script>
 {engine}
 </script>
@@ -81,7 +84,8 @@ def main():
 </body>
 </html>
 """.format(css=css, body=body, patterns=patterns, portfolio=portfolio, roi=roi,
-           discovery=discovery, taxonomy=taxonomy, engine=engine, js_modules=js_modules)
+           discovery=discovery, taxonomy=taxonomy, processmaps=processmaps,
+           engine=engine, js_modules=js_modules)
 
     os.makedirs(PUB, exist_ok=True)
     out = os.path.join(PUB, "processiq.html")
