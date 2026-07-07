@@ -35,16 +35,17 @@
     },
   };
 
-  /* ---- journey map: 3 stages, each with sub-views ---------------------- */
+  /* ---- journey map: 4 stages, each with sub-views ---------------------- */
   var STAGES = [
     { id: "design", n: 1, label: "Design", tag: "Missions → Actions", sub: [
         { id: "studio", label: "Studio" },
         { id: "library", label: "Pattern Library" } ] },
-    { id: "fit", n: 2, label: "Discover & Fit", tag: "Discovery, Fitment & Build", sub: [
+    { id: "fit", n: 2, label: "Discover & Fit", tag: "Discovery & Fit", sub: [
         { id: "fitment", label: "Agent Fitment" },
-        { id: "build", label: "Build Engine" },
         { id: "discovery", label: "Discovery Engine" } ] },
-    { id: "run", n: 3, label: "Run & Govern", tag: "Agentic Workflow", sub: [
+    { id: "build", n: 3, label: "Build", tag: "Build Engine", sub: [
+        { id: "build", label: "Build Engine" } ] },
+    { id: "run", n: 4, label: "Run & Govern", tag: "Agentic Workflow", sub: [
         { id: "runtime", label: "Live Operations" },
         { id: "cockpit", label: "Cognitive Cockpit" },
         { id: "governance", label: "Governance" },

@@ -1,4 +1,4 @@
-/* Stage 3 · Run & Govern — Live Operations
+/* Stage 4 · Run & Govern — Live Operations
  * The composed process, in production. A deterministic transaction stream flows in:
  *   • clean transactions match the happy path → straight-through, touchless (auto)
  *   • transactions with variation are matched to a pattern's branching DAG → the branch
@@ -131,7 +131,7 @@
 
   function empty() {
     var d = el("div", "fit-empty",
-      '<div class="kv">Stage 3 · Run & Govern</div><h2>No live process</h2>' +
+      '<div class="kv">Stage 4 · Run & Govern</div><h2>No live process</h2>' +
       '<p>Compose a process in the <b>Studio</b> and promote it through <b>Discover & Fit</b> to operate it here.</p>' +
       '<button class="btn go" id="toStudio">← Go to Studio</button>');
     d.querySelector("#toStudio").onclick = function () { window.PIQ.go("studio"); };
@@ -141,7 +141,7 @@
   function head() {
     var f = window.PIQ.fn(), p = window.PIQ.proc();
     return el("div", "rt-head",
-      '<div><div class="kv">Stage 3 · Run & Govern — Agentic workflow in production</div>' +
+      '<div><div class="kv">Stage 4 · Run & Govern — Agentic workflow in production</div>' +
       '<h2>' + esc(f.name) + ' › ' + esc((p || {}).name || "") + ' <span class="livedot">● LIVE</span></h2></div>' +
       '<div class="rt-ctrl">' +
         '<button class="btn go sm" id="rtStep">Process next ▸</button>' +
