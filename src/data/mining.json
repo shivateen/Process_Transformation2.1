@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Pattern Studio — document mining",
-    "note": "No live LLM in this build: candidate selection is deterministic and evidence-gated. fewShotPrompt is the exact prompt a real extractor would receive — wire it in at PIQ.patternStudio.mine().",
+    "note": "No live LLM in this build. The checklist, clarifiers, maturity scores, KPI gaps and candidate selection are all derived from the corpus, deterministically. fewShotPrompt is the exact prompt a real extractor would receive — wire it in at PIQ.patternStudio.mine().",
     "acceptedFormats": [
       ".pdf",
       ".xlsx",
@@ -11,9 +11,22 @@
       ".json",
       ".xml"
     ],
-    "quickStart": [
-      "txn",
-      "policy"
+    "steps": [
+      {
+        "id": "context",
+        "label": "Context",
+        "blurb": "What function, and what are you trying to achieve?"
+      },
+      {
+        "id": "documents",
+        "label": "Documents",
+        "blurb": "The evidence we need, and what you have."
+      },
+      {
+        "id": "results",
+        "label": "Results",
+        "blurb": "Maturity, benchmarks, and the patterns that close the gap."
+      }
     ],
     "stages": [
       {
@@ -41,18 +54,841 @@
         "label": "Calibration",
         "blurb": "Run the accepted detector against the uploaded transactions to set a threshold."
       }
+    ],
+    "priorities": {
+      "critical": {
+        "label": "Critical",
+        "glyph": "●",
+        "note": "minimum for meaningful patterns"
+      },
+      "enriching": {
+        "label": "Enriching",
+        "glyph": "◐",
+        "note": "adds depth"
+      },
+      "supporting": {
+        "label": "Supporting",
+        "glyph": "○",
+        "note": "contextual"
+      }
+    },
+    "minCriticalCategories": 2
+  },
+  "functions": [
+    {
+      "id": "o2c",
+      "label": "Order to Cash",
+      "icon": "🧾"
+    },
+    {
+      "id": "p2p",
+      "label": "Procure to Pay",
+      "icon": "📦"
+    },
+    {
+      "id": "r2r",
+      "label": "Record to Report",
+      "icon": "📊"
+    },
+    {
+      "id": "sc",
+      "label": "Supply Chain",
+      "icon": "🚚"
+    },
+    {
+      "id": "h2r",
+      "label": "Hire to Retire",
+      "icon": "👥"
+    },
+    {
+      "id": "tcm",
+      "label": "Treasury & Cash",
+      "icon": "🏦"
+    },
+    {
+      "id": "tax",
+      "label": "Tax Management",
+      "icon": "⚖️"
+    },
+    {
+      "id": "tne",
+      "label": "Travel & Expense",
+      "icon": "✈️"
+    },
+    {
+      "id": "fpa",
+      "label": "Financial Planning & Analysis",
+      "icon": "📈"
+    },
+    {
+      "id": "icc",
+      "label": "Internal Controls & Compliance",
+      "icon": "🛡️"
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "process",
+      "label": "Process Standardization",
+      "benchmark": 4.2,
+      "probe": "are processes documented, standardized, and actually followed?"
+    },
+    {
+      "id": "data",
+      "label": "Data & Analytics Maturity",
+      "benchmark": 4.0,
+      "probe": "are KPIs tracked, automated, predictive — or hand-compiled?"
+    },
+    {
+      "id": "tech",
+      "label": "Technology Enablement",
+      "benchmark": 4.1,
+      "probe": "ERP, automation, workflow and integration maturity."
+    },
+    {
+      "id": "people",
+      "label": "People & Organization",
+      "benchmark": 3.9,
+      "probe": "skills, team shape, single-person dependencies."
+    },
+    {
+      "id": "governance",
+      "label": "Governance & Controls",
+      "benchmark": 4.3,
+      "probe": "SOX, segregation of duties, control monitoring, audit readiness."
+    }
+  ],
+  "evidenceRules": {
+    "process": {
+      "present": "process documentation found — steps and owners are traceable",
+      "absent": "no process documentation uploaded — steps and owners are unverifiable"
+    },
+    "data": {
+      "present": "KPI/analytics exports present — metrics exist, though compiled manually",
+      "absent": "no KPI or analytics exports — the function is flying on gut feel"
+    },
+    "tech": {
+      "present": "system exports present — the ERP is emitting usable event data",
+      "absent": "no system/ERP exports — automation potential cannot be assessed"
+    },
+    "people": {
+      "present": "org/RACI evidence present — accountability is at least declared",
+      "absent": "no org or RACI evidence — accountability gaps are invisible"
+    },
+    "governance": {
+      "present": "control/audit evidence present — the control set is documented",
+      "absent": "no control or audit evidence — SOX and SoD posture is unknown"
+    }
+  },
+  "checklists": {
+    "o2c": [
+      {
+        "id": "txn",
+        "label": "Transactional Evidence",
+        "priority": "critical",
+        "dimension": "tech",
+        "slots": [
+          {
+            "id": "exception-logs",
+            "label": "Exception logs",
+            "hint": "Blocked invoices, failed postings, held orders, credit check failures",
+            "formats": [
+              ".xlsx",
+              ".csv",
+              ".json"
+            ]
+          },
+          {
+            "id": "aging-notes",
+            "label": "Aging reports with collector notes",
+            "hint": "The freetext fields — where the real story lives",
+            "formats": [
+              ".xlsx",
+              ".csv"
+            ]
+          },
+          {
+            "id": "dispute-logs",
+            "label": "Dispute / deduction logs",
+            "hint": "Reason codes and resolution narratives",
+            "formats": [
+              ".xlsx",
+              ".csv",
+              ".pdf"
+            ]
+          },
+          {
+            "id": "payment-history",
+            "label": "Payment history / remittance",
+            "hint": "Timing patterns, partial payments, broken promises",
+            "formats": [
+              ".xlsx",
+              ".csv"
+            ]
+          },
+          {
+            "id": "credit-memos",
+            "label": "Credit memos & write-offs",
+            "hint": "What was given up on, and why",
+            "formats": [
+              ".xlsx",
+              ".csv",
+              ".pdf"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "policy",
+        "label": "Process & Policy",
+        "priority": "critical",
+        "dimension": "process",
+        "slots": [
+          {
+            "id": "process-docs",
+            "label": "Process documentation",
+            "hint": "SOPs, work instructions, L3/L4 maps",
+            "formats": [
+              ".pdf",
+              ".docx",
+              ".xlsx"
+            ]
+          },
+          {
+            "id": "credit-policy",
+            "label": "Credit / collections policy",
+            "hint": "Limits, review triggers, approval matrices, dunning playbooks",
+            "formats": [
+              ".pdf",
+              ".docx"
+            ]
+          },
+          {
+            "id": "escalation",
+            "label": "Escalation protocols",
+            "hint": "When and how issues move up the chain",
+            "formats": [
+              ".pdf",
+              ".docx"
+            ]
+          },
+          {
+            "id": "writeoff-policy",
+            "label": "Write-off & bad debt policy",
+            "hint": "Thresholds, approval flows, provisioning",
+            "formats": [
+              ".pdf",
+              ".docx"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "analytics",
+        "label": "Operational Analytics",
+        "priority": "enriching",
+        "dimension": "data",
+        "slots": [
+          {
+            "id": "kpi-reports",
+            "label": "KPI reports / dashboards",
+            "hint": "DSO, CEI, dispute cycle — exported snapshots",
+            "formats": [
+              ".xlsx",
+              ".csv",
+              ".pdf"
+            ]
+          },
+          {
+            "id": "process-mining",
+            "label": "Process mining exports",
+            "hint": "Celonis, Signavio — event logs, variant analysis",
+            "formats": [
+              ".csv",
+              ".xlsx",
+              ".json",
+              ".xml"
+            ]
+          },
+          {
+            "id": "cycle-time",
+            "label": "Cycle time / touch-count",
+            "hint": "How long, and how many humans, per invoice",
+            "formats": [
+              ".xlsx",
+              ".csv"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "org",
+        "label": "Organization & Behaviour",
+        "priority": "enriching",
+        "dimension": "people",
+        "slots": [
+          {
+            "id": "raci",
+            "label": "RACI matrix",
+            "hint": "Who is responsible, accountable, consulted, informed",
+            "formats": [
+              ".xlsx",
+              ".pdf",
+              ".docx"
+            ]
+          },
+          {
+            "id": "scorecards",
+            "label": "Collector scorecards",
+            "hint": "What behaviour is actually incentivised",
+            "formats": [
+              ".xlsx",
+              ".pdf"
+            ]
+          },
+          {
+            "id": "call-logs",
+            "label": "Call logs / dunning history",
+            "hint": "The conversation around the invoice",
+            "formats": [
+              ".xlsx",
+              ".csv",
+              ".pdf"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "control",
+        "label": "Control & Compliance",
+        "priority": "supporting",
+        "dimension": "governance",
+        "slots": [
+          {
+            "id": "sox",
+            "label": "SOX control narratives",
+            "hint": "Control descriptions and test results",
+            "formats": [
+              ".pdf",
+              ".docx",
+              ".xlsx"
+            ]
+          },
+          {
+            "id": "audit",
+            "label": "Internal audit reports",
+            "hint": "Findings and management responses",
+            "formats": [
+              ".pdf",
+              ".docx"
+            ]
+          },
+          {
+            "id": "sod",
+            "label": "Segregation-of-duty matrix",
+            "hint": "Who cannot do what together",
+            "formats": [
+              ".xlsx",
+              ".pdf"
+            ]
+          }
+        ]
+      }
+    ],
+    "p2p": [
+      {
+        "id": "txn",
+        "label": "Transactional Evidence",
+        "priority": "critical",
+        "dimension": "tech",
+        "slots": [
+          {
+            "id": "exception-logs",
+            "label": "Invoice exception / block logs",
+            "hint": "Price, quantity and GR/IR blocks — where invoices stall",
+            "formats": [
+              ".xlsx",
+              ".csv",
+              ".json"
+            ]
+          },
+          {
+            "id": "po-history",
+            "label": "PO history with lead times",
+            "hint": "Order-to-receipt timing per supplier",
+            "formats": [
+              ".xlsx",
+              ".csv"
+            ]
+          },
+          {
+            "id": "payment-history",
+            "label": "Payment run history",
+            "hint": "Early payments, missed discounts, duplicates",
+            "formats": [
+              ".xlsx",
+              ".csv"
+            ]
+          },
+          {
+            "id": "maverick",
+            "label": "Off-contract / maverick spend",
+            "hint": "Spend that bypassed the negotiated rate",
+            "formats": [
+              ".xlsx",
+              ".csv"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "policy",
+        "label": "Process & Policy",
+        "priority": "critical",
+        "dimension": "process",
+        "slots": [
+          {
+            "id": "process-docs",
+            "label": "P2P process documentation",
+            "hint": "Requisition-to-payment SOPs",
+            "formats": [
+              ".pdf",
+              ".docx",
+              ".xlsx"
+            ]
+          },
+          {
+            "id": "doa",
+            "label": "Delegation of authority matrix",
+            "hint": "Approval thresholds by role and value",
+            "formats": [
+              ".xlsx",
+              ".pdf"
+            ]
+          },
+          {
+            "id": "payment-policy",
+            "label": "Payment terms policy",
+            "hint": "Standard terms, discount capture rules",
+            "formats": [
+              ".pdf",
+              ".docx"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "analytics",
+        "label": "Operational Analytics",
+        "priority": "enriching",
+        "dimension": "data",
+        "slots": [
+          {
+            "id": "kpi-reports",
+            "label": "AP KPI reports",
+            "hint": "DPO, touchless rate, cost per invoice",
+            "formats": [
+              ".xlsx",
+              ".csv",
+              ".pdf"
+            ]
+          },
+          {
+            "id": "supplier-perf",
+            "label": "Supplier performance (OTIF)",
+            "hint": "Delivery reliability by vendor",
+            "formats": [
+              ".xlsx",
+              ".csv"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "org",
+        "label": "Organization & Behaviour",
+        "priority": "enriching",
+        "dimension": "people",
+        "slots": [
+          {
+            "id": "raci",
+            "label": "RACI matrix",
+            "hint": "Buyer, approver, receiver accountability",
+            "formats": [
+              ".xlsx",
+              ".pdf",
+              ".docx"
+            ]
+          },
+          {
+            "id": "vendor-master",
+            "label": "Vendor master data",
+            "hint": "Duplicates, dormant vendors, bank-detail changes",
+            "formats": [
+              ".xlsx",
+              ".csv"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "control",
+        "label": "Control & Compliance",
+        "priority": "supporting",
+        "dimension": "governance",
+        "slots": [
+          {
+            "id": "sod",
+            "label": "Segregation-of-duty matrix",
+            "hint": "Vendor creation vs payment release",
+            "formats": [
+              ".xlsx",
+              ".pdf"
+            ]
+          },
+          {
+            "id": "audit",
+            "label": "Internal audit reports",
+            "hint": "Findings on procurement controls",
+            "formats": [
+              ".pdf",
+              ".docx"
+            ]
+          }
+        ]
+      }
+    ],
+    "r2r": [
+      {
+        "id": "txn",
+        "label": "Close Evidence",
+        "priority": "critical",
+        "dimension": "tech",
+        "slots": [
+          {
+            "id": "close-checklist",
+            "label": "Close task checklist",
+            "hint": "With actual vs planned completion times",
+            "formats": [
+              ".xlsx",
+              ".csv"
+            ]
+          },
+          {
+            "id": "je-logs",
+            "label": "Journal entry logs",
+            "hint": "Manual vs recurring vs automated",
+            "formats": [
+              ".xlsx",
+              ".csv"
+            ]
+          },
+          {
+            "id": "recon-status",
+            "label": "Reconciliation status tracker",
+            "hint": "All subledgers, with aging",
+            "formats": [
+              ".xlsx",
+              ".csv"
+            ]
+          },
+          {
+            "id": "ic-balances",
+            "label": "Intercompany balance reports",
+            "hint": "Last 3 close cycles, with mismatches",
+            "formats": [
+              ".xlsx",
+              ".csv"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "policy",
+        "label": "Process & Policy",
+        "priority": "critical",
+        "dimension": "process",
+        "slots": [
+          {
+            "id": "close-calendar",
+            "label": "Close calendar / dependency map",
+            "hint": "What blocks what",
+            "formats": [
+              ".pdf",
+              ".xlsx",
+              ".docx"
+            ]
+          },
+          {
+            "id": "accrual-policy",
+            "label": "Accrual & provisioning policy",
+            "hint": "Thresholds, reversal rules",
+            "formats": [
+              ".pdf",
+              ".docx"
+            ]
+          },
+          {
+            "id": "process-docs",
+            "label": "Close process documentation",
+            "hint": "Task-level SOPs",
+            "formats": [
+              ".pdf",
+              ".docx",
+              ".xlsx"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "analytics",
+        "label": "Operational Analytics",
+        "priority": "enriching",
+        "dimension": "data",
+        "slots": [
+          {
+            "id": "kpi-reports",
+            "label": "Close KPI reports",
+            "hint": "Days to close, entries per FTE, error rate",
+            "formats": [
+              ".xlsx",
+              ".csv",
+              ".pdf"
+            ]
+          },
+          {
+            "id": "flux",
+            "label": "Flux / variance analysis",
+            "hint": "What moved, and the explanations given",
+            "formats": [
+              ".xlsx",
+              ".pdf"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "org",
+        "label": "Organization & Behaviour",
+        "priority": "enriching",
+        "dimension": "people",
+        "slots": [
+          {
+            "id": "raci",
+            "label": "RACI for close activities",
+            "hint": "Preparer, reviewer, approver per task",
+            "formats": [
+              ".xlsx",
+              ".pdf",
+              ".docx"
+            ]
+          },
+          {
+            "id": "suspense",
+            "label": "Suspense / clearing balances",
+            "hint": "What nobody owns",
+            "formats": [
+              ".xlsx",
+              ".csv"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "control",
+        "label": "Control & Compliance",
+        "priority": "supporting",
+        "dimension": "governance",
+        "slots": [
+          {
+            "id": "sox",
+            "label": "SOX control narratives",
+            "hint": "Close controls and test results",
+            "formats": [
+              ".pdf",
+              ".docx",
+              ".xlsx"
+            ]
+          },
+          {
+            "id": "audit",
+            "label": "External audit findings",
+            "hint": "PBC lists, adjustments, management letters",
+            "formats": [
+              ".pdf",
+              ".docx"
+            ]
+          }
+        ]
+      }
+    ],
+    "sc": [
+      {
+        "id": "txn",
+        "label": "Inventory & Demand Signal",
+        "priority": "critical",
+        "dimension": "tech",
+        "slots": [
+          {
+            "id": "stock-levels",
+            "label": "Stock level snapshots",
+            "hint": "Weekly/monthly exports by SKU and site",
+            "formats": [
+              ".xlsx",
+              ".csv"
+            ]
+          },
+          {
+            "id": "forecast-actuals",
+            "label": "Demand forecast vs actuals",
+            "hint": "Where the plan and the world diverged",
+            "formats": [
+              ".xlsx",
+              ".csv"
+            ]
+          },
+          {
+            "id": "stockout-logs",
+            "label": "Stockout / excess inventory logs",
+            "hint": "Both tails of the distribution",
+            "formats": [
+              ".xlsx",
+              ".csv",
+              ".json"
+            ]
+          },
+          {
+            "id": "safety-stock",
+            "label": "Safety stock parameter tables",
+            "hint": "The buffers, and who set them",
+            "formats": [
+              ".xlsx",
+              ".csv"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "procure",
+        "label": "Procurement & Replenishment",
+        "priority": "critical",
+        "dimension": "process",
+        "slots": [
+          {
+            "id": "po-leadtime",
+            "label": "Purchase order history with lead times",
+            "hint": "Promised vs actual receipt",
+            "formats": [
+              ".xlsx",
+              ".csv"
+            ]
+          },
+          {
+            "id": "otif",
+            "label": "Supplier delivery performance (OTIF)",
+            "hint": "Reliability by vendor and lane",
+            "formats": [
+              ".xlsx",
+              ".csv"
+            ]
+          },
+          {
+            "id": "mrp",
+            "label": "MRP exception messages",
+            "hint": "The reschedule-in/out noise nobody reads",
+            "formats": [
+              ".csv",
+              ".xlsx",
+              ".json"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "warehouse",
+        "label": "Warehouse & Logistics",
+        "priority": "enriching",
+        "dimension": "data",
+        "slots": [
+          {
+            "id": "movement-logs",
+            "label": "Warehouse movement logs",
+            "hint": "SAP MB51/MB52 — what actually moved",
+            "formats": [
+              ".xlsx",
+              ".csv"
+            ]
+          },
+          {
+            "id": "cycle-count",
+            "label": "Cycle count accuracy reports",
+            "hint": "Real stockouts vs data errors",
+            "formats": [
+              ".xlsx",
+              ".csv"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "planning",
+        "label": "Planning Process & Governance",
+        "priority": "enriching",
+        "dimension": "people",
+        "slots": [
+          {
+            "id": "sop-minutes",
+            "label": "S&OP meeting minutes / decision logs",
+            "hint": "Planning overrides and demand bias",
+            "formats": [
+              ".pdf",
+              ".docx",
+              ".txt"
+            ]
+          },
+          {
+            "id": "raci",
+            "label": "Planning RACI",
+            "hint": "Who owns the forecast number",
+            "formats": [
+              ".xlsx",
+              ".pdf",
+              ".docx"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "financial",
+        "label": "Financial Impact",
+        "priority": "supporting",
+        "dimension": "governance",
+        "slots": [
+          {
+            "id": "carrying-cost",
+            "label": "Carrying cost / obsolescence reports",
+            "hint": "What the inventory is costing you",
+            "formats": [
+              ".xlsx",
+              ".csv",
+              ".pdf"
+            ]
+          }
+        ]
+      }
     ]
   },
-  "uploadCategories": [
+  "genericChecklist": [
     {
       "id": "txn",
       "label": "Transactional Evidence",
-      "blurb": "The richest seam — what actually happened, transaction by transaction.",
+      "priority": "critical",
+      "dimension": "tech",
       "slots": [
         {
           "id": "exception-logs",
-          "label": "Exception logs",
-          "hint": "Blocked invoices, failed postings, held orders, credit check failures",
+          "label": "Exception & error logs",
+          "hint": "Where the process stalls, fails or gets held",
           "formats": [
             ".xlsx",
             ".csv",
@@ -60,41 +896,21 @@
           ]
         },
         {
-          "id": "aging-notes",
-          "label": "Aging reports with notes",
-          "hint": "Collector freetext fields — the real story",
+          "id": "txn-extract",
+          "label": "Transaction extract",
+          "hint": "The event-level record — one row per case",
           "formats": [
             ".xlsx",
             ".csv"
           ]
         },
         {
-          "id": "dispute-logs",
-          "label": "Dispute / deduction logs",
-          "hint": "Reason codes and resolution narratives",
-          "formats": [
-            ".xlsx",
-            ".csv",
-            ".pdf"
-          ]
-        },
-        {
-          "id": "payment-history",
-          "label": "Payment history / remittance",
-          "hint": "Timing patterns, partial payments, broken promises",
+          "id": "cycle-time",
+          "label": "Cycle time / touch-count report",
+          "hint": "How long, and how many humans, per case",
           "formats": [
             ".xlsx",
             ".csv"
-          ]
-        },
-        {
-          "id": "credit-memos",
-          "label": "Credit memos & write-offs",
-          "hint": "What was given up on, and why",
-          "formats": [
-            ".xlsx",
-            ".csv",
-            ".pdf"
           ]
         }
       ]
@@ -102,12 +918,13 @@
     {
       "id": "policy",
       "label": "Process & Policy",
-      "blurb": "What the organisation says it does.",
+      "priority": "critical",
+      "dimension": "process",
       "slots": [
         {
           "id": "process-docs",
           "label": "Process documentation",
-          "hint": "SOPs, work instructions, L3/L4 process maps",
+          "hint": "SOPs, work instructions, process maps",
           "formats": [
             ".pdf",
             ".docx",
@@ -115,19 +932,9 @@
           ]
         },
         {
-          "id": "raci",
-          "label": "RACI matrices",
-          "hint": "Who's responsible, accountable, consulted, informed",
-          "formats": [
-            ".xlsx",
-            ".pdf",
-            ".docx"
-          ]
-        },
-        {
-          "id": "credit-policy",
-          "label": "Credit / collections policy",
-          "hint": "Limits, review triggers, approval matrices, dunning playbooks",
+          "id": "policy",
+          "label": "Policy & approval matrix",
+          "hint": "Thresholds, triggers, who signs what",
           "formats": [
             ".pdf",
             ".docx"
@@ -135,17 +942,8 @@
         },
         {
           "id": "escalation",
-          "label": "Escalation protocols",
-          "hint": "When and how issues move up the chain",
-          "formats": [
-            ".pdf",
-            ".docx"
-          ]
-        },
-        {
-          "id": "writeoff-policy",
-          "label": "Write-off & bad debt policy",
-          "hint": "Thresholds, approval flows, provisioning rules",
+          "label": "Escalation protocol",
+          "hint": "When and how issues move up",
           "formats": [
             ".pdf",
             ".docx"
@@ -156,12 +954,13 @@
     {
       "id": "analytics",
       "label": "Operational Analytics",
-      "blurb": "What the numbers already told you.",
+      "priority": "enriching",
+      "dimension": "data",
       "slots": [
         {
           "id": "kpi-reports",
           "label": "KPI reports / dashboards",
-          "hint": "Exported performance snapshots",
+          "hint": "Whatever you measure today",
           "formats": [
             ".xlsx",
             ".csv",
@@ -169,29 +968,9 @@
           ]
         },
         {
-          "id": "process-mining",
-          "label": "Process mining exports",
-          "hint": "Celonis, Signavio — event logs, variant analysis",
-          "formats": [
-            ".csv",
-            ".xlsx",
-            ".json",
-            ".xml"
-          ]
-        },
-        {
-          "id": "cycle-time",
-          "label": "Cycle time / touch-count reports",
-          "hint": "How long, and how many humans, per transaction",
-          "formats": [
-            ".xlsx",
-            ".csv"
-          ]
-        },
-        {
           "id": "rca",
-          "label": "Root cause analysis",
-          "hint": "Past improvement projects — what they found",
+          "label": "Root cause analyses",
+          "hint": "Past improvement work — what it found",
           "formats": [
             ".pdf",
             ".docx",
@@ -202,33 +981,16 @@
     },
     {
       "id": "org",
-      "label": "Organizational & Behavioral",
-      "blurb": "Who does the work, and what they're rewarded for.",
+      "label": "Organization & Behaviour",
+      "priority": "enriching",
+      "dimension": "people",
       "slots": [
         {
-          "id": "org-chart",
-          "label": "Org structure / hierarchy",
-          "hint": "Reporting lines and team shape",
-          "formats": [
-            ".pdf",
-            ".xlsx",
-            ".docx"
-          ]
-        },
-        {
-          "id": "skills",
-          "label": "Skills matrix / capabilities",
-          "hint": "What the team can and can't do today",
+          "id": "raci",
+          "label": "RACI matrix",
+          "hint": "Who is responsible, accountable, consulted, informed",
           "formats": [
             ".xlsx",
-            ".pdf"
-          ]
-        },
-        {
-          "id": "training",
-          "label": "Training materials",
-          "hint": "What staff are taught to look for",
-          "formats": [
             ".pdf",
             ".docx"
           ]
@@ -236,90 +998,10 @@
         {
           "id": "scorecards",
           "label": "Performance scorecards",
-          "hint": "What behaviours are incentivised",
+          "hint": "What behaviour is incentivised",
           "formats": [
             ".xlsx",
             ".pdf"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "comms",
-      "label": "Communication Trails",
-      "blurb": "The conversation around the transaction.",
-      "slots": [
-        {
-          "id": "email",
-          "label": "Email threads",
-          "hint": "Collector ↔ customer correspondence",
-          "formats": [
-            ".pdf",
-            ".docx",
-            ".txt"
-          ]
-        },
-        {
-          "id": "call-logs",
-          "label": "Call logs / notes",
-          "hint": "Collection call summaries",
-          "formats": [
-            ".xlsx",
-            ".csv",
-            ".docx"
-          ]
-        },
-        {
-          "id": "dunning",
-          "label": "Dunning history",
-          "hint": "Letter templates, send dates, response rates",
-          "formats": [
-            ".xlsx",
-            ".csv",
-            ".pdf"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "external",
-      "label": "External & Contextual",
-      "blurb": "The world the process operates in.",
-      "slots": [
-        {
-          "id": "benchmarks",
-          "label": "Industry benchmarks",
-          "hint": "APQC, Hackett Group metrics",
-          "formats": [
-            ".pdf",
-            ".xlsx"
-          ]
-        },
-        {
-          "id": "customer-master",
-          "label": "Customer master data",
-          "hint": "Segments, payment terms, risk ratings",
-          "formats": [
-            ".xlsx",
-            ".csv"
-          ]
-        },
-        {
-          "id": "contracts",
-          "label": "Contracts & terms",
-          "hint": "Payment terms, penalty clauses, SLAs",
-          "formats": [
-            ".pdf",
-            ".docx"
-          ]
-        },
-        {
-          "id": "bureau",
-          "label": "Bureau / credit reports",
-          "hint": "D&B, Experian on key counterparties",
-          "formats": [
-            ".pdf",
-            ".xlsx"
           ]
         }
       ]
@@ -327,22 +1009,13 @@
     {
       "id": "control",
       "label": "Control & Compliance",
-      "blurb": "What must not go wrong.",
+      "priority": "supporting",
+      "dimension": "governance",
       "slots": [
         {
-          "id": "sox",
-          "label": "SOX control narratives",
-          "hint": "Control descriptions and test results",
-          "formats": [
-            ".pdf",
-            ".docx",
-            ".xlsx"
-          ]
-        },
-        {
           "id": "audit",
-          "label": "Internal audit reports",
-          "hint": "Findings and management responses",
+          "label": "Audit findings",
+          "hint": "Internal or external, with management responses",
           "formats": [
             ".pdf",
             ".docx"
@@ -351,7 +1024,7 @@
         {
           "id": "sod",
           "label": "Segregation-of-duty matrix",
-          "hint": "Who can't do what together",
+          "hint": "Who cannot do what together",
           "formats": [
             ".xlsx",
             ".pdf"
@@ -360,59 +1033,760 @@
       ]
     }
   ],
+  "clarifiers": {
+    "o2c": [
+      {
+        "id": "erp",
+        "q": "Which ERP is this running on? It changes the report names we ask for.",
+        "options": [
+          "SAP",
+          "Oracle",
+          "Workday / other",
+          "Multiple / mixed"
+        ]
+      },
+      {
+        "id": "driver",
+        "q": "What is the primary driver of the delay you are seeing?",
+        "options": [
+          "Customer payment behaviour",
+          "Internal dispute handling",
+          "Cash application / matching",
+          "Not sure — that's what I want to find out"
+        ]
+      },
+      {
+        "id": "scope",
+        "q": "Single-site or multi-site operation?",
+        "options": [
+          "Single site",
+          "Multi-site, one region",
+          "Multi-site, global"
+        ]
+      }
+    ],
+    "p2p": [
+      {
+        "id": "erp",
+        "q": "Which ERP is this running on? It changes the report names we ask for.",
+        "options": [
+          "SAP",
+          "Oracle",
+          "Workday / other",
+          "Multiple / mixed"
+        ]
+      },
+      {
+        "id": "driver",
+        "q": "Where does the pain concentrate?",
+        "options": [
+          "Invoice exceptions and blocks",
+          "Approval bottlenecks",
+          "Maverick / off-contract spend",
+          "Not sure yet"
+        ]
+      },
+      {
+        "id": "scope",
+        "q": "Single-site or multi-site operation?",
+        "options": [
+          "Single site",
+          "Multi-site, one region",
+          "Multi-site, global"
+        ]
+      }
+    ],
+    "r2r": [
+      {
+        "id": "erp",
+        "q": "Which ERP is this running on? It changes the report names we ask for.",
+        "options": [
+          "SAP",
+          "Oracle",
+          "Workday / other",
+          "Multiple / mixed"
+        ]
+      },
+      {
+        "id": "driver",
+        "q": "Which part of the close is the critical path?",
+        "options": [
+          "Intercompany reconciliation",
+          "Accruals and provisions",
+          "Subledger reconciliation",
+          "Reporting and consolidation"
+        ]
+      },
+      {
+        "id": "scope",
+        "q": "Single-site or multi-site operation?",
+        "options": [
+          "Single site",
+          "Multi-site, one region",
+          "Multi-site, global"
+        ]
+      }
+    ],
+    "sc": [
+      {
+        "id": "erp",
+        "q": "Which ERP is this running on? It changes the report names we ask for.",
+        "options": [
+          "SAP",
+          "Oracle",
+          "Workday / other",
+          "Multiple / mixed"
+        ]
+      },
+      {
+        "id": "driver",
+        "q": "Is the primary driver excess stock, slow-moving inventory, or high storage cost?",
+        "options": [
+          "Excess stock / over-ordering",
+          "Slow-moving and obsolete",
+          "Storage and handling cost",
+          "Stockouts — the opposite problem"
+        ]
+      },
+      {
+        "id": "scope",
+        "q": "Single-site or multi-site operation?",
+        "options": [
+          "Single site",
+          "Multi-site, one region",
+          "Multi-site, global"
+        ]
+      }
+    ],
+    "_default": [
+      {
+        "id": "erp",
+        "q": "Which ERP is this running on? It changes the report names we ask for.",
+        "options": [
+          "SAP",
+          "Oracle",
+          "Workday / other",
+          "Multiple / mixed"
+        ]
+      },
+      {
+        "id": "driver",
+        "q": "What do you believe is driving the problem today?",
+        "options": [
+          "Process variation",
+          "Data quality",
+          "Manual effort / handoffs",
+          "Not sure — that's what I want to find out"
+        ]
+      },
+      {
+        "id": "scope",
+        "q": "Single-site or multi-site operation?",
+        "options": [
+          "Single site",
+          "Multi-site, one region",
+          "Multi-site, global"
+        ]
+      }
+    ]
+  },
+  "kpis": {
+    "o2c": [
+      {
+        "name": "DSO",
+        "unit": "days",
+        "client": 58,
+        "median": 45,
+        "topQuartile": 38,
+        "lowerIsBetter": true
+      },
+      {
+        "name": "Collection Effectiveness Index",
+        "unit": "%",
+        "client": 74,
+        "median": 85,
+        "topQuartile": 92,
+        "lowerIsBetter": false
+      },
+      {
+        "name": "Dispute Cycle Time",
+        "unit": "days",
+        "client": 25,
+        "median": 14,
+        "topQuartile": 8,
+        "lowerIsBetter": true
+      },
+      {
+        "name": "Cash Auto-Match Rate",
+        "unit": "%",
+        "client": 62,
+        "median": 80,
+        "topQuartile": 92,
+        "lowerIsBetter": false
+      },
+      {
+        "name": "Bad Debt / Revenue",
+        "unit": "%",
+        "client": 1.8,
+        "median": 0.8,
+        "topQuartile": 0.3,
+        "lowerIsBetter": true
+      },
+      {
+        "name": "Cost per Invoice",
+        "unit": "$",
+        "client": 4.1,
+        "median": 2.2,
+        "topQuartile": 1.2,
+        "lowerIsBetter": true
+      }
+    ],
+    "p2p": [
+      {
+        "name": "DPO",
+        "unit": "days",
+        "client": 34,
+        "median": 45,
+        "topQuartile": 58,
+        "lowerIsBetter": false
+      },
+      {
+        "name": "Touchless Invoice Rate",
+        "unit": "%",
+        "client": 41,
+        "median": 68,
+        "topQuartile": 85,
+        "lowerIsBetter": false
+      },
+      {
+        "name": "Early Payment Discount Capture",
+        "unit": "%",
+        "client": 38,
+        "median": 70,
+        "topQuartile": 88,
+        "lowerIsBetter": false
+      },
+      {
+        "name": "Invoice Exception Rate",
+        "unit": "%",
+        "client": 18,
+        "median": 9,
+        "topQuartile": 4,
+        "lowerIsBetter": true
+      },
+      {
+        "name": "Maverick Spend",
+        "unit": "%",
+        "client": 22,
+        "median": 10,
+        "topQuartile": 4,
+        "lowerIsBetter": true
+      },
+      {
+        "name": "Cost per Invoice",
+        "unit": "$",
+        "client": 6.8,
+        "median": 3.4,
+        "topQuartile": 1.8,
+        "lowerIsBetter": true
+      }
+    ],
+    "r2r": [
+      {
+        "name": "Days to Close",
+        "unit": "days",
+        "client": 10,
+        "median": 6,
+        "topQuartile": 4,
+        "lowerIsBetter": true
+      },
+      {
+        "name": "Manual Journal Entries",
+        "unit": "%",
+        "client": 46,
+        "median": 25,
+        "topQuartile": 12,
+        "lowerIsBetter": true
+      },
+      {
+        "name": "Reconciliations Auto-Certified",
+        "unit": "%",
+        "client": 38,
+        "median": 65,
+        "topQuartile": 85,
+        "lowerIsBetter": false
+      },
+      {
+        "name": "Post-Close Adjustments",
+        "unit": "count",
+        "client": 14,
+        "median": 6,
+        "topQuartile": 2,
+        "lowerIsBetter": true
+      },
+      {
+        "name": "Intercompany Match Rate",
+        "unit": "%",
+        "client": 71,
+        "median": 88,
+        "topQuartile": 96,
+        "lowerIsBetter": false
+      },
+      {
+        "name": "Cost of Finance / Revenue",
+        "unit": "%",
+        "client": 1.4,
+        "median": 0.9,
+        "topQuartile": 0.6,
+        "lowerIsBetter": true
+      }
+    ],
+    "sc": [
+      {
+        "name": "Inventory Turns",
+        "unit": "x",
+        "client": 6.2,
+        "median": 8.5,
+        "topQuartile": 11.0,
+        "lowerIsBetter": false
+      },
+      {
+        "name": "DIO",
+        "unit": "days",
+        "client": 58,
+        "median": 42,
+        "topQuartile": 32,
+        "lowerIsBetter": true
+      },
+      {
+        "name": "Stockout Rate",
+        "unit": "%",
+        "client": 4.8,
+        "median": 1.5,
+        "topQuartile": 0.6,
+        "lowerIsBetter": true
+      },
+      {
+        "name": "Forecast Accuracy",
+        "unit": "%",
+        "client": 72,
+        "median": 88,
+        "topQuartile": 94,
+        "lowerIsBetter": false
+      },
+      {
+        "name": "Obsolescence Rate",
+        "unit": "%",
+        "client": 3.1,
+        "median": 1.0,
+        "topQuartile": 0.4,
+        "lowerIsBetter": true
+      },
+      {
+        "name": "Supplier OTIF",
+        "unit": "%",
+        "client": 84,
+        "median": 95,
+        "topQuartile": 98,
+        "lowerIsBetter": false
+      },
+      {
+        "name": "Carrying Cost / Revenue",
+        "unit": "%",
+        "client": 8.2,
+        "median": 4.5,
+        "topQuartile": 2.8,
+        "lowerIsBetter": true
+      }
+    ],
+    "_default": [
+      {
+        "name": "Cycle Time",
+        "unit": "days",
+        "client": 12,
+        "median": 7,
+        "topQuartile": 4,
+        "lowerIsBetter": true
+      },
+      {
+        "name": "Straight-Through Rate",
+        "unit": "%",
+        "client": 44,
+        "median": 70,
+        "topQuartile": 88,
+        "lowerIsBetter": false
+      },
+      {
+        "name": "Exception Rate",
+        "unit": "%",
+        "client": 17,
+        "median": 8,
+        "topQuartile": 3,
+        "lowerIsBetter": true
+      },
+      {
+        "name": "Cost per Transaction",
+        "unit": "$",
+        "client": 5.2,
+        "median": 2.8,
+        "topQuartile": 1.4,
+        "lowerIsBetter": true
+      },
+      {
+        "name": "First-Time-Right",
+        "unit": "%",
+        "client": 78,
+        "median": 92,
+        "topQuartile": 97,
+        "lowerIsBetter": false
+      }
+    ]
+  },
+  "blueprints": [
+    {
+      "id": "close",
+      "match": [
+        "close",
+        "consolidat",
+        "month-end",
+        "period-end"
+      ],
+      "function": "r2r",
+      "title": "Close cycle reduction",
+      "focus": "Intercompany reconciliation + accruals automation",
+      "clusters": [
+        {
+          "name": "Intercompany Reconciliation Delays",
+          "patterns": "Matching failures, balance discrepancies, late confirmations",
+          "docs": [
+            [
+              "Intercompany balance reports (last 3 cycles)",
+              "critical"
+            ],
+            [
+              "IC matching exception logs",
+              "critical"
+            ],
+            [
+              "IC invoice and settlement timelines",
+              "enriching"
+            ]
+          ]
+        },
+        {
+          "name": "Accrual Accuracy & Reversal",
+          "patterns": "Stale accruals, reversal timing drift, manual top-ups",
+          "docs": [
+            [
+              "Accrual schedules with aging",
+              "critical"
+            ],
+            [
+              "Journal entry logs (recurring + manual)",
+              "critical"
+            ],
+            [
+              "Prior period adjustment history",
+              "enriching"
+            ]
+          ]
+        },
+        {
+          "name": "Subledger Reconciliation Bottlenecks",
+          "patterns": "Unowned suspense balances, serial reconciliation",
+          "docs": [
+            [
+              "Reconciliation status tracker (all subledgers)",
+              "critical"
+            ],
+            [
+              "Suspense / clearing account balances",
+              "enriching"
+            ],
+            [
+              "Close task checklist with actual completion times",
+              "critical"
+            ]
+          ]
+        },
+        {
+          "name": "Process & People Bottlenecks",
+          "patterns": "Single-person dependencies, serialised task chains",
+          "docs": [
+            [
+              "Close calendar / task dependency map",
+              "enriching"
+            ],
+            [
+              "RACI for close activities",
+              "enriching"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dso",
+      "match": [
+        "dso",
+        "collect",
+        "receivable",
+        "cash convers",
+        "days sales"
+      ],
+      "function": "o2c",
+      "title": "DSO reduction",
+      "focus": "Collections behaviour + dispute cycle + cash application",
+      "clusters": [
+        {
+          "name": "Customer Payment Behaviour",
+          "patterns": "Stalling tactics, broken promises, term creep",
+          "docs": [
+            [
+              "Aging reports with collector notes",
+              "critical"
+            ],
+            [
+              "Payment history / remittance",
+              "critical"
+            ],
+            [
+              "Dunning history",
+              "enriching"
+            ]
+          ]
+        },
+        {
+          "name": "Dispute & Deduction Friction",
+          "patterns": "Dispute-timing gaming, reason-code rotation",
+          "docs": [
+            [
+              "Dispute / deduction logs",
+              "critical"
+            ],
+            [
+              "Credit memos & write-offs",
+              "enriching"
+            ]
+          ]
+        },
+        {
+          "name": "Cash Application Drag",
+          "patterns": "Remittance format churn, unapplied cash ageing",
+          "docs": [
+            [
+              "Cash application exception logs",
+              "critical"
+            ],
+            [
+              "Remittance advice samples",
+              "enriching"
+            ]
+          ]
+        },
+        {
+          "name": "Credit Policy & Control",
+          "patterns": "Limit overrides, sub-threshold approvals",
+          "docs": [
+            [
+              "Credit / collections policy",
+              "enriching"
+            ],
+            [
+              "Credit limit override log",
+              "supporting"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "inventory",
+      "match": [
+        "inventory",
+        "carrying cost",
+        "stock",
+        "working capital",
+        "dio"
+      ],
+      "function": "sc",
+      "title": "Inventory carrying-cost reduction",
+      "focus": "Demand signal quality + replenishment discipline",
+      "clusters": [
+        {
+          "name": "Demand Signal Distortion",
+          "patterns": "Forecast override bias, planner second-guessing",
+          "docs": [
+            [
+              "Demand forecast vs actuals",
+              "critical"
+            ],
+            [
+              "S&OP meeting minutes / decision logs",
+              "enriching"
+            ]
+          ]
+        },
+        {
+          "name": "Slow-Moving & Obsolete Stock",
+          "patterns": "Slow-moving creep, write-off avoidance",
+          "docs": [
+            [
+              "Stock level snapshots (by SKU, aged)",
+              "critical"
+            ],
+            [
+              "Carrying cost / obsolescence reports",
+              "enriching"
+            ]
+          ]
+        },
+        {
+          "name": "Replenishment & Supplier Reliability",
+          "patterns": "Lead-time drift, safety-stock inflation",
+          "docs": [
+            [
+              "Purchase order history with lead times",
+              "critical"
+            ],
+            [
+              "Supplier delivery performance (OTIF)",
+              "critical"
+            ],
+            [
+              "Safety stock parameter tables",
+              "enriching"
+            ]
+          ]
+        },
+        {
+          "name": "Inventory Data Integrity",
+          "patterns": "Phantom stock, cycle-count masking",
+          "docs": [
+            [
+              "Warehouse movement logs",
+              "enriching"
+            ],
+            [
+              "Cycle count accuracy reports",
+              "supporting"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "spend",
+      "match": [
+        "spend",
+        "procure",
+        "supplier",
+        "payable",
+        "dpo",
+        "maverick"
+      ],
+      "function": "p2p",
+      "title": "Procurement leakage reduction",
+      "focus": "Contract compliance + invoice exception elimination",
+      "clusters": [
+        {
+          "name": "Off-Contract Spend",
+          "patterns": "Maverick buying, threshold splitting",
+          "docs": [
+            [
+              "Off-contract / maverick spend report",
+              "critical"
+            ],
+            [
+              "PO history with lead times",
+              "critical"
+            ]
+          ]
+        },
+        {
+          "name": "Invoice Exception Churn",
+          "patterns": "Recurring price/quantity blocks, GR/IR ageing",
+          "docs": [
+            [
+              "Invoice exception / block logs",
+              "critical"
+            ],
+            [
+              "Vendor master data",
+              "enriching"
+            ]
+          ]
+        },
+        {
+          "name": "Approval Bottlenecks",
+          "patterns": "Sub-threshold approvals, serial routing",
+          "docs": [
+            [
+              "Delegation of authority matrix",
+              "enriching"
+            ],
+            [
+              "Approval cycle time report",
+              "enriching"
+            ]
+          ]
+        }
+      ]
+    }
+  ],
   "candidates": [
     {
       "cid": "CAND-A",
+      "function": "o2c",
       "name": "Seasonal Treasury Squeeze",
       "featureSlug": "seasonal-treasury-squeeze",
       "category": "Intentional Stalling & Delay Tactics",
       "priority": "High",
       "mentalModel": "They pay us fine for ten months, then quarter-end lands and suddenly everyone is 'awaiting approval'. It is not distress — it is their treasury calendar, and we are the float.",
-      "sources": {
-        "sap": [
-          "BSID (ZFBDT, AUGDT)",
-          "KNB1 (customer fiscal calendar)"
-        ],
-        "oracle": [
-          "AR_PAYMENT_SCHEDULES_ALL (DUE_DATE, ACTUAL_DATE_CLOSED)",
-          "HZ_CUST_ACCOUNTS"
-        ]
-      },
-      "layer1_logicalMapping": "Payment delay clusters in the last 10 days of the customer's fiscal quarter, then normalises. Correlate BSID clearing dates against the customer's fiscal calendar.",
-      "layer2_eventSeries": "Invoice_Posted → Due_Date_Passed → Payment_Delayed (quarter-end window) → Payment_Received (quarter+1 week)",
-      "layer3_feature": "Fiscal_Quarter_Payment_Skew",
-      "conceptualSQL": "SELECT kunnr, AVG(CASE WHEN quarter_end_window THEN days_late END) - AVG(CASE WHEN NOT quarter_end_window THEN days_late END) AS skew FROM ar_clearing GROUP BY kunnr HAVING skew > 9",
-      "originalDAG": [
+      "processFlow": [
         "Ingest_Invoice",
         "Map_Customer_Fiscal_Calendar",
         "Compute_Quarter_End_Skew",
         "Flag_Seasonal_Delay",
         "Pre_Dun_Ahead_Of_Window"
       ],
-      "branchingDAG": [
+      "branchingFlow": [
         {
+          "tier": "primary",
           "condition": "IF Skew > 9 days AND Payment_History_Otherwise_Clean",
-          "actions": [
-            "Shift_Dunning_Earlier + Notify_Collector"
+          "actionBlocks": [
+            "Shift_Dunning_Earlier",
+            "Notify_Collector"
           ],
-          "hitl": null,
-          "tier": "primary"
+          "executors": [
+            "Agent",
+            "Workflow"
+          ],
+          "hitl": null
         },
         {
+          "tier": "escalation",
           "condition": "IF Skew > 20 days AND Exposure > $500K",
-          "actions": [
-            "Propose_Term_Renegotiation + Alert_Treasury"
+          "actionBlocks": [
+            "Propose_Term_Renegotiation",
+            "Alert_Treasury"
           ],
-          "hitl": "Credit Manager approval",
-          "tier": "escalation"
+          "executors": [
+            "Agent",
+            "Human Task"
+          ],
+          "hitl": "Credit Manager approval"
         },
         {
+          "tier": "immediate",
           "condition": "IF Skew rising QoQ for 3 quarters",
-          "actions": [
+          "actionBlocks": [
             "Escalate_To_Credit_Review"
           ],
-          "hitl": "CFO review",
-          "tier": "immediate"
+          "executors": [
+            "Human Task"
+          ],
+          "hitl": "CFO review"
         }
       ],
       "hitlGates": [
@@ -425,6 +1799,15 @@
       ],
       "confidence": 0.86,
       "similarTo": null,
+      "closesKpi": "DSO",
+      "estImpact": "-6 DSO days · $1.4M working capital released",
+      "servingThemes": [
+        "C"
+      ],
+      "servingMissions": [
+        "M19",
+        "M22"
+      ],
       "evidence": [
         {
           "slot": "aging-notes",
@@ -443,52 +1826,53 @@
         "quarter-end delay cluster",
         "AP-approved-but-unpaid narrative",
         "days-to-pay seasonality"
+      ],
+      "dimensions": [
+        "data",
+        "process"
       ]
     },
     {
       "cid": "CAND-B",
+      "function": "o2c",
       "name": "Remittance Format Churn",
       "featureSlug": "remittance-format-churn",
       "category": "Cash Application & Matching Integrity",
       "priority": "Medium",
       "mentalModel": "Every month the remittance file looks different. Not corrupt — different. Enough to break auto-match and buy them a week of float while we key it by hand.",
-      "sources": {
-        "sap": [
-          "BSID / BSAD (payment lines)",
-          "FEBEP (bank statement items)"
-        ],
-        "oracle": [
-          "AR_CASH_RECEIPTS_ALL",
-          "AR_RECEIVABLE_APPLICATIONS_ALL"
-        ]
-      },
-      "layer1_logicalMapping": "Remittance advice layout/field-order changes month over month for the same payer, driving auto-match failure without any change in payment volume.",
-      "layer2_eventSeries": "Payment_Received → Remittance_Parsed (fail) → Manual_Keying → Cash_Applied (T+5)",
-      "layer3_feature": "Remittance_Schema_Volatility",
-      "conceptualSQL": "SELECT payer_id, COUNT(DISTINCT remit_schema_hash) AS schema_variants, SUM(automatch_fail) AS fails FROM cash_app_lines GROUP BY payer_id HAVING schema_variants >= 3",
-      "originalDAG": [
+      "processFlow": [
         "Ingest_Remittance",
         "Hash_Schema",
         "Compare_To_Prior_Schema",
         "Detect_Churn",
         "Route_To_Manual_Match"
       ],
-      "branchingDAG": [
+      "branchingFlow": [
         {
+          "tier": "primary",
           "condition": "IF Schema_Variants >= 3 AND Auto_Match_Rate < 40%",
-          "actions": [
-            "Pin_Parser_Template + Notify_Cash_App_Lead"
+          "actionBlocks": [
+            "Pin_Parser_Template",
+            "Notify_Cash_App_Lead"
           ],
-          "hitl": null,
-          "tier": "primary"
+          "executors": [
+            "Script",
+            "Workflow"
+          ],
+          "hitl": null
         },
         {
+          "tier": "escalation",
           "condition": "IF Churn persists 3 months AND Unapplied > $250K",
-          "actions": [
-            "Request_Standard_Remittance + Escalate_To_AR_Manager"
+          "actionBlocks": [
+            "Request_Standard_Remittance",
+            "Escalate_To_AR_Manager"
           ],
-          "hitl": "AR Manager approval",
-          "tier": "escalation"
+          "executors": [
+            "Agent",
+            "Human Task"
+          ],
+          "hitl": "AR Manager approval"
         }
       ],
       "hitlGates": [
@@ -503,6 +1887,16 @@
         "name": "Duplicate Payment Bait",
         "score": 0.41
       },
+      "closesKpi": "Cash Auto-Match Rate",
+      "estImpact": "+18pp auto-match · 1.2 FTE released",
+      "servingThemes": [
+        "C",
+        "G"
+      ],
+      "servingMissions": [
+        "M43",
+        "M19"
+      ],
       "evidence": [
         {
           "slot": "payment-history",
@@ -517,52 +1911,53 @@
         "remittance schema variants",
         "auto-match failure concentration",
         "unapplied cash ageing"
+      ],
+      "dimensions": [
+        "tech",
+        "data"
       ]
     },
     {
       "cid": "CAND-C",
+      "function": "o2c",
       "name": "Approval Threshold Shadowing",
       "featureSlug": "approval-threshold-shadowing",
       "category": "Cross-Process AR Governance",
       "priority": "Critical",
       "mentalModel": "Nobody breaks the approval rule. They just never quite reach it. Every credit memo lands a few hundred dollars under the line that would have sent it to me.",
-      "sources": {
-        "sap": [
-          "BSEG (credit memo lines)",
-          "T077D / approval matrix config"
-        ],
-        "oracle": [
-          "AR_CREDIT_MEMOS",
-          "AP_WEB_AUTHORIZATION_RULES"
-        ]
-      },
-      "layer1_logicalMapping": "Credit memo / write-off amounts cluster immediately below a documented approval threshold, indicating deliberate sizing to stay within delegated authority.",
-      "layer2_eventSeries": "Credit_Memo_Raised → Amount_Just_Below_Threshold → Auto_Approved → Posted (no second signature)",
-      "layer3_feature": "Sub_Threshold_Clustering",
-      "conceptualSQL": "SELECT approver, COUNT(*) FROM credit_memos WHERE amount BETWEEN threshold*0.90 AND threshold*0.999 GROUP BY approver HAVING COUNT(*) > 10",
-      "originalDAG": [
+      "processFlow": [
         "Ingest_Credit_Memo",
         "Load_Approval_Matrix",
         "Compute_Threshold_Distance",
         "Detect_Sub_Threshold_Cluster",
         "Hold_For_Second_Signature"
       ],
-      "branchingDAG": [
+      "branchingFlow": [
         {
+          "tier": "primary",
           "condition": "IF Amount within 10% below threshold AND Approver_Repeat_Count > 5",
-          "actions": [
-            "Flag_For_Review + Log_Control_Event"
+          "actionBlocks": [
+            "Flag_For_Review",
+            "Log_Control_Event"
           ],
-          "hitl": "Controller review",
-          "tier": "primary"
+          "executors": [
+            "Agent",
+            "Script"
+          ],
+          "hitl": "Controller review"
         },
         {
+          "tier": "immediate",
           "condition": "IF Cluster spans multiple approvers on one customer",
-          "actions": [
-            "Freeze_Memo + Escalate_To_Compliance"
+          "actionBlocks": [
+            "Freeze_Memo",
+            "Escalate_To_Compliance"
           ],
-          "hitl": "CRO approval",
-          "tier": "immediate"
+          "executors": [
+            "Workflow",
+            "Human Task"
+          ],
+          "hitl": "CRO approval"
         }
       ],
       "hitlGates": [
@@ -579,6 +1974,16 @@
         "name": "Threshold Splitting",
         "score": 0.74
       },
+      "closesKpi": "Bad Debt / Revenue",
+      "estImpact": "-0.6pp bad debt · 2 SoD conflicts closed",
+      "servingThemes": [
+        "H",
+        "G"
+      ],
+      "servingMissions": [
+        "M53",
+        "M54"
+      ],
       "evidence": [
         {
           "slot": "writeoff-policy",
@@ -597,52 +2002,53 @@
         "documented approval threshold",
         "sub-threshold amount cluster",
         "SoD conflict"
+      ],
+      "dimensions": [
+        "governance",
+        "process"
       ]
     },
     {
       "cid": "CAND-D",
+      "function": "o2c",
       "name": "Escalation Dead-Zone",
       "featureSlug": "escalation-dead-zone",
       "category": "Intentional Stalling & Delay Tactics",
       "priority": "High",
       "mentalModel": "The playbook says escalate at day 45. The collectors escalate at day 70. That 25-day gap is where the money goes quiet — and nobody owns it.",
-      "sources": {
-        "sap": [
-          "UDM_DUNNING (dunning history)",
-          "BSID (open items)"
-        ],
-        "oracle": [
-          "AR_DUNNING_LETTERS",
-          "IEX_DELINQUENCIES"
-        ]
-      },
-      "layer1_logicalMapping": "A structural gap between the escalation protocol's documented trigger and the point at which escalation is actually observed in the communication trail.",
-      "layer2_eventSeries": "Dunning_Sent → No_Response → (policy trigger passes, no action) → Escalation_Raised (late)",
-      "layer3_feature": "Policy_To_Practice_Escalation_Lag",
-      "conceptualSQL": "SELECT AVG(actual_escalation_day - policy_escalation_day) AS lag FROM dunning_events JOIN escalation_policy USING (segment) HAVING lag > 14",
-      "originalDAG": [
+      "processFlow": [
         "Ingest_Dunning_Event",
         "Load_Escalation_Protocol",
         "Compute_Policy_Lag",
         "Detect_Dead_Zone",
         "Auto_Escalate_At_Policy_Trigger"
       ],
-      "branchingDAG": [
+      "branchingFlow": [
         {
+          "tier": "primary",
           "condition": "IF Lag > 14 days AND Balance > $50K",
-          "actions": [
-            "Auto_Escalate + Notify_Collections_Manager"
+          "actionBlocks": [
+            "Auto_Escalate",
+            "Notify_Collections_Manager"
           ],
-          "hitl": null,
-          "tier": "primary"
+          "executors": [
+            "Agent",
+            "Workflow"
+          ],
+          "hitl": null
         },
         {
+          "tier": "escalation",
           "condition": "IF Lag > 30 days AND Customer_On_Watchlist",
-          "actions": [
-            "Immediate_Escalation + Credit_Hold"
+          "actionBlocks": [
+            "Immediate_Escalation",
+            "Credit_Hold"
           ],
-          "hitl": "Collections Manager approval",
-          "tier": "escalation"
+          "executors": [
+            "Agent",
+            "Human Task"
+          ],
+          "hitl": "Collections Manager approval"
         }
       ],
       "hitlGates": [
@@ -650,10 +2056,18 @@
       ],
       "requires": [
         "policy",
-        "comms"
+        "org"
       ],
       "confidence": 0.79,
       "similarTo": null,
+      "closesKpi": "Collection Effectiveness Index",
+      "estImpact": "+9pp CEI · 210 accounts recovered to cycle",
+      "servingThemes": [
+        "C"
+      ],
+      "servingMissions": [
+        "M19"
+      ],
       "evidence": [
         {
           "slot": "escalation",
@@ -662,323 +2076,598 @@
         {
           "slot": "call-logs",
           "excerpt": "Median first manager-level contact occurs at day 70; 210 accounts sat 45–70 days with no logged action."
-        },
-        {
-          "slot": "dunning",
-          "excerpt": "Dunning letter 3 of 3 sent, then a median 24-day silence before any further activity."
         }
       ],
       "signals": [
         "documented escalation trigger",
         "observed escalation day",
         "post-dunning silence window"
+      ],
+      "dimensions": [
+        "process",
+        "people"
       ]
     },
     {
       "cid": "CAND-E",
-      "name": "Incentive-Driven Month-End Discounting",
-      "featureSlug": "incentive-month-end-discounting",
-      "category": "Billing Accuracy & Revenue Integrity",
-      "priority": "High",
-      "mentalModel": "The credit memos spike in the last three days of the month — the same three days the sales scorecard closes. That is not a coincidence, it is a comp plan.",
-      "sources": {
-        "sap": [
-          "BSEG (memo postings)",
-          "VBRK (billing docs)"
-        ],
-        "oracle": [
-          "AR_CREDIT_MEMOS",
-          "OKC_K_HEADERS_B"
-        ]
-      },
-      "layer1_logicalMapping": "Concessions and credit memos concentrate in the final days of the incentive period, correlating with a scorecard metric rather than with any customer event.",
-      "layer2_eventSeries": "Month_End_Approaching → Concession_Granted → Revenue_Recognised → Scorecard_Met",
-      "layer3_feature": "Incentive_Window_Concession_Spike",
-      "conceptualSQL": "SELECT DAY(posting_date) AS d, SUM(memo_amount) FROM credit_memos GROUP BY d HAVING SUM(memo_amount) > 3 * (SELECT AVG(daily_memo) FROM ...) AND d >= days_in_month - 2",
-      "originalDAG": [
-        "Ingest_Concession",
-        "Map_To_Incentive_Calendar",
-        "Compute_Window_Spike",
-        "Flag_Incentive_Correlation",
-        "Route_For_Revenue_Review"
+      "function": "sc",
+      "name": "Demand Forecast Override Bias",
+      "featureSlug": "demand-forecast-override-bias",
+      "category": "Planning Integrity",
+      "priority": "Critical",
+      "mentalModel": "The statistical forecast was fine. Then a planner nudged it up 'to be safe', every month, in the same direction. The bias is not in the model — it is in the override.",
+      "processFlow": [
+        "Ingest_Statistical_Forecast",
+        "Ingest_Final_Forecast",
+        "Compute_Override_Delta",
+        "Detect_Directional_Bias",
+        "Surface_To_SOP"
       ],
-      "branchingDAG": [
+      "branchingFlow": [
         {
-          "condition": "IF Spike > 3× baseline in final 3 days",
-          "actions": [
-            "Flag_For_Revenue_Review + Notify_Controller"
+          "tier": "primary",
+          "condition": "IF Override_Delta positive in >70% of periods",
+          "actionBlocks": [
+            "Flag_Biased_Override",
+            "Notify_Demand_Planner"
           ],
-          "hitl": "Controller review",
-          "tier": "primary"
+          "executors": [
+            "Agent",
+            "Workflow"
+          ],
+          "hitl": null
         },
         {
-          "condition": "IF Same rep repeats across 3 periods",
-          "actions": [
-            "Escalate_To_Compliance + Hold_Concessions"
+          "tier": "escalation",
+          "condition": "IF Bias persists 2 quarters AND MAPE worsens",
+          "actionBlocks": [
+            "Lock_Statistical_Baseline",
+            "Require_Override_Justification"
           ],
-          "hitl": "CRO approval",
-          "tier": "escalation"
+          "executors": [
+            "Script",
+            "Human Task"
+          ],
+          "hitl": "S&OP lead approval"
         }
       ],
       "hitlGates": [
-        "Controller review",
-        "CRO approval"
+        "S&OP lead approval"
       ],
       "requires": [
-        "org",
-        "txn"
+        "txn",
+        "planning"
       ],
-      "confidence": 0.83,
+      "confidence": 0.89,
       "similarTo": null,
+      "closesKpi": "Forecast Accuracy",
+      "estImpact": "+8pp forecast accuracy → -5 DIO days",
+      "servingThemes": [
+        "C"
+      ],
+      "servingMissions": [
+        "M18",
+        "M13"
+      ],
       "evidence": [
         {
-          "slot": "scorecards",
-          "excerpt": "Sales scorecard closes on the final calendar day; \"net revenue booked\" carries a 40% weighting."
+          "slot": "forecast-actuals",
+          "excerpt": "Final forecast exceeds statistical baseline in 11 of 14 months; mean override +8.4%, and actuals land below both."
         },
         {
-          "slot": "credit-memos",
-          "excerpt": "38% of credit-memo value posts in the last 3 days of the month, against 10% expected."
+          "slot": "sop-minutes",
+          "excerpt": "\"Agreed to hold the higher number to protect service level.\" (recurs in 6 of 9 S&OP minutes)"
         },
         {
-          "slot": "training",
-          "excerpt": "Rep onboarding deck: \"use goodwill credits to protect the close.\""
+          "slot": "safety-stock",
+          "excerpt": "Safety stock parameters revised upward twice, never downward."
         }
       ],
       "signals": [
-        "incentive period boundary",
-        "concession value spike",
-        "rep-level repetition"
+        "override direction bias",
+        "MAPE vs baseline",
+        "S&OP justification language"
+      ],
+      "dimensions": [
+        "data",
+        "people"
       ]
     },
     {
       "cid": "CAND-F",
-      "name": "Contractual SLA Weaponisation",
-      "featureSlug": "contractual-sla-weaponisation",
-      "category": "Relationship & Contractual Abuse",
-      "priority": "Medium",
-      "mentalModel": "They read the contract more carefully than we did. Every late delivery, however trivial, becomes a documented SLA breach — and a licence to hold the whole invoice.",
-      "sources": {
-        "sap": [
-          "UDM_DISPUTE (reason codes)",
-          "VBAK / contract data"
-        ],
-        "oracle": [
-          "AR_DISPUTES",
-          "OKC_K_LINES_B"
-        ]
-      },
-      "layer1_logicalMapping": "Customer cites contractual SLA/penalty clauses to justify withholding, at a rate far exceeding the actual incidence of service failures.",
-      "layer2_eventSeries": "Delivery_Event → SLA_Claim_Raised → Full_Invoice_Withheld → Negotiated_Settlement",
-      "layer3_feature": "SLA_Claim_To_Breach_Ratio",
-      "conceptualSQL": "SELECT customer_id, COUNT(sla_claims) / NULLIF(COUNT(actual_breaches), 0) AS ratio FROM disputes GROUP BY customer_id HAVING ratio > 3",
-      "originalDAG": [
-        "Ingest_Dispute",
-        "Load_Contract_Terms",
-        "Verify_Actual_Breach",
-        "Compute_Claim_Ratio",
-        "Reject_Unsupported_Claim"
+      "function": "sc",
+      "name": "Slow-Moving Inventory Creep",
+      "featureSlug": "slow-moving-inventory-creep",
+      "category": "Inventory Productivity",
+      "priority": "High",
+      "mentalModel": "Nothing is ever declared obsolete. It just gets quietly older, one reclassification at a time, until it is written off in a year nobody is accountable for.",
+      "processFlow": [
+        "Ingest_Stock_Aging",
+        "Compute_Movement_Velocity",
+        "Detect_Zero_Movement_Cohort",
+        "Estimate_Obsolescence_Exposure",
+        "Propose_Disposition"
       ],
-      "branchingDAG": [
+      "branchingFlow": [
         {
-          "condition": "IF Claim_Ratio > 3 AND Breach_Unverified",
-          "actions": [
-            "Reject_Claim + Cite_Contract_Clause"
+          "tier": "primary",
+          "condition": "IF Zero movement 90+ days AND Value > $25K",
+          "actionBlocks": [
+            "Flag_Slow_Mover",
+            "Propose_Markdown"
           ],
-          "hitl": null,
-          "tier": "primary"
+          "executors": [
+            "Agent",
+            "Agent"
+          ],
+          "hitl": null
         },
         {
-          "condition": "IF Withheld > $200K AND Strategic_Account",
-          "actions": [
-            "Route_To_Legal + Notify_Account_Exec"
+          "tier": "escalation",
+          "condition": "IF Zero movement 180+ days OR Cohort > $500K",
+          "actionBlocks": [
+            "Trigger_Write_Down_Review",
+            "Notify_Controller"
           ],
-          "hitl": "Legal review",
-          "tier": "escalation"
+          "executors": [
+            "Workflow",
+            "Human Task"
+          ],
+          "hitl": "Controller approval"
         }
       ],
       "hitlGates": [
-        "Legal review"
+        "Controller approval"
       ],
       "requires": [
-        "external",
-        "comms"
+        "txn",
+        "warehouse"
       ],
-      "confidence": 0.76,
-      "similarTo": {
-        "id": 20,
-        "name": "Partial Breadcrumbing",
-        "score": 0.38
-      },
+      "confidence": 0.84,
+      "similarTo": null,
+      "closesKpi": "Obsolescence Rate",
+      "estImpact": "-1.5pp obsolescence · $2.1M inventory reduction",
+      "servingThemes": [
+        "C",
+        "B"
+      ],
+      "servingMissions": [
+        "M18",
+        "M14"
+      ],
       "evidence": [
         {
-          "slot": "contracts",
-          "excerpt": "MSA §9.4: \"Customer may withhold disputed amounts pending resolution of any service level failure.\""
+          "slot": "stock-levels",
+          "excerpt": "22% of SKUs show no movement in 90+ days, carrying $4.1M at standard cost."
         },
         {
-          "slot": "email",
-          "excerpt": "17 threads cite §9.4 verbatim; only 4 correspond to a logged delivery exception."
-        },
-        {
-          "slot": "dispute-logs",
-          "excerpt": "SLA-coded disputes: 41 raised, 11 substantiated on investigation."
+          "slot": "movement-logs",
+          "excerpt": "MB51 shows 340 SKUs with zero goods issues in 6 months, yet still replenished by MRP."
         }
       ],
       "signals": [
-        "contract clause citation",
-        "unsubstantiated SLA claim",
-        "withheld-amount concentration"
+        "zero-movement cohort",
+        "replenishment despite no demand",
+        "write-off deferral"
+      ],
+      "dimensions": [
+        "data",
+        "governance"
       ]
     },
     {
       "cid": "CAND-G",
-      "name": "Onboarding Data Debt",
-      "featureSlug": "onboarding-data-debt",
-      "category": "Credit Risk & Exposure Control",
-      "priority": "Medium",
-      "mentalModel": "Half our exposure sits behind customer records that were opened in a hurry and never finished. No risk rating, no terms, no bureau pull — and no limit that means anything.",
-      "sources": {
-        "sap": [
-          "KNA1 / KNB1 (customer master)",
-          "KNKK (credit master)"
-        ],
-        "oracle": [
-          "HZ_CUST_ACCOUNTS",
-          "AR_CUSTOMER_PROFILES"
-        ]
-      },
-      "layer1_logicalMapping": "Customer master records created without complete credit attributes correlate with materially higher downstream delinquency.",
-      "layer2_eventSeries": "Customer_Created (incomplete) → Credit_Limit_Defaulted → Orders_Released → Delinquency",
-      "layer3_feature": "Master_Data_Completeness_Risk",
-      "conceptualSQL": "SELECT completeness_bucket, AVG(days_late) FROM customer_master JOIN ar_aging USING (kunnr) GROUP BY completeness_bucket",
-      "originalDAG": [
-        "Ingest_Customer_Master",
-        "Score_Completeness",
-        "Join_Delinquency_History",
-        "Flag_Data_Debt",
-        "Block_Limit_Increase"
+      "function": "sc",
+      "name": "Supplier Lead-Time Drift",
+      "featureSlug": "supplier-lead-time-drift",
+      "category": "Replenishment Reliability",
+      "priority": "High",
+      "mentalModel": "The master data says the lead time is 14 days. It has actually been 23 for a year. We are not carrying safety stock for demand volatility — we are carrying it for a supplier nobody re-baselined.",
+      "processFlow": [
+        "Ingest_PO_History",
+        "Compute_Actual_Lead_Time",
+        "Compare_To_Master_Data",
+        "Detect_Drift",
+        "Propose_Reparameterisation"
       ],
-      "branchingDAG": [
+      "branchingFlow": [
         {
-          "condition": "IF Completeness < 60% AND Exposure > $100K",
-          "actions": [
-            "Request_Bureau_Pull + Freeze_Limit_Increase"
+          "tier": "primary",
+          "condition": "IF Actual_LT exceeds Master_LT by >30% for 3 months",
+          "actionBlocks": [
+            "Update_Lead_Time_Master",
+            "Recompute_Safety_Stock"
           ],
-          "hitl": null,
-          "tier": "primary"
+          "executors": [
+            "Script",
+            "Agent"
+          ],
+          "hitl": null
         },
         {
-          "condition": "IF Completeness < 40% AND Delinquent",
-          "actions": [
-            "Credit_Hold + Escalate_To_Credit_Manager"
+          "tier": "escalation",
+          "condition": "IF OTIF < 85% AND Spend > $1M",
+          "actionBlocks": [
+            "Open_Supplier_Review",
+            "Flag_For_Resourcing"
           ],
-          "hitl": "Credit Manager approval",
-          "tier": "escalation"
+          "executors": [
+            "Workflow",
+            "Human Task"
+          ],
+          "hitl": "Procurement lead approval"
         }
       ],
       "hitlGates": [
-        "Credit Manager approval"
+        "Procurement lead approval"
       ],
       "requires": [
-        "external",
-        "analytics"
+        "procure"
       ],
-      "confidence": 0.72,
+      "confidence": 0.82,
       "similarTo": null,
+      "closesKpi": "Supplier OTIF",
+      "estImpact": "-12 days safety stock · $1.8M working capital release",
+      "servingThemes": [
+        "C"
+      ],
+      "servingMissions": [
+        "M18",
+        "M20"
+      ],
       "evidence": [
         {
-          "slot": "customer-master",
-          "excerpt": "31% of active customers have no risk rating; 18% carry the system-default payment term."
+          "slot": "po-leadtime",
+          "excerpt": "Mean actual lead time 23.4 days against a master-data value of 14; drift stable for 12 months."
         },
         {
-          "slot": "kpi-reports",
-          "excerpt": "Incomplete-record customers are 2.4× more likely to breach 60 days."
-        },
-        {
-          "slot": "bureau",
-          "excerpt": "No bureau file on record for 22 of the top-100 exposures."
+          "slot": "otif",
+          "excerpt": "OTIF 84% overall; the 6 worst suppliers account for 71% of the misses."
         }
       ],
       "signals": [
-        "master-data completeness score",
-        "default-term prevalence",
-        "delinquency correlation"
+        "lead-time drift",
+        "OTIF concentration",
+        "safety-stock inflation"
+      ],
+      "dimensions": [
+        "tech",
+        "process"
       ]
     },
     {
       "cid": "CAND-H",
-      "name": "Reopen-and-Restart Dispute Loop",
-      "featureSlug": "reopen-restart-dispute-loop",
-      "category": "Dispute Lifecycle Management",
-      "priority": "High",
-      "mentalModel": "The dispute is closed. Then they reopen it on a new reason code, and the clock starts again from zero. Same invoice, third reason, ninety days gone.",
-      "sources": {
-        "sap": [
-          "UDM_DISPUTE (CASE_GUID, REASON_CODE, STATUS)",
-          "BSID"
-        ],
-        "oracle": [
-          "AR_DISPUTES (DISPUTE_STATUS, DISPUTE_REASON)",
-          "AR_PAYMENT_SCHEDULES_ALL"
-        ]
-      },
-      "layer1_logicalMapping": "The same invoice is disputed repeatedly under successive reason codes, each reopening resetting the resolution SLA clock.",
-      "layer2_eventSeries": "Dispute_Closed → Reopened (new reason code) → SLA_Clock_Reset → Repeat",
-      "layer3_feature": "Dispute_Reopen_Cascade",
-      "conceptualSQL": "SELECT invoice_id, COUNT(DISTINCT reason_code) AS codes, COUNT(*) AS reopens FROM disputes GROUP BY invoice_id HAVING reopens >= 3",
-      "originalDAG": [
-        "Ingest_Dispute",
-        "Link_To_Prior_Disputes",
-        "Count_Reopen_Cascade",
-        "Freeze_SLA_Clock",
-        "Consolidate_Into_Single_Case"
+      "function": "r2r",
+      "name": "Intercompany Confirmation Lag",
+      "featureSlug": "intercompany-confirmation-lag",
+      "category": "Close Acceleration",
+      "priority": "Critical",
+      "mentalModel": "Both sides booked it. Neither side confirmed it. The close waits five days for two people to agree on a number they both already know.",
+      "processFlow": [
+        "Ingest_IC_Balances",
+        "Match_Counterparty_Pairs",
+        "Detect_Unconfirmed_Aged",
+        "Auto_Confirm_Within_Tolerance",
+        "Escalate_Residual"
       ],
-      "branchingDAG": [
+      "branchingFlow": [
         {
-          "condition": "IF Reopens >= 3 on one invoice",
-          "actions": [
-            "Consolidate_Case + Preserve_Original_Clock"
+          "tier": "primary",
+          "condition": "IF Variance < tolerance AND Both_Sides_Booked",
+          "actionBlocks": [
+            "Auto_Confirm_Match",
+            "Post_Elimination"
           ],
-          "hitl": null,
-          "tier": "primary"
+          "executors": [
+            "Script",
+            "Agent"
+          ],
+          "hitl": null
         },
         {
-          "condition": "IF Reopens >= 5 OR Age > 120 days",
-          "actions": [
-            "Deny_Reopen + Escalate_To_Dispute_Lead"
+          "tier": "escalation",
+          "condition": "IF Variance > tolerance OR Aged > 2 cycles",
+          "actionBlocks": [
+            "Notify_Both_Controllers",
+            "Open_Dispute_Case"
           ],
-          "hitl": "AR Manager approval",
-          "tier": "escalation"
+          "executors": [
+            "Workflow",
+            "Human Task"
+          ],
+          "hitl": "Group Controller review"
         }
       ],
       "hitlGates": [
-        "AR Manager approval"
+        "Group Controller review"
       ],
       "requires": [
         "txn",
-        "comms"
+        "policy"
       ],
-      "confidence": 0.8,
-      "similarTo": {
-        "id": 7,
-        "name": "Stale Promo Exploitation",
-        "score": 0.35
-      },
+      "confidence": 0.87,
+      "similarTo": null,
+      "closesKpi": "Days to Close",
+      "estImpact": "-1.5 days to close",
+      "servingThemes": [
+        "G"
+      ],
+      "servingMissions": [
+        "M44",
+        "M51"
+      ],
       "evidence": [
         {
-          "slot": "dispute-logs",
-          "excerpt": "61 invoices carry ≥3 dispute records, each under a different reason code; mean age 118 days."
+          "slot": "ic-balances",
+          "excerpt": "3 mismatches open at D+2 across the EMEA/APAC leg; 61% of IC pairs sit within a 0.5% tolerance band yet remain unconfirmed."
         },
         {
-          "slot": "email",
-          "excerpt": "\"Closing this one out — customer has come back on pricing instead of delivery.\" (collector, 9 similar threads)"
+          "slot": "close-checklist",
+          "excerpt": "IC elimination is on the critical path in all 3 sampled cycles, slipping D+2 → D+3."
         }
       ],
       "signals": [
-        "reason-code rotation",
-        "dispute reopen count",
-        "SLA clock reset"
+        "unconfirmed-but-matched pairs",
+        "critical path recurrence",
+        "tolerance band"
+      ],
+      "dimensions": [
+        "process",
+        "tech"
+      ]
+    },
+    {
+      "cid": "CAND-I",
+      "function": "r2r",
+      "name": "Stale Accrual Carry-Forward",
+      "featureSlug": "stale-accrual-carry-forward",
+      "category": "Close Acceleration",
+      "priority": "High",
+      "mentalModel": "The accrual was raised for a reason that expired two quarters ago. It rolls forward every month because reversing it is somebody's job and nobody's priority.",
+      "processFlow": [
+        "Ingest_Accrual_Schedule",
+        "Age_Accruals",
+        "Match_To_Original_Trigger",
+        "Detect_Expired_Basis",
+        "Propose_Reversal"
+      ],
+      "branchingFlow": [
+        {
+          "tier": "primary",
+          "condition": "IF Accrual age > 2 periods AND Trigger_Event_Closed",
+          "actionBlocks": [
+            "Flag_Stale_Accrual",
+            "Draft_Reversal_Entry"
+          ],
+          "executors": [
+            "Agent",
+            "Agent"
+          ],
+          "hitl": null
+        },
+        {
+          "tier": "escalation",
+          "condition": "IF Value > materiality OR Basis_Unclear",
+          "actionBlocks": [
+            "Hold_For_Review",
+            "Notify_Controller"
+          ],
+          "executors": [
+            "Workflow",
+            "Human Task"
+          ],
+          "hitl": "Controller review"
+        }
+      ],
+      "hitlGates": [
+        "Controller review"
+      ],
+      "requires": [
+        "txn"
+      ],
+      "confidence": 0.83,
+      "similarTo": {
+        "id": 64,
+        "name": "Threshold Splitting",
+        "score": 0.33
+      },
+      "closesKpi": "Manual Journal Entries",
+      "estImpact": "-19pp manual JEs · -0.8 days to close",
+      "servingThemes": [
+        "G",
+        "H"
+      ],
+      "servingMissions": [
+        "M44",
+        "M51"
+      ],
+      "evidence": [
+        {
+          "slot": "je-logs",
+          "excerpt": "46% of journal entries are manual; 118 recur monthly with an identical description and value."
+        },
+        {
+          "slot": "recon-status",
+          "excerpt": "Accrual accounts carry 31 items aged beyond 2 periods, none with a documented reversal trigger."
+        }
+      ],
+      "signals": [
+        "recurring identical entries",
+        "accrual ageing",
+        "missing reversal trigger"
+      ],
+      "dimensions": [
+        "process",
+        "governance"
+      ]
+    },
+    {
+      "cid": "CAND-J",
+      "function": "p2p",
+      "name": "Threshold-Split Requisitioning",
+      "featureSlug": "threshold-split-requisitioning",
+      "category": "Spend Control",
+      "priority": "Critical",
+      "mentalModel": "Two requisitions, same vendor, same day, each just under the approval line. It is not fraud — it is a buyer routing around a control they find inconvenient.",
+      "processFlow": [
+        "Ingest_Requisition",
+        "Load_DoA_Matrix",
+        "Cluster_By_Vendor_And_Window",
+        "Detect_Split_Pattern",
+        "Consolidate_For_Approval"
+      ],
+      "branchingFlow": [
+        {
+          "tier": "primary",
+          "condition": "IF 2+ reqs same vendor within 72h AND Sum > threshold",
+          "actionBlocks": [
+            "Merge_Requisitions",
+            "Route_To_Correct_Approver"
+          ],
+          "executors": [
+            "Agent",
+            "Workflow"
+          ],
+          "hitl": null
+        },
+        {
+          "tier": "immediate",
+          "condition": "IF Requester repeats across 3 periods",
+          "actionBlocks": [
+            "Block_Release",
+            "Escalate_To_Compliance"
+          ],
+          "executors": [
+            "Script",
+            "Human Task"
+          ],
+          "hitl": "Procurement Director approval"
+        }
+      ],
+      "hitlGates": [
+        "Procurement Director approval"
+      ],
+      "requires": [
+        "txn",
+        "policy"
+      ],
+      "confidence": 0.86,
+      "similarTo": {
+        "id": 64,
+        "name": "Threshold Splitting",
+        "score": 0.79
+      },
+      "closesKpi": "Maverick Spend",
+      "estImpact": "-12pp maverick spend · $3.4M back on contract",
+      "servingThemes": [
+        "H",
+        "B"
+      ],
+      "servingMissions": [
+        "M53",
+        "M42"
+      ],
+      "evidence": [
+        {
+          "slot": "maverick",
+          "excerpt": "22% of spend is off-contract; 148 requisition pairs sit within 72h of each other for the same vendor, each below the $10K line."
+        },
+        {
+          "slot": "doa",
+          "excerpt": "\"Requisitions above $10,000 require Director approval.\" (DoA matrix v3, row 12)"
+        }
+      ],
+      "signals": [
+        "same-vendor requisition clustering",
+        "sub-threshold amounts",
+        "documented DoA line"
+      ],
+      "dimensions": [
+        "governance",
+        "process"
+      ]
+    },
+    {
+      "cid": "CAND-K",
+      "function": "p2p",
+      "name": "GR/IR Ageing Blind Spot",
+      "featureSlug": "gr-ir-ageing-blind-spot",
+      "category": "Invoice Integrity",
+      "priority": "High",
+      "mentalModel": "Goods received, invoice never matched — or invoice matched, goods never received. Either way it sits in GR/IR until someone writes it off in a quarter nobody is watching.",
+      "processFlow": [
+        "Ingest_GRIR_Balances",
+        "Age_Open_Items",
+        "Match_To_PO_And_Receipt",
+        "Classify_Root_Cause",
+        "Auto_Clear_Or_Route"
+      ],
+      "branchingFlow": [
+        {
+          "tier": "primary",
+          "condition": "IF Receipt and Invoice both present AND Variance < tolerance",
+          "actionBlocks": [
+            "Auto_Clear_Matched",
+            "Notify_Buyer_Of_Gap"
+          ],
+          "executors": [
+            "Script",
+            "Workflow"
+          ],
+          "hitl": null
+        },
+        {
+          "tier": "escalation",
+          "condition": "IF Aged > 90 days",
+          "actionBlocks": [
+            "Open_Vendor_Query",
+            "Provision_For_Write_Off"
+          ],
+          "executors": [
+            "Agent",
+            "Human Task"
+          ],
+          "hitl": "AP Manager approval"
+        }
+      ],
+      "hitlGates": [
+        "AP Manager approval"
+      ],
+      "requires": [
+        "txn"
+      ],
+      "confidence": 0.8,
+      "similarTo": null,
+      "closesKpi": "Touchless Invoice Rate",
+      "estImpact": "+21pp touchless rate · 412 items cleared",
+      "servingThemes": [
+        "G",
+        "C"
+      ],
+      "servingMissions": [
+        "M42",
+        "M20"
+      ],
+      "evidence": [
+        {
+          "slot": "exception-logs",
+          "excerpt": "18% invoice exception rate; GR/IR carries 412 open items, 37% aged beyond 90 days."
+        },
+        {
+          "slot": "po-history",
+          "excerpt": "Receipt posted without invoice in 210 cases; the reverse in 96."
+        }
+      ],
+      "signals": [
+        "GR/IR ageing",
+        "receipt-invoice asymmetry",
+        "exception recurrence"
+      ],
+      "dimensions": [
+        "tech",
+        "process"
       ]
     }
   ],
-  "fewShotPrompt": "You are a process transformation expert analysing discovery documents to identify\nbehavioural patterns in {function} processes.\n\nHere are examples of known patterns from the existing library:\n{examples}\n\nNow analyse the following documents and signals:\n{signals}\n\nIdentify NEW behavioural patterns not already captured in the library above.\nFor each candidate pattern, provide:\n 1. name          — a concise descriptive name\n 2. featureSlug   — kebab-case identifier\n 3. description   — what this pattern represents and why it matters\n 4. triggers      — observable conditions that indicate this pattern\n 5. originalDAG   — the happy-path action sequence (straight-through resolution)\n 6. branchingDAG  — variation branches with tiers (primary/escalation/immediate),\n                    actions, and HITL gates\n 7. evidence      — which documents and signals support this pattern\n 8. confidence    — 0-1 score for how strongly the evidence supports this\n 9. similarTo     — if this resembles an existing pattern, which one and how\n\nStructure each candidate pattern EXACTLY like the examples above."
+  "fewShotPrompt": "You are a process transformation expert analysing discovery documents to identify\nbehavioural patterns in {function} processes.\n\nClient context\n  Function:   {function}\n  Objective:  {objective}\n  Clarified:  {clarified}\n\nHere are examples of known patterns from the existing library:\n{examples}\n\nNow analyse the following documents and signals:\n{signals}\n\nIdentify NEW behavioural patterns not already captured in the library above.\nFor each candidate pattern, provide:\n  1. name            — a concise descriptive name\n  2. featureSlug     — kebab-case identifier\n  3. description     — what this pattern represents and why it matters\n  4. triggers        — observable conditions that indicate this pattern\n  5. processFlow     — the happy-path action-block sequence (straight-through resolution)\n  6. branchingFlow   — variation branches with tiers (primary/escalation/immediate),\n                       action blocks, executor types (Agent/Workflow/Script/Human Task),\n                       and HITL gates\n  7. evidence        — which documents and signals support this pattern\n  8. confidence      — 0-1 score for how strongly the evidence supports this\n  9. similarTo       — if this resembles an existing pattern, which one and how\n 10. servingMissions — which Command Centre missions (M1–M60) this pattern would serve\n 11. servingThemes   — which themes (A–H) this pattern maps to\n\nStructure each candidate pattern EXACTLY like the examples above."
 }

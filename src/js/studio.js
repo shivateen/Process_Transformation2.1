@@ -657,8 +657,8 @@
       "Select the <b>patterns</b> to deploy for “" + esc(p0 ? p0.name : "this process") + "”" +
       '<button class="linkbtn" id="stAll">' + (c.patternIds.length === pats.length ? "clear all" : "select all") + '</button>'));
     body.appendChild(el("p", "st-hint",
-      "Each pattern encodes the analyst's judgement: a happy path (straight-through) plus a branching DAG that handles the variations. " +
-      "Tick the circle to add a pattern; click the card to open its detail and customise the happy-path DAG."));
+      "Each pattern encodes the analyst's judgement: a process flow (straight-through) plus branching flows that handle the variations. " +
+      "Tick the circle to add a pattern; click the card to open its detail and customise its process flow."));
 
     var grid = el("div", "patgrid");
     pats.forEach(function (p) {
@@ -671,14 +671,14 @@
       var card = el("div", "patcard" + (sel ? " sel" : ""),
         '<div class="pat-top"><span class="pat-prio" style="background:' + PRIO[p.priority] + '"></span>' +
         '<div class="pat-n">' + esc(p.name) + (p.sample ? ' <span class="statusbadge sample">sample</span>' : '') +
-          (custom ? ' <span class="dagbadge">✎ DAG edited</span>' : '') + '</div>' +
+          (custom ? ' <span class="dagbadge">✎ flow edited</span>' : '') + '</div>' +
         '<button class="pat-check' + (sel ? " on" : "") + '" title="' + (sel ? "Remove from composition" : "Add to composition") + '">' + (sel ? "✓" : "+") + '</button></div>' +
         '<div class="pat-mm">“' + esc(trim(p.mentalModel, 150)) + '”</div>' +
         '<div class="pat-flow"><span class="flab">Happy path</span>' + (flow || '<span class="muted">no steps</span>') +
           (happy.length > 4 ? '<i>→</i><span class="mini-b more">+' + (happy.length - 4) + '</span>' : '') + '</div>' +
         '<div class="pat-foot"><span>' + branches + ' variation branches · ' +
           (gates ? '🔒 ' + gates + ' gate' + (gates > 1 ? "s" : "") : 'no gates') + '</span>' +
-        '<span class="pat-cue">✎ details &amp; DAG</span></div>');
+        '<span class="pat-cue">✎ details &amp; flow</span></div>');
       card.onclick = function () { openPatternDetail(p); };
       card.querySelector(".pat-check").onclick = function (e) {
         e.stopPropagation();
@@ -701,8 +701,8 @@
     };
   }
 
-  /* ---- Pattern detail + happy-path DAG editor (opened from a pattern card) --
-     Shows the full pattern (mental model, 3-layer mapping, branching DAG, gates)
+  /* ---- Pattern detail + process-flow editor (opened from a pattern card) ----
+     Shows the full pattern (mental model, 3-layer mapping, branching flow, gates)
      and lets the SME reorder / enable-disable the happy-path steps. Edits persist
      into PIQ.composition.dag and flow through collectBlocks → swimlane, the
      action-block configurator, Fitment and Runtime. */
@@ -725,7 +725,7 @@
     document.body.appendChild(back);
     renderPatternDetail(dlg, p);
   }
-  // materialise a per-pattern DAG override (seeded from the original) for editing
+  // materialise a per-pattern process-flow override (seeded from the original) for editing
   function ensureDag(id) {
     var c = C(); if (!c.dag) c.dag = {};
     if (!c.dag[id]) c.dag[id] = { steps: window.PIQ.dagSteps(id).map(function (s) { return { k: s.k, on: s.on }; }) };
@@ -780,7 +780,7 @@
         layer("3", "AI Feature", '<b>' + esc(p.layer3_feature) + '</b> — pre-calculated trigger', "") +
       '</div>' +
 
-      '<div class="dedit"><div class="dedit-h"><h4>Happy-path DAG ' +
+      '<div class="dedit"><div class="dedit-h"><h4>Process Flow ' +
         '<span class="muted">reorder & enable/disable — flows to Fitment &amp; Runtime</span></h4>' +
         (custom ? '<button class="linkbtn" id="dagReset">reset to default</button>' : '') + '</div>' +
         '<div class="dsteps">' + rows + '</div>' +
@@ -790,12 +790,12 @@
         '<div class="dprev"><span class="flab">Resulting sequence <b>' + onCount + '/' + steps.length + '</b></span>' + prev + '</div>' +
       '</div>' +
 
-      '<div class="d-sec"><h4>Branching DAG <span class="muted">variation handling · read-only</span></h4>' +
+      '<div class="d-sec"><h4>Branching Flow <span class="muted">variation branches · action blocks · read-only</span></h4>' +
         '<div class="branches">' + (branches || '<span class="muted">none</span>') + '</div></div>' +
       (p.hitlGates && p.hitlGates.length ? '<div class="gatebar">🔒 HITL gates: ' + p.hitlGates.map(esc).join(" · ") + '</div>' : '') +
       '</div>' +
 
-      '<div class="pdlg-foot"><span class="muted">' + (custom ? "✎ DAG customised for this composition" : "Default DAG") + '</span>' +
+      '<div class="pdlg-foot"><span class="muted">' + (custom ? "✎ Process flow customised for this composition" : "Default process flow") + '</span>' +
         '<div class="pdlg-actions">' +
         '<button class="btn ' + (sel ? "ghost" : "go") + ' sm" id="pdlgSel">' + (sel ? "Remove from composition" : "Add to composition") + '</button>' +
         '<button class="btn ghost sm" id="pdlgDone">Done</button></div></div>';
