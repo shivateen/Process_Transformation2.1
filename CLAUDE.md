@@ -117,6 +117,44 @@ built and inlined, but nothing reads `window.PROCESSIQ_CFO`. Safe to delete in a
 The data model already encodes the mental model: each pattern's `originalDAG` = happy path,
 `branchingDAG` = variation branches, `hitlGates` = the approval sought before a branch runs.
 
+## The unified hierarchy (both tiles speak the same vocabulary)
+
+```
+THEME (8, A–H)                     shared by both tiles
+ └── OBJECTIVE (21, A.1…)          shared by both tiles
+      └── MISSION (60, M1–M60)     Command Centre atomic unit
+           └── CAPABILITY (77)     the measurement bridge — is the mission on track?
+                └── PATTERN (101+)  Transformation Builder atomic unit
+                     └── PROCESS FLOW      the happy path
+                          └── ACTION BLOCK  a single discrete step
+                               └── EXECUTOR  Agent · Workflow · Script · Human Task
+```
+
+**L1 is a Theme, L2 is an Objective** — everywhere, in both tiles. There is no "L1 objective"
+or "sub-objective" left in the app. Likewise **"DAG" is gone from every pattern detail view**:
+it is a *Process Flow* of *Action Blocks*, each with an *Executor*. (The Build Engine, Cockpit
+and Governance simulator still say DAG internally — they are on the do-not-modify list and are
+not pattern detail views.)
+
+The Builder's five theme slugs are aliases of the canonical A–H ids; `command_centre.json`
+carries the dictionary in `themeAliases` (`working-capital → C`, `revenue-leakage → A`, …).
+
+### Cross-tile linkage — the fields that make it one story
+
+| Field | Lives on | Meaning |
+|---|---|---|
+| `servingMissions` / `servingThemes` | every pattern (`patterns.json`) | what this pattern moves. The **forward** edge — authored once, in `build_patterns.py`, keyed off the pattern's behavioural category |
+| `poweredByPatterns` | every mission (`command_centre.json`) | the **inverse**, computed by `build_command_centre.py`. A mission never has to know about patterns |
+| `benchmarkTargets` | every capability | `{median, topQuartile, unit}` — the industry band. Pattern Studio's KPI panel is what populates these for real |
+| `sourceCompoundKPI` | every capability | links a capability to the Builder's compound KPI, so the same metric is reachable from both sides |
+
+Navigation these fields unlock (all verified):
+a **pattern pill** on a mission card opens that pattern in Pattern Studio · **View in Builder →**
+filters Pattern Studio to every pattern serving that mission · a CFO **theme tile → View patterns**
+filters to that theme · a pattern's **Serving M18 →** chip jumps to that mission card in the
+Command Centre (right persona, right lens, scrolled and flashed). The handshake crosses a page
+load, so the filter is passed in `localStorage` (`piq.ps.jump.v1` / `piq.cc.jump.v1`).
+
 ## Pattern Studio (Design · sub-view `patternstudio`)
 
 The old Pattern Library, renamed and given a second tab. It is now both the catalogue **and**
@@ -125,23 +163,40 @@ the workshop where new patterns are mined out of client documents.
 - **Library** — the existing filterable master-detail catalogue, unchanged. Counts are
   recomputed from the live `PIQ.patterns` array, so a mined pattern shows up the instant it is
   accepted.
-- **Mine** — a 7-category / 28-slot upload accordion (collapsed by default; "Quick start" opens
-  the two richest seams). Drag-drop or click-to-browse per slot; unsupported extensions are
-  rejected with a toast. Then a 5-stage pipeline: **Ingest & Classify → Signal extraction →
-  Pattern hypothesis → SME review → Calibration**. Candidates come back as review cards
-  carrying an evidence chain, a confidence meter, and a similarity check against the existing
-  library; the SME can **Accept / Edit & Accept / Reject / Park**, or — when a candidate is
-  ≥70% similar to an incumbent — **Merge / Keep separate / Discard**.
+- **Mine** — a **function-agnostic 3-step flow**. Nothing in it is hardcoded to Order-to-Cash;
+  an "Other" function falls back to a generic checklist and KPI set.
 
-**There is no live LLM in this build.** The accelerator is on-device and deterministic, and
-there is no model endpoint in the bundle, so Stage 3 is *evidence-gated* rather than
-generative: a candidate surfaces only when the corpus actually contains the document categories
-its evidence chain depends on, and its confidence is scaled by how much of that evidence
-landed. Upload only a policy document and you get exactly the one candidate that policy
-evidence supports; upload transactional data too and calibration switches on. `buildPrompt()`
-assembles the real few-shot prompt (6 library patterns as examples + the extracted signals) and
-the UI renders it verbatim behind "show the prompt" — **the seam to a live model is one function
-wide: replace the body of `mine()` and every stage downstream still works.**
+  1. **Context** — pick a function (10 + Other) and state the objective, or flip the mode toggle
+     to **"I have an objective"** and get a **Transformation Blueprint** back (pattern clusters +
+     the documents each needs). Then 2–3 clarifying questions — only the ones that actually change
+     the checklist (which ERP? what is driving the delay? single- or multi-site?).
+  2. **Documents** — a checklist **composed for this context**: the function's categories,
+     re-prioritised by the objective's keywords (an inventory objective *promotes* Warehouse &
+     Logistics from Enriching to Critical, and says so on the card). Slots are domain-specific
+     ("MRP exception messages", not "exception logs"). A coverage meter tracks critical dimensions,
+     and a **gap analysis** names each missing document *and what it costs you* — "without these we
+     cannot detect **Slow-Moving Inventory Creep**".
+  3. **Results** — three panels. **Maturity radar** (5 dimensions, each scored *from the evidence
+     actually uploaded* and citing it — a missing RACI is why People & Organization reads 1.6).
+     **KPI vs benchmark** (client value, median, top quartile, gap, Q1–Q4 rank, and a "View in
+     Command Centre →" per row). **Impact bridge** — the candidates, ranked by *which KPI gap they
+     close*, each carrying its `servingMissions` / `servingThemes` chips and an estimated impact.
+
+  Then the 5-stage pipeline (Ingest → Signals → Hypothesis → SME review → Calibration) and the
+  SME gate: **Accept / Edit & Accept / Reject / Park**, or **Merge / Keep separate / Discard** when
+  a candidate is ≥70% similar to an incumbent. An accepted pattern arrives **already wired into the
+  taxonomy** — it carries `servingMissions`, `servingThemes` and per-block executors, and shows a
+  MINED badge in the Library.
+
+**There is no live LLM in this build.** The accelerator is on-device and deterministic, and there
+is no model endpoint in the bundle, so every step the UI calls "AI" is *derived*, not invented: the
+checklist is selected by function and re-prioritised by objective keywords; maturity is scored from
+which categories the SME actually uploaded; KPI gaps are read from the benchmark table; candidates
+surface only when the corpus carries the evidence their chain depends on, and are ranked by the KPI
+gap they close. `buildPrompt()` assembles the real few-shot prompt (6 library patterns in
+processFlow/branchingFlow/servingMissions form + the extracted signals) and the UI renders it
+verbatim behind "show the prompt" — **the seam to a live model is one function wide: replace the
+body of `mine()` and every stage downstream still works.**
 
 Persistence: uploaded documents are in-memory only (clearing on reload, by design). Accepted
 patterns and merged incumbents persist to `localStorage` under `piq.mined.v1` — note that a
@@ -184,7 +239,7 @@ Generated. All edits go to `src/` (or the `scripts/` generators).
 | `src/js/build.js` | **Builder · Build** — assembles configured blocks into validated agent chains |
 | `src/js/runtime.js` | **Builder · Run & Govern** — live STP console; variation→pattern-match→DAG approval, live KPIs |
 | `src/js/provocation.js` | The Provocation (scrollytelling intro) — **still bundled but unreachable**; the "Why" entry point was removed. Candidate for deletion |
-| `scripts/build_mining.py` | Generates `src/data/mining.json` — the 7-category / 28-slot upload accordion + the pool of 8 minable candidate patterns (each a full pattern structure + `requires` / `evidence` / `confidence` / `similarTo`) + the few-shot prompt template |
+| `scripts/build_mining.py` | Generates `src/data/mining.json` — the Mine tab's whole domain: 10 functions, per-function document **checklists**, **clarifiers**, **KPI benchmark sets**, the 5 **maturity dimensions** + evidence rules, objective **blueprints**, and the pool of 11 minable candidates (full pattern structure in processFlow/branchingFlow/executor form + `requires` / `evidence` / `confidence` / `similarTo` / `closesKpi` / `servingMissions` / `servingThemes`). Asserts every candidate's evidence resolves against its own function's checklist |
 | `src/js/library.js` | **Pattern Studio** (registers as `patternstudio`) — the Library catalogue **and** the Mine tab: upload accordion, 5-stage pipeline, candidate review, accept/merge into the live library |
 | `src/js/cockpit.js` | Cognitive Cockpit UI render logic — Run & Govern sub-view |
 | `src/js/governance.js` | Action & Governance (trust modes + Saga simulator) — Run & Govern sub-view |

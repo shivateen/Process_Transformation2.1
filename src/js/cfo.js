@@ -24,10 +24,19 @@
   "use strict";
 
   var CC = window.PROCESSIQ_CC || {};
-  var OBJ = CC.objectives || {};
+  var THM = CC.themes || {};        // L1 A–H
+  var OBJ = {};                      // L2 objectives, flattened: A.1 -> {name, missions}
   var MIS = CC.missions || {};
   var CAP = CC.capabilities || {};
   var TABS = (CC.meta && CC.meta.tabs) || [];
+  var PAT = (window.PROCESSIQ_PATTERNS && window.PROCESSIQ_PATTERNS.patterns) || [];
+  Object.keys(THM).forEach(function (t) {
+    Object.keys(THM[t].objectives || {}).forEach(function (o) { OBJ[o] = THM[t].objectives[o]; });
+  });
+  function patternById(id) {
+    var p = (window.PIQ.patterns || PAT).filter(function (x) { return x.id === id; })[0];
+    return p || null;
+  }
 
   function S() { return window.PIQ.cc; }
   function esc(s) { return (s == null ? "" : String(s)).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
@@ -248,14 +257,14 @@
             '<span class="cc-pname">' + esc(p.label) + '</span>' +
             '<span class="cc-ptag">' + esc(p.headline) + '</span>' +
             '<span class="cc-pmeta">' + (p.isOverview
-              ? c.objectives + ' objectives · ' + c.missions + ' missions'
+              ? c.themes + ' themes · ' + c.missions + ' missions'
               : p.missionCount + ' missions · ' + p.capabilityCount + ' capabilities') + '</span></button>';
         }).join("") + '</div>';
     }).join("");
 
     view.innerHTML = '<div class="cfo-wrap">' +
       '<div class="cfo-section"><h3>Command Centre</h3><div class="cfo-sub">' +
-        'Your outcomes surface. ' + c.objectives + ' objectives · ' + c.l2 + ' sub-objectives · ' +
+        'Your outcomes surface. ' + c.themes + ' themes · ' + c.objectives + ' objectives · ' +
         c.missions + ' missions · ' + c.capabilities + ' capabilities. Choose your role — every persona ' +
         'gets a mission-driven view organised by cadence, with the power to customise.' +
       '</div></div>' + html + '</div>';
@@ -274,12 +283,12 @@
   /* CFO — the objective-level roll-up (A–H), not individual missions        */
   /* ====================================================================== */
   var HEALTH = { "on-track": 2, "attention": 1, "off-track": 0 };
-  function objMissions(oid) {
-    return Object.keys(MIS).filter(function (m) { return MIS[m].objective === oid; })
+  function themeMissions(tid) {
+    return Object.keys(MIS).filter(function (m) { return MIS[m].theme === tid; })
       .sort(function (a, b) { return +a.slice(1) - +b.slice(1); });
   }
-  function objHealth(oid) {
-    var ms = objMissions(oid);
+  function themeHealth(tid) {
+    var ms = themeMissions(tid);
     if (!ms.length) return { pct: 100, status: "on-track", counts: {} };
     var c = { "on-track": 0, "attention": 0, "off-track": 0 };
     ms.forEach(function (m) { c[MIS[m].status]++; });
@@ -332,11 +341,11 @@
 
     } else if (tab === "trajectory") {
       // the 8-objective scorecard: targets vs actuals at the strategic level
-      body = '<table class="board-table cc-score"><thead><tr><th>Objective</th><th>Missions</th>' +
+      body = '<table class="board-table cc-score"><thead><tr><th>Theme</th><th>Missions</th>' +
         '<th>Health</th><th>Off / Attention / On</th><th>Status</th></tr></thead><tbody>' +
-        Object.keys(OBJ).map(function (oid) {
-          var h = objHealth(oid);
-          return '<tr data-owner-none><td><b>' + oid + '</b> ' + esc(OBJ[oid].name) + '</td>' +
+        Object.keys(THM).map(function (tid) {
+          var h = themeHealth(tid);
+          return '<tr><td><b>' + tid + '</b> ' + esc(THM[tid].name) + '</td>' +
             '<td>' + h.n + '</td>' +
             '<td><span class="cc-obj-bar sm"><i style="width:' + h.pct + '%"></i></span> ' + h.pct + '%</td>' +
             '<td>' + h.counts["off-track"] + ' / ' + h.counts["attention"] + ' / ' + h.counts["on-track"] + '</td>' +
@@ -345,21 +354,21 @@
 
     } else {
       // Intelligence — A–H objective tiles, each drilling through to the owning personas
-      body = '<div class="cc-objs">' + Object.keys(OBJ).map(function (oid) {
-        var o = OBJ[oid], h = objHealth(oid);
-        var owners = {}, ms = objMissions(oid);
+      body = '<div class="cc-objs">' + Object.keys(THM).map(function (tid) {
+        var o = THM[tid], h = themeHealth(tid);
+        var owners = {}, ms = themeMissions(tid);
         ms.forEach(function (m) { owners[MIS[m].owner] = 1; });
-        var l2 = Object.keys(o.l2).map(function (k) {
+        var l2 = Object.keys(o.objectives).map(function (k) {
           return '<div class="cc-l2"><span class="cc-l2-id">' + k + '</span>' +
-            '<span class="cc-l2-n">' + esc(o.l2[k].name) + '</span>' +
-            '<span class="cc-l2-c">' + o.l2[k].missions.length + '</span></div>';
+            '<span class="cc-l2-n">' + esc(o.objectives[k].name) + '</span>' +
+            '<span class="cc-l2-c">' + o.objectives[k].missions.length + '</span></div>';
         }).join("");
         var chips = Object.keys(owners).map(function (pid) {
           var pp = personaById(pid);
           return pp ? '<button class="cc-own" data-owner="' + pid + '">' + pp.icon + ' ' + esc(pp.label) + '</button>' : "";
         }).join("");
         return '<div class="cc-obj ' + h.status + '">' +
-          '<div class="cc-obj-h"><span class="cc-obj-id">' + oid + '</span>' +
+          '<div class="cc-obj-h"><span class="cc-obj-id">' + tid + '</span>' +
             '<span class="cc-obj-n">' + esc(o.name) + '</span>' +
             '<span class="cc-obj-p ' + h.status + '">' + h.pct + '%</span></div>' +
           '<div class="cc-obj-bar"><i style="width:' + h.pct + '%"></i></div>' +
@@ -368,7 +377,8 @@
             (h.counts["attention"] ? h.counts["attention"] + ' attention · ' : '') +
             h.counts["on-track"] + ' on track</div>' +
           '<div class="cc-l2s">' + l2 + '</div>' +
-          '<div class="cc-owns">' + chips + '</div></div>';
+          '<div class="cc-owns">' + chips +
+            '<button class="cc-own pat" data-theme="' + tid + '">View patterns →</button></div></div>';
       }).join("") + '</div>';
     }
 
@@ -407,7 +417,7 @@
         '<div class="cc-hero-n">' + esc(p.label) + '</div>' +
         '<div class="cc-hero-h">' + esc(p.headline) + '</div>' +
         '<div class="cc-hero-m">' +
-          (p.isOverview ? '<b>' + CC.meta.counts.objectives + '</b> objectives · ' : '') +
+          (p.isOverview ? '<b>' + CC.meta.counts.themes + '</b> themes · ' : '') +
           '<b>' + miss + '</b> missions · <b>' + caps + '</b> capabilities' +
         '</div>' +
       '</div>' +
@@ -463,8 +473,8 @@
   function renderHeatmap(p) {
     var rows;
     if (p.isOverview) {
-      rows = Object.keys(OBJ).map(function (oid) {
-        return { label: oid + " · " + OBJ[oid].name, ms: objMissions(oid), obj: oid };
+      rows = Object.keys(THM).map(function (tid) {
+        return { label: tid + " · " + THM[tid].name, ms: themeMissions(tid), obj: tid };
       });
     } else {
       rows = TABS.filter(function (t) { return (p.activeTabs || []).indexOf(t.id) >= 0; })
@@ -541,7 +551,8 @@
     var col = !!COLLAPSED[mid];
     var caps = (m.capabilities || []).filter(function (c) { return lay.indexOf(c) >= 0; });
     caps.sort(function (a, b) { return lay.indexOf(a) - lay.indexOf(b); });
-    var l2name = (OBJ[m.objective] && OBJ[m.objective].l2[m.l2]) ? OBJ[m.objective].l2[m.l2].name : m.l2;
+    var objName = OBJ[m.objective] ? OBJ[m.objective].name : m.objective;
+    var pats = (m.poweredByPatterns || []).map(patternById).filter(Boolean);
 
     var body = col ? "" : (caps.length
       ? '<div class="mc-caps">' + caps.map(function (c) { return capWidget(c, mid); }).join("") + '</div>'
@@ -552,7 +563,7 @@
       '<div class="mc-act">' +
         '<span class="mc-a"><i>Last action</i>' + esc(m.lastAction) + '</span>' +
         '<span class="mc-a"><i>Next action</i>' + esc(m.nextAction) + '</span>' +
-        '<button class="cc-inbuilder" data-view="fitment">View in Builder →</button>' +
+        '<button class="cc-inbuilder" data-view="patternstudio" data-m="' + mid + '">View in Builder →</button>' +
       '</div>';
 
     return '<div class="mc ' + m.status + (col ? " collapsed" : "") + '" data-m="' + mid + '" id="mc-' + mid + '">' +
@@ -565,8 +576,16 @@
         '<span class="mc-caret">' + (col ? "▸" : "▾") + '</span>' +
       '</button>' +
       (col ? "" : '<div class="mc-meta"><span class="mc-cad">' + esc(m.cadence) + '</span>' +
-        '<span class="mc-obj">Obj ' + m.objective + ' · ' + esc(l2name) + '</span>' +
+        '<span class="mc-obj">Theme ' + m.theme + ' · ' + esc(objName) + '</span>' +
         (m.agentCoverage ? '<span class="mc-agent">⚡ agent covered</span>' : '') +
+        '</div>') +
+      (col || !pats.length ? "" :
+        '<div class="mc-pats"><span class="mc-pats-l">Powered by</span>' +
+        pats.slice(0, 6).map(function (x) {
+          return '<button class="dq-pat" data-pat="' + x.id + '" title="Open in Pattern Studio">#' +
+            x.id + ' ' + esc(x.name) + '</button>';
+        }).join("") +
+        (pats.length > 6 ? '<span class="mc-pats-m">+' + (pats.length - 6) + ' more</span>' : '') +
         '</div>') +
       body + foot + '</div>';
   }
@@ -628,7 +647,19 @@
       };
     });
     view.querySelectorAll(".cc-inbuilder").forEach(function (b) {
-      b.onclick = function (e) { e.stopPropagation(); window.PIQ.goBuilder(b.dataset.view || "fitment"); };
+      b.onclick = function (e) {
+        e.stopPropagation();
+        if (b.dataset.m) return jumpToPatterns({ mission: b.dataset.m });
+        window.PIQ.goBuilder(b.dataset.view || "fitment");
+      };
+    });
+    // a pattern pill opens that pattern in Pattern Studio
+    view.querySelectorAll(".dq-pat").forEach(function (b) {
+      b.onclick = function (e) { e.stopPropagation(); jumpToPatterns({ pattern: +b.dataset.pat }); };
+    });
+    // a CFO theme tile → every pattern serving that theme
+    view.querySelectorAll(".cc-own.pat").forEach(function (b) {
+      b.onclick = function (e) { e.stopPropagation(); jumpToPatterns({ theme: b.dataset.theme }); };
     });
     // heatmap block / attention chip → scroll to the mission card, switching lens if needed
     view.querySelectorAll("[data-jump]").forEach(function (b) {
@@ -655,6 +686,13 @@
     if (S().custom) bindCustomise(view, p);
   }
 
+  // Cross-tile jump into the Builder's Pattern Studio. The filter is handed over in
+  // localStorage because the two surfaces are separate page loads.
+  function jumpToPatterns(filter) {
+    try { localStorage.setItem("piq.ps.jump.v1", JSON.stringify(filter)); } catch (e) {}
+    window.PIQ.goBuilder("patternstudio");
+  }
+
   function scrollToMission(mid) {
     var el = document.getElementById("mc-" + mid);
     if (!el) return;
@@ -670,16 +708,16 @@
   function customiseOverlay(p) {
     var cur = layout(p);
 
-    // catalogue grouped by the 8 L1 objectives
+    // catalogue grouped by the 8 L1 themes
     var byObj = {};
     Object.keys(CAP).forEach(function (cid) {
-      var o = CAP[cid].objective || "?";
+      var o = CAP[cid].theme || "?";
       (byObj[o] = byObj[o] || []).push(CAP[cid]);
     });
-    var cats = Object.keys(OBJ).map(function (oid) {
-      var list = (byObj[oid] || []).sort(function (a, b) { return +a.id.slice(4) - +b.id.slice(4); });
+    var cats = Object.keys(THM).map(function (tid) {
+      var list = (byObj[tid] || []).sort(function (a, b) { return +a.id.slice(4) - +b.id.slice(4); });
       if (!list.length) return "";
-      return '<div class="cx-cat">' + oid + ' · ' + esc(OBJ[oid].name) + '</div>' +
+      return '<div class="cx-cat">' + tid + ' · ' + esc(THM[tid].name) + '</div>' +
         list.map(function (c) {
           var on = cur.indexOf(c.id) >= 0;
           var others = (c.usedByPersonas || []).filter(function (x) { return x !== p.id; })
@@ -770,8 +808,26 @@
   }
 
   /* ====================================================================== */
+  // an inbound jump from the Builder ("Serving M22 →") lands us on the right persona,
+  // the right lens, and scrolled to the right mission card
+  function consumeJump() {
+    var raw;
+    try { raw = localStorage.getItem("piq.cc.jump.v1"); localStorage.removeItem("piq.cc.jump.v1"); }
+    catch (e) { return null; }
+    if (!raw) return null;
+    try { return JSON.parse(raw); } catch (e) { return null; }
+  }
+
   function render(view) {
     var s = S();
+    if (!s._jumped) {
+      var j = consumeJump();
+      s._jumped = true;
+      if (j && j.persona && personaById(j.persona)) {
+        s.persona = j.persona; s.tab = j.tab || "pulse"; s.custom = false;
+        if (j.mission) setTimeout(function () { scrollToMission(j.mission); }, 220);
+      }
+    }
     var p = s.persona && personaById(s.persona);
     if (!p) { s.persona = null; s.custom = false; return renderPicker(view); }
     if (p.isOverview) return renderCFO(view, p);

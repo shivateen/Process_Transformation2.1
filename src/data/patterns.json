@@ -177,6 +177,13 @@
       "hitlGates": [
         "Collections VP approves legal hold"
       ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M2",
+        "M43"
+      ],
       "calibration": {
         "defaultThreshold": "0-3 days",
         "calibratedThreshold": "0-7 days",
@@ -246,6 +253,13 @@
       "hitlGates": [
         "Legal must approve portal removal"
       ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M2",
+        "M43"
+      ],
       "calibration": {
         "defaultThreshold": "0-4 days",
         "calibratedThreshold": "0-9 days",
@@ -313,6 +327,13 @@
       ],
       "hitlGates": [
         "Collections VP approves legal hold"
+      ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M2",
+        "M43"
       ],
       "calibration": {
         "defaultThreshold": "0-2 days",
@@ -384,6 +405,13 @@
       "hitlGates": [
         "Manager approves before any clearing"
       ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M2",
+        "M43"
+      ],
       "calibration": {
         "defaultThreshold": "0-3 days",
         "calibratedThreshold": "0-6 days",
@@ -450,6 +478,13 @@
         }
       ],
       "hitlGates": [],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M2",
+        "M43"
+      ],
       "calibration": {
         "defaultThreshold": "0-4 days",
         "calibratedThreshold": "0-8 days",
@@ -517,6 +552,13 @@
         }
       ],
       "hitlGates": [],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M2",
+        "M43"
+      ],
       "calibration": {
         "defaultThreshold": "0-2 days",
         "calibratedThreshold": "0-7 days",
@@ -583,6 +625,13 @@
         }
       ],
       "hitlGates": [],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M2",
+        "M43"
+      ],
       "calibration": {
         "defaultThreshold": "0-3 days",
         "calibratedThreshold": "0-9 days",
@@ -650,6 +699,13 @@
       ],
       "hitlGates": [
         "Finance Director approves mass rejection"
+      ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M2",
+        "M43"
       ],
       "calibration": {
         "defaultThreshold": "0-4 days",
@@ -719,6 +775,13 @@
       ],
       "hitlGates": [
         "Manager approves bad faith rejection"
+      ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M2",
+        "M43"
       ],
       "calibration": {
         "defaultThreshold": "0-2 days",
@@ -791,6 +854,13 @@
       "hitlGates": [
         "VP approves delivery block"
       ],
+      "servingThemes": [
+        "C"
+      ],
+      "servingMissions": [
+        "M19",
+        "M22"
+      ],
       "calibration": {
         "defaultThreshold": "0-3 days",
         "calibratedThreshold": "0-8 days",
@@ -858,6 +928,13 @@
       ],
       "hitlGates": [
         "Collections VP approves delivery block"
+      ],
+      "servingThemes": [
+        "C"
+      ],
+      "servingMissions": [
+        "M19",
+        "M22"
       ],
       "calibration": {
         "defaultThreshold": "0-4 days",
@@ -928,6 +1005,13 @@
       "hitlGates": [
         "VP Collections approves delivery block"
       ],
+      "servingThemes": [
+        "C"
+      ],
+      "servingMissions": [
+        "M19",
+        "M22"
+      ],
       "calibration": {
         "defaultThreshold": "0-2 days",
         "calibratedThreshold": "0-5 days",
@@ -994,6 +1078,13 @@
         }
       ],
       "hitlGates": [],
+      "servingThemes": [
+        "C"
+      ],
+      "servingMissions": [
+        "M19",
+        "M22"
+      ],
       "calibration": {
         "defaultThreshold": "0-3 days",
         "calibratedThreshold": "0-7 days",
@@ -1060,6 +1151,13 @@
         }
       ],
       "hitlGates": [],
+      "servingThemes": [
+        "C"
+      ],
+      "servingMissions": [
+        "M19",
+        "M22"
+      ],
       "calibration": {
         "defaultThreshold": "0-4 days",
         "calibratedThreshold": "0-9 days",
@@ -1126,6 +1224,13 @@
         }
       ],
       "hitlGates": [],
+      "servingThemes": [
+        "C"
+      ],
+      "servingMissions": [
+        "M19",
+        "M22"
+      ],
       "calibration": {
         "defaultThreshold": "0-2 days",
         "calibratedThreshold": "0-8 days",
@@ -1192,6 +1297,13 @@
         }
       ],
       "hitlGates": [],
+      "servingThemes": [
+        "C"
+      ],
+      "servingMissions": [
+        "M19",
+        "M22"
+      ],
       "calibration": {
         "defaultThreshold": "0-3 days",
         "calibratedThreshold": "0-6 days",
@@ -1257,6 +1369,13 @@
         }
       ],
       "hitlGates": [],
+      "servingThemes": [
+        "C"
+      ],
+      "servingMissions": [
+        "M19",
+        "M22"
+      ],
       "calibration": {
         "defaultThreshold": "0-4 days",
         "calibratedThreshold": "0-8 days",
@@ -1320,6 +1439,13 @@
         }
       ],
       "hitlGates": [],
+      "servingThemes": [
+        "C"
+      ],
+      "servingMissions": [
+        "M19",
+        "M22"
+      ],
       "calibration": {
         "defaultThreshold": "0-2 days",
         "calibratedThreshold": "0-7 days",
@@ -1378,6 +1504,14 @@
       ],
       "hitlGates": [
         "CFO approves legal hold — SLA: 2 hours"
+      ],
+      "servingThemes": [
+        "H",
+        "C"
+      ],
+      "servingMissions": [
+        "M56",
+        "M19"
       ],
       "calibration": {
         "defaultThreshold": "0-3 days",
@@ -1448,6 +1582,14 @@
       "hitlGates": [
         "CFO approves block + legal referral"
       ],
+      "servingThemes": [
+        "H",
+        "C"
+      ],
+      "servingMissions": [
+        "M56",
+        "M19"
+      ],
       "calibration": {
         "defaultThreshold": "0-4 days",
         "calibratedThreshold": "0-7 days",
@@ -1515,6 +1657,14 @@
       ],
       "hitlGates": [
         "Credit Risk VP approves limit reduction"
+      ],
+      "servingThemes": [
+        "H",
+        "C"
+      ],
+      "servingMissions": [
+        "M56",
+        "M19"
       ],
       "calibration": {
         "defaultThreshold": "0-2 days",
@@ -1584,6 +1734,14 @@
       "hitlGates": [
         "CFO approves delivery block"
       ],
+      "servingThemes": [
+        "H",
+        "C"
+      ],
+      "servingMissions": [
+        "M56",
+        "M19"
+      ],
       "calibration": {
         "defaultThreshold": "0-3 days",
         "calibratedThreshold": "0-8 days",
@@ -1649,6 +1807,14 @@
         }
       ],
       "hitlGates": [],
+      "servingThemes": [
+        "H",
+        "C"
+      ],
+      "servingMissions": [
+        "M56",
+        "M19"
+      ],
       "calibration": {
         "defaultThreshold": "0-4 days",
         "calibratedThreshold": "0-10 days",
@@ -1716,6 +1882,13 @@
       ],
       "hitlGates": [
         "Treasury VP approves shipment freeze"
+      ],
+      "servingThemes": [
+        "C"
+      ],
+      "servingMissions": [
+        "M19",
+        "M43"
       ],
       "calibration": {
         "defaultThreshold": "0-2 days",
@@ -1785,6 +1958,13 @@
       "hitlGates": [
         "Finance Director approves legal hold"
       ],
+      "servingThemes": [
+        "C"
+      ],
+      "servingMissions": [
+        "M19",
+        "M43"
+      ],
       "calibration": {
         "defaultThreshold": "0-3 days",
         "calibratedThreshold": "0-7 days",
@@ -1850,6 +2030,13 @@
         }
       ],
       "hitlGates": [],
+      "servingThemes": [
+        "C"
+      ],
+      "servingMissions": [
+        "M19",
+        "M43"
+      ],
       "calibration": {
         "defaultThreshold": "0-4 days",
         "calibratedThreshold": "0-9 days",
@@ -1917,6 +2104,13 @@
         }
       ],
       "hitlGates": [],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M2",
+        "M4"
+      ],
       "calibration": {
         "defaultThreshold": "0-2 days",
         "calibratedThreshold": "0-8 days",
@@ -1985,6 +2179,13 @@
       ],
       "hitlGates": [
         "Finance Director approves contract amendment"
+      ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M2",
+        "M4"
       ],
       "calibration": {
         "defaultThreshold": "0-3 days",
@@ -2056,6 +2257,13 @@
       "hitlGates": [
         "CFO must approve all future credit releases"
       ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M2",
+        "M4"
+      ],
       "calibration": {
         "defaultThreshold": "0-4 days",
         "calibratedThreshold": "0-8 days",
@@ -2124,6 +2332,13 @@
       "hitlGates": [
         "Collections VP + Sales Director co-approve"
       ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M2",
+        "M4"
+      ],
       "calibration": {
         "defaultThreshold": "0-2 days",
         "calibratedThreshold": "0-7 days",
@@ -2191,6 +2406,13 @@
       ],
       "hitlGates": [
         "Collections Director approves portal disable"
+      ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M2",
+        "M4"
       ],
       "calibration": {
         "defaultThreshold": "0-3 days",
@@ -2263,6 +2485,14 @@
         "Credit Committee approves exposure cap",
         "Credit Manager approves limit freeze"
       ],
+      "servingThemes": [
+        "H",
+        "C"
+      ],
+      "servingMissions": [
+        "M56",
+        "M19"
+      ],
       "calibration": {
         "defaultThreshold": "0-4 days",
         "calibratedThreshold": "0-7 days",
@@ -2333,6 +2563,14 @@
       "hitlGates": [
         "Credit Analyst approves risk downgrade",
         "Credit Manager approves credit hold"
+      ],
+      "servingThemes": [
+        "H",
+        "C"
+      ],
+      "servingMissions": [
+        "M56",
+        "M19"
       ],
       "calibration": {
         "defaultThreshold": "0-2 days",
@@ -2405,6 +2643,14 @@
       "hitlGates": [
         "Credit Analyst approves deferral of limit request",
         "Credit Manager approves conditional limit"
+      ],
+      "servingThemes": [
+        "H",
+        "C"
+      ],
+      "servingMissions": [
+        "M56",
+        "M19"
       ],
       "calibration": {
         "defaultThreshold": "0-3 days",
@@ -2480,6 +2726,14 @@
         "Credit Committee approves account block for suspected fraud",
         "Credit Manager approves order hold"
       ],
+      "servingThemes": [
+        "H",
+        "C"
+      ],
+      "servingMissions": [
+        "M56",
+        "M19"
+      ],
       "calibration": {
         "defaultThreshold": "0-4 days",
         "calibratedThreshold": "0-10 days",
@@ -2552,6 +2806,14 @@
       "hitlGates": [
         "CFO office approves revocation of release authority",
         "Credit Manager approves block reinstatement"
+      ],
+      "servingThemes": [
+        "H",
+        "C"
+      ],
+      "servingMissions": [
+        "M56",
+        "M19"
       ],
       "calibration": {
         "defaultThreshold": "0-2 days",
@@ -2627,6 +2889,14 @@
         "Credit Committee approves group exposure freeze",
         "Credit Manager approves group credit limit"
       ],
+      "servingThemes": [
+        "H",
+        "C"
+      ],
+      "servingMissions": [
+        "M56",
+        "M19"
+      ],
       "calibration": {
         "defaultThreshold": "0-3 days",
         "calibratedThreshold": "0-7 days",
@@ -2700,6 +2970,14 @@
         "Credit Analyst approves seasonal order hold",
         "Credit Manager approves permanent limit reduction"
       ],
+      "servingThemes": [
+        "H",
+        "C"
+      ],
+      "servingMissions": [
+        "M56",
+        "M19"
+      ],
       "calibration": {
         "defaultThreshold": "0-4 days",
         "calibratedThreshold": "0-9 days",
@@ -2772,6 +3050,14 @@
       "hitlGates": [
         "Credit Analyst approves order cap at insured limit",
         "Credit Manager approves uninsured exposure hold"
+      ],
+      "servingThemes": [
+        "H",
+        "C"
+      ],
+      "servingMissions": [
+        "M56",
+        "M19"
       ],
       "calibration": {
         "defaultThreshold": "0-2 days",
@@ -2847,6 +3133,14 @@
         "Credit Analyst approves order restriction pending collateral renewal",
         "Credit Manager approves reclassification to unsecured and freeze"
       ],
+      "servingThemes": [
+        "H",
+        "C"
+      ],
+      "servingMissions": [
+        "M56",
+        "M19"
+      ],
       "calibration": {
         "defaultThreshold": "0-3 days",
         "calibratedThreshold": "0-6 days",
@@ -2919,6 +3213,14 @@
         "Credit Manager approves rerouting to higher authority",
         "Internal Audit approves suspension of approval authority"
       ],
+      "servingThemes": [
+        "H",
+        "C"
+      ],
+      "servingMissions": [
+        "M56",
+        "M19"
+      ],
       "calibration": {
         "defaultThreshold": "0-4 days",
         "calibratedThreshold": "0-8 days",
@@ -2986,6 +3288,14 @@
       ],
       "hitlGates": [
         "Cash App Lead approves on-account hold"
+      ],
+      "servingThemes": [
+        "C",
+        "G"
+      ],
+      "servingMissions": [
+        "M19",
+        "M43"
       ],
       "calibration": {
         "defaultThreshold": "0-2 days",
@@ -3057,6 +3367,14 @@
         "Cash App Lead approves on-account parking",
         "Controller approves refund release after fraud review"
       ],
+      "servingThemes": [
+        "C",
+        "G"
+      ],
+      "servingMissions": [
+        "M19",
+        "M43"
+      ],
       "calibration": {
         "defaultThreshold": "0-3 days",
         "calibratedThreshold": "0-9 days",
@@ -3124,6 +3442,14 @@
       ],
       "hitlGates": [
         "Deductions Analyst approves deduction case creation"
+      ],
+      "servingThemes": [
+        "C",
+        "G"
+      ],
+      "servingMissions": [
+        "M19",
+        "M43"
       ],
       "calibration": {
         "defaultThreshold": "0-4 days",
@@ -3195,6 +3521,14 @@
         "Collections Lead approves account flag for review",
         "Credit Manager approves order hold"
       ],
+      "servingThemes": [
+        "C",
+        "G"
+      ],
+      "servingMissions": [
+        "M19",
+        "M43"
+      ],
       "calibration": {
         "defaultThreshold": "0-2 days",
         "calibratedThreshold": "0-6 days",
@@ -3262,6 +3596,14 @@
       ],
       "hitlGates": [
         "Cash App Lead approves parse template override"
+      ],
+      "servingThemes": [
+        "C",
+        "G"
+      ],
+      "servingMissions": [
+        "M19",
+        "M43"
       ],
       "calibration": {
         "defaultThreshold": "0-3 days",
@@ -3331,6 +3673,14 @@
       "hitlGates": [
         "Deductions Analyst approves residual deduction"
       ],
+      "servingThemes": [
+        "C",
+        "G"
+      ],
+      "servingMissions": [
+        "M19",
+        "M43"
+      ],
       "calibration": {
         "defaultThreshold": "0-4 days",
         "calibratedThreshold": "0-10 days",
@@ -3399,6 +3749,14 @@
       "hitlGates": [
         "Collections Lead approves forced application over customer instruction"
       ],
+      "servingThemes": [
+        "C",
+        "G"
+      ],
+      "servingMissions": [
+        "M19",
+        "M43"
+      ],
       "calibration": {
         "defaultThreshold": "0-2 days",
         "calibratedThreshold": "0-5 days",
@@ -3466,6 +3824,14 @@
       ],
       "hitlGates": [
         "Cash App Lead approves intercompany fund transfer"
+      ],
+      "servingThemes": [
+        "C",
+        "G"
+      ],
+      "servingMissions": [
+        "M19",
+        "M43"
       ],
       "calibration": {
         "defaultThreshold": "0-3 days",
@@ -3537,6 +3903,14 @@
         "Credit Manager approves credit review for netting abuse",
         "Deductions Analyst approves unapproved-netting reversal"
       ],
+      "servingThemes": [
+        "C",
+        "G"
+      ],
+      "servingMissions": [
+        "M19",
+        "M43"
+      ],
       "calibration": {
         "defaultThreshold": "0-4 days",
         "calibratedThreshold": "0-9 days",
@@ -3604,6 +3978,14 @@
       ],
       "hitlGates": [
         "Cash App Lead approves standard-format request to payer"
+      ],
+      "servingThemes": [
+        "C",
+        "G"
+      ],
+      "servingMissions": [
+        "M19",
+        "M43"
       ],
       "calibration": {
         "defaultThreshold": "0-2 days",
@@ -3683,6 +4065,14 @@
         "Collections VP approves credit review",
         "Dispute Manager approves serial-filer flag"
       ],
+      "servingThemes": [
+        "A",
+        "G"
+      ],
+      "servingMissions": [
+        "M2",
+        "M43"
+      ],
       "calibration": {
         "defaultThreshold": "0-3 days",
         "calibratedThreshold": "0-6 days",
@@ -3750,6 +4140,14 @@
       ],
       "hitlGates": [
         "Dispute Manager approves reason-lock"
+      ],
+      "servingThemes": [
+        "A",
+        "G"
+      ],
+      "servingMissions": [
+        "M2",
+        "M43"
       ],
       "calibration": {
         "defaultThreshold": "0-4 days",
@@ -3819,6 +4217,14 @@
       "hitlGates": [
         "Dispute Manager approves promo-claim rejection"
       ],
+      "servingThemes": [
+        "A",
+        "G"
+      ],
+      "servingMissions": [
+        "M2",
+        "M43"
+      ],
       "calibration": {
         "defaultThreshold": "0-2 days",
         "calibratedThreshold": "0-7 days",
@@ -3886,6 +4292,14 @@
       ],
       "hitlGates": [
         "Dispute Manager approves POD-backed rejection"
+      ],
+      "servingThemes": [
+        "A",
+        "G"
+      ],
+      "servingMissions": [
+        "M2",
+        "M43"
       ],
       "calibration": {
         "defaultThreshold": "0-3 days",
@@ -3965,6 +4379,14 @@
         "Dispute Manager approves full-reject hold",
         "Quality Manager approves partial-credit cap"
       ],
+      "servingThemes": [
+        "A",
+        "G"
+      ],
+      "servingMissions": [
+        "M2",
+        "M43"
+      ],
       "calibration": {
         "defaultThreshold": "0-4 days",
         "calibratedThreshold": "0-7 days",
@@ -4032,6 +4454,14 @@
       ],
       "hitlGates": [
         "Dispute Manager approves case merge"
+      ],
+      "servingThemes": [
+        "A",
+        "G"
+      ],
+      "servingMissions": [
+        "M2",
+        "M43"
       ],
       "calibration": {
         "defaultThreshold": "0-2 days",
@@ -4111,6 +4541,14 @@
         "Collections VP approves auto-credit rule freeze",
         "Dispute Manager approves auto-credit hold"
       ],
+      "servingThemes": [
+        "A",
+        "G"
+      ],
+      "servingMissions": [
+        "M2",
+        "M43"
+      ],
       "calibration": {
         "defaultThreshold": "0-3 days",
         "calibratedThreshold": "0-8 days",
@@ -4178,6 +4616,14 @@
       ],
       "hitlGates": [
         "Dispute Manager approves claim netting"
+      ],
+      "servingThemes": [
+        "A",
+        "G"
+      ],
+      "servingMissions": [
+        "M2",
+        "M43"
       ],
       "calibration": {
         "defaultThreshold": "0-4 days",
@@ -4257,6 +4703,14 @@
         "Collections VP approves fraud escalation",
         "Dispute Manager approves phantom-RMA rejection"
       ],
+      "servingThemes": [
+        "A",
+        "G"
+      ],
+      "servingMissions": [
+        "M2",
+        "M43"
+      ],
       "calibration": {
         "defaultThreshold": "0-2 days",
         "calibratedThreshold": "0-5 days",
@@ -4327,6 +4781,14 @@
       "hitlGates": [
         "Dispute Manager approves goodwill credit"
       ],
+      "servingThemes": [
+        "A",
+        "G"
+      ],
+      "servingMissions": [
+        "M2",
+        "M43"
+      ],
       "calibration": {
         "defaultThreshold": "0-3 days",
         "calibratedThreshold": "0-7 days",
@@ -4395,6 +4857,13 @@
       ],
       "hitlGates": [
         "Deductions Manager approves overclaim recovery"
+      ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M3",
+        "M2"
       ],
       "calibration": {
         "defaultThreshold": "0-4 days",
@@ -4467,6 +4936,13 @@
         "Deductions Manager approves stacking recovery",
         "Trade Marketing Lead approves program-stack ruling"
       ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M3",
+        "M2"
+      ],
       "calibration": {
         "defaultThreshold": "0-2 days",
         "calibratedThreshold": "0-8 days",
@@ -4538,6 +5014,13 @@
         "Collections VP approves organized-leakage escalation",
         "Deductions Manager approves write-off block"
       ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M3",
+        "M2"
+      ],
       "calibration": {
         "defaultThreshold": "0-3 days",
         "calibratedThreshold": "0-6 days",
@@ -4606,6 +5089,13 @@
       ],
       "hitlGates": [
         "Deductions Manager approves expired-promo recovery"
+      ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M3",
+        "M2"
       ],
       "calibration": {
         "defaultThreshold": "0-4 days",
@@ -4678,6 +5168,13 @@
         "Deductions Manager approves freight recovery case",
         "Logistics Manager approves freight-claim denial"
       ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M3",
+        "M2"
+      ],
       "calibration": {
         "defaultThreshold": "0-2 days",
         "calibratedThreshold": "0-7 days",
@@ -4746,6 +5243,13 @@
       ],
       "hitlGates": [
         "Category Manager approves slotting-fee denial"
+      ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M3",
+        "M2"
       ],
       "calibration": {
         "defaultThreshold": "0-3 days",
@@ -4818,6 +5322,13 @@
         "Deductions Manager approves scan-cap recovery",
         "Trade Marketing Lead approves POS data audit"
       ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M3",
+        "M2"
+      ],
       "calibration": {
         "defaultThreshold": "0-4 days",
         "calibratedThreshold": "0-7 days",
@@ -4886,6 +5397,13 @@
       ],
       "hitlGates": [
         "Trade Marketing Lead approves co-op overdraw review"
+      ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M3",
+        "M2"
       ],
       "calibration": {
         "defaultThreshold": "0-2 days",
@@ -4956,6 +5474,13 @@
       "hitlGates": [
         "Pricing Manager approves protection-window ruling"
       ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M3",
+        "M2"
+      ],
       "calibration": {
         "defaultThreshold": "0-3 days",
         "calibratedThreshold": "0-8 days",
@@ -5024,6 +5549,13 @@
       ],
       "hitlGates": [
         "Deductions Manager approves ageing escalation"
+      ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M3",
+        "M2"
       ],
       "calibration": {
         "defaultThreshold": "0-4 days",
@@ -5102,6 +5634,13 @@
         "AR Manager approves dunning restart",
         "Billing Supervisor approves endpoint change"
       ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M2",
+        "M43"
+      ],
       "calibration": {
         "defaultThreshold": "0-2 days",
         "calibratedThreshold": "0-5 days",
@@ -5171,6 +5710,13 @@
       "hitlGates": [
         "Billing Supervisor approves reissue",
         "Pricing Manager approves condition record fix"
+      ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M2",
+        "M43"
       ],
       "calibration": {
         "defaultThreshold": "0-3 days",
@@ -5242,6 +5788,13 @@
         "Tax Analyst approves withholding correction",
         "Tax Manager approves cross-border tax reissue"
       ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M2",
+        "M43"
+      ],
       "calibration": {
         "defaultThreshold": "0-4 days",
         "calibratedThreshold": "0-9 days",
@@ -5312,6 +5865,13 @@
         "Billing Supervisor approves reversal justification",
         "Controller approves reversal-right suspension"
       ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M2",
+        "M43"
+      ],
       "calibration": {
         "defaultThreshold": "0-2 days",
         "calibratedThreshold": "0-8 days",
@@ -5379,6 +5939,13 @@
       ],
       "hitlGates": [
         "Revenue Accountant approves period-end acceleration"
+      ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M2",
+        "M43"
       ],
       "calibration": {
         "defaultThreshold": "0-3 days",
@@ -5450,6 +6017,13 @@
         "Finance Controller approves rebate condition remediation",
         "Revenue Accountant approves rebate accrual adjustment"
       ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M2",
+        "M43"
+      ],
       "calibration": {
         "defaultThreshold": "0-4 days",
         "calibratedThreshold": "0-8 days",
@@ -5520,6 +6094,13 @@
         "Billing Supervisor approves credit memo",
         "Controller approves high-value credit memo"
       ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M2",
+        "M43"
+      ],
       "calibration": {
         "defaultThreshold": "0-2 days",
         "calibratedThreshold": "0-7 days",
@@ -5588,6 +6169,13 @@
       "hitlGates": [
         "Project Manager approves milestone billing release",
         "Revenue Accountant approves unbilled revenue accrual"
+      ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M2",
+        "M43"
       ],
       "calibration": {
         "defaultThreshold": "0-3 days",
@@ -5659,6 +6247,13 @@
         "AR Manager approves duplicate resolution",
         "Billing Supervisor approves duplicate cancellation"
       ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M2",
+        "M43"
+      ],
       "calibration": {
         "defaultThreshold": "0-4 days",
         "calibratedThreshold": "0-7 days",
@@ -5729,6 +6324,13 @@
         "Intercompany Accountant approves transfer-price correction",
         "Tax Manager approves transfer-price policy review"
       ],
+      "servingThemes": [
+        "A"
+      ],
+      "servingMissions": [
+        "M2",
+        "M43"
+      ],
       "calibration": {
         "defaultThreshold": "0-2 days",
         "calibratedThreshold": "0-6 days",
@@ -5795,6 +6397,14 @@
       ],
       "hitlGates": [
         "Order Management Lead approves pricing-snapshot revert"
+      ],
+      "servingThemes": [
+        "A",
+        "C"
+      ],
+      "servingMissions": [
+        "M1",
+        "M18"
       ],
       "calibration": {
         "defaultThreshold": "0-3 days",
@@ -5865,6 +6475,14 @@
         "Collections VP approves rep release-right freeze",
         "Credit Manager approves override revocation"
       ],
+      "servingThemes": [
+        "A",
+        "C"
+      ],
+      "servingMissions": [
+        "M1",
+        "M18"
+      ],
       "calibration": {
         "defaultThreshold": "0-4 days",
         "calibratedThreshold": "0-10 days",
@@ -5923,6 +6541,14 @@
       ],
       "hitlGates": [
         "Order Management Lead approves aggregate order review"
+      ],
+      "servingThemes": [
+        "A",
+        "C"
+      ],
+      "servingMissions": [
+        "M1",
+        "M18"
       ],
       "calibration": {
         "defaultThreshold": "0-2 days",
@@ -5991,6 +6617,14 @@
       "hitlGates": [
         "Order Management Lead approves priority downgrade"
       ],
+      "servingThemes": [
+        "A",
+        "C"
+      ],
+      "servingMissions": [
+        "M1",
+        "M18"
+      ],
       "calibration": {
         "defaultThreshold": "0-3 days",
         "calibratedThreshold": "0-7 days",
@@ -6049,6 +6683,14 @@
       ],
       "hitlGates": [
         "Sales Manager approves free-goods exception"
+      ],
+      "servingThemes": [
+        "A",
+        "C"
+      ],
+      "servingMissions": [
+        "M1",
+        "M18"
       ],
       "calibration": {
         "defaultThreshold": "0-4 days",
@@ -6119,6 +6761,14 @@
         "Order Management Lead approves reorder pricing hold",
         "Sales Manager approves promo eligibility block"
       ],
+      "servingThemes": [
+        "A",
+        "C"
+      ],
+      "servingMissions": [
+        "M1",
+        "M18"
+      ],
       "calibration": {
         "defaultThreshold": "0-2 days",
         "calibratedThreshold": "0-8 days",
@@ -6178,6 +6828,14 @@
       ],
       "hitlGates": [
         "Credit Manager approves re-check on new region"
+      ],
+      "servingThemes": [
+        "A",
+        "C"
+      ],
+      "servingMissions": [
+        "M1",
+        "M18"
       ],
       "calibration": {
         "defaultThreshold": "0-3 days",
@@ -6249,6 +6907,14 @@
         "Order Management Lead approves contract amendment",
         "Sales Manager approves release block on overdrawn contract"
       ],
+      "servingThemes": [
+        "A",
+        "C"
+      ],
+      "servingMissions": [
+        "M1",
+        "M18"
+      ],
       "calibration": {
         "defaultThreshold": "0-4 days",
         "calibratedThreshold": "0-8 days",
@@ -6317,6 +6983,14 @@
       "hitlGates": [
         "Sales Manager approves delivery-date repricing"
       ],
+      "servingThemes": [
+        "A",
+        "C"
+      ],
+      "servingMissions": [
+        "M1",
+        "M18"
+      ],
       "calibration": {
         "defaultThreshold": "0-2 days",
         "calibratedThreshold": "0-7 days",
@@ -6376,6 +7050,14 @@
       ],
       "hitlGates": [
         "Sales Manager approves pricing-authority review"
+      ],
+      "servingThemes": [
+        "A",
+        "C"
+      ],
+      "servingMissions": [
+        "M1",
+        "M18"
       ],
       "calibration": {
         "defaultThreshold": "0-3 days",
@@ -6456,6 +7138,14 @@
         "AR Controller approves ageing restatement",
         "CFO approves DSO restatement to the board"
       ],
+      "servingThemes": [
+        "H",
+        "G"
+      ],
+      "servingMissions": [
+        "M53",
+        "M54"
+      ],
       "calibration": {
         "defaultThreshold": "0-4 days",
         "calibratedThreshold": "0-7 days",
@@ -6534,6 +7224,14 @@
       "hitlGates": [
         "AR Controller approves write-off reversal",
         "Audit Committee approves provision restatement"
+      ],
+      "servingThemes": [
+        "H",
+        "G"
+      ],
+      "servingMissions": [
+        "M53",
+        "M54"
       ],
       "calibration": {
         "defaultThreshold": "0-2 days",
@@ -6614,6 +7312,14 @@
         "AR Controller approves single-name exposure freeze",
         "Credit Manager approves consolidated limit"
       ],
+      "servingThemes": [
+        "H",
+        "G"
+      ],
+      "servingMissions": [
+        "M53",
+        "M54"
+      ],
       "calibration": {
         "defaultThreshold": "0-3 days",
         "calibratedThreshold": "0-8 days",
@@ -6692,6 +7398,14 @@
       "hitlGates": [
         "AR Controller approves ageing baseline restore",
         "Audit Committee approves ageing report restatement"
+      ],
+      "servingThemes": [
+        "H",
+        "G"
+      ],
+      "servingMissions": [
+        "M53",
+        "M54"
       ],
       "calibration": {
         "defaultThreshold": "0-4 days",
@@ -6772,6 +7486,14 @@
         "AR Controller approves cash-timing adjustment",
         "CFO approves cash-position restatement"
       ],
+      "servingThemes": [
+        "H",
+        "G"
+      ],
+      "servingMissions": [
+        "M53",
+        "M54"
+      ],
       "calibration": {
         "defaultThreshold": "0-2 days",
         "calibratedThreshold": "0-5 days",
@@ -6850,6 +7572,14 @@
       "hitlGates": [
         "AR Controller approves netting unbundle",
         "CFO approves intercompany elimination restatement"
+      ],
+      "servingThemes": [
+        "H",
+        "G"
+      ],
+      "servingMissions": [
+        "M53",
+        "M54"
       ],
       "calibration": {
         "defaultThreshold": "0-3 days",
@@ -6930,6 +7660,14 @@
         "AR Controller approves shipment hold on flagged account",
         "Credit Manager approves reinstated risk condition"
       ],
+      "servingThemes": [
+        "H",
+        "G"
+      ],
+      "servingMissions": [
+        "M53",
+        "M54"
+      ],
       "calibration": {
         "defaultThreshold": "0-4 days",
         "calibratedThreshold": "0-9 days",
@@ -7008,6 +7746,14 @@
       "hitlGates": [
         "AR Controller approves duplicate reserve release",
         "Audit Committee approves deduction loss restatement"
+      ],
+      "servingThemes": [
+        "H",
+        "G"
+      ],
+      "servingMissions": [
+        "M53",
+        "M54"
       ],
       "calibration": {
         "defaultThreshold": "0-2 days",
@@ -7088,6 +7834,14 @@
         "AR Controller approves forced cash application",
         "CFO approves cash-position reclassification"
       ],
+      "servingThemes": [
+        "H",
+        "G"
+      ],
+      "servingMissions": [
+        "M53",
+        "M54"
+      ],
       "calibration": {
         "defaultThreshold": "0-3 days",
         "calibratedThreshold": "0-6 days",
@@ -7166,6 +7920,14 @@
       "hitlGates": [
         "AR Controller approves aggregated write-off",
         "Audit Committee approves authority freeze and forensic review"
+      ],
+      "servingThemes": [
+        "H",
+        "G"
+      ],
+      "servingMissions": [
+        "M53",
+        "M54"
       ],
       "calibration": {
         "defaultThreshold": "0-4 days",

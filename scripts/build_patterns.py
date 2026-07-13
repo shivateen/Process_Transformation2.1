@@ -150,6 +150,33 @@ def parse_branching_dag(text):
     return branches
 
 
+# ---------------------------------------------------------------------------
+# Cross-tile linkage: every pattern declares which Command Centre THEMES (A–H) and
+# MISSIONS (M1–M60) it serves. This is the forward edge; build_command_centre.py
+# inverts it into each mission's `poweredByPatterns`. Keyed off the pattern's
+# behavioural category — the category *is* the statement of what the pattern is about.
+# ---------------------------------------------------------------------------
+SERVING = {
+    "Dispute & Deduction Manipulation":     (["A"],      ["M2", "M43"]),
+    "Intentional Stalling & Delay Tactics": (["C"],      ["M19", "M22"]),
+    "Credit Risk & Insolvency Indicators":  (["H", "C"], ["M56", "M19"]),
+    "Cash Application & Remittance Friction": (["C"],    ["M19", "M43"]),
+    "Relationship & Contractual Abuse":     (["A"],      ["M2", "M4"]),
+    "Credit Risk & Exposure Control":       (["H", "C"], ["M56", "M19"]),
+    "Cash Application & Matching Integrity": (["C", "G"], ["M19", "M43"]),
+    "Dispute Lifecycle Management":         (["A", "G"], ["M2", "M43"]),
+    "Deductions & Trade-Claim Recovery":    (["A"],      ["M3", "M2"]),
+    "Billing Accuracy & Revenue Integrity": (["A"],      ["M2", "M43"]),
+    "Order Integrity & Fulfilment Control": (["A", "C"], ["M1", "M18"]),
+    "Cross-Process AR Governance":          (["H", "G"], ["M53", "M54"]),
+}
+DEFAULT_SERVING = (["C"], ["M19"])
+
+
+def serving(category):
+    return SERVING.get(category, DEFAULT_SERVING)
+
+
 def main():
     z = zipfile.ZipFile(XLSX)
     rows = read_sheet(z, "xl/worksheets/sheet1.xml")
@@ -197,6 +224,8 @@ def main():
             "originalDAG": [s.strip() for s in re.split(r"→|->", g(11)) if s.strip()],
             "branchingDAG": branching,
             "hitlGates": hitl_gates,
+            "servingThemes": serving(g(1) or current_category)[0],
+            "servingMissions": serving(g(1) or current_category)[1],
         })
 
     # Merge hand-authored O2C extension patterns (roles 2-8 of the O2C cycle).
@@ -207,6 +236,9 @@ def main():
         ext_pats = ext["patterns"] if isinstance(ext, dict) else ext
         for p in ext_pats:
             p["priorityRank"] = PRIORITY_RANK.get(p.get("priority", "Medium"), 2)
+            th, ms = serving(p.get("category", ""))
+            p.setdefault("servingThemes", th)
+            p.setdefault("servingMissions", ms)
             p["featureSlug"] = slug(p.get("layer3_feature", ""))
             # canonicalise arrows and re-derive HITL gates from the branching DAG
             p["conceptualSQL"] = (p.get("conceptualSQL", "")

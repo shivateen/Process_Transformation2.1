@@ -30,6 +30,28 @@ import os, json, math
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "src", "data", "command_centre.json")
+PATTERNS = os.path.join(ROOT, "src", "data", "patterns.json")
+
+# The Builder's five theme slugs are aliases of the canonical A–H theme ids. Both tiles
+# speak the same vocabulary; this is the dictionary between them.
+THEME_ALIASES = {
+    "working-capital": "C",
+    "revenue-leakage": "A",
+    "close-acceleration": "G",
+    "controls-integrity": "H",
+    "cash-visibility": "C",
+}
+
+# Capabilities that measure the same thing as a Builder compound KPI. Drives the
+# "View in Command Centre →" / "View in Builder →" round trip.
+SOURCE_KPI = {
+    "CAP-35": "cashConversionCycle", "CAP-33": "cashConversionCycle",
+    "CAP-37": "cashConversionCycle", "CAP-32": "forecastAccuracy",
+    "CAP-18": "forecastAccuracy", "CAP-31": "cashConversionCycle",
+    "CAP-57": "effectiveTaxRate", "CAP-66": "closeCycleDays",
+    "CAP-71": "controlHealthScore", "CAP-4": "revenueLeakageRate",
+    "CAP-3": "revenueLeakageRate",
+}
 
 CADENCE_TO_TAB = {
     "Daily": "pulse", "Weekly": "pulse",
@@ -50,35 +72,36 @@ TABS = [
 ]
 
 # ---------------------------------------------------------------------------
-# L1 objectives → L2 sub-objectives → missions
+# L1 THEMES (A–H) → L2 OBJECTIVES (A.1…) → missions
+# Same vocabulary as the Transformation Builder: "Theme" is L1, "Objective" is L2.
 # ---------------------------------------------------------------------------
-OBJECTIVES = {
-    "A": {"name": "Total shareholder return", "l2": {
+THEMES = {
+    "A": {"name": "Total shareholder return", "objectives": {
         "A.1": {"name": "Net Revenue Growth", "missions": ["M1", "M2", "M3", "M4"]},
         "A.2": {"name": "Net Margin Growth", "missions": ["M5", "M6", "M7", "M8"]},
         "A.3": {"name": "Performance Commitments & Predictability", "missions": ["M9", "M10", "M11"]}}},
-    "B": {"name": "Return on invested capital", "l2": {
+    "B": {"name": "Return on invested capital", "objectives": {
         "B.1": {"name": "Capital Deployment & Returns", "missions": ["M12", "M15", "M16", "M17"]},
         "B.2": {"name": "Asset Productivity", "missions": ["M13", "M14"]}}},
-    "C": {"name": "Free cash flow", "l2": {
+    "C": {"name": "Free cash flow", "objectives": {
         "C.1": {"name": "Working Capital", "missions": ["M18", "M19", "M20"]},
         "C.2": {"name": "Cash Generation & Conversion", "missions": ["M21", "M22", "M23"]}}},
-    "D": {"name": "Cost of capital", "l2": {
+    "D": {"name": "Cost of capital", "objectives": {
         "D.1": {"name": "Capital Structure & Funding", "missions": ["M24", "M25", "M26"]},
         "D.2": {"name": "Liquidity & Cash Management", "missions": ["M27", "M28", "M29"]},
         "D.3": {"name": "Market Risk", "missions": ["M30", "M31"]}}},
-    "E": {"name": "Shareholder value & capital returns", "l2": {
+    "E": {"name": "Shareholder value & capital returns", "objectives": {
         "E.1": {"name": "Equity Story & Valuation", "missions": ["M32", "M33"]},
         "E.2": {"name": "Capital Returns", "missions": ["M34", "M35"]}}},
-    "F": {"name": "Tax management", "l2": {
+    "F": {"name": "Tax management", "objectives": {
         "F.1": {"name": "Effective Tax Rate", "missions": ["M36", "M37", "M38"]},
         "F.2": {"name": "Tax Compliance & Controversy", "missions": ["M39", "M40", "M41"]}}},
-    "G": {"name": "Finance function excellence", "l2": {
+    "G": {"name": "Finance function excellence", "objectives": {
         "G.1": {"name": "Transactional Excellence", "missions": ["M42", "M43", "M44"]},
         "G.2": {"name": "Business Partnering Cost", "missions": ["M45", "M46", "M47", "M48", "M49", "M50"]},
         "G.3": {"name": "Reporting & Statutory", "missions": ["M51"]},
         "G.4": {"name": "People & Platform", "missions": ["M58", "M59"]}}},
-    "H": {"name": "Risk & compliance management", "l2": {
+    "H": {"name": "Risk & compliance management", "objectives": {
         "H.1": {"name": "Controls & Compliance", "missions": ["M52", "M53", "M54", "M55"]},
         "H.2": {"name": "Enterprise Risk", "missions": ["M56", "M57"]},
         "H.3": {"name": "Pension & Post-Employment", "missions": ["M60"]}}},
@@ -349,6 +372,21 @@ ACTIONS_NEXT = [
 ]
 
 
+def benchmark(i, wtype):
+    """Industry benchmark band for a capability's KPI (APQC/Hackett-style ranges).
+    Pattern Studio's KPI panel overwrites these with the client's real benchmark set."""
+    if wtype == "gauge":
+        cur = 52 + (i * 13) % 41
+        return {"median": float(min(90, cur + 6)), "topQuartile": float(min(97, cur + 16)), "unit": "%"}
+    if wtype == "timeseries":
+        base = 30 + (i % 7) * 9
+        return {"median": round(base * 1.12, 1), "topQuartile": round(base * 1.30, 1), "unit": "index"}
+    if wtype in ("bar", "donut", "scorecard"):
+        v = 62 + i % 30
+        return {"median": float(min(92, v + 5)), "topQuartile": float(min(98, v + 14)), "unit": "%"}
+    return {"median": None, "topQuartile": None, "unit": None}
+
+
 def metric(i, wtype, good):
     """The single headline number a capability contributes to a KPI stat tile."""
     up = "better" if good else "worse"
@@ -390,24 +428,27 @@ def build():
         cid = "CAP-%d" % n
         caps[cid] = {"id": cid, "label": label, "widgetType": wtype, "defaultSize": size,
                      "usedByMissions": [], "usedByPersonas": [],
-                     "objective": None, "data": cap_data(n, label, wtype),
-                     "metric": metric(n, wtype, (n % 3) != 1)}
+                     "theme": None, "data": cap_data(n, label, wtype),
+                     "metric": metric(n, wtype, (n % 3) != 1),
+                     "benchmarkTargets": benchmark(n, wtype),
+                     "sourceCompoundKPI": SOURCE_KPI.get(cid)}
 
     # mission → objective / l2 / tab, and the capability cross-references
     m2obj = {}
-    for oid, o in OBJECTIVES.items():
-        for l2id, l2 in o["l2"].items():
-            for mid in l2["missions"]:
-                m2obj[mid] = (oid, l2id)
+    for tid, t in THEMES.items():
+        for oid, o in t["objectives"].items():
+            for mid in o["missions"]:
+                m2obj[mid] = (tid, oid)
 
     missions = {}
     for mid, m in MISSIONS.items():
-        oid, l2id = m2obj[mid]
+        tid, oid = m2obj[mid]
         num = int(mid[1:])
         missions[mid] = {
             "id": mid, "name": m["name"], "owner": m["owner"], "cadence": m["cadence"],
             "tab": CADENCE_TO_TAB[m["cadence"]], "capabilities": m["capabilities"],
-            "objective": oid, "l2": l2id, "status": STATUS[num % len(STATUS)],
+            "theme": tid, "objective": oid, "status": STATUS[num % len(STATUS)],
+            "poweredByPatterns": [],   # inverted from patterns.json below
             "agentCoverage": (num * 7) % 10 >= 4,
             "lastAction": ACTIONS_LAST[num % len(ACTIONS_LAST)].format(n=1 + num % 6),
             "nextAction": ACTIONS_NEXT[num % len(ACTIONS_NEXT)].format(n=2 + num % 9),
@@ -416,8 +457,21 @@ def build():
             caps[cid]["usedByMissions"].append(mid)
             if m["owner"] not in caps[cid]["usedByPersonas"]:
                 caps[cid]["usedByPersonas"].append(m["owner"])
-            if caps[cid]["objective"] is None:
-                caps[cid]["objective"] = oid
+            if caps[cid]["theme"] is None:
+                caps[cid]["theme"] = tid
+
+    # ---- invert the patterns' servingMissions into each mission's poweredByPatterns ----
+    # The pattern declares what it serves; the mission never has to know about patterns.
+    try:
+        lib = json.load(open(PATTERNS, encoding="utf-8"))["patterns"]
+        for pat in lib:
+            for mid in pat.get("servingMissions", []):
+                if mid in missions and pat["id"] not in missions[mid]["poweredByPatterns"]:
+                    missions[mid]["poweredByPatterns"].append(pat["id"])
+        for m in missions.values():
+            m["poweredByPatterns"].sort()
+    except Exception as e:
+        print("  (poweredByPatterns inversion skipped:", e, ")")
 
     # personas: tabs derived from mission cadence, headline generated
     personas = []
@@ -488,7 +542,7 @@ def build():
             "headlineCaps": head_caps,
             "flagged": sorted(off + att, key=lambda m: (missions[m]["status"] != "off-track", int(m[1:]))),
             "isOverview": pid == "cc-cfo",
-            "overviewObjectives": list(OBJECTIVES) if pid == "cc-cfo" else [],
+            "overviewThemes": list(THEMES) if pid == "cc-cfo" else [],
             "missions": own,
             "missionCount": len(own),
             "capabilityCount": len(capset),
@@ -513,16 +567,17 @@ def build():
                      {"value": "$4.2B", "label": "Working capital", "sub": "released YTD",
                       "delta": "+$180M", "direction": "better"},
                  ],
-                 "counts": {"objectives": len(OBJECTIVES),
-                            "l2": sum(len(o["l2"]) for o in OBJECTIVES.values()),
+                 "counts": {"themes": len(THEMES),
+                            "objectives": sum(len(t["objectives"]) for t in THEMES.values()),
                             "missions": len(missions), "capabilities": len(caps),
                             "personas": len(personas)},
                  "tabs": TABS, "groupOrder": GROUP_ORDER},
-        "objectives": OBJECTIVES,
+        "themes": THEMES,
         "missions": missions,
         "capabilities": caps,
         "personas": personas,
         "cadenceToTab": CADENCE_TO_TAB,
+        "themeAliases": THEME_ALIASES,
     }
 
 
@@ -538,14 +593,14 @@ def main():
 
     # every mission belongs to exactly one L2
     seen = {}
-    for oid, o in OBJECTIVES.items():
-        for l2id, l2 in o["l2"].items():
-            for mid in l2["missions"]:
+    for tid, t in THEMES.items():
+        for oid, o in t["objectives"].items():
+            for mid in o["missions"]:
                 if mid in seen:
-                    raise SystemExit("%s appears in both %s and %s" % (mid, seen[mid], l2id))
-                seen[mid] = l2id
+                    raise SystemExit("%s appears in both %s and %s" % (mid, seen[mid], oid))
+                seen[mid] = oid
     if set(seen) != expect:
-        raise SystemExit("objective tree does not cover every mission: missing=%s"
+        raise SystemExit("theme tree does not cover every mission: missing=%s"
                          % sorted(expect - set(seen)))
 
     if len(d["capabilities"]) != 77:
@@ -565,8 +620,8 @@ def main():
         json.dump(d, f, ensure_ascii=False, indent=2)
 
     c = d["meta"]["counts"]
-    print("Wrote %s (%d objectives / %d L2 / %d missions / %d capabilities / %d personas)"
-          % (os.path.relpath(OUT, ROOT), c["objectives"], c["l2"], c["missions"],
+    print("Wrote %s (%d themes / %d objectives / %d missions / %d capabilities / %d personas)"
+          % (os.path.relpath(OUT, ROOT), c["themes"], c["objectives"], c["missions"],
              c["capabilities"], c["personas"]))
     shared = sorted(d["capabilities"].values(), key=lambda x: -len(x["usedByMissions"]))[:3]
     for s in shared:
