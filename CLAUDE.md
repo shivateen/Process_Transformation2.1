@@ -8,19 +8,145 @@ HR Onboarding and Supply Chain ship as samples that prove the framework generali
 Mirrors the FinTran/CloseIQ build pattern: edit sources in `src/`, run the Python build,
 serve `public/`. (The single-file output is still `public/processiq.html`.)
 
-## The journey (top-level IA)
+## Two surfaces (top-level IA)
 
-Two-level nav: 3 **stages** (top) × **sub-views** (second row), driven by `window.PIQ`.
+The landing page offers exactly **two tiles**. Each opens the same single-page app with
+`?persona=<id>`; `PIQ.persona` picks what the sidebar renders.
 
-1. **Design** — Studio wizard (Function→Process→Role→Objective→Patterns→Action-block config)
-   + Pattern Library. Output: a `PIQ.composition` (selected patterns + configured blocks).
+**Both surfaces navigate from the same vertical left sidebar** (`#sidebar`, `.sb-*` classes).
+The old horizontal `#modnav` stage tabs and the `#subbar` second row are **gone** (`#subbar`
+survives as a hidden stub only so a stale lookup can't null-ref). Every sidebar opens with a
+**← Home** button back to the landing page. Below 900px the sidebar collapses to a ~56px
+icon-only rail.
+
+**The app is light-theme only.** There is no theme toggle, no `body.dark` class, and no dark
+CSS — `setTheme`/`restoreTheme`/`persistTheme` and every `body.dark` rule have been deleted.
+The **"Why" link and the Provocation entry point are also removed**: `provocation.js` still
+ships in the bundle but is unreachable — no sidebar entry, no link.
+
+There are **no numbered stage badges** anywhere in the nav — order is carried by the stacking.
+
+### 1 · Transformation Builder (`?persona=builder`, the default)
+
+Compose the process end-to-end. The sidebar stacks four collapsible stage groups, each with
+its sub-views. The breadcrumb sits at the top of the working area (`#workcrumb`), not in the
+nav. A status dot per stage (`PIQ.stageStatus` → `todo` / `wip` / `done`) is read off the
+composition.
+
+1. **Design** — Studio wizard (Theme→Function→Process→Role→Objective→Patterns→Action-block
+   config) + **Pattern Studio**. Output: a `PIQ.composition`.
 2. **Discover & Fit** — Agent Fitment (per-block verdict + happy-path agentivisation + to-be
    flow) + Discovery Engine.
-3. **Run & Govern** — Live Operations (STP on the happy path; variations matched to patterns
+3. **Build** — Build Engine (assembles configured blocks into validated agent chains).
+4. **Run & Govern** — Live Operations (STP on the happy path; variations matched to patterns
    → DAG approval) + Cognitive Cockpit + Governance + ROI.
+
+### 2 · Command Centre (`?persona=command`)
+
+The consumption surface — the inverse of the Builder: outcomes first, patterns underneath.
+It is **not a generic dashboard builder**. It is a projection of the **CFO Mission-Capability
+Taxonomy**, which is the routing table for the whole surface:
+
+| | |
+|---|---|
+| **8 L1 objectives** (A–H) | Total shareholder return · ROIC · Free cash flow · Cost of capital · Shareholder value · Tax · Finance function excellence · Risk & compliance |
+| **21 L2 sub-objectives** | decompose each objective |
+| **60 missions** (M1–M60) | the atomic units of accountability — each owned by one persona, at one cadence |
+| **77 capabilities** (CAP-1…77) | the reusable widgets that power missions; many are shared (CAP-61 "Function cost benchmarking" serves 6 missions across 6 personas) |
+| **11 personas** | CFO + 10 function roles, grouped into 4 areas |
+
+Two derivations do all the work, and **the shell never guesses either**:
+
+- **cadence → tab.** Daily/Weekly → Pulse · Fortnightly/Monthly → Intelligence · Ad hoc →
+  Scenarios · Quarterly/Annual → Trajectory. A persona with no mission at a cadence has **no
+  such tab** — Tax has no Daily/Weekly mission, so Tax has no Pulse tab and opens on
+  Intelligence. `activeTabs` is computed in the generator.
+- **capability → cross-reference.** `usedByMissions` / `usedByPersonas` are computed, never
+  authored, so the Customize overlay can say "also used by Treasury, FP&A".
+
+The sidebar has two states, driven by `PIQ.cc = { persona, tab, custom }` (owned by the shell;
+`cfo.js` reads it and renders):
+
+1. **Roster** — CFO first (badge = all 60 missions), then the 10 function personas grouped by
+   Planning & Analysis / Treasury & Tax / Operations & Controls / Stakeholders & Strategy, each
+   with a mission-count badge. Every persona is fully functional — no "coming soon" stubs.
+2. **Inside a persona** — ⤺ Switch role, the persona's headline, its lenses (each badged with a
+   mission count, empty ones omitted), and ⚙ Customize.
+
+### The persona dashboard — two zones
+
+`#view` renders every persona (and the CFO) as a **two-zone canvas**:
+
+**Above the fold — the strategic command strip.** Four stacked components, no scrolling needed:
+
+1. **Hero banner** — persona name, narrative headline, mission + capability counts, "as of".
+2. **KPI scorecard** — 5–6 stat tiles. The **first is always mission health** (`X/Y on track`),
+   the **last is always the automation ratio** (`X/Y agent covered`); the middle 2–4 are the
+   persona's headline KPIs, **auto-derived** by walking their own missions Pulse-first and taking
+   the first distinct capabilities' `metric`. Nothing is hardcoded per persona. The CFO instead
+   gets the enterprise tiles (TSR / FCF conversion / cost of capital / working capital).
+3. **Health heatmap** — one coloured block per mission, rows = lenses (rows = **objectives A–H**
+   for the CFO, 60 blocks in total). Clicking a block switches to that lens and **smooth-scrolls
+   to the mission card**, flashing it. Beside it, a 12-week "% missions on track" sparkline.
+4. **Attention strip** — amber, and **only rendered when something is flagged**; names the top 3
+   missions (with owning persona, on the CFO) and a "View all →" jump.
+
+**Below the fold — mission detail.** A **sticky tab bar** (lenses + mission-count badges) pins
+under the topbar on scroll. Mission cards carry: status dot, id + name, cadence badge, objective
+breadcrumb (`Obj D · Market Risk`), agent-coverage chip, their embedded capability widgets, an
+**action-context row** (`Last action` / `Next action`) and "View in Builder →". Flagged missions
+**sort to the top** and get an amber/red left border. Clicking a card header **collapses** it to a
+one-line summary for rapid scanning.
+
+The **CFO owns no mission**, so below the fold it renders the roll-up instead: Pulse = the flagged
+queue across all 60 missions, most severe first; Intelligence = the 8 objective tiles (A–H) with
+health bars, their L2s and drill-through chips; Scenarios = cross-functional shocks (one shock
+lands on missions across several personas); Trajectory = the 8-objective scorecard.
+
+Every widget is a *kind* drawn generically from `capability.data.kind` (`series` / `gauge` /
+`bars` / `list` / `table` / `heat` / `donut` / `funnel` / `waterfall`) — **a new persona is a
+data change, never a UI change.** The Customize overlay browses the full 77-capability catalogue
+grouped by objective (so an SME can pull a widget from *any* persona's missions), supports
+drag-to-reorder, and persists to `localStorage` under `piq.cc.<personaId>.v1`. Capabilities added
+from outside the persona's own missions collect in an "Added widgets" block. An empty layout is
+honoured; "Reset to default" restores the taxonomy baseline.
+
+`src/data/cfo.json` (and `build_cfo.py`) is now **unused by the Command Centre** — it is still
+built and inlined, but nothing reads `window.PROCESSIQ_CFO`. Safe to delete in a cleanup.
 
 The data model already encodes the mental model: each pattern's `originalDAG` = happy path,
 `branchingDAG` = variation branches, `hitlGates` = the approval sought before a branch runs.
+
+## Pattern Studio (Design · sub-view `patternstudio`)
+
+The old Pattern Library, renamed and given a second tab. It is now both the catalogue **and**
+the workshop where new patterns are mined out of client documents.
+
+- **Library** — the existing filterable master-detail catalogue, unchanged. Counts are
+  recomputed from the live `PIQ.patterns` array, so a mined pattern shows up the instant it is
+  accepted.
+- **Mine** — a 7-category / 28-slot upload accordion (collapsed by default; "Quick start" opens
+  the two richest seams). Drag-drop or click-to-browse per slot; unsupported extensions are
+  rejected with a toast. Then a 5-stage pipeline: **Ingest & Classify → Signal extraction →
+  Pattern hypothesis → SME review → Calibration**. Candidates come back as review cards
+  carrying an evidence chain, a confidence meter, and a similarity check against the existing
+  library; the SME can **Accept / Edit & Accept / Reject / Park**, or — when a candidate is
+  ≥70% similar to an incumbent — **Merge / Keep separate / Discard**.
+
+**There is no live LLM in this build.** The accelerator is on-device and deterministic, and
+there is no model endpoint in the bundle, so Stage 3 is *evidence-gated* rather than
+generative: a candidate surfaces only when the corpus actually contains the document categories
+its evidence chain depends on, and its confidence is scaled by how much of that evidence
+landed. Upload only a policy document and you get exactly the one candidate that policy
+evidence supports; upload transactional data too and calibration switches on. `buildPrompt()`
+assembles the real few-shot prompt (6 library patterns as examples + the extracted signals) and
+the UI renders it verbatim behind "show the prompt" — **the seam to a live model is one function
+wide: replace the body of `mine()` and every stage downstream still works.**
+
+Persistence: uploaded documents are in-memory only (clearing on reload, by design). Accepted
+patterns and merged incumbents persist to `localStorage` under `piq.mined.v1` — note that a
+merge stores the *incumbent* by its existing id, so `restoreMined()` must replace rather than
+skip it.
 
 ## Build
 
@@ -48,29 +174,44 @@ Generated. All edits go to `src/` (or the `scripts/` generators).
 | `scripts/build_portfolio.py` | Generates synthetic `src/data/portfolio.json` (invoices + event timelines) |
 | `scripts/build_roi.py` | Generates `src/data/roi.json` (KPIs, outcomes, trajectory, attribution) |
 | `scripts/build_discovery.py` | Generates `src/data/discovery.json` (anomaly scatter, clusters, candidate) |
+| `scripts/build_command_centre.py` | Generates `src/data/command_centre.json` — the **CFO Mission-Capability Taxonomy**: 8 objectives / 21 L2 / 60 missions / 77 capabilities / 11 personas. Derives cadence→tab, `activeTabs`, mission counts, persona headlines, capability cross-references, and synthetic KPI data per widget kind. Asserts the taxonomy is airtight (M1–M60 each in exactly one L2; all 77 capabilities used) |
+| `scripts/build_cfo.py` | Generates `src/data/cfo.json` — **now unused** (the Command Centre is taxonomy-driven). Still built and inlined; safe to delete |
 | `src/js/engine.js` | Cognitive engine — Sense→Diagnose→Decide→Act, on-device, deterministic |
-| `src/js/shell.js` | Platform shell — `window.PIQ` state, **two-level journey router** (3 stages × sub-views), `composition` state, ERP toggle, cross-pattern helpers (`PIQ.pattern`, `PIQ.collectBlocks`, `PIQ.fitment`, `PIQ.go`) |
-| `src/js/studio.js` | **Stage 1 · Design** — Studio wizard (F→P→R→O→Patterns→Action-block config) |
-| `src/js/fitment.js` | **Stage 2 · Discover & Fit** — agent-fitment table + happy-path agentivisation + to-be flow |
-| `src/js/runtime.js` | **Stage 3 · Run & Govern** — live STP console; variation→pattern-match→DAG approval, live KPIs |
-| `src/js/provocation.js` | The Provocation (scrollytelling intro; reachable via the topbar "Why" link) |
-| `src/js/library.js` | Pattern Library (filterable master-detail) — Design sub-view |
+| `src/js/shell.js` | Platform shell — `window.PIQ` state, the **single `renderSidebar()`** that serves both surfaces (Builder = stages + sub-views; Command Centre = roster / persona lenses), `composition` state, `PIQ.cc` nav state, `PIQ.stageStatus`, `PIQ.goBuilder`, ERP toggle, cross-pattern helpers (`PIQ.pattern`, `PIQ.collectBlocks`, `PIQ.fitment`, `PIQ.go`). No theme logic — light only |
+| `src/js/cfo.js` | **Command Centre** — reads `PIQ.cc` (the sidebar drives it), renders the roster → persona dashboard + the generic widget engine + the customise overlay. Registers as the single view `cc` |
+| `src/js/studio.js` | **Builder · Design** — Studio wizard (F→P→R→O→Patterns→Action-block config) |
+| `src/js/fitment.js` | **Builder · Discover & Fit** — agent-fitment table + happy-path agentivisation + to-be flow |
+| `src/js/build.js` | **Builder · Build** — assembles configured blocks into validated agent chains |
+| `src/js/runtime.js` | **Builder · Run & Govern** — live STP console; variation→pattern-match→DAG approval, live KPIs |
+| `src/js/provocation.js` | The Provocation (scrollytelling intro) — **still bundled but unreachable**; the "Why" entry point was removed. Candidate for deletion |
+| `scripts/build_mining.py` | Generates `src/data/mining.json` — the 7-category / 28-slot upload accordion + the pool of 8 minable candidate patterns (each a full pattern structure + `requires` / `evidence` / `confidence` / `similarTo`) + the few-shot prompt template |
+| `src/js/library.js` | **Pattern Studio** (registers as `patternstudio`) — the Library catalogue **and** the Mine tab: upload accordion, 5-stage pipeline, candidate review, accept/merge into the live library |
 | `src/js/cockpit.js` | Cognitive Cockpit UI render logic — Run & Govern sub-view |
 | `src/js/governance.js` | Action & Governance (trust modes + Saga simulator) — Run & Govern sub-view |
 | `src/js/discovery.js` | Discovery Engine (math→text→LLM pipeline) — Discover & Fit sub-view |
 | `src/js/roi.js` | ROI & Attribution — Run & Govern sub-view |
-| `src/css/app.css` | Tiger brand theme (all modules; new journey/Studio/Fit/Runtime styles appended at the end) |
-| `src/html/cockpit_body.html` | Platform shell markup (topbar + `#subbar` + `#view`) |
-| `src/apps/index.html` | Platform landing page |
+| `src/css/app.css` | Tiger brand theme, **light only** (sidebar `.sb-*` + Command Centre styles appended at the end; every `body.dark` / `.theme-toggle` / `.whylink` / horizontal-nav rule has been stripped) |
+| `src/html/cockpit_body.html` | Platform shell markup (topbar + `#sidebar` + `#workcrumb` + `#view`; no `#modnav`, no `#themeToggle`, no `#whyLink`) |
+| `src/apps/index.html` | Platform landing page — the two tiles |
 | `scripts/build.py` | Regenerates data + assembles everything → `public/processiq.html` |
 
 ## Status
 
-**The 3-stage journey is live.** Boots into the Studio (Stage 1). The build inlines the shell
-+ engine + studio/fitment/runtime + the six legacy modules + five data files into one
-self-contained `public/processiq.html` (~296 KB). Fitment verdicts and the runtime simulator
-are deterministic (`PIQ.fitment`); nothing invents data. Optional future work: author full
-pattern libraries for the sample functions; a live-Claude diagnosis layer on the cockpit.
+**The two-tile architecture is live, light-theme only, with a shared vertical sidebar.** Boots
+into the Transformation Builder (Studio) by default; `?persona=command` opens the Command
+Centre. The build inlines the shell + engine + all modules + seven data files into one
+self-contained `public/processiq.html` (~1.84 MB). Fitment verdicts, the runtime simulator and
+Pattern Studio's mining pipeline are all deterministic; nothing invents data.
+
+Known gaps / next increments:
+- **Capability KPI data is synthetic and shape-driven**, generated per widget kind rather than
+  modelled per capability. Real client data would be wired in `build_command_centre.py`'s
+  `cap_data()` — the taxonomy, routing and UI need no change.
+- `provocation.js` is dead weight in the bundle — remove it in a future cleanup.
+- Studio's own body still prints a "STAGE 1 · DESIGN" eyebrow (it is on the do-not-modify list).
+- **Pattern Studio's Mine tab has no live model behind it** — see the section above. Wiring a
+  real extractor means replacing the body of `mine()` in `library.js` with a call that posts
+  `buildPrompt()` and parses the response into the same candidate shape.
 
 ## Provenance
 
