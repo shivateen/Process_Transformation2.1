@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<title>Process Transformation Accelerator · Tiger Analytics</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,-apple-system,Segoe UI,Roboto,sans-serif;background:#2a2420;color:#fff;
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:44px 20px}
+  .dot{width:14px;height:14px;border-radius:50%;background:#f47a1e;display:inline-block;margin-right:10px;
+    box-shadow:0 0 0 5px rgba(244,122,30,.28)}
+  .hero{max-width:780px;text-align:center;margin-bottom:38px}
+  h1{font-size:36px;margin:0 0 10px;letter-spacing:-.02em}
+  .hero p{opacity:.82;line-height:1.55;font-size:15px;margin:0}
+
+  .grid{display:grid;grid-template-columns:repeat(2,minmax(300px,400px));gap:22px;width:100%;max-width:822px}
+  @media(max-width:820px){.grid{grid-template-columns:1fr;max-width:420px}}
+
+  a.surface{display:flex;flex-direction:column;text-decoration:none;color:#fff;background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.14);border-radius:18px;padding:24px 24px 20px;transition:.16s}
+  a.surface:hover{background:rgba(255,255,255,.1);border-color:rgba(244,122,30,.6);transform:translateY(-3px)}
+  .s-ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:21px;
+    background:rgba(244,122,30,.16);border:1px solid rgba(244,122,30,.34);margin-bottom:14px}
+  .s-name{font-size:20px;font-weight:750;letter-spacing:-.015em}
+  .s-desc{font-size:13.5px;opacity:.74;line-height:1.55;margin:7px 0 18px}
+  .s-enter{font-size:13px;font-weight:700;color:#f0a866;margin-top:auto;padding-top:16px}
+
+  /* preview: builder = mini vertical stage rail */
+  .prev{background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.09);border-radius:12px;padding:12px 13px;min-height:132px}
+  .rail{display:flex;flex-direction:column;gap:2px}
+  .rl{display:flex;align-items:center;gap:8px;padding:5px 6px;border-radius:6px;font-size:11.5px;font-weight:700;
+    color:rgba(255,255,255,.52);border-left:2px solid transparent}
+  .rl .rd{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.24);flex-shrink:0}
+  .rl.on{background:rgba(244,122,30,.16);border-left-color:#f47a1e;color:#fff}
+  .rl.on .rd{background:#f47a1e}
+  .rl small{margin-left:auto;font-weight:500;opacity:.5;font-size:10px}
+
+  /* preview: command centre = named roles, each with its mission count */
+  .roles{display:flex;flex-wrap:wrap;gap:5px}
+  .rc{display:inline-flex;align-items:center;gap:5px;border-radius:20px;padding:4px 5px 4px 10px;
+    font-size:11px;font-weight:650;color:rgba(255,255,255,.72);
+    background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12)}
+  .rc i{font-style:normal;font-size:9.5px;font-weight:800;color:rgba(255,255,255,.55);
+    background:rgba(255,255,255,.1);border-radius:20px;padding:1px 6px;min-width:18px;text-align:center}
+  .rc.cfo{background:rgba(244,122,30,.2);border-color:rgba(244,122,30,.5);color:#fff;font-weight:800}
+  .rc.cfo i{color:#2a2420;background:#f0a866}
+  .rmeta{font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+    color:rgba(255,255,255,.42);margin-top:11px}
+
+  small.foot{display:block;margin-top:30px;opacity:.5;line-height:1.5;text-align:center;max-width:660px}
+</style>
+</head>
+<body>
+  <div class="hero">
+    <h1><span class="dot"></span>Process Transformation Accelerator</h1>
+    <p>Two surfaces, one pipeline. Build the agentic process, or consume its outcomes.</p>
+  </div>
+
+  <div class="grid">
+
+    <a class="surface" href="processiq.html?persona=command">
+      <div class="s-ic">🎛️</div>
+      <div class="s-name">Command Centre</div>
+      <div class="s-desc">Your outcomes surface. Choose your role — every persona gets a mission-driven
+        view organized by cadence, with the power to customize.</div>
+      <div class="prev">
+        <div class="roles">
+          <span class="rc cfo">CFO<i>60</i></span>
+          <span class="rc">Treasury<i>16</i></span>
+          <span class="rc">FP&amp;A<i>8</i></span>
+          <span class="rc">Tax<i>7</i></span>
+          <span class="rc">Supply Chain Finance<i>7</i></span>
+          <span class="rc">Commercial Finance<i>5</i></span>
+          <span class="rc">Finance Ops &amp; Controllership<i>5</i></span>
+          <span class="rc">Corporate Dev Finance<i>4</i></span>
+          <span class="rc">Risk &amp; Compliance<i>4</i></span>
+          <span class="rc">Investor Relations<i>2</i></span>
+          <span class="rc">Finance Leadership &amp; Transformation<i>2</i></span>
+        </div>
+        <div class="rmeta">11 personas · 60 missions · 77 capabilities</div>
+      </div>
+      <div class="s-enter">Enter Command Centre →</div>
+    </a>
+
+    <a class="surface" href="processiq.html?persona=builder">
+      <div class="s-ic">🛠️</div>
+      <div class="s-name">Transformation Builder</div>
+      <div class="s-desc">Compose the process end-to-end: design the pattern composition, fit agents to
+        activities, assemble the chain, and run it in production.</div>
+      <div class="prev">
+        <div class="rail">
+          <div class="rl on"><span class="rd"></span>Design<small>Studio · Pattern Studio</small></div>
+          <div class="rl"><span class="rd"></span>Discover &amp; Fit<small>Discovery · Fitment</small></div>
+          <div class="rl"><span class="rd"></span>Build<small>Implementation Studio</small></div>
+          <div class="rl"><span class="rd"></span>Run &amp; Govern<small>Ops · Cockpit · ROI</small></div>
+        </div>
+      </div>
+      <div class="s-enter">Enter Builder →</div>
+    </a>
+
+  </div>
+
+  <small class="foot">Tiger Analytics · Order-to-Cash &amp; Procure-to-Pay fully mapped (L4 process maps + behavioural pattern library) · R2R, HR &amp; Supply Chain as samples</small>
+</body>
+</html>
