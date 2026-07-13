@@ -23,12 +23,15 @@ def read(*parts):
 def main():
     # Re-generate data first so the build is always current with the xlsx.
     import build_patterns, build_portfolio, build_roi, build_discovery, build_taxonomy, build_cfo  # noqa
+    import build_command_centre, build_mining  # noqa
     build_patterns.main()
     build_portfolio.main()
     build_roi.main()
     build_discovery.main()
-    build_taxonomy.main()   # depends on patterns.json above
-    build_cfo.main()        # depends on patterns.json above
+    build_taxonomy.main()          # depends on patterns.json above
+    build_cfo.main()               # depends on patterns.json above
+    build_command_centre.main()    # depends on patterns.json above
+    build_mining.main()            # depends on patterns.json above
 
     css = read("src", "css", "app.css")
     body = read("src", "html", "cockpit_body.html")
@@ -56,6 +59,8 @@ def main():
     taxonomy = read("src", "data", "taxonomy.json")
     processmaps = read("src", "data", "processmaps.json")
     cfo = read("src", "data", "cfo.json")
+    command_centre = read("src", "data", "command_centre.json")
+    mining = read("src", "data", "mining.json")
 
     html = """<!DOCTYPE html>
 <html lang="en">
@@ -79,6 +84,8 @@ def main():
 <script>window.PROCESSIQ_TAXONOMY = {taxonomy};</script>
 <script>window.PROCESSIQ_PROCESSMAPS = {processmaps};</script>
 <script>window.PROCESSIQ_CFO = {cfo};</script>
+<script>window.PROCESSIQ_CC = {command_centre};</script>
+<script>window.PROCESSIQ_MINING = {mining};</script>
 <script>
 {engine}
 </script>
@@ -90,7 +97,7 @@ def main():
 </html>
 """.format(css=css, body=body, patterns=patterns, portfolio=portfolio, roi=roi,
            discovery=discovery, taxonomy=taxonomy, processmaps=processmaps, cfo=cfo,
-           engine=engine, js_modules=js_modules)
+           command_centre=command_centre, mining=mining, engine=engine, js_modules=js_modules)
 
     os.makedirs(PUB, exist_ok=True)
     out = os.path.join(PUB, "processiq.html")

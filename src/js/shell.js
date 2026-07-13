@@ -35,48 +35,57 @@
     },
   };
 
-  /* ---- journey map: 4 stages, each with sub-views ---------------------- */
+  /* ---- journey map: 4 builder stages, each with sub-views ----------------
+     Rendered as a vertical sidebar inside the Transformation Builder. No stage
+     numbers anywhere — the order is carried by the stacking, not by a badge. */
   var STAGES = [
-    { id: "design", n: 1, label: "Design", tag: "Missions → Actions", sub: [
+    { id: "design", label: "Design", tag: "Missions → Actions", sub: [
         { id: "studio", label: "Studio" },
-        { id: "library", label: "Pattern Library" } ] },
-    { id: "fit", n: 2, label: "Discover & Fit", tag: "Discovery & Fit", sub: [
-        { id: "fitment", label: "Agent Fitment" },
-        { id: "discovery", label: "Discovery Engine" } ] },
-    { id: "build", n: 3, label: "Build", tag: "Build Engine", sub: [
-        { id: "build", label: "Build Engine" } ] },
-    { id: "run", n: 4, label: "Run & Govern", tag: "Agentic Workflow", sub: [
+        { id: "patternstudio", label: "Pattern Studio" } ] },
+    { id: "fit", label: "Discover & Fit", tag: "Discovery & Fit", sub: [
+        { id: "discovery", label: "Discovery Engine" },
+        { id: "fitment", label: "Agent Fitment" } ] },
+    { id: "build", label: "Build", tag: "Implementation Studio", sub: [
+        { id: "build", label: "Implementation Studio" } ] },
+    { id: "run", label: "Run & Govern", tag: "Agentic Workflow", sub: [
         { id: "runtime", label: "Live Operations" },
         { id: "cockpit", label: "Cognitive Cockpit" },
         { id: "governance", label: "Governance" },
         { id: "roi", label: "ROI & Attribution" } ] },
-    { id: "cfo", n: 5, label: "CFO Layer", tag: "Executive Consumption", sub: [
-        { id: "command", label: "Command Center" },
-        { id: "intelligence", label: "Intelligence" },
-        { id: "scenarios", label: "Scenarios" },
-        { id: "trajectory", label: "Trajectory" } ] },
   ];
   PIQ.STAGES = STAGES;
 
-  /* ---- personas: a landing-page lens that opens the app on one part of the
-     journey and greys the rest. Passed as ?persona=<id>; a null persona = full
-     workspace. Non-allowed stages render locked (non-navigable). ------------ */
+  /* ---- the two surfaces -------------------------------------------------
+     builder — compose, fit, assemble and run the process (stages + sub-views)
+     command — consume the outcomes (persona picker → curated dashboard)
+     Both navigate from the same vertical left sidebar. Passed as ?persona=<id>
+     from the landing page; builder is the default.                          */
   var PERSONAS = {
-    cfo:      { label: "CFO / Finance Lead",       stages: ["cfo"],           entry: "command" },
-    designer: { label: "Transformation Designer",  stages: ["design"],        entry: "studio" },
-    studio:   { label: "Implementation Studio",    stages: ["fit", "build"],  entry: "fitment" },
-    manage:   { label: "Manage & Operate",         stages: ["run"],           entry: "runtime" },
+    builder: { label: "Transformation Builder", stages: ["design", "fit", "build", "run"], entry: "studio" },
+    command: { label: "Command Centre",         stages: ["cfo"],                           entry: "cc" },
   };
-  PIQ.persona = null;
-  function personaAllows(stageId) {
-    if (!PIQ.persona) return true;
-    var p = PERSONAS[PIQ.persona];
-    return !p || p.stages.indexOf(stageId) >= 0;
-  }
+  PIQ.PERSONAS = PERSONAS;
+  PIQ.persona = "builder";
+
+  // Command Centre nav state — owned by the shell (the sidebar drives it), read by cfo.js
+  PIQ.cc = { persona: null, tab: "pulse", custom: false };
   function readPersona() {
     try { var m = /[?&]persona=([a-z]+)/i.exec(window.location.search); return m ? m[1].toLowerCase() : null; }
     catch (e) { return null; }
   }
+
+  /* stage completion, read off the composition — drives the sidebar status dots */
+  PIQ.stageStatus = function (stageId) {
+    var c = PIQ.composition;
+    if (stageId === "design") return c.patternIds.length ? "done" : (c.fnId ? "wip" : "todo");
+    if (stageId === "fit") {
+      if (!c.patternIds.length) return "todo";
+      return Object.keys(c.blocks || {}).length ? "done" : "wip";
+    }
+    if (stageId === "build") return c.live ? "done" : (c.patternIds.length ? "wip" : "todo");
+    if (stageId === "run") return c.live ? "done" : "todo";
+    return "todo";
+  };
 
   function stageOf(viewId) {
     for (var i = 0; i < STAGES.length; i++) {
@@ -254,32 +263,12 @@
     PIQ.persistComposition();
   };
 
-  /* ---- composition persistence (survives reloads) ---------------------- */
+  /* ---- composition persistence (survives reloads) ----------------------
+     The app is light-theme only — there is no theme mode to persist.        */
   var STORE_KEY = "piq.composition.v1";
-  var THEME_KEY = "piq.theme.v1";
-  PIQ.themeMode = "light";
   PIQ.persistComposition = function () {
     try { localStorage.setItem(STORE_KEY, JSON.stringify(PIQ.composition)); } catch (e) {}
   };
-  function persistTheme() {
-    try { localStorage.setItem(THEME_KEY, PIQ.themeMode); } catch (e) {}
-  }
-  function setTheme(mode) {
-    PIQ.themeMode = mode === "dark" ? "dark" : "light";
-    document.body.classList.toggle("dark", PIQ.themeMode === "dark");
-    var toggle = document.getElementById("themeToggle");
-    if (!toggle) return;
-    toggle.querySelectorAll("button").forEach(function (btn) {
-      btn.classList.toggle("on", btn.dataset.theme === PIQ.themeMode);
-    });
-    persistTheme();
-  }
-  function restoreTheme() {
-    try {
-      var raw = localStorage.getItem(THEME_KEY);
-      setTheme(raw === "dark" ? "dark" : "light");
-    } catch (e) { setTheme("light"); }
-  }
   PIQ.restoreComposition = function () {
     try {
       var raw = localStorage.getItem(STORE_KEY); if (!raw) return;
@@ -300,46 +289,158 @@
   };
 
   /* ---- router ---------------------------------------------------------- */
-  function renderNav() {
-    var nav = document.getElementById("modnav");
+  // groups the SME has collapsed in the sidebar
+  var collapsed = {};
+  var STATUS_GLYPH = { todo: "", wip: "", done: "✓" };
+
+  function homeLink() {
+    return '<button class="sb-back" data-home="1">← Home</button>';
+  }
+
+  /* Builder sidebar: four collapsible stages, each with its sub-views. */
+  function builderSidebar(bar) {
     var stage = stageOf(PIQ.active);
-    nav.innerHTML = "";
-    STAGES.forEach(function (st, i) {
-      // the CFO layer is the consumption surface, not part of the build pipeline —
-      // separate it visually from stages 1–4.
-      if (st.id === "cfo") {
-        var sep = document.createElement("span"); sep.className = "stage-sep";
-        sep.innerHTML = '<span class="sep-line"></span>'; nav.appendChild(sep);
-      }
-      var allowed = personaAllows(st.id);
-      var b = document.createElement("button");
-      b.className = "stagetab" + (stage && stage.id === st.id ? " on" : "") + (allowed ? "" : " locked");
-      b.innerHTML = '<span class="stnum">' + st.n + '</span>' +
-        '<span class="stlbl">' + st.label + '<small>' + st.tag + '</small></span>' +
-        (allowed ? '' : '<span class="stlock">🔒</span>');
-      if (allowed) b.onclick = function () { go(st.sub[0].id); };
-      else b.title = "Locked for this persona — open the full workspace from the landing page";
-      nav.appendChild(b);
-      if (i < STAGES.length - 1 && STAGES[i + 1].id !== "cfo") {
-        var a = document.createElement("span"); a.className = "stage-arrow"; a.textContent = "→";
-        nav.appendChild(a);
-      }
+    bar.innerHTML = homeLink() + STAGES.map(function (st) {
+      var open = !collapsed[st.id];
+      var status = PIQ.stageStatus(st.id);
+      var items = st.sub.map(function (s) {
+        return '<button class="sb-item' + (PIQ.active === s.id ? " on" : "") + '" data-v="' + s.id + '">' +
+          '<span class="sb-label">' + esc(s.label) + '</span></button>';
+      }).join("");
+      return '<div class="sb-group' + (open ? " open" : "") + (stage && stage.id === st.id ? " cur" : "") + '" data-st="' + st.id + '">' +
+        '<button class="sb-head" data-head="' + st.id + '">' +
+          '<span class="sb-status ' + status + '">' + STATUS_GLYPH[status] + '</span>' +
+          '<span class="sb-txt">' + esc(st.label) + '<small>' + esc(st.tag) + '</small></span>' +
+          '<span class="sb-caret">' + (open ? "▾" : "▸") + '</span>' +
+        '</button>' +
+        '<div class="sb-subs">' + items + '</div></div>';
+    }).join("");
+
+    bar.querySelectorAll(".sb-head").forEach(function (h) {
+      h.onclick = function () {
+        var id = h.dataset.head;
+        // header of the stage you are standing in = pure expand/collapse; header of
+        // another stage opens it *and* walks you to its first sub-view.
+        if (stage && stage.id === id) { collapsed[id] = !collapsed[id]; renderSidebar(); return; }
+        collapsed[id] = false;
+        go(STAGES.filter(function (x) { return x.id === id; })[0].sub[0].id);
+      };
+    });
+    bar.querySelectorAll(".sb-item").forEach(function (t) {
+      t.onclick = function () { go(t.dataset.v); };
     });
   }
 
-  function renderSub() {
-    var bar = document.getElementById("subbar");
-    var stage = stageOf(PIQ.active);
-    if (!stage) { bar.innerHTML = ""; bar.classList.remove("on"); return; }
-    bar.classList.add("on");
-    var tabs = stage.sub.map(function (s) {
-      return '<button class="subtab' + (PIQ.active === s.id ? " on" : "") + '" data-v="' + s.id + '">' + s.label + '</button>';
+  /* Command Centre sidebar, two states:
+       1 · no persona chosen — the 11-persona roster, CFO first, then grouped by function
+       2 · inside a persona  — switch-role + the consumption lenses + customise
+
+     The lenses are cadence buckets, and a persona only gets the tabs it has missions for:
+     Tax has no Daily/Weekly mission, so Tax has no Pulse tab at all. `activeTabs` is
+     computed in the generator — the shell never guesses. */
+  var CC = window.PROCESSIQ_CC || {};
+  function ccTabs() { return (CC.meta && CC.meta.tabs) || []; }
+  function ccPersonas() { return CC.personas || []; }
+  PIQ.ccPersona = function () {
+    return ccPersonas().filter(function (p) { return p.id === PIQ.cc.persona; })[0] || null;
+  };
+  // the tab actually shown: the requested one if the persona has it, else its first
+  PIQ.ccTab = function (p) {
+    p = p || PIQ.ccPersona();
+    if (!p) return "pulse";
+    var act = p.activeTabs || [];
+    return act.indexOf(PIQ.cc.tab) >= 0 ? PIQ.cc.tab : (act[0] || "pulse");
+  };
+  function tabMissionCount(p, tabId) {
+    return ((p.tabs || {})[tabId] || {}).missions.length;
+  }
+
+  function commandSidebar(bar) {
+    var cur = PIQ.ccPersona();
+
+    if (!cur) {
+      // ---- state 1: the roster ----
+      var order = (CC.meta && CC.meta.groupOrder) || [];
+      var byGroup = {}, groups = [];
+      ccPersonas().forEach(function (p) {
+        if (!byGroup[p.group]) { byGroup[p.group] = []; groups.push(p.group); }
+        byGroup[p.group].push(p);
+      });
+      groups.sort(function (a, b) {
+        var ia = order.indexOf(a), ib = order.indexOf(b);
+        return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
+      });
+      bar.innerHTML = homeLink() + groups.map(function (g) {
+        var items = byGroup[g].map(function (p) {
+          return '<button class="sb-item' + (p.isOverview ? " overview" : "") + '" data-p="' + p.id + '">' +
+            '<span class="sb-pic">' + p.icon + '</span>' +
+            '<span class="sb-label">' + esc(p.label) +
+              (p.isOverview ? '<small>all 8 objectives</small>' : '') + '</span>' +
+            '<span class="sb-count">' + (p.isOverview ? (CC.meta.counts.missions) : p.missionCount) + '</span>' +
+          '</button>';
+        }).join("");
+        return '<div class="sb-group open">' +
+          '<div class="sb-cat">' + esc(g === "top" ? "CFO" : g) + '</div>' +
+          '<div class="sb-subs">' + items + '</div></div>';
+      }).join("");
+
+      bar.querySelectorAll(".sb-item[data-p]").forEach(function (b) {
+        b.onclick = function () {
+          PIQ.cc.persona = b.dataset.p; PIQ.cc.custom = false;
+          var p = PIQ.ccPersona();
+          PIQ.cc.tab = (p.activeTabs || ["pulse"])[0];
+          go("cc");
+        };
+      });
+      return;
+    }
+
+    // ---- state 2: inside a persona ----
+    var active = PIQ.ccTab(cur);
+    var lenses = ccTabs().filter(function (t) {
+      return (cur.activeTabs || []).indexOf(t.id) >= 0;
+    }).map(function (t) {
+      var n = cur.isOverview ? 0 : tabMissionCount(cur, t.id);
+      return '<button class="sb-item' + (active === t.id ? " on" : "") + '" data-t="' + t.id + '">' +
+        '<span class="sb-label">' + esc(t.label) + '<small>' + esc(t.cadences) + '</small></span>' +
+        (n ? '<span class="sb-count">' + n + '</span>' : '') + '</button>';
     }).join("");
-    bar.innerHTML = '<div class="subtabs">' + tabs + '</div>' +
-      '<div class="crumb">' + crumb() + '</div>';
-    bar.querySelectorAll(".subtab").forEach(function (t) {
-      t.onclick = function () { go(t.dataset.v); };
+
+    bar.innerHTML = homeLink() +
+      '<button class="sb-back sb-switch" data-switch="1">⤺ Switch role</button>' +
+      '<div class="sb-persona"><span class="sb-pic big">' + cur.icon + '</span>' +
+        '<div class="sb-ptxt"><span class="sb-pname">' + esc(cur.label) + '</span>' +
+        '<small class="sb-phead">' + esc(cur.headline) + '</small></div></div>' +
+      '<div class="sb-group open"><div class="sb-subs">' + lenses + '</div></div>' +
+      '<div class="sb-rule"></div>' +
+      '<button class="sb-item sb-cx" data-cx="1"><span class="sb-label">⚙ Customize</span></button>';
+
+    bar.querySelectorAll(".sb-item[data-t]").forEach(function (b) {
+      b.onclick = function () { PIQ.cc.tab = b.dataset.t; PIQ.cc.custom = false; go("cc"); };
     });
+    bar.querySelector(".sb-switch").onclick = function () {
+      PIQ.cc.persona = null; PIQ.cc.custom = false; go("cc");
+    };
+    bar.querySelector(".sb-cx").onclick = function () {
+      PIQ.cc.custom = true; go("cc");
+    };
+  }
+
+  function renderSidebar() {
+    var bar = document.getElementById("sidebar");
+    if (PIQ.persona === "command") commandSidebar(bar);
+    else builderSidebar(bar);
+    var home = bar.querySelector(".sb-back[data-home]");
+    if (home) home.onclick = function () { window.location.href = "index.html"; };
+  }
+
+  // the breadcrumb sits at the top of the working area, above the module —
+  // it describes the composition, so it is a Builder concern only.
+  function renderCrumb() {
+    var el = document.getElementById("workcrumb");
+    var show = PIQ.persona === "builder";
+    el.style.display = show ? "" : "none";
+    el.innerHTML = show ? '<div class="crumb">' + crumb() + '</div>' : "";
   }
 
   function crumb() {
@@ -363,8 +464,8 @@
   function go(id) {
     PIQ.active = id;
     PIQ.persistComposition();
-    renderNav();
-    renderSub();
+    renderSidebar();
+    renderCrumb();
     var view = document.getElementById("view");
     view.innerHTML = "";
     var mod = PIQ.modules[id];
@@ -373,6 +474,14 @@
     window.scrollTo(0, 0);
   }
   PIQ.go = go;
+  // modules mutate the composition; this re-reads the status dots + breadcrumb
+  PIQ.refreshNav = function () { renderSidebar(); renderCrumb(); };
+  // cross-surface jump: Command Centre → a Builder view (reloads into the builder)
+  PIQ.goBuilder = function (viewId) {
+    if ((PERSONAS[PIQ.persona] || {}).nav === "sidebar") return go(viewId);
+    PIQ.persistComposition();
+    window.location.href = "processiq.html?persona=builder&view=" + encodeURIComponent(viewId);
+  };
 
   function stubCard(id) {
     var d = document.createElement("div");
@@ -390,10 +499,6 @@
     PIQ._erpListeners.forEach(function (fn) { try { fn(PIQ.erp); } catch (e) {} });
   });
 
-  /* "Why" link → the narrative front door */
-  var why = document.getElementById("whyLink");
-  if (why) why.onclick = function (e) { e.preventDefault(); go("provocation"); };
-
   /* brand → reset the session and return to the landing page */
   var brandEl = document.querySelector(".brand");
   if (brandEl) {
@@ -405,23 +510,21 @@
     });
   }
 
-  document.getElementById("themeToggle").addEventListener("click", function (e) {
-    var b = e.target.closest("button"); if (!b) return;
-    setTheme(b.dataset.theme);
-  });
-
   /* boot */
   document.getElementById("varStat").textContent = PIQ.E._money(PIQ.book.meta.valueAtRisk);
   document.getElementById("dateStat").textContent = PIQ.book.meta.asOfDate;
 
-  restoreTheme();
-
-  // Boot: a persona (from the landing page) opens the app on its slice of the
-  // journey; otherwise start on the Studio — the SME's front door.
+  // Boot: the landing page hands us one of the two surfaces. ?view= lets the
+  // Command Centre deep-link into a specific Builder view.
   PIQ.boot = function () {
     PIQ.restoreComposition();
     var persona = readPersona();
-    if (persona && PERSONAS[persona]) { PIQ.persona = persona; go(PERSONAS[persona].entry); }
-    else go("studio");
+    PIQ.persona = (persona && PERSONAS[persona]) ? persona : "builder";
+    var entry = PERSONAS[PIQ.persona].entry;
+    try {
+      var m = /[?&]view=([a-z]+)/i.exec(window.location.search);
+      if (m && PIQ.persona === "builder" && stageOf(m[1])) entry = m[1];
+    } catch (e) {}
+    go(entry);
   };
 })();

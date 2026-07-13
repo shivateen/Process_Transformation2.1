@@ -1,0 +1,984 @@
+{
+  "meta": {
+    "title": "Pattern Studio — document mining",
+    "note": "No live LLM in this build: candidate selection is deterministic and evidence-gated. fewShotPrompt is the exact prompt a real extractor would receive — wire it in at PIQ.patternStudio.mine().",
+    "acceptedFormats": [
+      ".pdf",
+      ".xlsx",
+      ".csv",
+      ".docx",
+      ".txt",
+      ".json",
+      ".xml"
+    ],
+    "quickStart": [
+      "txn",
+      "policy"
+    ],
+    "stages": [
+      {
+        "id": "ingest",
+        "label": "Ingest & Classify",
+        "blurb": "Parse each document; pull tables, reason codes, amounts, dates and freetext."
+      },
+      {
+        "id": "signals",
+        "label": "Signal extraction",
+        "blurb": "Find what recurs across the corpus: reason codes, timings, triggers, entities."
+      },
+      {
+        "id": "hypothesis",
+        "label": "Pattern hypothesis",
+        "blurb": "Few-shot against the existing library — propose patterns it does not yet hold."
+      },
+      {
+        "id": "review",
+        "label": "SME review",
+        "blurb": "You are the gate. Accept, edit, merge or reject each candidate."
+      },
+      {
+        "id": "calibrate",
+        "label": "Calibration",
+        "blurb": "Run the accepted detector against the uploaded transactions to set a threshold."
+      }
+    ]
+  },
+  "uploadCategories": [
+    {
+      "id": "txn",
+      "label": "Transactional Evidence",
+      "blurb": "The richest seam — what actually happened, transaction by transaction.",
+      "slots": [
+        {
+          "id": "exception-logs",
+          "label": "Exception logs",
+          "hint": "Blocked invoices, failed postings, held orders, credit check failures",
+          "formats": [
+            ".xlsx",
+            ".csv",
+            ".json"
+          ]
+        },
+        {
+          "id": "aging-notes",
+          "label": "Aging reports with notes",
+          "hint": "Collector freetext fields — the real story",
+          "formats": [
+            ".xlsx",
+            ".csv"
+          ]
+        },
+        {
+          "id": "dispute-logs",
+          "label": "Dispute / deduction logs",
+          "hint": "Reason codes and resolution narratives",
+          "formats": [
+            ".xlsx",
+            ".csv",
+            ".pdf"
+          ]
+        },
+        {
+          "id": "payment-history",
+          "label": "Payment history / remittance",
+          "hint": "Timing patterns, partial payments, broken promises",
+          "formats": [
+            ".xlsx",
+            ".csv"
+          ]
+        },
+        {
+          "id": "credit-memos",
+          "label": "Credit memos & write-offs",
+          "hint": "What was given up on, and why",
+          "formats": [
+            ".xlsx",
+            ".csv",
+            ".pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "policy",
+      "label": "Process & Policy",
+      "blurb": "What the organisation says it does.",
+      "slots": [
+        {
+          "id": "process-docs",
+          "label": "Process documentation",
+          "hint": "SOPs, work instructions, L3/L4 process maps",
+          "formats": [
+            ".pdf",
+            ".docx",
+            ".xlsx"
+          ]
+        },
+        {
+          "id": "raci",
+          "label": "RACI matrices",
+          "hint": "Who's responsible, accountable, consulted, informed",
+          "formats": [
+            ".xlsx",
+            ".pdf",
+            ".docx"
+          ]
+        },
+        {
+          "id": "credit-policy",
+          "label": "Credit / collections policy",
+          "hint": "Limits, review triggers, approval matrices, dunning playbooks",
+          "formats": [
+            ".pdf",
+            ".docx"
+          ]
+        },
+        {
+          "id": "escalation",
+          "label": "Escalation protocols",
+          "hint": "When and how issues move up the chain",
+          "formats": [
+            ".pdf",
+            ".docx"
+          ]
+        },
+        {
+          "id": "writeoff-policy",
+          "label": "Write-off & bad debt policy",
+          "hint": "Thresholds, approval flows, provisioning rules",
+          "formats": [
+            ".pdf",
+            ".docx"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "analytics",
+      "label": "Operational Analytics",
+      "blurb": "What the numbers already told you.",
+      "slots": [
+        {
+          "id": "kpi-reports",
+          "label": "KPI reports / dashboards",
+          "hint": "Exported performance snapshots",
+          "formats": [
+            ".xlsx",
+            ".csv",
+            ".pdf"
+          ]
+        },
+        {
+          "id": "process-mining",
+          "label": "Process mining exports",
+          "hint": "Celonis, Signavio — event logs, variant analysis",
+          "formats": [
+            ".csv",
+            ".xlsx",
+            ".json",
+            ".xml"
+          ]
+        },
+        {
+          "id": "cycle-time",
+          "label": "Cycle time / touch-count reports",
+          "hint": "How long, and how many humans, per transaction",
+          "formats": [
+            ".xlsx",
+            ".csv"
+          ]
+        },
+        {
+          "id": "rca",
+          "label": "Root cause analysis",
+          "hint": "Past improvement projects — what they found",
+          "formats": [
+            ".pdf",
+            ".docx",
+            ".xlsx"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "org",
+      "label": "Organizational & Behavioral",
+      "blurb": "Who does the work, and what they're rewarded for.",
+      "slots": [
+        {
+          "id": "org-chart",
+          "label": "Org structure / hierarchy",
+          "hint": "Reporting lines and team shape",
+          "formats": [
+            ".pdf",
+            ".xlsx",
+            ".docx"
+          ]
+        },
+        {
+          "id": "skills",
+          "label": "Skills matrix / capabilities",
+          "hint": "What the team can and can't do today",
+          "formats": [
+            ".xlsx",
+            ".pdf"
+          ]
+        },
+        {
+          "id": "training",
+          "label": "Training materials",
+          "hint": "What staff are taught to look for",
+          "formats": [
+            ".pdf",
+            ".docx"
+          ]
+        },
+        {
+          "id": "scorecards",
+          "label": "Performance scorecards",
+          "hint": "What behaviours are incentivised",
+          "formats": [
+            ".xlsx",
+            ".pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "comms",
+      "label": "Communication Trails",
+      "blurb": "The conversation around the transaction.",
+      "slots": [
+        {
+          "id": "email",
+          "label": "Email threads",
+          "hint": "Collector ↔ customer correspondence",
+          "formats": [
+            ".pdf",
+            ".docx",
+            ".txt"
+          ]
+        },
+        {
+          "id": "call-logs",
+          "label": "Call logs / notes",
+          "hint": "Collection call summaries",
+          "formats": [
+            ".xlsx",
+            ".csv",
+            ".docx"
+          ]
+        },
+        {
+          "id": "dunning",
+          "label": "Dunning history",
+          "hint": "Letter templates, send dates, response rates",
+          "formats": [
+            ".xlsx",
+            ".csv",
+            ".pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "external",
+      "label": "External & Contextual",
+      "blurb": "The world the process operates in.",
+      "slots": [
+        {
+          "id": "benchmarks",
+          "label": "Industry benchmarks",
+          "hint": "APQC, Hackett Group metrics",
+          "formats": [
+            ".pdf",
+            ".xlsx"
+          ]
+        },
+        {
+          "id": "customer-master",
+          "label": "Customer master data",
+          "hint": "Segments, payment terms, risk ratings",
+          "formats": [
+            ".xlsx",
+            ".csv"
+          ]
+        },
+        {
+          "id": "contracts",
+          "label": "Contracts & terms",
+          "hint": "Payment terms, penalty clauses, SLAs",
+          "formats": [
+            ".pdf",
+            ".docx"
+          ]
+        },
+        {
+          "id": "bureau",
+          "label": "Bureau / credit reports",
+          "hint": "D&B, Experian on key counterparties",
+          "formats": [
+            ".pdf",
+            ".xlsx"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "control",
+      "label": "Control & Compliance",
+      "blurb": "What must not go wrong.",
+      "slots": [
+        {
+          "id": "sox",
+          "label": "SOX control narratives",
+          "hint": "Control descriptions and test results",
+          "formats": [
+            ".pdf",
+            ".docx",
+            ".xlsx"
+          ]
+        },
+        {
+          "id": "audit",
+          "label": "Internal audit reports",
+          "hint": "Findings and management responses",
+          "formats": [
+            ".pdf",
+            ".docx"
+          ]
+        },
+        {
+          "id": "sod",
+          "label": "Segregation-of-duty matrix",
+          "hint": "Who can't do what together",
+          "formats": [
+            ".xlsx",
+            ".pdf"
+          ]
+        }
+      ]
+    }
+  ],
+  "candidates": [
+    {
+      "cid": "CAND-A",
+      "name": "Seasonal Treasury Squeeze",
+      "featureSlug": "seasonal-treasury-squeeze",
+      "category": "Intentional Stalling & Delay Tactics",
+      "priority": "High",
+      "mentalModel": "They pay us fine for ten months, then quarter-end lands and suddenly everyone is 'awaiting approval'. It is not distress — it is their treasury calendar, and we are the float.",
+      "sources": {
+        "sap": [
+          "BSID (ZFBDT, AUGDT)",
+          "KNB1 (customer fiscal calendar)"
+        ],
+        "oracle": [
+          "AR_PAYMENT_SCHEDULES_ALL (DUE_DATE, ACTUAL_DATE_CLOSED)",
+          "HZ_CUST_ACCOUNTS"
+        ]
+      },
+      "layer1_logicalMapping": "Payment delay clusters in the last 10 days of the customer's fiscal quarter, then normalises. Correlate BSID clearing dates against the customer's fiscal calendar.",
+      "layer2_eventSeries": "Invoice_Posted → Due_Date_Passed → Payment_Delayed (quarter-end window) → Payment_Received (quarter+1 week)",
+      "layer3_feature": "Fiscal_Quarter_Payment_Skew",
+      "conceptualSQL": "SELECT kunnr, AVG(CASE WHEN quarter_end_window THEN days_late END) - AVG(CASE WHEN NOT quarter_end_window THEN days_late END) AS skew FROM ar_clearing GROUP BY kunnr HAVING skew > 9",
+      "originalDAG": [
+        "Ingest_Invoice",
+        "Map_Customer_Fiscal_Calendar",
+        "Compute_Quarter_End_Skew",
+        "Flag_Seasonal_Delay",
+        "Pre_Dun_Ahead_Of_Window"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Skew > 9 days AND Payment_History_Otherwise_Clean",
+          "actions": [
+            "Shift_Dunning_Earlier + Notify_Collector"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "IF Skew > 20 days AND Exposure > $500K",
+          "actions": [
+            "Propose_Term_Renegotiation + Alert_Treasury"
+          ],
+          "hitl": "Credit Manager approval",
+          "tier": "escalation"
+        },
+        {
+          "condition": "IF Skew rising QoQ for 3 quarters",
+          "actions": [
+            "Escalate_To_Credit_Review"
+          ],
+          "hitl": "CFO review",
+          "tier": "immediate"
+        }
+      ],
+      "hitlGates": [
+        "Credit Manager approval",
+        "CFO review"
+      ],
+      "requires": [
+        "txn",
+        "analytics"
+      ],
+      "confidence": 0.86,
+      "similarTo": null,
+      "evidence": [
+        {
+          "slot": "aging-notes",
+          "excerpt": "\"Customer AP confirms invoice approved — payment run moved to next quarter per their treasury policy.\" (recurs 34× across Q1–Q3 notes)"
+        },
+        {
+          "slot": "exception-logs",
+          "excerpt": "142 held/late events cluster in the final 10 days of Mar / Jun / Sep — 3.1× the base rate."
+        },
+        {
+          "slot": "cycle-time",
+          "excerpt": "Days-to-pay rises from 41 to 58 in quarter-end weeks, then reverts."
+        }
+      ],
+      "signals": [
+        "quarter-end delay cluster",
+        "AP-approved-but-unpaid narrative",
+        "days-to-pay seasonality"
+      ]
+    },
+    {
+      "cid": "CAND-B",
+      "name": "Remittance Format Churn",
+      "featureSlug": "remittance-format-churn",
+      "category": "Cash Application & Matching Integrity",
+      "priority": "Medium",
+      "mentalModel": "Every month the remittance file looks different. Not corrupt — different. Enough to break auto-match and buy them a week of float while we key it by hand.",
+      "sources": {
+        "sap": [
+          "BSID / BSAD (payment lines)",
+          "FEBEP (bank statement items)"
+        ],
+        "oracle": [
+          "AR_CASH_RECEIPTS_ALL",
+          "AR_RECEIVABLE_APPLICATIONS_ALL"
+        ]
+      },
+      "layer1_logicalMapping": "Remittance advice layout/field-order changes month over month for the same payer, driving auto-match failure without any change in payment volume.",
+      "layer2_eventSeries": "Payment_Received → Remittance_Parsed (fail) → Manual_Keying → Cash_Applied (T+5)",
+      "layer3_feature": "Remittance_Schema_Volatility",
+      "conceptualSQL": "SELECT payer_id, COUNT(DISTINCT remit_schema_hash) AS schema_variants, SUM(automatch_fail) AS fails FROM cash_app_lines GROUP BY payer_id HAVING schema_variants >= 3",
+      "originalDAG": [
+        "Ingest_Remittance",
+        "Hash_Schema",
+        "Compare_To_Prior_Schema",
+        "Detect_Churn",
+        "Route_To_Manual_Match"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Schema_Variants >= 3 AND Auto_Match_Rate < 40%",
+          "actions": [
+            "Pin_Parser_Template + Notify_Cash_App_Lead"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "IF Churn persists 3 months AND Unapplied > $250K",
+          "actions": [
+            "Request_Standard_Remittance + Escalate_To_AR_Manager"
+          ],
+          "hitl": "AR Manager approval",
+          "tier": "escalation"
+        }
+      ],
+      "hitlGates": [
+        "AR Manager approval"
+      ],
+      "requires": [
+        "txn"
+      ],
+      "confidence": 0.81,
+      "similarTo": {
+        "id": 25,
+        "name": "Duplicate Payment Bait",
+        "score": 0.41
+      },
+      "evidence": [
+        {
+          "slot": "payment-history",
+          "excerpt": "4 payers account for 61% of auto-match failures; each shows ≥3 distinct remittance layouts in 6 months."
+        },
+        {
+          "slot": "exception-logs",
+          "excerpt": "214 unapplied cash lines, 88% traced to remittance parse failure rather than payment shortfall."
+        }
+      ],
+      "signals": [
+        "remittance schema variants",
+        "auto-match failure concentration",
+        "unapplied cash ageing"
+      ]
+    },
+    {
+      "cid": "CAND-C",
+      "name": "Approval Threshold Shadowing",
+      "featureSlug": "approval-threshold-shadowing",
+      "category": "Cross-Process AR Governance",
+      "priority": "Critical",
+      "mentalModel": "Nobody breaks the approval rule. They just never quite reach it. Every credit memo lands a few hundred dollars under the line that would have sent it to me.",
+      "sources": {
+        "sap": [
+          "BSEG (credit memo lines)",
+          "T077D / approval matrix config"
+        ],
+        "oracle": [
+          "AR_CREDIT_MEMOS",
+          "AP_WEB_AUTHORIZATION_RULES"
+        ]
+      },
+      "layer1_logicalMapping": "Credit memo / write-off amounts cluster immediately below a documented approval threshold, indicating deliberate sizing to stay within delegated authority.",
+      "layer2_eventSeries": "Credit_Memo_Raised → Amount_Just_Below_Threshold → Auto_Approved → Posted (no second signature)",
+      "layer3_feature": "Sub_Threshold_Clustering",
+      "conceptualSQL": "SELECT approver, COUNT(*) FROM credit_memos WHERE amount BETWEEN threshold*0.90 AND threshold*0.999 GROUP BY approver HAVING COUNT(*) > 10",
+      "originalDAG": [
+        "Ingest_Credit_Memo",
+        "Load_Approval_Matrix",
+        "Compute_Threshold_Distance",
+        "Detect_Sub_Threshold_Cluster",
+        "Hold_For_Second_Signature"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Amount within 10% below threshold AND Approver_Repeat_Count > 5",
+          "actions": [
+            "Flag_For_Review + Log_Control_Event"
+          ],
+          "hitl": "Controller review",
+          "tier": "primary"
+        },
+        {
+          "condition": "IF Cluster spans multiple approvers on one customer",
+          "actions": [
+            "Freeze_Memo + Escalate_To_Compliance"
+          ],
+          "hitl": "CRO approval",
+          "tier": "immediate"
+        }
+      ],
+      "hitlGates": [
+        "Controller review",
+        "CRO approval"
+      ],
+      "requires": [
+        "policy",
+        "control"
+      ],
+      "confidence": 0.88,
+      "similarTo": {
+        "id": 64,
+        "name": "Threshold Splitting",
+        "score": 0.74
+      },
+      "evidence": [
+        {
+          "slot": "writeoff-policy",
+          "excerpt": "\"Credit memos above $25,000 require Controller counter-signature.\" (Write-off policy v4.2, §3.1)"
+        },
+        {
+          "slot": "audit",
+          "excerpt": "Internal audit FY24-07: \"a material share of memos fall in the $22.5K–$25K band; management response pending.\""
+        },
+        {
+          "slot": "sod",
+          "excerpt": "2 credit analysts hold both memo-raise and memo-approve rights."
+        }
+      ],
+      "signals": [
+        "documented approval threshold",
+        "sub-threshold amount cluster",
+        "SoD conflict"
+      ]
+    },
+    {
+      "cid": "CAND-D",
+      "name": "Escalation Dead-Zone",
+      "featureSlug": "escalation-dead-zone",
+      "category": "Intentional Stalling & Delay Tactics",
+      "priority": "High",
+      "mentalModel": "The playbook says escalate at day 45. The collectors escalate at day 70. That 25-day gap is where the money goes quiet — and nobody owns it.",
+      "sources": {
+        "sap": [
+          "UDM_DUNNING (dunning history)",
+          "BSID (open items)"
+        ],
+        "oracle": [
+          "AR_DUNNING_LETTERS",
+          "IEX_DELINQUENCIES"
+        ]
+      },
+      "layer1_logicalMapping": "A structural gap between the escalation protocol's documented trigger and the point at which escalation is actually observed in the communication trail.",
+      "layer2_eventSeries": "Dunning_Sent → No_Response → (policy trigger passes, no action) → Escalation_Raised (late)",
+      "layer3_feature": "Policy_To_Practice_Escalation_Lag",
+      "conceptualSQL": "SELECT AVG(actual_escalation_day - policy_escalation_day) AS lag FROM dunning_events JOIN escalation_policy USING (segment) HAVING lag > 14",
+      "originalDAG": [
+        "Ingest_Dunning_Event",
+        "Load_Escalation_Protocol",
+        "Compute_Policy_Lag",
+        "Detect_Dead_Zone",
+        "Auto_Escalate_At_Policy_Trigger"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Lag > 14 days AND Balance > $50K",
+          "actions": [
+            "Auto_Escalate + Notify_Collections_Manager"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "IF Lag > 30 days AND Customer_On_Watchlist",
+          "actions": [
+            "Immediate_Escalation + Credit_Hold"
+          ],
+          "hitl": "Collections Manager approval",
+          "tier": "escalation"
+        }
+      ],
+      "hitlGates": [
+        "Collections Manager approval"
+      ],
+      "requires": [
+        "policy",
+        "comms"
+      ],
+      "confidence": 0.79,
+      "similarTo": null,
+      "evidence": [
+        {
+          "slot": "escalation",
+          "excerpt": "\"Accounts 45 days past due are escalated to the Collections Manager.\" (Escalation protocol, §2)"
+        },
+        {
+          "slot": "call-logs",
+          "excerpt": "Median first manager-level contact occurs at day 70; 210 accounts sat 45–70 days with no logged action."
+        },
+        {
+          "slot": "dunning",
+          "excerpt": "Dunning letter 3 of 3 sent, then a median 24-day silence before any further activity."
+        }
+      ],
+      "signals": [
+        "documented escalation trigger",
+        "observed escalation day",
+        "post-dunning silence window"
+      ]
+    },
+    {
+      "cid": "CAND-E",
+      "name": "Incentive-Driven Month-End Discounting",
+      "featureSlug": "incentive-month-end-discounting",
+      "category": "Billing Accuracy & Revenue Integrity",
+      "priority": "High",
+      "mentalModel": "The credit memos spike in the last three days of the month — the same three days the sales scorecard closes. That is not a coincidence, it is a comp plan.",
+      "sources": {
+        "sap": [
+          "BSEG (memo postings)",
+          "VBRK (billing docs)"
+        ],
+        "oracle": [
+          "AR_CREDIT_MEMOS",
+          "OKC_K_HEADERS_B"
+        ]
+      },
+      "layer1_logicalMapping": "Concessions and credit memos concentrate in the final days of the incentive period, correlating with a scorecard metric rather than with any customer event.",
+      "layer2_eventSeries": "Month_End_Approaching → Concession_Granted → Revenue_Recognised → Scorecard_Met",
+      "layer3_feature": "Incentive_Window_Concession_Spike",
+      "conceptualSQL": "SELECT DAY(posting_date) AS d, SUM(memo_amount) FROM credit_memos GROUP BY d HAVING SUM(memo_amount) > 3 * (SELECT AVG(daily_memo) FROM ...) AND d >= days_in_month - 2",
+      "originalDAG": [
+        "Ingest_Concession",
+        "Map_To_Incentive_Calendar",
+        "Compute_Window_Spike",
+        "Flag_Incentive_Correlation",
+        "Route_For_Revenue_Review"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Spike > 3× baseline in final 3 days",
+          "actions": [
+            "Flag_For_Revenue_Review + Notify_Controller"
+          ],
+          "hitl": "Controller review",
+          "tier": "primary"
+        },
+        {
+          "condition": "IF Same rep repeats across 3 periods",
+          "actions": [
+            "Escalate_To_Compliance + Hold_Concessions"
+          ],
+          "hitl": "CRO approval",
+          "tier": "escalation"
+        }
+      ],
+      "hitlGates": [
+        "Controller review",
+        "CRO approval"
+      ],
+      "requires": [
+        "org",
+        "txn"
+      ],
+      "confidence": 0.83,
+      "similarTo": null,
+      "evidence": [
+        {
+          "slot": "scorecards",
+          "excerpt": "Sales scorecard closes on the final calendar day; \"net revenue booked\" carries a 40% weighting."
+        },
+        {
+          "slot": "credit-memos",
+          "excerpt": "38% of credit-memo value posts in the last 3 days of the month, against 10% expected."
+        },
+        {
+          "slot": "training",
+          "excerpt": "Rep onboarding deck: \"use goodwill credits to protect the close.\""
+        }
+      ],
+      "signals": [
+        "incentive period boundary",
+        "concession value spike",
+        "rep-level repetition"
+      ]
+    },
+    {
+      "cid": "CAND-F",
+      "name": "Contractual SLA Weaponisation",
+      "featureSlug": "contractual-sla-weaponisation",
+      "category": "Relationship & Contractual Abuse",
+      "priority": "Medium",
+      "mentalModel": "They read the contract more carefully than we did. Every late delivery, however trivial, becomes a documented SLA breach — and a licence to hold the whole invoice.",
+      "sources": {
+        "sap": [
+          "UDM_DISPUTE (reason codes)",
+          "VBAK / contract data"
+        ],
+        "oracle": [
+          "AR_DISPUTES",
+          "OKC_K_LINES_B"
+        ]
+      },
+      "layer1_logicalMapping": "Customer cites contractual SLA/penalty clauses to justify withholding, at a rate far exceeding the actual incidence of service failures.",
+      "layer2_eventSeries": "Delivery_Event → SLA_Claim_Raised → Full_Invoice_Withheld → Negotiated_Settlement",
+      "layer3_feature": "SLA_Claim_To_Breach_Ratio",
+      "conceptualSQL": "SELECT customer_id, COUNT(sla_claims) / NULLIF(COUNT(actual_breaches), 0) AS ratio FROM disputes GROUP BY customer_id HAVING ratio > 3",
+      "originalDAG": [
+        "Ingest_Dispute",
+        "Load_Contract_Terms",
+        "Verify_Actual_Breach",
+        "Compute_Claim_Ratio",
+        "Reject_Unsupported_Claim"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Claim_Ratio > 3 AND Breach_Unverified",
+          "actions": [
+            "Reject_Claim + Cite_Contract_Clause"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "IF Withheld > $200K AND Strategic_Account",
+          "actions": [
+            "Route_To_Legal + Notify_Account_Exec"
+          ],
+          "hitl": "Legal review",
+          "tier": "escalation"
+        }
+      ],
+      "hitlGates": [
+        "Legal review"
+      ],
+      "requires": [
+        "external",
+        "comms"
+      ],
+      "confidence": 0.76,
+      "similarTo": {
+        "id": 20,
+        "name": "Partial Breadcrumbing",
+        "score": 0.38
+      },
+      "evidence": [
+        {
+          "slot": "contracts",
+          "excerpt": "MSA §9.4: \"Customer may withhold disputed amounts pending resolution of any service level failure.\""
+        },
+        {
+          "slot": "email",
+          "excerpt": "17 threads cite §9.4 verbatim; only 4 correspond to a logged delivery exception."
+        },
+        {
+          "slot": "dispute-logs",
+          "excerpt": "SLA-coded disputes: 41 raised, 11 substantiated on investigation."
+        }
+      ],
+      "signals": [
+        "contract clause citation",
+        "unsubstantiated SLA claim",
+        "withheld-amount concentration"
+      ]
+    },
+    {
+      "cid": "CAND-G",
+      "name": "Onboarding Data Debt",
+      "featureSlug": "onboarding-data-debt",
+      "category": "Credit Risk & Exposure Control",
+      "priority": "Medium",
+      "mentalModel": "Half our exposure sits behind customer records that were opened in a hurry and never finished. No risk rating, no terms, no bureau pull — and no limit that means anything.",
+      "sources": {
+        "sap": [
+          "KNA1 / KNB1 (customer master)",
+          "KNKK (credit master)"
+        ],
+        "oracle": [
+          "HZ_CUST_ACCOUNTS",
+          "AR_CUSTOMER_PROFILES"
+        ]
+      },
+      "layer1_logicalMapping": "Customer master records created without complete credit attributes correlate with materially higher downstream delinquency.",
+      "layer2_eventSeries": "Customer_Created (incomplete) → Credit_Limit_Defaulted → Orders_Released → Delinquency",
+      "layer3_feature": "Master_Data_Completeness_Risk",
+      "conceptualSQL": "SELECT completeness_bucket, AVG(days_late) FROM customer_master JOIN ar_aging USING (kunnr) GROUP BY completeness_bucket",
+      "originalDAG": [
+        "Ingest_Customer_Master",
+        "Score_Completeness",
+        "Join_Delinquency_History",
+        "Flag_Data_Debt",
+        "Block_Limit_Increase"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Completeness < 60% AND Exposure > $100K",
+          "actions": [
+            "Request_Bureau_Pull + Freeze_Limit_Increase"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "IF Completeness < 40% AND Delinquent",
+          "actions": [
+            "Credit_Hold + Escalate_To_Credit_Manager"
+          ],
+          "hitl": "Credit Manager approval",
+          "tier": "escalation"
+        }
+      ],
+      "hitlGates": [
+        "Credit Manager approval"
+      ],
+      "requires": [
+        "external",
+        "analytics"
+      ],
+      "confidence": 0.72,
+      "similarTo": null,
+      "evidence": [
+        {
+          "slot": "customer-master",
+          "excerpt": "31% of active customers have no risk rating; 18% carry the system-default payment term."
+        },
+        {
+          "slot": "kpi-reports",
+          "excerpt": "Incomplete-record customers are 2.4× more likely to breach 60 days."
+        },
+        {
+          "slot": "bureau",
+          "excerpt": "No bureau file on record for 22 of the top-100 exposures."
+        }
+      ],
+      "signals": [
+        "master-data completeness score",
+        "default-term prevalence",
+        "delinquency correlation"
+      ]
+    },
+    {
+      "cid": "CAND-H",
+      "name": "Reopen-and-Restart Dispute Loop",
+      "featureSlug": "reopen-restart-dispute-loop",
+      "category": "Dispute Lifecycle Management",
+      "priority": "High",
+      "mentalModel": "The dispute is closed. Then they reopen it on a new reason code, and the clock starts again from zero. Same invoice, third reason, ninety days gone.",
+      "sources": {
+        "sap": [
+          "UDM_DISPUTE (CASE_GUID, REASON_CODE, STATUS)",
+          "BSID"
+        ],
+        "oracle": [
+          "AR_DISPUTES (DISPUTE_STATUS, DISPUTE_REASON)",
+          "AR_PAYMENT_SCHEDULES_ALL"
+        ]
+      },
+      "layer1_logicalMapping": "The same invoice is disputed repeatedly under successive reason codes, each reopening resetting the resolution SLA clock.",
+      "layer2_eventSeries": "Dispute_Closed → Reopened (new reason code) → SLA_Clock_Reset → Repeat",
+      "layer3_feature": "Dispute_Reopen_Cascade",
+      "conceptualSQL": "SELECT invoice_id, COUNT(DISTINCT reason_code) AS codes, COUNT(*) AS reopens FROM disputes GROUP BY invoice_id HAVING reopens >= 3",
+      "originalDAG": [
+        "Ingest_Dispute",
+        "Link_To_Prior_Disputes",
+        "Count_Reopen_Cascade",
+        "Freeze_SLA_Clock",
+        "Consolidate_Into_Single_Case"
+      ],
+      "branchingDAG": [
+        {
+          "condition": "IF Reopens >= 3 on one invoice",
+          "actions": [
+            "Consolidate_Case + Preserve_Original_Clock"
+          ],
+          "hitl": null,
+          "tier": "primary"
+        },
+        {
+          "condition": "IF Reopens >= 5 OR Age > 120 days",
+          "actions": [
+            "Deny_Reopen + Escalate_To_Dispute_Lead"
+          ],
+          "hitl": "AR Manager approval",
+          "tier": "escalation"
+        }
+      ],
+      "hitlGates": [
+        "AR Manager approval"
+      ],
+      "requires": [
+        "txn",
+        "comms"
+      ],
+      "confidence": 0.8,
+      "similarTo": {
+        "id": 7,
+        "name": "Stale Promo Exploitation",
+        "score": 0.35
+      },
+      "evidence": [
+        {
+          "slot": "dispute-logs",
+          "excerpt": "61 invoices carry ≥3 dispute records, each under a different reason code; mean age 118 days."
+        },
+        {
+          "slot": "email",
+          "excerpt": "\"Closing this one out — customer has come back on pricing instead of delivery.\" (collector, 9 similar threads)"
+        }
+      ],
+      "signals": [
+        "reason-code rotation",
+        "dispute reopen count",
+        "SLA clock reset"
+      ]
+    }
+  ],
+  "fewShotPrompt": "You are a process transformation expert analysing discovery documents to identify\nbehavioural patterns in {function} processes.\n\nHere are examples of known patterns from the existing library:\n{examples}\n\nNow analyse the following documents and signals:\n{signals}\n\nIdentify NEW behavioural patterns not already captured in the library above.\nFor each candidate pattern, provide:\n 1. name          — a concise descriptive name\n 2. featureSlug   — kebab-case identifier\n 3. description   — what this pattern represents and why it matters\n 4. triggers      — observable conditions that indicate this pattern\n 5. originalDAG   — the happy-path action sequence (straight-through resolution)\n 6. branchingDAG  — variation branches with tiers (primary/escalation/immediate),\n                    actions, and HITL gates\n 7. evidence      — which documents and signals support this pattern\n 8. confidence    — 0-1 score for how strongly the evidence supports this\n 9. similarTo     — if this resembles an existing pattern, which one and how\n\nStructure each candidate pattern EXACTLY like the examples above."
+}

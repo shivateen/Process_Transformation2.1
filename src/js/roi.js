@@ -208,7 +208,7 @@
       pad.querySelectorAll(".arow.clk").forEach(function (r) {
         r.onclick = function () {
           window.PIQ._jumpPattern = +r.dataset.pat;
-          window.PIQ.go("library");
+          window.PIQ.go("patternstudio");
         };
       });
     }, 10);

@@ -1,4 +1,4 @@
-/* Stage 3 · Build — Build Engine
+/* Stage 3 · Build — Implementation Studio
  * Makes visible what happens after "configure the action blocks" (Studio) and
  * before "run the workflow" (Run & Govern): the configured blocks + fitment verdicts
  * are assembled into an executable agent chain, validated, and promoted to live.
@@ -37,7 +37,7 @@
 
   function empty() {
     var d = el("div", "fit-empty",
-      '<div class="kv">Stage 3 · Build — Build Engine</div>' +
+      '<div class="kv">Build — Implementation Studio</div>' +
       '<h2>Nothing to build yet</h2>' +
       '<p>Compose a process in the <b>Studio</b> and run it through <b>Agent Fitment</b>. ' +
       'The configured blocks are assembled into an executable agent chain here.</p>' +
@@ -50,7 +50,7 @@
     var f = window.PIQ.fn(), p = window.PIQ.proc(), c = C();
     var blocks = window.PIQ.collectBlocks(c.patternIds);
     return el("div", "fit-head",
-      '<div><div class="kv">Stage 3 · Build — Build Engine</div>' +
+      '<div><div class="kv">Build — Implementation Studio</div>' +
       '<h2>' + esc(f.name) + ' › ' + esc((p || {}).name || "") + (c.live ? ' <span class="livedot">● LIVE</span>' : '') + '</h2>' +
       '<p class="fit-lede">The configured action blocks and their fitment verdicts are chained into an executable agent ' +
       'DAG — tech stack bound, execution mode set, rollback and connectivity checked — then promoted to production.</p></div>' +

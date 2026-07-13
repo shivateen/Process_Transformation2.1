@@ -1,0 +1,6224 @@
+{
+  "meta": {
+    "title": "Command Centre — CFO Mission-Capability Taxonomy",
+    "asOfDate": "2025-06-27",
+    "enterpriseKPIs": [
+      {
+        "value": "112",
+        "label": "TSR index",
+        "sub": "vs peer median 100",
+        "delta": "+7.2%",
+        "direction": "better"
+      },
+      {
+        "value": "94.1%",
+        "label": "FCF conversion",
+        "sub": "target 95%",
+        "delta": "-0.9pp",
+        "direction": "worse"
+      },
+      {
+        "value": "7.4%",
+        "label": "Cost of capital",
+        "sub": "WACC, target 7.0%",
+        "delta": "+0.3pp",
+        "direction": "worse"
+      },
+      {
+        "value": "$4.2B",
+        "label": "Working capital",
+        "sub": "released YTD",
+        "delta": "+$180M",
+        "direction": "better"
+      }
+    ],
+    "counts": {
+      "objectives": 8,
+      "l2": 21,
+      "missions": 60,
+      "capabilities": 77,
+      "personas": 11
+    },
+    "tabs": [
+      {
+        "id": "pulse",
+        "label": "Pulse",
+        "cadences": "Daily + Weekly",
+        "blurb": "The operational heartbeat — what needs attention right now."
+      },
+      {
+        "id": "intelligence",
+        "label": "Intelligence",
+        "cadences": "Fortnightly + Monthly",
+        "blurb": "The analytical layer — what is developing, and why."
+      },
+      {
+        "id": "scenarios",
+        "label": "Scenarios",
+        "cadences": "Ad hoc",
+        "blurb": "What-if modelling and event-driven analysis — what could happen."
+      },
+      {
+        "id": "trajectory",
+        "label": "Trajectory",
+        "cadences": "Quarterly + Annual",
+        "blurb": "The strategic arc — targets vs actuals, and where this is heading."
+      }
+    ],
+    "groupOrder": [
+      "top",
+      "Planning & Analysis",
+      "Treasury & Tax",
+      "Operations & Controls",
+      "Stakeholders & Strategy"
+    ]
+  },
+  "objectives": {
+    "A": {
+      "name": "Total shareholder return",
+      "l2": {
+        "A.1": {
+          "name": "Net Revenue Growth",
+          "missions": [
+            "M1",
+            "M2",
+            "M3",
+            "M4"
+          ]
+        },
+        "A.2": {
+          "name": "Net Margin Growth",
+          "missions": [
+            "M5",
+            "M6",
+            "M7",
+            "M8"
+          ]
+        },
+        "A.3": {
+          "name": "Performance Commitments & Predictability",
+          "missions": [
+            "M9",
+            "M10",
+            "M11"
+          ]
+        }
+      }
+    },
+    "B": {
+      "name": "Return on invested capital",
+      "l2": {
+        "B.1": {
+          "name": "Capital Deployment & Returns",
+          "missions": [
+            "M12",
+            "M15",
+            "M16",
+            "M17"
+          ]
+        },
+        "B.2": {
+          "name": "Asset Productivity",
+          "missions": [
+            "M13",
+            "M14"
+          ]
+        }
+      }
+    },
+    "C": {
+      "name": "Free cash flow",
+      "l2": {
+        "C.1": {
+          "name": "Working Capital",
+          "missions": [
+            "M18",
+            "M19",
+            "M20"
+          ]
+        },
+        "C.2": {
+          "name": "Cash Generation & Conversion",
+          "missions": [
+            "M21",
+            "M22",
+            "M23"
+          ]
+        }
+      }
+    },
+    "D": {
+      "name": "Cost of capital",
+      "l2": {
+        "D.1": {
+          "name": "Capital Structure & Funding",
+          "missions": [
+            "M24",
+            "M25",
+            "M26"
+          ]
+        },
+        "D.2": {
+          "name": "Liquidity & Cash Management",
+          "missions": [
+            "M27",
+            "M28",
+            "M29"
+          ]
+        },
+        "D.3": {
+          "name": "Market Risk",
+          "missions": [
+            "M30",
+            "M31"
+          ]
+        }
+      }
+    },
+    "E": {
+      "name": "Shareholder value & capital returns",
+      "l2": {
+        "E.1": {
+          "name": "Equity Story & Valuation",
+          "missions": [
+            "M32",
+            "M33"
+          ]
+        },
+        "E.2": {
+          "name": "Capital Returns",
+          "missions": [
+            "M34",
+            "M35"
+          ]
+        }
+      }
+    },
+    "F": {
+      "name": "Tax management",
+      "l2": {
+        "F.1": {
+          "name": "Effective Tax Rate",
+          "missions": [
+            "M36",
+            "M37",
+            "M38"
+          ]
+        },
+        "F.2": {
+          "name": "Tax Compliance & Controversy",
+          "missions": [
+            "M39",
+            "M40",
+            "M41"
+          ]
+        }
+      }
+    },
+    "G": {
+      "name": "Finance function excellence",
+      "l2": {
+        "G.1": {
+          "name": "Transactional Excellence",
+          "missions": [
+            "M42",
+            "M43",
+            "M44"
+          ]
+        },
+        "G.2": {
+          "name": "Business Partnering Cost",
+          "missions": [
+            "M45",
+            "M46",
+            "M47",
+            "M48",
+            "M49",
+            "M50"
+          ]
+        },
+        "G.3": {
+          "name": "Reporting & Statutory",
+          "missions": [
+            "M51"
+          ]
+        },
+        "G.4": {
+          "name": "People & Platform",
+          "missions": [
+            "M58",
+            "M59"
+          ]
+        }
+      }
+    },
+    "H": {
+      "name": "Risk & compliance management",
+      "l2": {
+        "H.1": {
+          "name": "Controls & Compliance",
+          "missions": [
+            "M52",
+            "M53",
+            "M54",
+            "M55"
+          ]
+        },
+        "H.2": {
+          "name": "Enterprise Risk",
+          "missions": [
+            "M56",
+            "M57"
+          ]
+        },
+        "H.3": {
+          "name": "Pension & Post-Employment",
+          "missions": [
+            "M60"
+          ]
+        }
+      }
+    }
+  },
+  "missions": {
+    "M1": {
+      "id": "M1",
+      "name": "Base-business volume and distribution growth",
+      "owner": "cc-commercial",
+      "cadence": "Daily",
+      "tab": "pulse",
+      "capabilities": [
+        "CAP-1",
+        "CAP-2"
+      ],
+      "objective": "A",
+      "l2": "A.1",
+      "status": "on-track",
+      "agentCoverage": true,
+      "lastAction": "reconciled 2h ago",
+      "nextAction": "month-end close, D+3"
+    },
+    "M2": {
+      "id": "M2",
+      "name": "Net price and mix realization vs plan",
+      "owner": "cc-commercial",
+      "cadence": "Fortnightly",
+      "tab": "intelligence",
+      "capabilities": [
+        "CAP-3",
+        "CAP-4"
+      ],
+      "objective": "A",
+      "l2": "A.1",
+      "status": "attention",
+      "agentCoverage": true,
+      "lastAction": "agent posted 3 updates today",
+      "nextAction": "board pack due in 4 days"
+    },
+    "M3": {
+      "id": "M3",
+      "name": "Trade spend ROI and gross-to-net within plan",
+      "owner": "cc-commercial",
+      "cadence": "Weekly",
+      "tab": "pulse",
+      "capabilities": [
+        "CAP-5",
+        "CAP-6",
+        "CAP-4"
+      ],
+      "objective": "A",
+      "l2": "A.1",
+      "status": "on-track",
+      "agentCoverage": false,
+      "lastAction": "reviewed 4d ago by the owner",
+      "nextAction": "quarterly review in 5 weeks"
+    },
+    "M4": {
+      "id": "M4",
+      "name": "NPD revenue contribution and ROI vs launch cases",
+      "owner": "cc-commercial",
+      "cadence": "Ad hoc",
+      "tab": "scenarios",
+      "capabilities": [
+        "CAP-7",
+        "CAP-8"
+      ],
+      "objective": "A",
+      "l2": "A.1",
+      "status": "off-track",
+      "agentCoverage": true,
+      "lastAction": "auto-validated 5h ago",
+      "nextAction": "policy re-test due 6d"
+    },
+    "M5": {
+      "id": "M5",
+      "name": "COGS productivity savings and input-cost coverage",
+      "owner": "cc-supplychain",
+      "cadence": "Monthly",
+      "tab": "intelligence",
+      "capabilities": [
+        "CAP-9",
+        "CAP-10"
+      ],
+      "objective": "A",
+      "l2": "A.2",
+      "status": "on-track",
+      "agentCoverage": true,
+      "lastAction": "escalated 6d ago",
+      "nextAction": "hedge roll in 7 days"
+    },
+    "M6": {
+      "id": "M6",
+      "name": "Logistics and cost-to-serve within target",
+      "owner": "cc-supplychain",
+      "cadence": "Monthly",
+      "tab": "intelligence",
+      "capabilities": [
+        "CAP-11",
+        "CAP-12"
+      ],
+      "objective": "A",
+      "l2": "A.2",
+      "status": "attention",
+      "agentCoverage": false,
+      "lastAction": "refreshed 1h ago by the agent",
+      "nextAction": "audit walkthrough in 8 days"
+    },
+    "M7": {
+      "id": "M7",
+      "name": "Marketing ROI at or above threshold",
+      "owner": "cc-fpa",
+      "cadence": "Monthly",
+      "tab": "intelligence",
+      "capabilities": [
+        "CAP-13",
+        "CAP-5"
+      ],
+      "objective": "A",
+      "l2": "A.2",
+      "status": "on-track",
+      "agentCoverage": true,
+      "lastAction": "reconciled 2h ago",
+      "nextAction": "weekly lock-in due Thursday"
+    },
+    "M8": {
+      "id": "M8",
+      "name": "SG&A and overheads within budget with productivity",
+      "owner": "cc-fpa",
+      "cadence": "Monthly",
+      "tab": "intelligence",
+      "capabilities": [
+        "CAP-14",
+        "CAP-15"
+      ],
+      "objective": "A",
+      "l2": "A.2",
+      "status": "on-track",
+      "agentCoverage": true,
+      "lastAction": "agent posted 3 updates today",
+      "nextAction": "month-end close, D+3"
+    },
+    "M9": {
+      "id": "M9",
+      "name": "Annual and strategic plan targets calibrated to market",
+      "owner": "cc-fpa",
+      "cadence": "Annual",
+      "tab": "trajectory",
+      "capabilities": [
+        "CAP-16",
+        "CAP-17"
+      ],
+      "objective": "A",
+      "l2": "A.3",
+      "status": "attention",
+      "agentCoverage": false,
+      "lastAction": "reviewed 4d ago by the owner",
+      "nextAction": "board pack due in 2 days"
+    },
+    "M10": {
+      "id": "M10",
+      "name": "Forecast accuracy within tolerance",
+      "owner": "cc-fpa",
+      "cadence": "Monthly",
+      "tab": "intelligence",
+      "capabilities": [
+        "CAP-18",
+        "CAP-32"
+      ],
+      "objective": "A",
+      "l2": "A.3",
+      "status": "on-track",
+      "agentCoverage": false,
+      "lastAction": "auto-validated 5h ago",
+      "nextAction": "quarterly review in 3 weeks"
+    },
+    "M11": {
+      "id": "M11",
+      "name": "Plan-vs-actual gaps identified and closed",
+      "owner": "cc-fpa",
+      "cadence": "Weekly",
+      "tab": "pulse",
+      "capabilities": [
+        "CAP-19",
+        "CAP-14"
+      ],
+      "objective": "A",
+      "l2": "A.3",
+      "status": "off-track",
+      "agentCoverage": true,
+      "lastAction": "escalated 6d ago",
+      "nextAction": "policy re-test due 4d"
+    },
+    "M12": {
+      "id": "M12",
+      "name": "Capex directed to projects meeting return hurdles",
+      "owner": "cc-fpa",
+      "cadence": "Quarterly",
+      "tab": "trajectory",
+      "capabilities": [
+        "CAP-21",
+        "CAP-22"
+      ],
+      "objective": "B",
+      "l2": "B.1",
+      "status": "on-track",
+      "agentCoverage": true,
+      "lastAction": "refreshed 1h ago by the agent",
+      "nextAction": "hedge roll in 5 days"
+    },
+    "M13": {
+      "id": "M13",
+      "name": "Asset utilization and output per dollar at target",
+      "owner": "cc-supplychain",
+      "cadence": "Monthly",
+      "tab": "intelligence",
+      "capabilities": [
+        "CAP-23",
+        "CAP-24"
+      ],
+      "objective": "B",
+      "l2": "B.2",
+      "status": "attention",
+      "agentCoverage": false,
+      "lastAction": "reconciled 2h ago",
+      "nextAction": "audit walkthrough in 6 days"
+    },
+    "M14": {
+      "id": "M14",
+      "name": "Idle and underperforming assets rationalized",
+      "owner": "cc-supplychain",
+      "cadence": "Quarterly",
+      "tab": "trajectory",
+      "capabilities": [
+        "CAP-25",
+        "CAP-26"
+      ],
+      "objective": "B",
+      "l2": "B.2",
+      "status": "on-track",
+      "agentCoverage": true,
+      "lastAction": "agent posted 3 updates today",
+      "nextAction": "weekly lock-in due Thursday"
+    },
+    "M15": {
+      "id": "M15",
+      "name": "Acquisitions and JVs at or above return hurdles",
+      "owner": "cc-corpdev",
+      "cadence": "Ad hoc",
+      "tab": "scenarios",
+      "capabilities": [
+        "CAP-27",
+        "CAP-29"
+      ],
+      "objective": "B",
+      "l2": "B.1",
+      "status": "on-track",
+      "agentCoverage": true,
+      "lastAction": "reviewed 4d ago by the owner",
+      "nextAction": "month-end close, D+3"
+    },
+    "M16": {
+      "id": "M16",
+      "name": "Synergy delivery and acquired-business ROIC",
+      "owner": "cc-corpdev",
+      "cadence": "Monthly",
+      "tab": "intelligence",
+      "capabilities": [
+        "CAP-28",
+        "CAP-29"
+      ],
+      "objective": "B",
+      "l2": "B.1",
+      "status": "attention",
+      "agentCoverage": false,
+      "lastAction": "auto-validated 5h ago",
+      "nextAction": "board pack due in 9 days"
+    },
+    "M17": {
+      "id": "M17",
+      "name": "Below-cost-of-capital businesses exited",
+      "owner": "cc-corpdev",
+      "cadence": "Ad hoc",
+      "tab": "scenarios",
+      "capabilities": [
+        "CAP-30",
+        "CAP-27",
+        "CAP-26"
+      ],
+      "objective": "B",
+      "l2": "B.1",
+      "status": "on-track",
+      "agentCoverage": true,
+      "lastAction": "escalated 6d ago",
+      "nextAction": "quarterly review in 10 weeks"
+    },
+    "M18": {
+      "id": "M18",
+      "name": "Days inventory outstanding at target",
+      "owner": "cc-supplychain",
+      "cadence": "Weekly",
+      "tab": "pulse",
+      "capabilities": [
+        "CAP-33",
+        "CAP-34"
+      ],
+      "objective": "C",
+      "l2": "C.1",
+      "status": "off-track",
+      "agentCoverage": true,
+      "lastAction": "refreshed 1h ago by the agent",
+      "nextAction": "policy re-test due 2d"
+    },
+    "M19": {
+      "id": "M19",
+      "name": "Days sales outstanding at target",
+      "owner": "cc-treasury",
+      "cadence": "Daily",
+      "tab": "pulse",
+      "capabilities": [
+        "CAP-35",
+        "CAP-36"
+      ],
+      "objective": "C",
+      "l2": "C.1",
+      "status": "on-track",
+      "agentCoverage": false,
+      "lastAction": "reconciled 2h ago",
+      "nextAction": "hedge roll in 3 days"
+    },
+    "M20": {
+      "id": "M20",
+      "name": "Days payables outstanding at target",
+      "owner": "cc-supplychain",
+      "cadence": "Monthly",
+      "tab": "intelligence",
+      "capabilities": [
+        "CAP-37",
+        "CAP-38"
+      ],
+      "objective": "C",
+      "l2": "C.1",
+      "status": "attention",
+      "agentCoverage": false,
+      "lastAction": "agent posted 3 updates today",
+      "nextAction": "audit walkthrough in 4 days"
+    },
+    "M21": {
+      "id": "M21",
+      "name": "FCF and cash conversion targets calibrated",
+      "owner": "cc-fpa",
+      "cadence": "Annual",
+      "tab": "trajectory",
+      "capabilities": [
+        "CAP-31",
+        "CAP-18"
+      ],
+      "objective": "C",
+      "l2": "C.2",
+      "status": "on-track",
+      "agentCoverage": true,
+      "lastAction": "reviewed 4d ago by the owner",
+      "nextAction": "weekly lock-in due Thursday"
+    },
+    "M22": {
+      "id": "M22",
+      "name": "Cash forecast accuracy with early warning",
+      "owner": "cc-treasury",
+      "cadence": "Weekly",
+      "tab": "pulse",
+      "capabilities": [
+        "CAP-32",
+        "CAP-18",
+        "CAP-31"
+      ],
+      "objective": "C",
+      "l2": "C.2",
+      "status": "on-track",
+      "agentCoverage": true,
+      "lastAction": "auto-validated 5h ago",
+      "nextAction": "month-end close, D+3"
+    },
+    "M23": {
+      "id": "M23",
+      "name": "Cash gaps identified and closed, trapped cash minimized",
+      "owner": "cc-treasury",
+      "cadence": "Monthly",
+      "tab": "intelligence",
+      "capabilities": [
+        "CAP-39",
+        "CAP-40"
+      ],
+      "objective": "C",
+      "l2": "C.2",
+      "status": "attention",
+      "agentCoverage": false,
+      "lastAction": "escalated 6d ago",
+      "nextAction": "board pack due in 7 days"
+    },
+    "M24": {
+      "id": "M24",
+      "name": "Leverage and credit rating within target",
+      "owner": "cc-treasury",
+      "cadence": "Quarterly",
+      "tab": "trajectory",
+      "capabilities": [
+        "CAP-41",
+        "CAP-42"
+      ],
+      "objective": "D",
+      "l2": "D.1",
+      "status": "on-track",
+      "agentCoverage": true,
+      "lastAction": "refreshed 1h ago by the agent",
+      "nextAction": "quarterly review in 8 weeks"
+    },
+    "M25": {
+      "id": "M25",
+      "name": "Funding cost at or below plan",
+      "owner": "cc-treasury",
+      "cadence": "Ad hoc",
+      "tab": "scenarios",
+      "capabilities": [
+        "CAP-43",
+        "CAP-42"
+      ],
+      "objective": "D",
+      "l2": "D.1",
+      "status": "off-track",
+      "agentCoverage": true,
+      "lastAction": "reconciled 2h ago",
+      "nextAction": "policy re-test due 9d"
+    },
+    "M26": {
+      "id": "M26",
+      "name": "Equity funding at efficient cost",
+      "owner": "cc-treasury",
+      "cadence": "Ad hoc",
+      "tab": "scenarios",
+      "capabilities": [
+        "CAP-44",
+        "CAP-53"
+      ],
+      "objective": "D",
+      "l2": "D.1",
+      "status": "on-track",
+      "agentCoverage": false,
+      "lastAction": "agent posted 3 updates today",
+      "nextAction": "hedge roll in 10 days"
+    },
+    "M27": {
+      "id": "M27",
+      "name": "Liquidity headroom above policy under stress",
+      "owner": "cc-treasury",
+      "cadence": "Monthly",
+      "tab": "intelligence",
+      "capabilities": [
+        "CAP-45",
+        "CAP-46",
+        "CAP-32"
+      ],
+      "objective": "D",
+      "l2": "D.2",
+      "status": "attention",
+      "agentCoverage": true,
+      "lastAction": "reviewed 4d ago by the owner",
+      "nextAction": "audit walkthrough in 2 days"
+    },
+    "M28": {
+      "id": "M28",
+      "name": "Risk-adjusted returns on surplus cash at benchmark",
+      "owner": "cc-treasury",
+      "cadence": "Daily",
+      "tab": "pulse",
+      "capabilities": [
+        "CAP-47",
+        "CAP-48"
+      ],
+      "objective": "D",
+      "l2": "D.2",
+      "status": "on-track",
+      "agentCoverage": true,
+      "lastAction": "auto-validated 5h ago",
+      "nextAction": "weekly lock-in due Thursday"
+    },
+    "M29": {
+      "id": "M29",
+      "name": "Cash available where needed, pooling costs at target",
+      "owner": "cc-treasury",
+      "cadence": "Quarterly",
+      "tab": "trajectory",
+      "capabilities": [
+        "CAP-49",
+        "CAP-39"
+      ],
+      "objective": "D",
+      "l2": "D.2",
+      "status": "on-track",
+      "agentCoverage": false,
+      "lastAction": "escalated 6d ago",
+      "nextAction": "month-end close, D+3"
+    },
+    "M30": {
+      "id": "M30",
+      "name": "FX impact on cash flows within risk limits",
+      "owner": "cc-treasury",
+      "cadence": "Weekly",
+      "tab": "pulse",
+      "capabilities": [
+        "CAP-50",
+        "CAP-51"
+      ],
+      "objective": "D",
+      "l2": "D.3",
+      "status": "attention",
+      "agentCoverage": false,
+      "lastAction": "refreshed 1h ago by the agent",
+      "nextAction": "board pack due in 5 days"
+    },
+    "M31": {
+      "id": "M31",
+      "name": "Interest-rate exposure within policy",
+      "owner": "cc-treasury",
+      "cadence": "Quarterly",
+      "tab": "trajectory",
+      "capabilities": [
+        "CAP-52",
+        "CAP-51"
+      ],
+      "objective": "D",
+      "l2": "D.3",
+      "status": "on-track",
+      "agentCoverage": true,
+      "lastAction": "reconciled 2h ago",
+      "nextAction": "quarterly review in 6 weeks"
+    },
+    "M32": {
+      "id": "M32",
+      "name": "Valuation multiple at or above peer median",
+      "owner": "cc-ir",
+      "cadence": "Quarterly",
+      "tab": "trajectory",
+      "capabilities": [
+        "CAP-53",
+        "CAP-27"
+      ],
+      "objective": "E",
+      "l2": "E.1",
+      "status": "off-track",
+      "agentCoverage": true,
+      "lastAction": "agent posted 3 updates today",
+      "nextAction": "policy re-test due 7d"
+    },
+    "M33": {
+      "id": "M33",
+      "name": "Investor base aligned to strategy",
+      "owner": "cc-ir",
+      "cadence": "Monthly",
+      "tab": "intelligence",
+      "capabilities": [
+        "CAP-54",
+        "CAP-53"
+      ],
+      "objective": "E",
+      "l2": "E.1",
+      "status": "on-track",
+      "agentCoverage": false,
+      "lastAction": "reviewed 4d ago by the owner",
+      "nextAction": "hedge roll in 8 days"
+    },
+    "M34": {
+      "id": "M34",
+      "name": "Dividend delivered per policy",
+      "owner": "cc-treasury",
+      "cadence": "Quarterly",
+      "tab": "trajectory",
+      "capabilities": [
+        "CAP-55",
+        "CAP-31"
+      ],
+      "objective": "E",
+      "l2": "E.2",
+      "status": "attention",
+      "agentCoverage": true,
+      "lastAction": "auto-validated 5h ago",
+      "nextAction": "audit walkthrough in 9 days"
+    },
+    "M35": {
+      "id": "M35",
+      "name": "Buybacks executed at accretive prices",
+      "owner": "cc-treasury",
+      "cadence": "Monthly",
+      "tab": "intelligence",
+      "capabilities": [
+        "CAP-56",
+        "CAP-53"
+      ],
+      "objective": "E",
+      "l2": "E.2",
+      "status": "on-track",
+      "agentCoverage": true,
+      "lastAction": "escalated 6d ago",
+      "nextAction": "weekly lock-in due Thursday"
+    },
+    "M36": {
+      "id": "M36",
+      "name": "Group effective tax rate at or below plan",
+      "owner": "cc-tax",
+      "cadence": "Quarterly",
+      "tab": "trajectory",
+      "capabilities": [
+        "CAP-57",
+        "CAP-59"
+      ],
+      "objective": "F",
+      "l2": "F.1",
+      "status": "on-track",
+      "agentCoverage": false,
+      "lastAction": "refreshed 1h ago by the agent",
+      "nextAction": "month-end close, D+3"
+    },
+    "M37": {
+      "id": "M37",
+      "name": "Tax incentives secured and retained",
+      "owner": "cc-tax",
+      "cadence": "Ad hoc",
+      "tab": "scenarios",
+      "capabilities": [
+        "CAP-58",
+        "CAP-59"
+      ],
+      "objective": "F",
+      "l2": "F.1",
+      "status": "attention",
+      "agentCoverage": true,
+      "lastAction": "reconciled 2h ago",
+      "nextAction": "board pack due in 3 days"
+    },
+    "M38": {
+      "id": "M38",
+      "name": "Business decisions made with quantified tax impact",
+      "owner": "cc-tax",
+      "cadence": "Ad hoc",
+      "tab": "scenarios",
+      "capabilities": [
+        "CAP-59",
+        "CAP-57"
+      ],
+      "objective": "F",
+      "l2": "F.1",
+      "status": "on-track",
+      "agentCoverage": true,
+      "lastAction": "agent posted 3 updates today",
+      "nextAction": "quarterly review in 4 weeks"
+    },
+    "M39": {
+      "id": "M39",
+      "name": "Income tax provisions and payments on time",
+      "owner": "cc-tax",
+      "cadence": "Quarterly",
+      "tab": "trajectory",
+      "capabilities": [
+        "CAP-60",
+        "CAP-67"
+      ],
+      "objective": "F",
+      "l2": "F.2",
+      "status": "off-track",
+      "agentCoverage": false,
+      "lastAction": "reviewed 4d ago by the owner",
+      "nextAction": "policy re-test due 5d"
+    },
+    "M40": {
+      "id": "M40",
+      "name": "Indirect tax collected and remitted on time",
+      "owner": "cc-tax",
+      "cadence": "Monthly",
+      "tab": "intelligence",
+      "capabilities": [
+        "CAP-62",
+        "CAP-67"
+      ],
+      "objective": "F",
+      "l2": "F.2",
+      "status": "on-track",
+      "agentCoverage": false,
+      "lastAction": "auto-validated 5h ago",
+      "nextAction": "hedge roll in 6 days"
+    },
+    "M41": {
+      "id": "M41",
+      "name": "Tax audits resolved within provisioned levels",
+      "owner": "cc-tax",
+      "cadence": "Ad hoc",
+      "tab": "scenarios",
+      "capabilities": [
+        "CAP-63",
+        "CAP-60"
+      ],
+      "objective": "F",
+      "l2": "F.2",
+      "status": "attention",
+      "agentCoverage": true,
+      "lastAction": "escalated 6d ago",
+      "nextAction": "audit walkthrough in 7 days"
+    },
+    "M42": {
+      "id": "M42",
+      "name": "AP and P2P at target cost and service levels",
+      "owner": "cc-finops",
+      "cadence": "Daily",
+      "tab": "pulse",
+      "capabilities": [
+        "CAP-64",
+        "CAP-37"
+      ],
+      "objective": "G",
+      "l2": "G.1",
+      "status": "on-track",
+      "agentCoverage": true,
+      "lastAction": "refreshed 1h ago by the agent",
+      "nextAction": "weekly lock-in due Thursday"
+    },
+    "M43": {
+      "id": "M43",
+      "name": "AR and O2C at target cost and quality",
+      "owner": "cc-finops",
+      "cadence": "Daily",
+      "tab": "pulse",
+      "capabilities": [
+        "CAP-65",
+        "CAP-35"
+      ],
+      "objective": "G",
+      "l2": "G.1",
+      "status": "on-track",
+      "agentCoverage": false,
+      "lastAction": "reconciled 2h ago",
+      "nextAction": "month-end close, D+3"
+    },
+    "M44": {
+      "id": "M44",
+      "name": "RTR at target cost and cycle time",
+      "owner": "cc-finops",
+      "cadence": "Monthly",
+      "tab": "intelligence",
+      "capabilities": [
+        "CAP-66",
+        "CAP-69"
+      ],
+      "objective": "G",
+      "l2": "G.1",
+      "status": "attention",
+      "agentCoverage": true,
+      "lastAction": "agent posted 3 updates today",
+      "nextAction": "board pack due in 10 days"
+    },
+    "M45": {
+      "id": "M45",
+      "name": "FP&A at target cost with decision-support quality",
+      "owner": "cc-fpa",
+      "cadence": "Quarterly",
+      "tab": "trajectory",
+      "capabilities": [
+        "CAP-61",
+        "CAP-69"
+      ],
+      "objective": "G",
+      "l2": "G.2",
+      "status": "on-track",
+      "agentCoverage": true,
+      "lastAction": "reviewed 4d ago by the owner",
+      "nextAction": "quarterly review in 2 weeks"
+    },
+    "M46": {
+      "id": "M46",
+      "name": "Corporate development finance at target cost",
+      "owner": "cc-corpdev",
+      "cadence": "Quarterly",
+      "tab": "trajectory",
+      "capabilities": [
+        "CAP-61",
+        "CAP-69"
+      ],
+      "objective": "G",
+      "l2": "G.2",
+      "status": "off-track",
+      "agentCoverage": false,
+      "lastAction": "auto-validated 5h ago",
+      "nextAction": "policy re-test due 3d"
+    },
+    "M47": {
+      "id": "M47",
+      "name": "Commercial finance partnering at target cost",
+      "owner": "cc-commercial",
+      "cadence": "Quarterly",
+      "tab": "trajectory",
+      "capabilities": [
+        "CAP-61",
+        "CAP-69"
+      ],
+      "objective": "G",
+      "l2": "G.2",
+      "status": "on-track",
+      "agentCoverage": true,
+      "lastAction": "escalated 6d ago",
+      "nextAction": "hedge roll in 4 days"
+    },
+    "M48": {
+      "id": "M48",
+      "name": "Supply chain finance partnering at target cost",
+      "owner": "cc-supplychain",
+      "cadence": "Quarterly",
+      "tab": "trajectory",
+      "capabilities": [
+        "CAP-61",
+        "CAP-69"
+      ],
+      "objective": "G",
+      "l2": "G.2",
+      "status": "attention",
+      "agentCoverage": true,
+      "lastAction": "refreshed 1h ago by the agent",
+      "nextAction": "audit walkthrough in 5 days"
+    },
+    "M49": {
+      "id": "M49",
+      "name": "Tax function at target cost with right delivery mix",
+      "owner": "cc-tax",
+      "cadence": "Quarterly",
+      "tab": "trajectory",
+      "capabilities": [
+        "CAP-61",
+        "CAP-69"
+      ],
+      "objective": "G",
+      "l2": "G.2",
+      "status": "on-track",
+      "agentCoverage": false,
+      "lastAction": "reconciled 2h ago",
+      "nextAction": "weekly lock-in due Thursday"
+    },
+    "M50": {
+      "id": "M50",
+      "name": "Treasury function at target cost",
+      "owner": "cc-treasury",
+      "cadence": "Quarterly",
+      "tab": "trajectory",
+      "capabilities": [
+        "CAP-61",
+        "CAP-69"
+      ],
+      "objective": "G",
+      "l2": "G.2",
+      "status": "on-track",
+      "agentCoverage": false,
+      "lastAction": "agent posted 3 updates today",
+      "nextAction": "month-end close, D+3"
+    },
+    "M51": {
+      "id": "M51",
+      "name": "Statutory filings accurate and on time",
+      "owner": "cc-finops",
+      "cadence": "Monthly",
+      "tab": "intelligence",
+      "capabilities": [
+        "CAP-67",
+        "CAP-68"
+      ],
+      "objective": "G",
+      "l2": "G.3",
+      "status": "attention",
+      "agentCoverage": true,
+      "lastAction": "reviewed 4d ago by the owner",
+      "nextAction": "board pack due in 8 days"
+    },
+    "M58": {
+      "id": "M58",
+      "name": "Finance talent and skills developed",
+      "owner": "cc-transform",
+      "cadence": "Quarterly",
+      "tab": "trajectory",
+      "capabilities": [
+        "CAP-77",
+        "CAP-69"
+      ],
+      "objective": "G",
+      "l2": "G.4",
+      "status": "attention",
+      "agentCoverage": true,
+      "lastAction": "auto-validated 5h ago",
+      "nextAction": "board pack due in 6 days"
+    },
+    "M59": {
+      "id": "M59",
+      "name": "Finance data, systems and automation platform",
+      "owner": "cc-transform",
+      "cadence": "Monthly",
+      "tab": "intelligence",
+      "capabilities": [
+        "CAP-20",
+        "CAP-66",
+        "CAP-68"
+      ],
+      "objective": "G",
+      "l2": "G.4",
+      "status": "on-track",
+      "agentCoverage": false,
+      "lastAction": "escalated 6d ago",
+      "nextAction": "quarterly review in 7 weeks"
+    },
+    "M52": {
+      "id": "M52",
+      "name": "New regulatory obligations identified early",
+      "owner": "cc-risk",
+      "cadence": "Monthly",
+      "tab": "intelligence",
+      "capabilities": [
+        "CAP-70",
+        "CAP-71"
+      ],
+      "objective": "H",
+      "l2": "H.1",
+      "status": "on-track",
+      "agentCoverage": true,
+      "lastAction": "auto-validated 5h ago",
+      "nextAction": "quarterly review in 9 weeks"
+    },
+    "M53": {
+      "id": "M53",
+      "name": "Internal controls operating effectively",
+      "owner": "cc-risk",
+      "cadence": "Quarterly",
+      "tab": "trajectory",
+      "capabilities": [
+        "CAP-71",
+        "CAP-68"
+      ],
+      "objective": "H",
+      "l2": "H.1",
+      "status": "off-track",
+      "agentCoverage": false,
+      "lastAction": "escalated 6d ago",
+      "nextAction": "policy re-test due 10d"
+    },
+    "M54": {
+      "id": "M54",
+      "name": "Fraud prevented, DoA compliance maintained",
+      "owner": "cc-risk",
+      "cadence": "Monthly",
+      "tab": "intelligence",
+      "capabilities": [
+        "CAP-72",
+        "CAP-71"
+      ],
+      "objective": "H",
+      "l2": "H.1",
+      "status": "on-track",
+      "agentCoverage": true,
+      "lastAction": "refreshed 1h ago by the agent",
+      "nextAction": "hedge roll in 2 days"
+    },
+    "M55": {
+      "id": "M55",
+      "name": "External audits clean and on schedule",
+      "owner": "cc-finops",
+      "cadence": "Quarterly",
+      "tab": "trajectory",
+      "capabilities": [
+        "CAP-68",
+        "CAP-67"
+      ],
+      "objective": "H",
+      "l2": "H.1",
+      "status": "attention",
+      "agentCoverage": true,
+      "lastAction": "reconciled 2h ago",
+      "nextAction": "audit walkthrough in 3 days"
+    },
+    "M56": {
+      "id": "M56",
+      "name": "Enterprise risks quantified and mitigated",
+      "owner": "cc-risk",
+      "cadence": "Quarterly",
+      "tab": "trajectory",
+      "capabilities": [
+        "CAP-73",
+        "CAP-74"
+      ],
+      "objective": "H",
+      "l2": "H.2",
+      "status": "on-track",
+      "agentCoverage": false,
+      "lastAction": "agent posted 3 updates today",
+      "nextAction": "weekly lock-in due Thursday"
+    },
+    "M57": {
+      "id": "M57",
+      "name": "Retained risk within appetite at efficient cost",
+      "owner": "cc-treasury",
+      "cadence": "Annual",
+      "tab": "trajectory",
+      "capabilities": [
+        "CAP-75",
+        "CAP-74"
+      ],
+      "objective": "H",
+      "l2": "H.2",
+      "status": "on-track",
+      "agentCoverage": true,
+      "lastAction": "reviewed 4d ago by the owner",
+      "nextAction": "month-end close, D+3"
+    },
+    "M60": {
+      "id": "M60",
+      "name": "Pension obligations funded within policy",
+      "owner": "cc-treasury",
+      "cadence": "Quarterly",
+      "tab": "trajectory",
+      "capabilities": [
+        "CAP-76",
+        "CAP-45"
+      ],
+      "objective": "H",
+      "l2": "H.3",
+      "status": "off-track",
+      "agentCoverage": false,
+      "lastAction": "refreshed 1h ago by the agent",
+      "nextAction": "policy re-test due 8d"
+    }
+  },
+  "capabilities": {
+    "CAP-1": {
+      "id": "CAP-1",
+      "label": "Volume and distribution tracker",
+      "widgetType": "timeseries",
+      "defaultSize": "wide",
+      "usedByMissions": [
+        "M1"
+      ],
+      "usedByPersonas": [
+        "cc-commercial"
+      ],
+      "objective": "A",
+      "data": {
+        "kind": "series",
+        "unit": "index",
+        "labels": [
+          "M4",
+          "M5",
+          "M6",
+          "M7",
+          "M8",
+          "M9"
+        ],
+        "target": 46.0,
+        "series": [
+          {
+            "name": "Volume",
+            "values": [
+              40.51,
+              39.77,
+              35.6,
+              35.64,
+              37.9,
+              35.57
+            ],
+            "color": "brand2"
+          },
+          {
+            "name": "Forecast",
+            "values": [
+              null,
+              null,
+              null,
+              null,
+              44.56,
+              50.73
+            ],
+            "color": "act",
+            "dash": true
+          }
+        ],
+        "note": null
+      },
+      "metric": {
+        "value": "44.5",
+        "sub": "target 46",
+        "delta": "-1.9%",
+        "direction": "worse"
+      }
+    },
+    "CAP-2": {
+      "id": "CAP-2",
+      "label": "Channel mix analyzer",
+      "widgetType": "bar",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M1"
+      ],
+      "usedByPersonas": [
+        "cc-commercial"
+      ],
+      "objective": "A",
+      "data": {
+        "kind": "bars",
+        "items": [
+          {
+            "label": "Segment A",
+            "value": "86%",
+            "pct": 86,
+            "tone": "act"
+          },
+          {
+            "label": "Segment B",
+            "value": "70%",
+            "pct": 70,
+            "tone": "brand2"
+          },
+          {
+            "label": "Segment C",
+            "value": "59%",
+            "pct": 59,
+            "tone": "high"
+          },
+          {
+            "label": "Segment D",
+            "value": "42%",
+            "pct": 42,
+            "tone": "act"
+          }
+        ]
+      },
+      "metric": {
+        "value": "86%",
+        "sub": "top segment",
+        "delta": "+3 pts",
+        "direction": "better"
+      }
+    },
+    "CAP-3": {
+      "id": "CAP-3",
+      "label": "Price realization bridge",
+      "widgetType": "waterfall",
+      "defaultSize": "wide",
+      "usedByMissions": [
+        "M2"
+      ],
+      "usedByPersonas": [
+        "cc-commercial"
+      ],
+      "objective": "A",
+      "data": {
+        "kind": "waterfall",
+        "unit": "$M",
+        "buckets": [
+          {
+            "label": "Plan",
+            "value": 11,
+            "tone": "muted"
+          },
+          {
+            "label": "Volume",
+            "value": 3.6,
+            "tone": "act"
+          },
+          {
+            "label": "Price",
+            "value": 1.8,
+            "tone": "act"
+          },
+          {
+            "label": "Cost",
+            "value": 2.1,
+            "tone": "crit"
+          },
+          {
+            "label": "Actual",
+            "value": 12,
+            "tone": "brand2"
+          }
+        ]
+      },
+      "metric": {
+        "value": "$12.0M",
+        "sub": "vs $11.0M plan",
+        "delta": "+$1.3M",
+        "direction": "better"
+      }
+    },
+    "CAP-4": {
+      "id": "CAP-4",
+      "label": "Gross-to-net waterfall",
+      "widgetType": "waterfall",
+      "defaultSize": "wide",
+      "usedByMissions": [
+        "M2",
+        "M3"
+      ],
+      "usedByPersonas": [
+        "cc-commercial"
+      ],
+      "objective": "A",
+      "data": {
+        "kind": "waterfall",
+        "unit": "$M",
+        "buckets": [
+          {
+            "label": "Plan",
+            "value": 12,
+            "tone": "muted"
+          },
+          {
+            "label": "Volume",
+            "value": 2.4,
+            "tone": "act"
+          },
+          {
+            "label": "Price",
+            "value": 2.3,
+            "tone": "act"
+          },
+          {
+            "label": "Cost",
+            "value": 2.4,
+            "tone": "crit"
+          },
+          {
+            "label": "Actual",
+            "value": 13,
+            "tone": "brand2"
+          }
+        ]
+      },
+      "metric": {
+        "value": "$13.0M",
+        "sub": "vs $12.0M plan",
+        "delta": "-$1.6M",
+        "direction": "worse"
+      }
+    },
+    "CAP-5": {
+      "id": "CAP-5",
+      "label": "Trade spend ROI engine",
+      "widgetType": "scorecard",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M3",
+        "M7"
+      ],
+      "usedByPersonas": [
+        "cc-commercial",
+        "cc-fpa"
+      ],
+      "objective": "A",
+      "data": {
+        "kind": "list",
+        "items": [
+          {
+            "primary": "Target",
+            "secondary": "committed for the year",
+            "badge": "75%",
+            "tone": "muted"
+          },
+          {
+            "primary": "Actual",
+            "secondary": "year to date",
+            "badge": "67%",
+            "tone": "act"
+          },
+          {
+            "primary": "Variance",
+            "secondary": "vs plan",
+            "badge": "+7 pts",
+            "tone": "act"
+          },
+          {
+            "primary": "Confidence",
+            "secondary": "model-scored",
+            "badge": "79%",
+            "tone": "brand2"
+          }
+        ]
+      },
+      "metric": {
+        "value": "67%",
+        "sub": "vs 75% target",
+        "delta": "+7 pts",
+        "direction": "better"
+      }
+    },
+    "CAP-6": {
+      "id": "CAP-6",
+      "label": "Promo effectiveness model",
+      "widgetType": "bar",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M3"
+      ],
+      "usedByPersonas": [
+        "cc-commercial"
+      ],
+      "objective": "A",
+      "data": {
+        "kind": "bars",
+        "items": [
+          {
+            "label": "Segment A",
+            "value": "82%",
+            "pct": 82,
+            "tone": "act"
+          },
+          {
+            "label": "Segment B",
+            "value": "66%",
+            "pct": 66,
+            "tone": "brand2"
+          },
+          {
+            "label": "Segment C",
+            "value": "55%",
+            "pct": 55,
+            "tone": "high"
+          },
+          {
+            "label": "Segment D",
+            "value": "38%",
+            "pct": 38,
+            "tone": "act"
+          }
+        ]
+      },
+      "metric": {
+        "value": "82%",
+        "sub": "top segment",
+        "delta": "+2 pts",
+        "direction": "better"
+      }
+    },
+    "CAP-7": {
+      "id": "CAP-7",
+      "label": "NPD launch tracker",
+      "widgetType": "timeseries",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M4"
+      ],
+      "usedByPersonas": [
+        "cc-commercial"
+      ],
+      "objective": "A",
+      "data": {
+        "kind": "series",
+        "unit": "index",
+        "labels": [
+          "M4",
+          "M5",
+          "M6",
+          "M7",
+          "M8",
+          "M9"
+        ],
+        "target": 35.4,
+        "series": [
+          {
+            "name": "NPD",
+            "values": [
+              28.23,
+              29.95,
+              30.36,
+              27.28,
+              26.34,
+              28.2
+            ],
+            "color": "brand2"
+          },
+          {
+            "name": "Forecast",
+            "values": [
+              null,
+              null,
+              null,
+              null,
+              31.05,
+              38.2
+            ],
+            "color": "act",
+            "dash": true
+          }
+        ],
+        "note": null
+      },
+      "metric": {
+        "value": "34.2",
+        "sub": "target 35",
+        "delta": "-1.9%",
+        "direction": "worse"
+      }
+    },
+    "CAP-8": {
+      "id": "CAP-8",
+      "label": "Innovation ROI model",
+      "widgetType": "scorecard",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M4"
+      ],
+      "usedByPersonas": [
+        "cc-commercial"
+      ],
+      "objective": "A",
+      "data": {
+        "kind": "list",
+        "items": [
+          {
+            "primary": "Target",
+            "secondary": "committed for the year",
+            "badge": "78%",
+            "tone": "muted"
+          },
+          {
+            "primary": "Actual",
+            "secondary": "year to date",
+            "badge": "70%",
+            "tone": "act"
+          },
+          {
+            "primary": "Variance",
+            "secondary": "vs plan",
+            "badge": "+3 pts",
+            "tone": "act"
+          },
+          {
+            "primary": "Confidence",
+            "secondary": "model-scored",
+            "badge": "82%",
+            "tone": "brand2"
+          }
+        ]
+      },
+      "metric": {
+        "value": "70%",
+        "sub": "vs 78% target",
+        "delta": "+3 pts",
+        "direction": "better"
+      }
+    },
+    "CAP-9": {
+      "id": "CAP-9",
+      "label": "COGS productivity tracker",
+      "widgetType": "timeseries",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M5"
+      ],
+      "usedByPersonas": [
+        "cc-supplychain"
+      ],
+      "objective": "A",
+      "data": {
+        "kind": "series",
+        "unit": "index",
+        "labels": [
+          "M4",
+          "M5",
+          "M6",
+          "M7",
+          "M8",
+          "M9"
+        ],
+        "target": 56.6,
+        "series": [
+          {
+            "name": "COGS",
+            "values": [
+              48.05,
+              53.09,
+              51.37,
+              51.34,
+              58.17,
+              61.33
+            ],
+            "color": "brand2"
+          },
+          {
+            "name": "Forecast",
+            "values": [
+              null,
+              null,
+              null,
+              null,
+              52.85,
+              63.56
+            ],
+            "color": "act",
+            "dash": true
+          }
+        ],
+        "note": null
+      },
+      "metric": {
+        "value": "54.7",
+        "sub": "target 57",
+        "delta": "+3.3%",
+        "direction": "better"
+      }
+    },
+    "CAP-10": {
+      "id": "CAP-10",
+      "label": "Input-cost hedge coverage",
+      "widgetType": "gauge",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M5"
+      ],
+      "usedByPersonas": [
+        "cc-supplychain"
+      ],
+      "objective": "A",
+      "data": {
+        "kind": "gauge",
+        "value": 0.59,
+        "target": 0.71,
+        "label": "Input-cost hedge coverage",
+        "trend": [
+          0.4,
+          0.44,
+          0.46,
+          0.5,
+          0.57,
+          0.59
+        ]
+      },
+      "metric": {
+        "value": "59.3%",
+        "sub": "target 71%",
+        "delta": "-0.4pp",
+        "direction": "worse"
+      }
+    },
+    "CAP-11": {
+      "id": "CAP-11",
+      "label": "Cost-to-serve model",
+      "widgetType": "heatmap",
+      "defaultSize": "wide",
+      "usedByMissions": [
+        "M6"
+      ],
+      "usedByPersonas": [
+        "cc-supplychain"
+      ],
+      "objective": "A",
+      "data": {
+        "kind": "heat",
+        "unit": "index",
+        "rows": [
+          "EMEA",
+          "NAM",
+          "APAC",
+          "LATAM"
+        ],
+        "cols": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "cells": [
+          [
+            2.2,
+            2.8,
+            3.4,
+            4.0
+          ],
+          [
+            4.0,
+            4.6,
+            5.2,
+            5.8
+          ],
+          [
+            5.8,
+            1.0,
+            1.6,
+            2.2
+          ],
+          [
+            2.2,
+            2.8,
+            3.4,
+            4.0
+          ]
+        ]
+      },
+      "metric": {
+        "value": "7.1",
+        "sub": "risk index",
+        "delta": "+0.8",
+        "direction": "better"
+      }
+    },
+    "CAP-12": {
+      "id": "CAP-12",
+      "label": "Logistics spend analyzer",
+      "widgetType": "bar",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M6"
+      ],
+      "usedByPersonas": [
+        "cc-supplychain"
+      ],
+      "objective": "A",
+      "data": {
+        "kind": "bars",
+        "items": [
+          {
+            "label": "Segment A",
+            "value": "76%",
+            "pct": 76,
+            "tone": "act"
+          },
+          {
+            "label": "Segment B",
+            "value": "60%",
+            "pct": 60,
+            "tone": "brand2"
+          },
+          {
+            "label": "Segment C",
+            "value": "61%",
+            "pct": 61,
+            "tone": "high"
+          },
+          {
+            "label": "Segment D",
+            "value": "41%",
+            "pct": 41,
+            "tone": "act"
+          }
+        ]
+      },
+      "metric": {
+        "value": "76%",
+        "sub": "top segment",
+        "delta": "+3 pts",
+        "direction": "better"
+      }
+    },
+    "CAP-13": {
+      "id": "CAP-13",
+      "label": "Marketing ROI attribution",
+      "widgetType": "scorecard",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M7"
+      ],
+      "usedByPersonas": [
+        "cc-fpa"
+      ],
+      "objective": "A",
+      "data": {
+        "kind": "list",
+        "items": [
+          {
+            "primary": "Target",
+            "secondary": "committed for the year",
+            "badge": "83%",
+            "tone": "muted"
+          },
+          {
+            "primary": "Actual",
+            "secondary": "year to date",
+            "badge": "75%",
+            "tone": "crit"
+          },
+          {
+            "primary": "Variance",
+            "secondary": "vs plan",
+            "badge": "-8 pts",
+            "tone": "crit"
+          },
+          {
+            "primary": "Confidence",
+            "secondary": "model-scored",
+            "badge": "87%",
+            "tone": "brand2"
+          }
+        ]
+      },
+      "metric": {
+        "value": "75%",
+        "sub": "vs 83% target",
+        "delta": "-8 pts",
+        "direction": "worse"
+      }
+    },
+    "CAP-14": {
+      "id": "CAP-14",
+      "label": "SG&A budget tracker",
+      "widgetType": "bar",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M8",
+        "M11"
+      ],
+      "usedByPersonas": [
+        "cc-fpa"
+      ],
+      "objective": "A",
+      "data": {
+        "kind": "bars",
+        "items": [
+          {
+            "label": "Segment A",
+            "value": "74%",
+            "pct": 74,
+            "tone": "act"
+          },
+          {
+            "label": "Segment B",
+            "value": "58%",
+            "pct": 58,
+            "tone": "brand2"
+          },
+          {
+            "label": "Segment C",
+            "value": "59%",
+            "pct": 59,
+            "tone": "high"
+          },
+          {
+            "label": "Segment D",
+            "value": "39%",
+            "pct": 39,
+            "tone": "act"
+          }
+        ]
+      },
+      "metric": {
+        "value": "74%",
+        "sub": "top segment",
+        "delta": "+5 pts",
+        "direction": "better"
+      }
+    },
+    "CAP-15": {
+      "id": "CAP-15",
+      "label": "Overhead productivity index",
+      "widgetType": "gauge",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M8"
+      ],
+      "usedByPersonas": [
+        "cc-fpa"
+      ],
+      "objective": "A",
+      "data": {
+        "kind": "gauge",
+        "value": 0.83,
+        "target": 0.95,
+        "label": "Overhead productivity index",
+        "trend": [
+          0.61,
+          0.66,
+          0.73,
+          0.75,
+          0.77,
+          0.83
+        ]
+      },
+      "metric": {
+        "value": "83.3%",
+        "sub": "target 95%",
+        "delta": "+0.4pp",
+        "direction": "better"
+      }
+    },
+    "CAP-16": {
+      "id": "CAP-16",
+      "label": "Strategic plan calibrator",
+      "widgetType": "scorecard",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M9"
+      ],
+      "usedByPersonas": [
+        "cc-fpa"
+      ],
+      "objective": "A",
+      "data": {
+        "kind": "list",
+        "items": [
+          {
+            "primary": "Target",
+            "secondary": "committed for the year",
+            "badge": "86%",
+            "tone": "muted"
+          },
+          {
+            "primary": "Actual",
+            "secondary": "year to date",
+            "badge": "78%",
+            "tone": "crit"
+          },
+          {
+            "primary": "Variance",
+            "secondary": "vs plan",
+            "badge": "-4 pts",
+            "tone": "crit"
+          },
+          {
+            "primary": "Confidence",
+            "secondary": "model-scored",
+            "badge": "90%",
+            "tone": "brand2"
+          }
+        ]
+      },
+      "metric": {
+        "value": "78%",
+        "sub": "vs 86% target",
+        "delta": "-4 pts",
+        "direction": "worse"
+      }
+    },
+    "CAP-17": {
+      "id": "CAP-17",
+      "label": "Market assumption benchmark",
+      "widgetType": "table",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M9"
+      ],
+      "usedByPersonas": [
+        "cc-fpa"
+      ],
+      "objective": "A",
+      "data": {
+        "kind": "table",
+        "cols": [
+          "Item",
+          "Owner",
+          "Status"
+        ],
+        "rows": [
+          [
+            "Line 1",
+            "Treasury",
+            "off-track"
+          ],
+          [
+            "Line 2",
+            "Tax",
+            "on-track"
+          ],
+          [
+            "Line 3",
+            "Controllership",
+            "attention"
+          ],
+          [
+            "Line 4",
+            "FP&A",
+            "off-track"
+          ]
+        ]
+      },
+      "metric": {
+        "value": "12",
+        "sub": "open items",
+        "delta": "+3",
+        "direction": "better"
+      }
+    },
+    "CAP-18": {
+      "id": "CAP-18",
+      "label": "Forecast accuracy scoring",
+      "widgetType": "gauge",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M10",
+        "M21",
+        "M22"
+      ],
+      "usedByPersonas": [
+        "cc-fpa",
+        "cc-treasury"
+      ],
+      "objective": "A",
+      "data": {
+        "kind": "gauge",
+        "value": 0.81,
+        "target": 0.93,
+        "label": "Forecast accuracy scoring",
+        "trend": [
+          0.61,
+          0.67,
+          0.68,
+          0.71,
+          0.78,
+          0.83
+        ]
+      },
+      "metric": {
+        "value": "81.3%",
+        "sub": "target 93%",
+        "delta": "+1.3pp",
+        "direction": "better"
+      }
+    },
+    "CAP-19": {
+      "id": "CAP-19",
+      "label": "Plan-vs-actual variance engine",
+      "widgetType": "waterfall",
+      "defaultSize": "wide",
+      "usedByMissions": [
+        "M11"
+      ],
+      "usedByPersonas": [
+        "cc-fpa"
+      ],
+      "objective": "A",
+      "data": {
+        "kind": "waterfall",
+        "unit": "$M",
+        "buckets": [
+          {
+            "label": "Plan",
+            "value": 12,
+            "tone": "muted"
+          },
+          {
+            "label": "Volume",
+            "value": 3.6,
+            "tone": "act"
+          },
+          {
+            "label": "Price",
+            "value": 2.3,
+            "tone": "act"
+          },
+          {
+            "label": "Cost",
+            "value": 2.4,
+            "tone": "crit"
+          },
+          {
+            "label": "Actual",
+            "value": 10,
+            "tone": "brand2"
+          }
+        ]
+      },
+      "metric": {
+        "value": "$10.0M",
+        "sub": "vs $12.0M plan",
+        "delta": "-$1.6M",
+        "direction": "worse"
+      }
+    },
+    "CAP-20": {
+      "id": "CAP-20",
+      "label": "Finance platform and automation index",
+      "widgetType": "scorecard",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M59"
+      ],
+      "usedByPersonas": [
+        "cc-transform"
+      ],
+      "objective": "G",
+      "data": {
+        "kind": "list",
+        "items": [
+          {
+            "primary": "Target",
+            "secondary": "committed for the year",
+            "badge": "90%",
+            "tone": "muted"
+          },
+          {
+            "primary": "Actual",
+            "secondary": "year to date",
+            "badge": "82%",
+            "tone": "act"
+          },
+          {
+            "primary": "Variance",
+            "secondary": "vs plan",
+            "badge": "+8 pts",
+            "tone": "act"
+          },
+          {
+            "primary": "Confidence",
+            "secondary": "model-scored",
+            "badge": "74%",
+            "tone": "brand2"
+          }
+        ]
+      },
+      "metric": {
+        "value": "82%",
+        "sub": "vs 90% target",
+        "delta": "+8 pts",
+        "direction": "better"
+      }
+    },
+    "CAP-21": {
+      "id": "CAP-21",
+      "label": "Capex hurdle screener",
+      "widgetType": "scorecard",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M12"
+      ],
+      "usedByPersonas": [
+        "cc-fpa"
+      ],
+      "objective": "B",
+      "data": {
+        "kind": "list",
+        "items": [
+          {
+            "primary": "Target",
+            "secondary": "committed for the year",
+            "badge": "91%",
+            "tone": "muted"
+          },
+          {
+            "primary": "Actual",
+            "secondary": "year to date",
+            "badge": "83%",
+            "tone": "act"
+          },
+          {
+            "primary": "Variance",
+            "secondary": "vs plan",
+            "badge": "+2 pts",
+            "tone": "act"
+          },
+          {
+            "primary": "Confidence",
+            "secondary": "model-scored",
+            "badge": "75%",
+            "tone": "brand2"
+          }
+        ]
+      },
+      "metric": {
+        "value": "83%",
+        "sub": "vs 91% target",
+        "delta": "+2 pts",
+        "direction": "better"
+      }
+    },
+    "CAP-22": {
+      "id": "CAP-22",
+      "label": "Project return tracker",
+      "widgetType": "bar",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M12"
+      ],
+      "usedByPersonas": [
+        "cc-fpa"
+      ],
+      "objective": "B",
+      "data": {
+        "kind": "bars",
+        "items": [
+          {
+            "label": "Segment A",
+            "value": "86%",
+            "pct": 86,
+            "tone": "act"
+          },
+          {
+            "label": "Segment B",
+            "value": "65%",
+            "pct": 65,
+            "tone": "brand2"
+          },
+          {
+            "label": "Segment C",
+            "value": "51%",
+            "pct": 51,
+            "tone": "high"
+          },
+          {
+            "label": "Segment D",
+            "value": "40%",
+            "pct": 40,
+            "tone": "act"
+          }
+        ]
+      },
+      "metric": {
+        "value": "86%",
+        "sub": "top segment",
+        "delta": "-3 pts",
+        "direction": "worse"
+      }
+    },
+    "CAP-23": {
+      "id": "CAP-23",
+      "label": "Asset utilization monitor",
+      "widgetType": "gauge",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M13"
+      ],
+      "usedByPersonas": [
+        "cc-supplychain"
+      ],
+      "objective": "B",
+      "data": {
+        "kind": "gauge",
+        "value": 0.64,
+        "target": 0.76,
+        "label": "Asset utilization monitor",
+        "trend": [
+          0.43,
+          0.47,
+          0.53,
+          0.57,
+          0.59,
+          0.63
+        ]
+      },
+      "metric": {
+        "value": "64.3%",
+        "sub": "target 76%",
+        "delta": "+1.3pp",
+        "direction": "better"
+      }
+    },
+    "CAP-24": {
+      "id": "CAP-24",
+      "label": "Output-per-dollar index",
+      "widgetType": "timeseries",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M13"
+      ],
+      "usedByPersonas": [
+        "cc-supplychain"
+      ],
+      "objective": "B",
+      "data": {
+        "kind": "series",
+        "unit": "index",
+        "labels": [
+          "M4",
+          "M5",
+          "M6",
+          "M7",
+          "M8",
+          "M9"
+        ],
+        "target": 67.3,
+        "series": [
+          {
+            "name": "Output-per-dollar",
+            "values": [
+              53.96,
+              58.29,
+              65.65,
+              64.88,
+              63.01,
+              70.23
+            ],
+            "color": "brand2"
+          },
+          {
+            "name": "Forecast",
+            "values": [
+              null,
+              null,
+              null,
+              null,
+              59.36,
+              69.79
+            ],
+            "color": "act",
+            "dash": true
+          }
+        ],
+        "note": null
+      },
+      "metric": {
+        "value": "65.0",
+        "sub": "target 67",
+        "delta": "+1.2%",
+        "direction": "better"
+      }
+    },
+    "CAP-25": {
+      "id": "CAP-25",
+      "label": "Idle asset register",
+      "widgetType": "table",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M14"
+      ],
+      "usedByPersonas": [
+        "cc-supplychain"
+      ],
+      "objective": "B",
+      "data": {
+        "kind": "table",
+        "cols": [
+          "Item",
+          "Owner",
+          "Status"
+        ],
+        "rows": [
+          [
+            "Line 1",
+            "Treasury",
+            "attention"
+          ],
+          [
+            "Line 2",
+            "Tax",
+            "off-track"
+          ],
+          [
+            "Line 3",
+            "Controllership",
+            "on-track"
+          ],
+          [
+            "Line 4",
+            "FP&A",
+            "attention"
+          ]
+        ]
+      },
+      "metric": {
+        "value": "11",
+        "sub": "open items",
+        "delta": "-2",
+        "direction": "worse"
+      }
+    },
+    "CAP-26": {
+      "id": "CAP-26",
+      "label": "Divestment pipeline",
+      "widgetType": "funnel",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M14",
+        "M17"
+      ],
+      "usedByPersonas": [
+        "cc-supplychain",
+        "cc-corpdev"
+      ],
+      "objective": "B",
+      "data": {
+        "kind": "funnel",
+        "steps": [
+          {
+            "label": "Identified",
+            "value": 1140
+          },
+          {
+            "label": "Assessed",
+            "value": 592
+          },
+          {
+            "label": "Actioned",
+            "value": 273
+          },
+          {
+            "label": "Closed",
+            "value": 102
+          }
+        ]
+      },
+      "metric": {
+        "value": "1140",
+        "sub": "in pipeline",
+        "delta": "+38",
+        "direction": "better"
+      }
+    },
+    "CAP-27": {
+      "id": "CAP-27",
+      "label": "Deal return model",
+      "widgetType": "scorecard",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M15",
+        "M17",
+        "M32"
+      ],
+      "usedByPersonas": [
+        "cc-corpdev",
+        "cc-ir"
+      ],
+      "objective": "B",
+      "data": {
+        "kind": "list",
+        "items": [
+          {
+            "primary": "Target",
+            "secondary": "committed for the year",
+            "badge": "72%",
+            "tone": "muted"
+          },
+          {
+            "primary": "Actual",
+            "secondary": "year to date",
+            "badge": "89%",
+            "tone": "act"
+          },
+          {
+            "primary": "Variance",
+            "secondary": "vs plan",
+            "badge": "+8 pts",
+            "tone": "act"
+          },
+          {
+            "primary": "Confidence",
+            "secondary": "model-scored",
+            "badge": "81%",
+            "tone": "brand2"
+          }
+        ]
+      },
+      "metric": {
+        "value": "89%",
+        "sub": "vs 72% target",
+        "delta": "+8 pts",
+        "direction": "better"
+      }
+    },
+    "CAP-28": {
+      "id": "CAP-28",
+      "label": "Synergy delivery tracker",
+      "widgetType": "timeseries",
+      "defaultSize": "wide",
+      "usedByMissions": [
+        "M16"
+      ],
+      "usedByPersonas": [
+        "cc-corpdev"
+      ],
+      "objective": "B",
+      "data": {
+        "kind": "series",
+        "unit": "index",
+        "labels": [
+          "M4",
+          "M5",
+          "M6",
+          "M7",
+          "M8",
+          "M9"
+        ],
+        "target": 35.4,
+        "series": [
+          {
+            "name": "Synergy",
+            "values": [
+              31.23,
+              30.52,
+              27.34,
+              27.49,
+              29.18,
+              27.28
+            ],
+            "color": "brand2"
+          },
+          {
+            "name": "Forecast",
+            "values": [
+              null,
+              null,
+              null,
+              null,
+              34.35,
+              38.93
+            ],
+            "color": "act",
+            "dash": true
+          }
+        ],
+        "note": null
+      },
+      "metric": {
+        "value": "34.2",
+        "sub": "target 35",
+        "delta": "-4.0%",
+        "direction": "worse"
+      }
+    },
+    "CAP-29": {
+      "id": "CAP-29",
+      "label": "Acquired-business ROIC monitor",
+      "widgetType": "gauge",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M15",
+        "M16"
+      ],
+      "usedByPersonas": [
+        "cc-corpdev"
+      ],
+      "objective": "B",
+      "data": {
+        "kind": "gauge",
+        "value": 0.6,
+        "target": 0.72,
+        "label": "Acquired-business ROIC monitor",
+        "trend": [
+          0.41,
+          0.44,
+          0.47,
+          0.52,
+          0.58,
+          0.59
+        ]
+      },
+      "metric": {
+        "value": "60.3%",
+        "sub": "target 72%",
+        "delta": "+1.6pp",
+        "direction": "better"
+      }
+    },
+    "CAP-30": {
+      "id": "CAP-30",
+      "label": "Exit value analyzer",
+      "widgetType": "waterfall",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M17"
+      ],
+      "usedByPersonas": [
+        "cc-corpdev"
+      ],
+      "objective": "B",
+      "data": {
+        "kind": "waterfall",
+        "unit": "$M",
+        "buckets": [
+          {
+            "label": "Plan",
+            "value": 8,
+            "tone": "muted"
+          },
+          {
+            "label": "Volume",
+            "value": 3.2,
+            "tone": "act"
+          },
+          {
+            "label": "Price",
+            "value": 1.8,
+            "tone": "act"
+          },
+          {
+            "label": "Cost",
+            "value": 1.2,
+            "tone": "crit"
+          },
+          {
+            "label": "Actual",
+            "value": 9,
+            "tone": "brand2"
+          }
+        ]
+      },
+      "metric": {
+        "value": "$9.0M",
+        "sub": "vs $8.0M plan",
+        "delta": "+$0.4M",
+        "direction": "better"
+      }
+    },
+    "CAP-31": {
+      "id": "CAP-31",
+      "label": "FCF conversion model",
+      "widgetType": "timeseries",
+      "defaultSize": "wide",
+      "usedByMissions": [
+        "M21",
+        "M22",
+        "M34"
+      ],
+      "usedByPersonas": [
+        "cc-fpa",
+        "cc-treasury"
+      ],
+      "objective": "C",
+      "data": {
+        "kind": "series",
+        "unit": "index",
+        "labels": [
+          "M4",
+          "M5",
+          "M6",
+          "M7",
+          "M8",
+          "M9"
+        ],
+        "target": 67.3,
+        "series": [
+          {
+            "name": "FCF",
+            "values": [
+              57.98,
+              52.55,
+              54.61,
+              56.78,
+              51.74,
+              48.41
+            ],
+            "color": "brand2"
+          },
+          {
+            "name": "Forecast",
+            "values": [
+              null,
+              null,
+              null,
+              null,
+              63.78,
+              67.03
+            ],
+            "color": "act",
+            "dash": true
+          }
+        ],
+        "note": null
+      },
+      "metric": {
+        "value": "65.0",
+        "sub": "target 67",
+        "delta": "-1.9%",
+        "direction": "worse"
+      }
+    },
+    "CAP-32": {
+      "id": "CAP-32",
+      "label": "Cash forecast engine",
+      "widgetType": "timeseries",
+      "defaultSize": "wide",
+      "usedByMissions": [
+        "M10",
+        "M22",
+        "M27"
+      ],
+      "usedByPersonas": [
+        "cc-fpa",
+        "cc-treasury"
+      ],
+      "objective": "A",
+      "data": {
+        "kind": "series",
+        "unit": "index",
+        "labels": [
+          "M4",
+          "M5",
+          "M6",
+          "M7",
+          "M8",
+          "M9"
+        ],
+        "target": 77.9,
+        "series": [
+          {
+            "name": "Cash",
+            "values": [
+              64.43,
+              65.35,
+              74.47,
+              77.85,
+              73.89,
+              78.14
+            ],
+            "color": "brand2"
+          },
+          {
+            "name": "Forecast",
+            "values": [
+              null,
+              null,
+              null,
+              null,
+              70.87,
+              78.25
+            ],
+            "color": "act",
+            "dash": true
+          }
+        ],
+        "note": null
+      },
+      "metric": {
+        "value": "75.2",
+        "sub": "target 78",
+        "delta": "+2.6%",
+        "direction": "better"
+      }
+    },
+    "CAP-33": {
+      "id": "CAP-33",
+      "label": "DIO tracker",
+      "widgetType": "timeseries",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M18"
+      ],
+      "usedByPersonas": [
+        "cc-supplychain"
+      ],
+      "objective": "C",
+      "data": {
+        "kind": "series",
+        "unit": "index",
+        "labels": [
+          "M4",
+          "M5",
+          "M6",
+          "M7",
+          "M8",
+          "M9"
+        ],
+        "target": 88.5,
+        "series": [
+          {
+            "name": "DIO",
+            "values": [
+              70.97,
+              76.77,
+              86.39,
+              85.28,
+              82.92,
+              92.5
+            ],
+            "color": "brand2"
+          },
+          {
+            "name": "Forecast",
+            "values": [
+              null,
+              null,
+              null,
+              null,
+              78.07,
+              91.91
+            ],
+            "color": "act",
+            "dash": true
+          }
+        ],
+        "note": null
+      },
+      "metric": {
+        "value": "85.5",
+        "sub": "target 88",
+        "delta": "+3.3%",
+        "direction": "better"
+      }
+    },
+    "CAP-34": {
+      "id": "CAP-34",
+      "label": "Inventory aging heatmap",
+      "widgetType": "heatmap",
+      "defaultSize": "wide",
+      "usedByMissions": [
+        "M18"
+      ],
+      "usedByPersonas": [
+        "cc-supplychain"
+      ],
+      "objective": "C",
+      "data": {
+        "kind": "heat",
+        "unit": "index",
+        "rows": [
+          "EMEA",
+          "NAM",
+          "APAC",
+          "LATAM"
+        ],
+        "cols": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "cells": [
+          [
+            5.2,
+            5.8,
+            1.0,
+            1.6
+          ],
+          [
+            1.6,
+            2.2,
+            2.8,
+            3.4
+          ],
+          [
+            3.4,
+            4.0,
+            4.6,
+            5.2
+          ],
+          [
+            5.2,
+            5.8,
+            1.0,
+            1.6
+          ]
+        ]
+      },
+      "metric": {
+        "value": "6.1",
+        "sub": "risk index",
+        "delta": "-0.6",
+        "direction": "worse"
+      }
+    },
+    "CAP-35": {
+      "id": "CAP-35",
+      "label": "DSO tracker",
+      "widgetType": "timeseries",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M19",
+        "M43"
+      ],
+      "usedByPersonas": [
+        "cc-treasury",
+        "cc-finops"
+      ],
+      "objective": "C",
+      "data": {
+        "kind": "series",
+        "unit": "index",
+        "labels": [
+          "M4",
+          "M5",
+          "M6",
+          "M7",
+          "M8",
+          "M9"
+        ],
+        "target": 35.4,
+        "series": [
+          {
+            "name": "DSO",
+            "values": [
+              28.94,
+              32.97,
+              33.36,
+              31.98,
+              35.04,
+              38.8
+            ],
+            "color": "brand2"
+          },
+          {
+            "name": "Forecast",
+            "values": [
+              null,
+              null,
+              null,
+              null,
+              31.83,
+              39.47
+            ],
+            "color": "act",
+            "dash": true
+          }
+        ],
+        "note": null
+      },
+      "metric": {
+        "value": "34.2",
+        "sub": "target 35",
+        "delta": "+4.7%",
+        "direction": "better"
+      }
+    },
+    "CAP-36": {
+      "id": "CAP-36",
+      "label": "Collections effectiveness index",
+      "widgetType": "gauge",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M19"
+      ],
+      "usedByPersonas": [
+        "cc-treasury"
+      ],
+      "objective": "C",
+      "data": {
+        "kind": "gauge",
+        "value": 0.69,
+        "target": 0.81,
+        "label": "Collections effectiveness index",
+        "trend": [
+          0.49,
+          0.55,
+          0.56,
+          0.59,
+          0.66,
+          0.71
+        ]
+      },
+      "metric": {
+        "value": "69.3%",
+        "sub": "target 81%",
+        "delta": "+0.7pp",
+        "direction": "better"
+      }
+    },
+    "CAP-37": {
+      "id": "CAP-37",
+      "label": "DPO tracker",
+      "widgetType": "timeseries",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M20",
+        "M42"
+      ],
+      "usedByPersonas": [
+        "cc-supplychain",
+        "cc-finops"
+      ],
+      "objective": "C",
+      "data": {
+        "kind": "series",
+        "unit": "index",
+        "labels": [
+          "M4",
+          "M5",
+          "M6",
+          "M7",
+          "M8",
+          "M9"
+        ],
+        "target": 56.6,
+        "series": [
+          {
+            "name": "DPO",
+            "values": [
+              50.0,
+              48.8,
+              43.72,
+              44.03,
+              46.7,
+              43.61
+            ],
+            "color": "brand2"
+          },
+          {
+            "name": "Forecast",
+            "values": [
+              null,
+              null,
+              null,
+              null,
+              55.0,
+              62.25
+            ],
+            "color": "act",
+            "dash": true
+          }
+        ],
+        "note": null
+      },
+      "metric": {
+        "value": "54.7",
+        "sub": "target 57",
+        "delta": "-1.9%",
+        "direction": "worse"
+      }
+    },
+    "CAP-38": {
+      "id": "CAP-38",
+      "label": "Supplier terms analyzer",
+      "widgetType": "table",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M20"
+      ],
+      "usedByPersonas": [
+        "cc-supplychain"
+      ],
+      "objective": "C",
+      "data": {
+        "kind": "table",
+        "cols": [
+          "Item",
+          "Owner",
+          "Status"
+        ],
+        "rows": [
+          [
+            "Line 1",
+            "Tax",
+            "off-track"
+          ],
+          [
+            "Line 2",
+            "Controllership",
+            "on-track"
+          ],
+          [
+            "Line 3",
+            "FP&A",
+            "attention"
+          ],
+          [
+            "Line 4",
+            "Treasury",
+            "off-track"
+          ]
+        ]
+      },
+      "metric": {
+        "value": "6",
+        "sub": "open items",
+        "delta": "+3",
+        "direction": "better"
+      }
+    },
+    "CAP-39": {
+      "id": "CAP-39",
+      "label": "Trapped cash map",
+      "widgetType": "heatmap",
+      "defaultSize": "wide",
+      "usedByMissions": [
+        "M23",
+        "M29"
+      ],
+      "usedByPersonas": [
+        "cc-treasury"
+      ],
+      "objective": "C",
+      "data": {
+        "kind": "heat",
+        "unit": "index",
+        "rows": [
+          "EMEA",
+          "NAM",
+          "APAC",
+          "LATAM"
+        ],
+        "cols": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "cells": [
+          [
+            2.8,
+            3.4,
+            4.0,
+            4.6
+          ],
+          [
+            4.6,
+            5.2,
+            5.8,
+            1.0
+          ],
+          [
+            1.0,
+            1.6,
+            2.2,
+            2.8
+          ],
+          [
+            2.8,
+            3.4,
+            4.0,
+            4.6
+          ]
+        ]
+      },
+      "metric": {
+        "value": "5.1",
+        "sub": "risk index",
+        "delta": "+0.8",
+        "direction": "better"
+      }
+    },
+    "CAP-40": {
+      "id": "CAP-40",
+      "label": "Cash gap closer",
+      "widgetType": "funnel",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M23"
+      ],
+      "usedByPersonas": [
+        "cc-treasury"
+      ],
+      "objective": "C",
+      "data": {
+        "kind": "funnel",
+        "steps": [
+          {
+            "label": "Identified",
+            "value": 1320
+          },
+          {
+            "label": "Assessed",
+            "value": 686
+          },
+          {
+            "label": "Actioned",
+            "value": 316
+          },
+          {
+            "label": "Closed",
+            "value": 118
+          }
+        ]
+      },
+      "metric": {
+        "value": "1320",
+        "sub": "in pipeline",
+        "delta": "-22",
+        "direction": "worse"
+      }
+    },
+    "CAP-41": {
+      "id": "CAP-41",
+      "label": "Leverage and rating monitor",
+      "widgetType": "gauge",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M24"
+      ],
+      "usedByPersonas": [
+        "cc-treasury"
+      ],
+      "objective": "D",
+      "data": {
+        "kind": "gauge",
+        "value": 0.52,
+        "target": 0.64,
+        "label": "Leverage and rating monitor",
+        "trend": [
+          0.32,
+          0.35,
+          0.41,
+          0.45,
+          0.47,
+          0.51
+        ]
+      },
+      "metric": {
+        "value": "52.3%",
+        "sub": "target 64%",
+        "delta": "+0.7pp",
+        "direction": "better"
+      }
+    },
+    "CAP-42": {
+      "id": "CAP-42",
+      "label": "Debt maturity ladder",
+      "widgetType": "bar",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M24",
+        "M25"
+      ],
+      "usedByPersonas": [
+        "cc-treasury"
+      ],
+      "objective": "D",
+      "data": {
+        "kind": "bars",
+        "items": [
+          {
+            "label": "Segment A",
+            "value": "86%",
+            "pct": 86,
+            "tone": "act"
+          },
+          {
+            "label": "Segment B",
+            "value": "60%",
+            "pct": 60,
+            "tone": "brand2"
+          },
+          {
+            "label": "Segment C",
+            "value": "55%",
+            "pct": 55,
+            "tone": "high"
+          },
+          {
+            "label": "Segment D",
+            "value": "38%",
+            "pct": 38,
+            "tone": "act"
+          }
+        ]
+      },
+      "metric": {
+        "value": "86%",
+        "sub": "top segment",
+        "delta": "+3 pts",
+        "direction": "better"
+      }
+    },
+    "CAP-43": {
+      "id": "CAP-43",
+      "label": "Funding cost curve",
+      "widgetType": "timeseries",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M25"
+      ],
+      "usedByPersonas": [
+        "cc-treasury"
+      ],
+      "objective": "D",
+      "data": {
+        "kind": "series",
+        "unit": "index",
+        "labels": [
+          "M4",
+          "M5",
+          "M6",
+          "M7",
+          "M8",
+          "M9"
+        ],
+        "target": 46.0,
+        "series": [
+          {
+            "name": "Funding",
+            "values": [
+              36.74,
+              39.08,
+              39.4,
+              35.34,
+              34.34,
+              36.75
+            ],
+            "color": "brand2"
+          },
+          {
+            "name": "Forecast",
+            "values": [
+              null,
+              null,
+              null,
+              null,
+              40.41,
+              49.85
+            ],
+            "color": "act",
+            "dash": true
+          }
+        ],
+        "note": null
+      },
+      "metric": {
+        "value": "44.5",
+        "sub": "target 46",
+        "delta": "-1.9%",
+        "direction": "worse"
+      }
+    },
+    "CAP-44": {
+      "id": "CAP-44",
+      "label": "Equity issuance model",
+      "widgetType": "scorecard",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M26"
+      ],
+      "usedByPersonas": [
+        "cc-treasury"
+      ],
+      "objective": "D",
+      "data": {
+        "kind": "list",
+        "items": [
+          {
+            "primary": "Target",
+            "secondary": "committed for the year",
+            "badge": "89%",
+            "tone": "muted"
+          },
+          {
+            "primary": "Actual",
+            "secondary": "year to date",
+            "badge": "76%",
+            "tone": "act"
+          },
+          {
+            "primary": "Variance",
+            "secondary": "vs plan",
+            "badge": "+4 pts",
+            "tone": "act"
+          },
+          {
+            "primary": "Confidence",
+            "secondary": "model-scored",
+            "badge": "78%",
+            "tone": "brand2"
+          }
+        ]
+      },
+      "metric": {
+        "value": "76%",
+        "sub": "vs 89% target",
+        "delta": "+4 pts",
+        "direction": "better"
+      }
+    },
+    "CAP-45": {
+      "id": "CAP-45",
+      "label": "Liquidity stress tester",
+      "widgetType": "gauge",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M27",
+        "M60"
+      ],
+      "usedByPersonas": [
+        "cc-treasury"
+      ],
+      "objective": "D",
+      "data": {
+        "kind": "gauge",
+        "value": 0.63,
+        "target": 0.75,
+        "label": "Liquidity stress tester",
+        "trend": [
+          0.43,
+          0.48,
+          0.5,
+          0.54,
+          0.6,
+          0.64
+        ]
+      },
+      "metric": {
+        "value": "63.3%",
+        "sub": "target 75%",
+        "delta": "+0.4pp",
+        "direction": "better"
+      }
+    },
+    "CAP-46": {
+      "id": "CAP-46",
+      "label": "Headroom monitor",
+      "widgetType": "timeseries",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M27"
+      ],
+      "usedByPersonas": [
+        "cc-treasury"
+      ],
+      "objective": "D",
+      "data": {
+        "kind": "series",
+        "unit": "index",
+        "labels": [
+          "M4",
+          "M5",
+          "M6",
+          "M7",
+          "M8",
+          "M9"
+        ],
+        "target": 77.9,
+        "series": [
+          {
+            "name": "Headroom",
+            "values": [
+              68.8,
+              67.05,
+              60.08,
+              60.59,
+              64.23,
+              59.9
+            ],
+            "color": "brand2"
+          },
+          {
+            "name": "Forecast",
+            "values": [
+              null,
+              null,
+              null,
+              null,
+              75.68,
+              85.53
+            ],
+            "color": "act",
+            "dash": true
+          }
+        ],
+        "note": null
+      },
+      "metric": {
+        "value": "75.2",
+        "sub": "target 78",
+        "delta": "-4.0%",
+        "direction": "worse"
+      }
+    },
+    "CAP-47": {
+      "id": "CAP-47",
+      "label": "Surplus cash yield tracker",
+      "widgetType": "timeseries",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M28"
+      ],
+      "usedByPersonas": [
+        "cc-treasury"
+      ],
+      "objective": "D",
+      "data": {
+        "kind": "series",
+        "unit": "index",
+        "labels": [
+          "M4",
+          "M5",
+          "M6",
+          "M7",
+          "M8",
+          "M9"
+        ],
+        "target": 88.5,
+        "series": [
+          {
+            "name": "Surplus",
+            "values": [
+              79.48,
+              78.1,
+              76.78,
+              86.41,
+              93.01,
+              88.59
+            ],
+            "color": "brand2"
+          },
+          {
+            "name": "Forecast",
+            "values": [
+              null,
+              null,
+              null,
+              null,
+              87.43,
+              93.51
+            ],
+            "color": "act",
+            "dash": true
+          }
+        ],
+        "note": null
+      },
+      "metric": {
+        "value": "85.5",
+        "sub": "target 88",
+        "delta": "+4.7%",
+        "direction": "better"
+      }
+    },
+    "CAP-48": {
+      "id": "CAP-48",
+      "label": "Counterparty risk matrix",
+      "widgetType": "heatmap",
+      "defaultSize": "wide",
+      "usedByMissions": [
+        "M28"
+      ],
+      "usedByPersonas": [
+        "cc-treasury"
+      ],
+      "objective": "D",
+      "data": {
+        "kind": "heat",
+        "unit": "index",
+        "rows": [
+          "EMEA",
+          "NAM",
+          "APAC",
+          "LATAM"
+        ],
+        "cols": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "cells": [
+          [
+            2.8,
+            3.4,
+            4.0,
+            4.6
+          ],
+          [
+            4.6,
+            5.2,
+            5.8,
+            1.0
+          ],
+          [
+            1.0,
+            1.6,
+            2.2,
+            2.8
+          ],
+          [
+            2.8,
+            3.4,
+            4.0,
+            4.6
+          ]
+        ]
+      },
+      "metric": {
+        "value": "2.1",
+        "sub": "risk index",
+        "delta": "+0.2",
+        "direction": "better"
+      }
+    },
+    "CAP-49": {
+      "id": "CAP-49",
+      "label": "Cash pooling optimizer",
+      "widgetType": "donut",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M29"
+      ],
+      "usedByPersonas": [
+        "cc-treasury"
+      ],
+      "objective": "D",
+      "data": {
+        "kind": "donut",
+        "centre": "64%",
+        "centreSub": "primary",
+        "segments": [
+          {
+            "label": "Optimised",
+            "value": 64,
+            "color": "act"
+          },
+          {
+            "label": "Partial",
+            "value": 21,
+            "color": "high"
+          },
+          {
+            "label": "Unmanaged",
+            "value": 15,
+            "color": "crit"
+          }
+        ]
+      },
+      "metric": {
+        "value": "64%",
+        "sub": "optimised",
+        "delta": "-3 pts",
+        "direction": "worse"
+      }
+    },
+    "CAP-50": {
+      "id": "CAP-50",
+      "label": "FX exposure monitor",
+      "widgetType": "bar",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M30"
+      ],
+      "usedByPersonas": [
+        "cc-treasury"
+      ],
+      "objective": "D",
+      "data": {
+        "kind": "bars",
+        "items": [
+          {
+            "label": "Segment A",
+            "value": "78%",
+            "pct": 78,
+            "tone": "act"
+          },
+          {
+            "label": "Segment B",
+            "value": "67%",
+            "pct": 67,
+            "tone": "brand2"
+          },
+          {
+            "label": "Segment C",
+            "value": "59%",
+            "pct": 59,
+            "tone": "high"
+          },
+          {
+            "label": "Segment D",
+            "value": "39%",
+            "pct": 39,
+            "tone": "act"
+          }
+        ]
+      },
+      "metric": {
+        "value": "78%",
+        "sub": "top segment",
+        "delta": "+1 pts",
+        "direction": "better"
+      }
+    },
+    "CAP-51": {
+      "id": "CAP-51",
+      "label": "Hedge effectiveness scorer",
+      "widgetType": "gauge",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M30",
+        "M31"
+      ],
+      "usedByPersonas": [
+        "cc-treasury"
+      ],
+      "objective": "D",
+      "data": {
+        "kind": "gauge",
+        "value": 0.59,
+        "target": 0.71,
+        "label": "Hedge effectiveness scorer",
+        "trend": [
+          0.38,
+          0.43,
+          0.48,
+          0.51,
+          0.53,
+          0.59
+        ]
+      },
+      "metric": {
+        "value": "59.3%",
+        "sub": "target 71%",
+        "delta": "+0.7pp",
+        "direction": "better"
+      }
+    },
+    "CAP-52": {
+      "id": "CAP-52",
+      "label": "Interest-rate exposure model",
+      "widgetType": "timeseries",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M31"
+      ],
+      "usedByPersonas": [
+        "cc-treasury"
+      ],
+      "objective": "D",
+      "data": {
+        "kind": "series",
+        "unit": "index",
+        "labels": [
+          "M4",
+          "M5",
+          "M6",
+          "M7",
+          "M8",
+          "M9"
+        ],
+        "target": 67.3,
+        "series": [
+          {
+            "name": "Interest-rate",
+            "values": [
+              53.71,
+              57.17,
+              57.55,
+              51.61,
+              50.22,
+              53.74
+            ],
+            "color": "brand2"
+          },
+          {
+            "name": "Forecast",
+            "values": [
+              null,
+              null,
+              null,
+              null,
+              59.08,
+              72.92
+            ],
+            "color": "act",
+            "dash": true
+          }
+        ],
+        "note": null
+      },
+      "metric": {
+        "value": "65.0",
+        "sub": "target 67",
+        "delta": "-4.0%",
+        "direction": "worse"
+      }
+    },
+    "CAP-53": {
+      "id": "CAP-53",
+      "label": "Peer valuation benchmark",
+      "widgetType": "bar",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M26",
+        "M32",
+        "M33",
+        "M35"
+      ],
+      "usedByPersonas": [
+        "cc-treasury",
+        "cc-ir"
+      ],
+      "objective": "D",
+      "data": {
+        "kind": "bars",
+        "items": [
+          {
+            "label": "Segment A",
+            "value": "75%",
+            "pct": 75,
+            "tone": "act"
+          },
+          {
+            "label": "Segment B",
+            "value": "64%",
+            "pct": 64,
+            "tone": "brand2"
+          },
+          {
+            "label": "Segment C",
+            "value": "56%",
+            "pct": 56,
+            "tone": "high"
+          },
+          {
+            "label": "Segment D",
+            "value": "36%",
+            "pct": 36,
+            "tone": "act"
+          }
+        ]
+      },
+      "metric": {
+        "value": "75%",
+        "sub": "top segment",
+        "delta": "+4 pts",
+        "direction": "better"
+      }
+    },
+    "CAP-54": {
+      "id": "CAP-54",
+      "label": "Investor base analytics",
+      "widgetType": "donut",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M33"
+      ],
+      "usedByPersonas": [
+        "cc-ir"
+      ],
+      "objective": "E",
+      "data": {
+        "kind": "donut",
+        "centre": "44%",
+        "centreSub": "primary",
+        "segments": [
+          {
+            "label": "Optimised",
+            "value": 44,
+            "color": "act"
+          },
+          {
+            "label": "Partial",
+            "value": 33,
+            "color": "high"
+          },
+          {
+            "label": "Unmanaged",
+            "value": 23,
+            "color": "crit"
+          }
+        ]
+      },
+      "metric": {
+        "value": "44%",
+        "sub": "optimised",
+        "delta": "+4 pts",
+        "direction": "better"
+      }
+    },
+    "CAP-55": {
+      "id": "CAP-55",
+      "label": "Dividend policy tracker",
+      "widgetType": "timeseries",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M34"
+      ],
+      "usedByPersonas": [
+        "cc-treasury"
+      ],
+      "objective": "E",
+      "data": {
+        "kind": "series",
+        "unit": "index",
+        "labels": [
+          "M4",
+          "M5",
+          "M6",
+          "M7",
+          "M8",
+          "M9"
+        ],
+        "target": 99.1,
+        "series": [
+          {
+            "name": "Dividend",
+            "values": [
+              87.62,
+              85.27,
+              76.42,
+              77.19,
+              81.77,
+              76.16
+            ],
+            "color": "brand2"
+          },
+          {
+            "name": "Forecast",
+            "values": [
+              null,
+              null,
+              null,
+              null,
+              96.38,
+              108.77
+            ],
+            "color": "act",
+            "dash": true
+          }
+        ],
+        "note": null
+      },
+      "metric": {
+        "value": "95.8",
+        "sub": "target 99",
+        "delta": "-1.9%",
+        "direction": "worse"
+      }
+    },
+    "CAP-56": {
+      "id": "CAP-56",
+      "label": "Buyback execution monitor",
+      "widgetType": "timeseries",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M35"
+      ],
+      "usedByPersonas": [
+        "cc-treasury"
+      ],
+      "objective": "E",
+      "data": {
+        "kind": "series",
+        "unit": "index",
+        "labels": [
+          "M4",
+          "M5",
+          "M6",
+          "M7",
+          "M8",
+          "M9"
+        ],
+        "target": 35.4,
+        "series": [
+          {
+            "name": "Buyback",
+            "values": [
+              31.8,
+              31.21,
+              30.72,
+              34.6,
+              37.19,
+              35.4
+            ],
+            "color": "brand2"
+          },
+          {
+            "name": "Forecast",
+            "values": [
+              null,
+              null,
+              null,
+              null,
+              34.98,
+              37.37
+            ],
+            "color": "act",
+            "dash": true
+          }
+        ],
+        "note": null
+      },
+      "metric": {
+        "value": "34.2",
+        "sub": "target 35",
+        "delta": "+2.6%",
+        "direction": "better"
+      }
+    },
+    "CAP-57": {
+      "id": "CAP-57",
+      "label": "Effective tax rate bridge",
+      "widgetType": "waterfall",
+      "defaultSize": "wide",
+      "usedByMissions": [
+        "M36",
+        "M38"
+      ],
+      "usedByPersonas": [
+        "cc-tax"
+      ],
+      "objective": "F",
+      "data": {
+        "kind": "waterfall",
+        "unit": "$M",
+        "buckets": [
+          {
+            "label": "Plan",
+            "value": 10,
+            "tone": "muted"
+          },
+          {
+            "label": "Volume",
+            "value": 2.8,
+            "tone": "act"
+          },
+          {
+            "label": "Price",
+            "value": 1.8,
+            "tone": "act"
+          },
+          {
+            "label": "Cost",
+            "value": 1.8,
+            "tone": "crit"
+          },
+          {
+            "label": "Actual",
+            "value": 12,
+            "tone": "brand2"
+          }
+        ]
+      },
+      "metric": {
+        "value": "$12.0M",
+        "sub": "vs $10.0M plan",
+        "delta": "+$1.0M",
+        "direction": "better"
+      }
+    },
+    "CAP-58": {
+      "id": "CAP-58",
+      "label": "Tax incentive register",
+      "widgetType": "table",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M37"
+      ],
+      "usedByPersonas": [
+        "cc-tax"
+      ],
+      "objective": "F",
+      "data": {
+        "kind": "table",
+        "cols": [
+          "Item",
+          "Owner",
+          "Status"
+        ],
+        "rows": [
+          [
+            "Line 1",
+            "Tax",
+            "attention"
+          ],
+          [
+            "Line 2",
+            "Controllership",
+            "off-track"
+          ],
+          [
+            "Line 3",
+            "FP&A",
+            "on-track"
+          ],
+          [
+            "Line 4",
+            "Treasury",
+            "attention"
+          ]
+        ]
+      },
+      "metric": {
+        "value": "8",
+        "sub": "open items",
+        "delta": "-2",
+        "direction": "worse"
+      }
+    },
+    "CAP-59": {
+      "id": "CAP-59",
+      "label": "Tax impact simulator",
+      "widgetType": "scorecard",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M36",
+        "M37",
+        "M38"
+      ],
+      "usedByPersonas": [
+        "cc-tax"
+      ],
+      "objective": "F",
+      "data": {
+        "kind": "list",
+        "items": [
+          {
+            "primary": "Target",
+            "secondary": "committed for the year",
+            "badge": "79%",
+            "tone": "muted"
+          },
+          {
+            "primary": "Actual",
+            "secondary": "year to date",
+            "badge": "91%",
+            "tone": "act"
+          },
+          {
+            "primary": "Variance",
+            "secondary": "vs plan",
+            "badge": "+5 pts",
+            "tone": "act"
+          },
+          {
+            "primary": "Confidence",
+            "secondary": "model-scored",
+            "badge": "93%",
+            "tone": "brand2"
+          }
+        ]
+      },
+      "metric": {
+        "value": "91%",
+        "sub": "vs 79% target",
+        "delta": "+5 pts",
+        "direction": "better"
+      }
+    },
+    "CAP-60": {
+      "id": "CAP-60",
+      "label": "Tax provision tracker",
+      "widgetType": "timeseries",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M39",
+        "M41"
+      ],
+      "usedByPersonas": [
+        "cc-tax"
+      ],
+      "objective": "F",
+      "data": {
+        "kind": "series",
+        "unit": "index",
+        "labels": [
+          "M4",
+          "M5",
+          "M6",
+          "M7",
+          "M8",
+          "M9"
+        ],
+        "target": 77.9,
+        "series": [
+          {
+            "name": "Tax",
+            "values": [
+              62.37,
+              67.75,
+              76.07,
+              74.82,
+              72.98,
+              81.64
+            ],
+            "color": "brand2"
+          },
+          {
+            "name": "Forecast",
+            "values": [
+              null,
+              null,
+              null,
+              null,
+              68.61,
+              81.12
+            ],
+            "color": "act",
+            "dash": true
+          }
+        ],
+        "note": null
+      },
+      "metric": {
+        "value": "75.2",
+        "sub": "target 78",
+        "delta": "+1.2%",
+        "direction": "better"
+      }
+    },
+    "CAP-61": {
+      "id": "CAP-61",
+      "label": "Function cost benchmarking",
+      "widgetType": "bar",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M45",
+        "M46",
+        "M47",
+        "M48",
+        "M49",
+        "M50"
+      ],
+      "usedByPersonas": [
+        "cc-fpa",
+        "cc-corpdev",
+        "cc-commercial",
+        "cc-supplychain",
+        "cc-tax",
+        "cc-treasury"
+      ],
+      "objective": "G",
+      "data": {
+        "kind": "bars",
+        "items": [
+          {
+            "label": "Segment A",
+            "value": "87%",
+            "pct": 87,
+            "tone": "act"
+          },
+          {
+            "label": "Segment B",
+            "value": "71%",
+            "pct": 71,
+            "tone": "brand2"
+          },
+          {
+            "label": "Segment C",
+            "value": "60%",
+            "pct": 60,
+            "tone": "high"
+          },
+          {
+            "label": "Segment D",
+            "value": "37%",
+            "pct": 37,
+            "tone": "act"
+          }
+        ]
+      },
+      "metric": {
+        "value": "87%",
+        "sub": "top segment",
+        "delta": "-2 pts",
+        "direction": "worse"
+      }
+    },
+    "CAP-62": {
+      "id": "CAP-62",
+      "label": "Indirect tax compliance monitor",
+      "widgetType": "gauge",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M40"
+      ],
+      "usedByPersonas": [
+        "cc-tax"
+      ],
+      "objective": "F",
+      "data": {
+        "kind": "gauge",
+        "value": 0.79,
+        "target": 0.91,
+        "label": "Indirect tax compliance monitor",
+        "trend": [
+          0.58,
+          0.65,
+          0.68,
+          0.69,
+          0.75,
+          0.81
+        ]
+      },
+      "metric": {
+        "value": "79.3%",
+        "sub": "target 91%",
+        "delta": "+1.0pp",
+        "direction": "better"
+      }
+    },
+    "CAP-63": {
+      "id": "CAP-63",
+      "label": "Tax audit exposure tracker",
+      "widgetType": "funnel",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M41"
+      ],
+      "usedByPersonas": [
+        "cc-tax"
+      ],
+      "objective": "F",
+      "data": {
+        "kind": "funnel",
+        "steps": [
+          {
+            "label": "Identified",
+            "value": 1380
+          },
+          {
+            "label": "Assessed",
+            "value": 717
+          },
+          {
+            "label": "Actioned",
+            "value": 331
+          },
+          {
+            "label": "Closed",
+            "value": 124
+          }
+        ]
+      },
+      "metric": {
+        "value": "1380",
+        "sub": "in pipeline",
+        "delta": "+15",
+        "direction": "better"
+      }
+    },
+    "CAP-64": {
+      "id": "CAP-64",
+      "label": "AP / P2P service dashboard",
+      "widgetType": "scorecard",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M42"
+      ],
+      "usedByPersonas": [
+        "cc-finops"
+      ],
+      "objective": "G",
+      "data": {
+        "kind": "list",
+        "items": [
+          {
+            "primary": "Target",
+            "secondary": "committed for the year",
+            "badge": "84%",
+            "tone": "muted"
+          },
+          {
+            "primary": "Actual",
+            "secondary": "year to date",
+            "badge": "66%",
+            "tone": "crit"
+          },
+          {
+            "primary": "Variance",
+            "secondary": "vs plan",
+            "badge": "-3 pts",
+            "tone": "crit"
+          },
+          {
+            "primary": "Confidence",
+            "secondary": "model-scored",
+            "badge": "78%",
+            "tone": "brand2"
+          }
+        ]
+      },
+      "metric": {
+        "value": "66%",
+        "sub": "vs 84% target",
+        "delta": "-3 pts",
+        "direction": "worse"
+      }
+    },
+    "CAP-65": {
+      "id": "CAP-65",
+      "label": "AR / O2C service dashboard",
+      "widgetType": "scorecard",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M43"
+      ],
+      "usedByPersonas": [
+        "cc-finops"
+      ],
+      "objective": "G",
+      "data": {
+        "kind": "list",
+        "items": [
+          {
+            "primary": "Target",
+            "secondary": "committed for the year",
+            "badge": "85%",
+            "tone": "muted"
+          },
+          {
+            "primary": "Actual",
+            "secondary": "year to date",
+            "badge": "67%",
+            "tone": "act"
+          },
+          {
+            "primary": "Variance",
+            "secondary": "vs plan",
+            "badge": "+4 pts",
+            "tone": "act"
+          },
+          {
+            "primary": "Confidence",
+            "secondary": "model-scored",
+            "badge": "79%",
+            "tone": "brand2"
+          }
+        ]
+      },
+      "metric": {
+        "value": "67%",
+        "sub": "vs 85% target",
+        "delta": "+4 pts",
+        "direction": "better"
+      }
+    },
+    "CAP-66": {
+      "id": "CAP-66",
+      "label": "RTR cycle time monitor",
+      "widgetType": "timeseries",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M44",
+        "M59"
+      ],
+      "usedByPersonas": [
+        "cc-finops",
+        "cc-transform"
+      ],
+      "objective": "G",
+      "data": {
+        "kind": "series",
+        "unit": "index",
+        "labels": [
+          "M4",
+          "M5",
+          "M6",
+          "M7",
+          "M8",
+          "M9"
+        ],
+        "target": 67.3,
+        "series": [
+          {
+            "name": "RTR",
+            "values": [
+              59.73,
+              57.01,
+              59.72,
+              67.85,
+              68.62,
+              65.53
+            ],
+            "color": "brand2"
+          },
+          {
+            "name": "Forecast",
+            "values": [
+              null,
+              null,
+              null,
+              null,
+              65.7,
+              68.26
+            ],
+            "color": "act",
+            "dash": true
+          }
+        ],
+        "note": null
+      },
+      "metric": {
+        "value": "65.0",
+        "sub": "target 67",
+        "delta": "+1.2%",
+        "direction": "better"
+      }
+    },
+    "CAP-67": {
+      "id": "CAP-67",
+      "label": "Statutory filing calendar",
+      "widgetType": "table",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M39",
+        "M40",
+        "M51",
+        "M55"
+      ],
+      "usedByPersonas": [
+        "cc-tax",
+        "cc-finops"
+      ],
+      "objective": "F",
+      "data": {
+        "kind": "table",
+        "cols": [
+          "Item",
+          "Owner",
+          "Status"
+        ],
+        "rows": [
+          [
+            "Line 1",
+            "Controllership",
+            "attention"
+          ],
+          [
+            "Line 2",
+            "FP&A",
+            "off-track"
+          ],
+          [
+            "Line 3",
+            "Treasury",
+            "on-track"
+          ],
+          [
+            "Line 4",
+            "Tax",
+            "attention"
+          ]
+        ]
+      },
+      "metric": {
+        "value": "8",
+        "sub": "open items",
+        "delta": "-2",
+        "direction": "worse"
+      }
+    },
+    "CAP-68": {
+      "id": "CAP-68",
+      "label": "Audit readiness tracker",
+      "widgetType": "gauge",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M51",
+        "M59",
+        "M53",
+        "M55"
+      ],
+      "usedByPersonas": [
+        "cc-finops",
+        "cc-transform",
+        "cc-risk"
+      ],
+      "objective": "G",
+      "data": {
+        "kind": "gauge",
+        "value": 0.75,
+        "target": 0.87,
+        "label": "Audit readiness tracker",
+        "trend": [
+          0.54,
+          0.58,
+          0.64,
+          0.68,
+          0.69,
+          0.74
+        ]
+      },
+      "metric": {
+        "value": "75.3%",
+        "sub": "target 87%",
+        "delta": "+1.3pp",
+        "direction": "better"
+      }
+    },
+    "CAP-69": {
+      "id": "CAP-69",
+      "label": "Delivery mix optimizer",
+      "widgetType": "donut",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M44",
+        "M45",
+        "M46",
+        "M47",
+        "M48",
+        "M49",
+        "M50",
+        "M58"
+      ],
+      "usedByPersonas": [
+        "cc-finops",
+        "cc-fpa",
+        "cc-corpdev",
+        "cc-commercial",
+        "cc-supplychain",
+        "cc-tax",
+        "cc-treasury",
+        "cc-transform"
+      ],
+      "objective": "G",
+      "data": {
+        "kind": "donut",
+        "centre": "59%",
+        "centreSub": "primary",
+        "segments": [
+          {
+            "label": "Optimised",
+            "value": 59,
+            "color": "act"
+          },
+          {
+            "label": "Partial",
+            "value": 24,
+            "color": "high"
+          },
+          {
+            "label": "Unmanaged",
+            "value": 17,
+            "color": "crit"
+          }
+        ]
+      },
+      "metric": {
+        "value": "59%",
+        "sub": "optimised",
+        "delta": "+3 pts",
+        "direction": "better"
+      }
+    },
+    "CAP-70": {
+      "id": "CAP-70",
+      "label": "Regulatory horizon scanner",
+      "widgetType": "table",
+      "defaultSize": "wide",
+      "usedByMissions": [
+        "M52"
+      ],
+      "usedByPersonas": [
+        "cc-risk"
+      ],
+      "objective": "H",
+      "data": {
+        "kind": "table",
+        "cols": [
+          "Item",
+          "Owner",
+          "Status"
+        ],
+        "rows": [
+          [
+            "Line 1",
+            "Tax",
+            "attention"
+          ],
+          [
+            "Line 2",
+            "Controllership",
+            "off-track"
+          ],
+          [
+            "Line 3",
+            "FP&A",
+            "on-track"
+          ],
+          [
+            "Line 4",
+            "Treasury",
+            "attention"
+          ]
+        ]
+      },
+      "metric": {
+        "value": "11",
+        "sub": "open items",
+        "delta": "-2",
+        "direction": "worse"
+      }
+    },
+    "CAP-71": {
+      "id": "CAP-71",
+      "label": "Controls effectiveness monitor",
+      "widgetType": "heatmap",
+      "defaultSize": "wide",
+      "usedByMissions": [
+        "M52",
+        "M53",
+        "M54"
+      ],
+      "usedByPersonas": [
+        "cc-risk"
+      ],
+      "objective": "H",
+      "data": {
+        "kind": "heat",
+        "unit": "index",
+        "rows": [
+          "EMEA",
+          "NAM",
+          "APAC",
+          "LATAM"
+        ],
+        "cols": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "cells": [
+          [
+            5.8,
+            1.0,
+            1.6,
+            2.2
+          ],
+          [
+            2.2,
+            2.8,
+            3.4,
+            4.0
+          ],
+          [
+            4.0,
+            4.6,
+            5.2,
+            5.8
+          ],
+          [
+            5.8,
+            1.0,
+            1.6,
+            2.2
+          ]
+        ]
+      },
+      "metric": {
+        "value": "7.1",
+        "sub": "risk index",
+        "delta": "+0.8",
+        "direction": "better"
+      }
+    },
+    "CAP-72": {
+      "id": "CAP-72",
+      "label": "Fraud and DoA monitor",
+      "widgetType": "funnel",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M54"
+      ],
+      "usedByPersonas": [
+        "cc-risk"
+      ],
+      "objective": "H",
+      "data": {
+        "kind": "funnel",
+        "steps": [
+          {
+            "label": "Identified",
+            "value": 1260
+          },
+          {
+            "label": "Assessed",
+            "value": 655
+          },
+          {
+            "label": "Actioned",
+            "value": 302
+          },
+          {
+            "label": "Closed",
+            "value": 113
+          }
+        ]
+      },
+      "metric": {
+        "value": "1260",
+        "sub": "in pipeline",
+        "delta": "+24",
+        "direction": "better"
+      }
+    },
+    "CAP-73": {
+      "id": "CAP-73",
+      "label": "Enterprise risk heatmap",
+      "widgetType": "heatmap",
+      "defaultSize": "wide",
+      "usedByMissions": [
+        "M56"
+      ],
+      "usedByPersonas": [
+        "cc-risk"
+      ],
+      "objective": "H",
+      "data": {
+        "kind": "heat",
+        "unit": "index",
+        "rows": [
+          "EMEA",
+          "NAM",
+          "APAC",
+          "LATAM"
+        ],
+        "cols": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "cells": [
+          [
+            1.6,
+            2.2,
+            2.8,
+            3.4
+          ],
+          [
+            3.4,
+            4.0,
+            4.6,
+            5.2
+          ],
+          [
+            5.2,
+            5.8,
+            1.0,
+            1.6
+          ],
+          [
+            1.6,
+            2.2,
+            2.8,
+            3.4
+          ]
+        ]
+      },
+      "metric": {
+        "value": "3.1",
+        "sub": "risk index",
+        "delta": "-0.4",
+        "direction": "worse"
+      }
+    },
+    "CAP-74": {
+      "id": "CAP-74",
+      "label": "Risk quantification model",
+      "widgetType": "scorecard",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M56",
+        "M57"
+      ],
+      "usedByPersonas": [
+        "cc-risk",
+        "cc-treasury"
+      ],
+      "objective": "H",
+      "data": {
+        "kind": "list",
+        "items": [
+          {
+            "primary": "Target",
+            "secondary": "committed for the year",
+            "badge": "94%",
+            "tone": "muted"
+          },
+          {
+            "primary": "Actual",
+            "secondary": "year to date",
+            "badge": "76%",
+            "tone": "act"
+          },
+          {
+            "primary": "Variance",
+            "secondary": "vs plan",
+            "badge": "+6 pts",
+            "tone": "act"
+          },
+          {
+            "primary": "Confidence",
+            "secondary": "model-scored",
+            "badge": "88%",
+            "tone": "brand2"
+          }
+        ]
+      },
+      "metric": {
+        "value": "76%",
+        "sub": "vs 94% target",
+        "delta": "+6 pts",
+        "direction": "better"
+      }
+    },
+    "CAP-75": {
+      "id": "CAP-75",
+      "label": "Retained risk and insurance model",
+      "widgetType": "gauge",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M57"
+      ],
+      "usedByPersonas": [
+        "cc-treasury"
+      ],
+      "objective": "H",
+      "data": {
+        "kind": "gauge",
+        "value": 0.84,
+        "target": 0.96,
+        "label": "Retained risk and insurance model",
+        "trend": [
+          0.66,
+          0.67,
+          0.71,
+          0.78,
+          0.81,
+          0.82
+        ]
+      },
+      "metric": {
+        "value": "84.3%",
+        "sub": "target 96%",
+        "delta": "+0.4pp",
+        "direction": "better"
+      }
+    },
+    "CAP-76": {
+      "id": "CAP-76",
+      "label": "Pension funding monitor",
+      "widgetType": "timeseries",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M60"
+      ],
+      "usedByPersonas": [
+        "cc-treasury"
+      ],
+      "objective": "H",
+      "data": {
+        "kind": "series",
+        "unit": "index",
+        "labels": [
+          "M4",
+          "M5",
+          "M6",
+          "M7",
+          "M8",
+          "M9"
+        ],
+        "target": 99.1,
+        "series": [
+          {
+            "name": "Pension",
+            "values": [
+              85.04,
+              77.4,
+              80.89,
+              83.62,
+              75.87,
+              71.49
+            ],
+            "color": "brand2"
+          },
+          {
+            "name": "Forecast",
+            "values": [
+              null,
+              null,
+              null,
+              null,
+              93.54,
+              98.72
+            ],
+            "color": "act",
+            "dash": true
+          }
+        ],
+        "note": null
+      },
+      "metric": {
+        "value": "95.8",
+        "sub": "target 99",
+        "delta": "-4.0%",
+        "direction": "worse"
+      }
+    },
+    "CAP-77": {
+      "id": "CAP-77",
+      "label": "Finance talent and skills index",
+      "widgetType": "scorecard",
+      "defaultSize": "standard",
+      "usedByMissions": [
+        "M58"
+      ],
+      "usedByPersonas": [
+        "cc-transform"
+      ],
+      "objective": "G",
+      "data": {
+        "kind": "list",
+        "items": [
+          {
+            "primary": "Target",
+            "secondary": "committed for the year",
+            "badge": "72%",
+            "tone": "muted"
+          },
+          {
+            "primary": "Actual",
+            "secondary": "year to date",
+            "badge": "79%",
+            "tone": "act"
+          },
+          {
+            "primary": "Variance",
+            "secondary": "vs plan",
+            "badge": "+2 pts",
+            "tone": "act"
+          },
+          {
+            "primary": "Confidence",
+            "secondary": "model-scored",
+            "badge": "91%",
+            "tone": "brand2"
+          }
+        ]
+      },
+      "metric": {
+        "value": "79%",
+        "sub": "vs 72% target",
+        "delta": "+2 pts",
+        "direction": "better"
+      }
+    }
+  },
+  "personas": [
+    {
+      "id": "cc-cfo",
+      "label": "CFO",
+      "group": "top",
+      "icon": "📊",
+      "headline": "Eight objectives, sixty missions — the strategic scorecard across the entire finance function",
+      "health": {
+        "onTrack": 34,
+        "attention": 17,
+        "offTrack": 9,
+        "total": 60,
+        "pct": 57
+      },
+      "automation": {
+        "covered": 36,
+        "total": 60
+      },
+      "trend12": [
+        45,
+        51,
+        51,
+        47,
+        45,
+        47,
+        53,
+        58,
+        57,
+        53,
+        51,
+        57
+      ],
+      "headlineCaps": [],
+      "flagged": [
+        "M4",
+        "M11",
+        "M18",
+        "M25",
+        "M32",
+        "M39",
+        "M46",
+        "M53",
+        "M60",
+        "M2",
+        "M6",
+        "M9",
+        "M13",
+        "M16",
+        "M20",
+        "M23",
+        "M27",
+        "M30",
+        "M34",
+        "M37",
+        "M41",
+        "M44",
+        "M48",
+        "M51",
+        "M55",
+        "M58"
+      ],
+      "isOverview": true,
+      "overviewObjectives": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H"
+      ],
+      "missions": [],
+      "missionCount": 0,
+      "capabilityCount": 0,
+      "defaultWidgets": [],
+      "tabs": {
+        "pulse": {
+          "missions": []
+        },
+        "intelligence": {
+          "missions": []
+        },
+        "scenarios": {
+          "missions": []
+        },
+        "trajectory": {
+          "missions": []
+        }
+      },
+      "activeTabs": [
+        "pulse",
+        "intelligence",
+        "scenarios",
+        "trajectory"
+      ]
+    },
+    {
+      "id": "cc-fpa",
+      "label": "FP&A",
+      "group": "Planning & Analysis",
+      "icon": "📈",
+      "headline": "8 missions, from weekly to annual",
+      "health": {
+        "onTrack": 6,
+        "attention": 1,
+        "offTrack": 1,
+        "total": 8,
+        "pct": 75
+      },
+      "automation": {
+        "covered": 6,
+        "total": 8
+      },
+      "trend12": [
+        67,
+        63,
+        58,
+        61,
+        70,
+        73,
+        68,
+        64,
+        69,
+        77,
+        79,
+        75
+      ],
+      "headlineCaps": [
+        "CAP-19",
+        "CAP-14",
+        "CAP-13",
+        "CAP-5"
+      ],
+      "flagged": [
+        "M11",
+        "M9"
+      ],
+      "isOverview": false,
+      "overviewObjectives": [],
+      "missions": [
+        "M7",
+        "M8",
+        "M9",
+        "M10",
+        "M11",
+        "M12",
+        "M21",
+        "M45"
+      ],
+      "missionCount": 8,
+      "capabilityCount": 14,
+      "defaultWidgets": [
+        "CAP-13",
+        "CAP-5",
+        "CAP-14",
+        "CAP-15",
+        "CAP-16",
+        "CAP-17",
+        "CAP-18",
+        "CAP-32",
+        "CAP-19",
+        "CAP-21",
+        "CAP-22",
+        "CAP-31",
+        "CAP-61",
+        "CAP-69"
+      ],
+      "tabs": {
+        "pulse": {
+          "missions": [
+            "M11"
+          ]
+        },
+        "intelligence": {
+          "missions": [
+            "M7",
+            "M8",
+            "M10"
+          ]
+        },
+        "scenarios": {
+          "missions": []
+        },
+        "trajectory": {
+          "missions": [
+            "M9",
+            "M12",
+            "M21",
+            "M45"
+          ]
+        }
+      },
+      "activeTabs": [
+        "pulse",
+        "intelligence",
+        "trajectory"
+      ]
+    },
+    {
+      "id": "cc-commercial",
+      "label": "Commercial Finance",
+      "group": "Planning & Analysis",
+      "icon": "🤝",
+      "headline": "5 missions, from daily to quarterly",
+      "health": {
+        "onTrack": 3,
+        "attention": 1,
+        "offTrack": 1,
+        "total": 5,
+        "pct": 60
+      },
+      "automation": {
+        "covered": 4,
+        "total": 5
+      },
+      "trend12": [
+        40,
+        47,
+        54,
+        53,
+        47,
+        47,
+        55,
+        61,
+        58,
+        52,
+        54,
+        60
+      ],
+      "headlineCaps": [
+        "CAP-1",
+        "CAP-2",
+        "CAP-5",
+        "CAP-6"
+      ],
+      "flagged": [
+        "M4",
+        "M2"
+      ],
+      "isOverview": false,
+      "overviewObjectives": [],
+      "missions": [
+        "M1",
+        "M2",
+        "M3",
+        "M4",
+        "M47"
+      ],
+      "missionCount": 5,
+      "capabilityCount": 10,
+      "defaultWidgets": [
+        "CAP-1",
+        "CAP-2",
+        "CAP-3",
+        "CAP-4",
+        "CAP-5",
+        "CAP-6",
+        "CAP-7",
+        "CAP-8",
+        "CAP-61",
+        "CAP-69"
+      ],
+      "tabs": {
+        "pulse": {
+          "missions": [
+            "M1",
+            "M3"
+          ]
+        },
+        "intelligence": {
+          "missions": [
+            "M2"
+          ]
+        },
+        "scenarios": {
+          "missions": [
+            "M4"
+          ]
+        },
+        "trajectory": {
+          "missions": [
+            "M47"
+          ]
+        }
+      },
+      "activeTabs": [
+        "pulse",
+        "intelligence",
+        "scenarios",
+        "trajectory"
+      ]
+    },
+    {
+      "id": "cc-supplychain",
+      "label": "Supply Chain Finance",
+      "group": "Planning & Analysis",
+      "icon": "📦",
+      "headline": "7 missions, from weekly to quarterly",
+      "health": {
+        "onTrack": 2,
+        "attention": 4,
+        "offTrack": 1,
+        "total": 7,
+        "pct": 29
+      },
+      "automation": {
+        "covered": 4,
+        "total": 7
+      },
+      "trend12": [
+        20,
+        22,
+        20,
+        20,
+        20,
+        26,
+        27,
+        22,
+        20,
+        26,
+        33,
+        29
+      ],
+      "headlineCaps": [
+        "CAP-33",
+        "CAP-34",
+        "CAP-9",
+        "CAP-10"
+      ],
+      "flagged": [
+        "M18",
+        "M6",
+        "M13",
+        "M20",
+        "M48"
+      ],
+      "isOverview": false,
+      "overviewObjectives": [],
+      "missions": [
+        "M5",
+        "M6",
+        "M13",
+        "M14",
+        "M18",
+        "M20",
+        "M48"
+      ],
+      "missionCount": 7,
+      "capabilityCount": 14,
+      "defaultWidgets": [
+        "CAP-9",
+        "CAP-10",
+        "CAP-11",
+        "CAP-12",
+        "CAP-23",
+        "CAP-24",
+        "CAP-25",
+        "CAP-26",
+        "CAP-33",
+        "CAP-34",
+        "CAP-37",
+        "CAP-38",
+        "CAP-61",
+        "CAP-69"
+      ],
+      "tabs": {
+        "pulse": {
+          "missions": [
+            "M18"
+          ]
+        },
+        "intelligence": {
+          "missions": [
+            "M5",
+            "M6",
+            "M13",
+            "M20"
+          ]
+        },
+        "scenarios": {
+          "missions": []
+        },
+        "trajectory": {
+          "missions": [
+            "M14",
+            "M48"
+          ]
+        }
+      },
+      "activeTabs": [
+        "pulse",
+        "intelligence",
+        "trajectory"
+      ]
+    },
+    {
+      "id": "cc-corpdev",
+      "label": "Corporate Dev Finance",
+      "group": "Planning & Analysis",
+      "icon": "🏗️",
+      "headline": "4 missions, from monthly to quarterly",
+      "health": {
+        "onTrack": 2,
+        "attention": 1,
+        "offTrack": 1,
+        "total": 4,
+        "pct": 50
+      },
+      "automation": {
+        "covered": 2,
+        "total": 4
+      },
+      "trend12": [
+        31,
+        32,
+        40,
+        46,
+        42,
+        37,
+        39,
+        48,
+        52,
+        48,
+        43,
+        50
+      ],
+      "headlineCaps": [
+        "CAP-28",
+        "CAP-29",
+        "CAP-27",
+        "CAP-30"
+      ],
+      "flagged": [
+        "M46",
+        "M16"
+      ],
+      "isOverview": false,
+      "overviewObjectives": [],
+      "missions": [
+        "M15",
+        "M16",
+        "M17",
+        "M46"
+      ],
+      "missionCount": 4,
+      "capabilityCount": 7,
+      "defaultWidgets": [
+        "CAP-27",
+        "CAP-29",
+        "CAP-28",
+        "CAP-30",
+        "CAP-26",
+        "CAP-61",
+        "CAP-69"
+      ],
+      "tabs": {
+        "pulse": {
+          "missions": []
+        },
+        "intelligence": {
+          "missions": [
+            "M16"
+          ]
+        },
+        "scenarios": {
+          "missions": [
+            "M15",
+            "M17"
+          ]
+        },
+        "trajectory": {
+          "missions": [
+            "M46"
+          ]
+        }
+      },
+      "activeTabs": [
+        "intelligence",
+        "scenarios",
+        "trajectory"
+      ]
+    },
+    {
+      "id": "cc-treasury",
+      "label": "Treasury",
+      "group": "Treasury & Tax",
+      "icon": "🏦",
+      "headline": "16 missions, from daily to annual",
+      "health": {
+        "onTrack": 10,
+        "attention": 4,
+        "offTrack": 2,
+        "total": 16,
+        "pct": 62
+      },
+      "automation": {
+        "covered": 9,
+        "total": 16
+      },
+      "trend12": [
+        46,
+        43,
+        49,
+        57,
+        57,
+        51,
+        50,
+        57,
+        64,
+        63,
+        57,
+        62
+      ],
+      "headlineCaps": [
+        "CAP-35",
+        "CAP-36",
+        "CAP-32",
+        "CAP-18"
+      ],
+      "flagged": [
+        "M25",
+        "M60",
+        "M23",
+        "M27",
+        "M30",
+        "M34"
+      ],
+      "isOverview": false,
+      "overviewObjectives": [],
+      "missions": [
+        "M19",
+        "M22",
+        "M23",
+        "M24",
+        "M25",
+        "M26",
+        "M27",
+        "M28",
+        "M29",
+        "M30",
+        "M31",
+        "M34",
+        "M35",
+        "M50",
+        "M57",
+        "M60"
+      ],
+      "missionCount": 16,
+      "capabilityCount": 27,
+      "defaultWidgets": [
+        "CAP-35",
+        "CAP-36",
+        "CAP-32",
+        "CAP-18",
+        "CAP-31",
+        "CAP-39",
+        "CAP-40",
+        "CAP-41",
+        "CAP-42",
+        "CAP-43",
+        "CAP-44",
+        "CAP-53",
+        "CAP-45",
+        "CAP-46",
+        "CAP-47",
+        "CAP-48",
+        "CAP-49",
+        "CAP-50",
+        "CAP-51",
+        "CAP-52",
+        "CAP-55",
+        "CAP-56",
+        "CAP-61",
+        "CAP-69",
+        "CAP-75",
+        "CAP-74",
+        "CAP-76"
+      ],
+      "tabs": {
+        "pulse": {
+          "missions": [
+            "M19",
+            "M22",
+            "M28",
+            "M30"
+          ]
+        },
+        "intelligence": {
+          "missions": [
+            "M23",
+            "M27",
+            "M35"
+          ]
+        },
+        "scenarios": {
+          "missions": [
+            "M25",
+            "M26"
+          ]
+        },
+        "trajectory": {
+          "missions": [
+            "M24",
+            "M29",
+            "M31",
+            "M34",
+            "M50",
+            "M57",
+            "M60"
+          ]
+        }
+      },
+      "activeTabs": [
+        "pulse",
+        "intelligence",
+        "scenarios",
+        "trajectory"
+      ]
+    },
+    {
+      "id": "cc-tax",
+      "label": "Tax",
+      "group": "Treasury & Tax",
+      "icon": "⚖️",
+      "headline": "7 missions, from monthly to quarterly",
+      "health": {
+        "onTrack": 4,
+        "attention": 2,
+        "offTrack": 1,
+        "total": 7,
+        "pct": 57
+      },
+      "automation": {
+        "covered": 3,
+        "total": 7
+      },
+      "trend12": [
+        47,
+        50,
+        44,
+        41,
+        46,
+        54,
+        55,
+        50,
+        47,
+        54,
+        61,
+        57
+      ],
+      "headlineCaps": [
+        "CAP-62",
+        "CAP-67",
+        "CAP-58",
+        "CAP-59"
+      ],
+      "flagged": [
+        "M39",
+        "M37",
+        "M41"
+      ],
+      "isOverview": false,
+      "overviewObjectives": [],
+      "missions": [
+        "M36",
+        "M37",
+        "M38",
+        "M39",
+        "M40",
+        "M41",
+        "M49"
+      ],
+      "missionCount": 7,
+      "capabilityCount": 9,
+      "defaultWidgets": [
+        "CAP-57",
+        "CAP-59",
+        "CAP-58",
+        "CAP-60",
+        "CAP-67",
+        "CAP-62",
+        "CAP-63",
+        "CAP-61",
+        "CAP-69"
+      ],
+      "tabs": {
+        "pulse": {
+          "missions": []
+        },
+        "intelligence": {
+          "missions": [
+            "M40"
+          ]
+        },
+        "scenarios": {
+          "missions": [
+            "M37",
+            "M38",
+            "M41"
+          ]
+        },
+        "trajectory": {
+          "missions": [
+            "M36",
+            "M39",
+            "M49"
+          ]
+        }
+      },
+      "activeTabs": [
+        "intelligence",
+        "scenarios",
+        "trajectory"
+      ]
+    },
+    {
+      "id": "cc-finops",
+      "label": "Finance Ops & Controllership",
+      "group": "Operations & Controls",
+      "icon": "🧾",
+      "headline": "5 missions, from daily to quarterly",
+      "health": {
+        "onTrack": 2,
+        "attention": 3,
+        "offTrack": 0,
+        "total": 5,
+        "pct": 40
+      },
+      "automation": {
+        "covered": 4,
+        "total": 5
+      },
+      "trend12": [
+        20,
+        27,
+        34,
+        33,
+        27,
+        27,
+        35,
+        41,
+        38,
+        32,
+        34,
+        40
+      ],
+      "headlineCaps": [
+        "CAP-64",
+        "CAP-37",
+        "CAP-65",
+        "CAP-35"
+      ],
+      "flagged": [
+        "M44",
+        "M51",
+        "M55"
+      ],
+      "isOverview": false,
+      "overviewObjectives": [],
+      "missions": [
+        "M42",
+        "M43",
+        "M44",
+        "M51",
+        "M55"
+      ],
+      "missionCount": 5,
+      "capabilityCount": 8,
+      "defaultWidgets": [
+        "CAP-64",
+        "CAP-37",
+        "CAP-65",
+        "CAP-35",
+        "CAP-66",
+        "CAP-69",
+        "CAP-67",
+        "CAP-68"
+      ],
+      "tabs": {
+        "pulse": {
+          "missions": [
+            "M42",
+            "M43"
+          ]
+        },
+        "intelligence": {
+          "missions": [
+            "M44",
+            "M51"
+          ]
+        },
+        "scenarios": {
+          "missions": []
+        },
+        "trajectory": {
+          "missions": [
+            "M55"
+          ]
+        }
+      },
+      "activeTabs": [
+        "pulse",
+        "intelligence",
+        "trajectory"
+      ]
+    },
+    {
+      "id": "cc-risk",
+      "label": "Risk & Compliance",
+      "group": "Operations & Controls",
+      "icon": "🛡️",
+      "headline": "4 missions, from monthly to quarterly",
+      "health": {
+        "onTrack": 3,
+        "attention": 0,
+        "offTrack": 1,
+        "total": 4,
+        "pct": 75
+      },
+      "automation": {
+        "covered": 2,
+        "total": 4
+      },
+      "trend12": [
+        56,
+        57,
+        65,
+        71,
+        67,
+        62,
+        64,
+        73,
+        77,
+        73,
+        68,
+        75
+      ],
+      "headlineCaps": [
+        "CAP-70",
+        "CAP-71",
+        "CAP-72",
+        "CAP-68"
+      ],
+      "flagged": [
+        "M53"
+      ],
+      "isOverview": false,
+      "overviewObjectives": [],
+      "missions": [
+        "M52",
+        "M53",
+        "M54",
+        "M56"
+      ],
+      "missionCount": 4,
+      "capabilityCount": 6,
+      "defaultWidgets": [
+        "CAP-70",
+        "CAP-71",
+        "CAP-68",
+        "CAP-72",
+        "CAP-73",
+        "CAP-74"
+      ],
+      "tabs": {
+        "pulse": {
+          "missions": []
+        },
+        "intelligence": {
+          "missions": [
+            "M52",
+            "M54"
+          ]
+        },
+        "scenarios": {
+          "missions": []
+        },
+        "trajectory": {
+          "missions": [
+            "M53",
+            "M56"
+          ]
+        }
+      },
+      "activeTabs": [
+        "intelligence",
+        "trajectory"
+      ]
+    },
+    {
+      "id": "cc-ir",
+      "label": "Investor Relations",
+      "group": "Stakeholders & Strategy",
+      "icon": "💬",
+      "headline": "2 missions, from monthly to quarterly",
+      "health": {
+        "onTrack": 1,
+        "attention": 0,
+        "offTrack": 1,
+        "total": 2,
+        "pct": 50
+      },
+      "automation": {
+        "covered": 1,
+        "total": 2
+      },
+      "trend12": [
+        41,
+        36,
+        33,
+        38,
+        46,
+        47,
+        41,
+        39,
+        45,
+        53,
+        53,
+        50
+      ],
+      "headlineCaps": [
+        "CAP-54",
+        "CAP-53",
+        "CAP-27"
+      ],
+      "flagged": [
+        "M32"
+      ],
+      "isOverview": false,
+      "overviewObjectives": [],
+      "missions": [
+        "M32",
+        "M33"
+      ],
+      "missionCount": 2,
+      "capabilityCount": 3,
+      "defaultWidgets": [
+        "CAP-53",
+        "CAP-27",
+        "CAP-54"
+      ],
+      "tabs": {
+        "pulse": {
+          "missions": []
+        },
+        "intelligence": {
+          "missions": [
+            "M33"
+          ]
+        },
+        "scenarios": {
+          "missions": []
+        },
+        "trajectory": {
+          "missions": [
+            "M32"
+          ]
+        }
+      },
+      "activeTabs": [
+        "intelligence",
+        "trajectory"
+      ]
+    },
+    {
+      "id": "cc-transform",
+      "label": "Finance Leadership & Transformation",
+      "group": "Stakeholders & Strategy",
+      "icon": "🚀",
+      "headline": "2 missions, from monthly to quarterly",
+      "health": {
+        "onTrack": 1,
+        "attention": 1,
+        "offTrack": 0,
+        "total": 2,
+        "pct": 50
+      },
+      "automation": {
+        "covered": 1,
+        "total": 2
+      },
+      "trend12": [
+        41,
+        36,
+        33,
+        38,
+        46,
+        47,
+        41,
+        39,
+        45,
+        53,
+        53,
+        50
+      ],
+      "headlineCaps": [
+        "CAP-20",
+        "CAP-66",
+        "CAP-68",
+        "CAP-77"
+      ],
+      "flagged": [
+        "M58"
+      ],
+      "isOverview": false,
+      "overviewObjectives": [],
+      "missions": [
+        "M58",
+        "M59"
+      ],
+      "missionCount": 2,
+      "capabilityCount": 5,
+      "defaultWidgets": [
+        "CAP-77",
+        "CAP-69",
+        "CAP-20",
+        "CAP-66",
+        "CAP-68"
+      ],
+      "tabs": {
+        "pulse": {
+          "missions": []
+        },
+        "intelligence": {
+          "missions": [
+            "M59"
+          ]
+        },
+        "scenarios": {
+          "missions": []
+        },
+        "trajectory": {
+          "missions": [
+            "M58"
+          ]
+        }
+      },
+      "activeTabs": [
+        "intelligence",
+        "trajectory"
+      ]
+    }
+  ],
+  "cadenceToTab": {
+    "Daily": "pulse",
+    "Weekly": "pulse",
+    "Fortnightly": "intelligence",
+    "Monthly": "intelligence",
+    "Ad hoc": "scenarios",
+    "Quarterly": "trajectory",
+    "Annual": "trajectory"
+  }
+}
