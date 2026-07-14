@@ -175,13 +175,13 @@ button{font-family:inherit;cursor:pointer}
 /* ---- pattern library ---- */
 .lib{padding:22px 26px 50px;max-width:1320px;margin:0 auto}
 .lib-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:16px}
-.matrix{display:flex;gap:10px}
-.mx{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 12px;min-width:104px;cursor:pointer;box-shadow:var(--shadow);transition:transform .1s}
-.mx:hover{transform:translateY(-2px)}
-.mx b{font-size:20px;font-weight:800;display:block;line-height:1}
-.mx span{font-size:10.5px;color:var(--muted);display:block;margin:2px 0 6px}
-.mxbar{display:flex;height:5px;border-radius:3px;overflow:hidden;background:#f3f4f6}
-.mxbar i{display:block}
+/* compact stat row (replaced the 11-tile category matrix, which duplicated the chips) */
+.lib-stats{display:flex;gap:10px}
+.lstat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:104px;box-shadow:0 1px 2px rgba(17,24,39,.04)}
+.lstat b{font-size:20px;font-weight:800;display:block;line-height:1;color:var(--ink)}
+.lstat b.acc{color:var(--accent)} .lstat b.ok{color:var(--med)}
+.lstat span{font-size:10px;color:var(--muted);display:block;margin-top:3px;
+  font-weight:600;text-transform:uppercase;letter-spacing:.04em}
 
 .fbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
 .search{flex:1;min-width:220px;border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:13px;font-family:inherit;background:var(--panel)}
@@ -191,20 +191,52 @@ button{font-family:inherit;cursor:pointer}
 .chip-f.on{background:var(--brand);color:#fff;border-color:var(--brand)}
 .chip-p.on{background:var(--pc,var(--brand));color:#fff;border-color:transparent}
 
-.lib-md{display:grid;grid-template-columns:380px 1fr;gap:18px;align-items:start}
-.lib-list{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;max-height:calc(100vh - 230px);overflow-y:auto}
-.prow{display:flex;align-items:center;gap:11px;padding:11px 14px;border-bottom:1px solid var(--line);cursor:pointer}
-.prow:hover{background:#f9fafb}
-.prow.sel{background:#fff7ed;box-shadow:inset 3px 0 0 var(--brand2)}
-.pnum{flex:0 0 auto;width:26px;height:26px;border-radius:7px;color:#fff;display:grid;place-items:center;font-weight:800;font-size:12px}
-.pnum.lg{width:42px;height:42px;font-size:18px;border-radius:10px}
-.pmain{flex:1;min-width:0}
-.pn{font-weight:650;font-size:13px}
-.pc{font-size:11px;color:var(--muted)}
-.pf{font-size:10.5px;color:var(--diag);max-width:120px;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.lib-none{padding:30px;text-align:center;color:var(--muted)}
+/* master-detail: a 2-up card grid scans, the detail pane stays pinned alongside */
+.lib-md{display:grid;grid-template-columns:1fr 420px;gap:18px;align-items:start}
+.lib-list{max-height:calc(100vh - 210px);overflow-y:auto;padding-right:2px}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:1440px){.pgrid{grid-template-columns:1fr}}
+@media(max-width:1100px){.lib-md{grid-template-columns:1fr}.pgrid{grid-template-columns:1fr 1fr}}
 
-.lib-detail{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 24px}
+.pcard{display:block;width:100%;text-align:left;font:inherit;cursor:pointer;
+  background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:14px 16px;
+  box-shadow:0 1px 3px rgba(17,24,39,.04);transition:border-color .12s,box-shadow .12s,transform .1s}
+.pcard:hover{border-color:#d1d5db;transform:translateY(-1px)}
+.pcard.sel{border-color:var(--accent);box-shadow:0 0 0 2px rgba(244,122,30,.14),0 1px 3px rgba(17,24,39,.04)}
+
+.pcard-h{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.pnum{flex:0 0 auto;width:28px;height:28px;border-radius:8px;color:#fff;display:grid;place-items:center;font-weight:800;font-size:12px}
+.pnum.lg{width:42px;height:42px;font-size:18px;border-radius:10px}
+.pcard .pn{flex:1;min-width:0;font-weight:750;font-size:14px;letter-spacing:-.01em;color:var(--ink)}
+.pn{font-weight:650;font-size:13px}
+
+/* the analyst's mental model, in their own words */
+.pquote{font-size:12px;font-style:italic;line-height:1.45;color:var(--diag-ink);
+  background:var(--diag-tint);border-left:3px solid var(--diag);
+  padding:7px 10px;border-radius:0 7px 7px 0;margin-bottom:10px}
+
+/* happy path */
+.pflow{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-bottom:9px}
+.pflow-k{font-size:9px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--med);margin-right:3px}
+.pstep{font-family:var(--mono);font-size:10px;font-weight:600;background:var(--ok-tint);
+  border:1px solid #a7f3d0;color:#166534;padding:2px 7px;border-radius:5px;white-space:nowrap}
+.pstep.more{background:var(--fill);border-color:var(--line);color:var(--muted)}
+.pseq{display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.parr{color:var(--med);font-size:10px}
+
+.pcard-f{display:flex;justify-content:space-between;align-items:center;gap:8px;
+  font-size:11px;color:var(--muted);font-weight:600;border-top:1px solid var(--line);padding-top:8px}
+.pcard-gate{color:var(--high);font-weight:700}
+.pcard-sv b{color:var(--brand2)}
+.pcard-sv.muted{opacity:.6;font-weight:500}
+.lib-none{padding:30px;text-align:center;color:var(--muted);background:var(--panel);
+  border:1px solid var(--line);border-radius:var(--radius)}
+
+.lib-detail{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:22px 24px;position:sticky;top:calc(var(--topbar-h) + 12px);
+  max-height:calc(100vh - 90px);overflow-y:auto}
+/* the pane is narrower than it was — let the three layer cards stack */
+.lib-detail .d-grid{grid-template-columns:1fr}
 .d-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:6px}
 .d-head .cat{font-size:12px;color:var(--muted);margin:2px 0 6px}
 .badge.ghost{background:#f3f4f6 !important;color:var(--diag) !important;margin-left:6px}
