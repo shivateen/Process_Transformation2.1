@@ -58,7 +58,7 @@
   function kpi(v, l) { return '<div class="fkpi"><b>' + v + '</b><span>' + l + '</span></div>'; }
 
   function distBar(dist, total) {
-    var seg = [["Full-auto", "#27ae60"], ["Assisted", "#e67e22"], ["Human-led", "#c0392b"]];
+    var seg = [["Full-auto", "#059669"], ["Assisted", "#d97706"], ["Human-led", "#dc2626"]];
     var bars = seg.filter(function (s) { return dist[s[0]]; }).map(function (s) {
       return '<i style="flex:' + dist[s[0]] + ';background:' + s[1] + '" title="' + s[0] + '"></i>';
     }).join("");
@@ -156,9 +156,9 @@
 
   function distHtml(d) {
     var total = d.automated + d.semi + d.manual || 1;
-    var seg = [["automated", d.automated, "#27ae60", "Automated"],
-               ["semi", d.semi, "#e67e22", "Semi-automated"],
-               ["manual", d.manual, "#c0392b", "Manual"]];
+    var seg = [["automated", d.automated, "#059669", "Automated"],
+               ["semi", d.semi, "#d97706", "Semi-automated"],
+               ["manual", d.manual, "#dc2626", "Manual"]];
     var bars = seg.filter(function (s) { return s[1]; }).map(function (s) {
       return '<i style="flex:' + s[1] + ';background:' + s[2] + '" title="' + s[3] + '"></i>';
     }).join("");

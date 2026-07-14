@@ -58,14 +58,14 @@
     var iw = W - pl - pr, ih = H - pt - pb, MX = 40;
     function X(v) { return pl + iw * v / MX; }
     function Y(v) { return pt + ih * (1 - v / MX); }
-    var diag = '<line x1="' + X(0) + '" y1="' + Y(0) + '" x2="' + X(MX) + '" y2="' + Y(MX) + '" stroke="#dfe6ee" stroke-dasharray="3 3"/>';
-    var nrm = D.stage1.normal.map(function (p) { return '<circle cx="' + X(p.x) + '" cy="' + Y(p.y) + '" r="3.2" fill="#13808f" opacity="0.55"/>'; }).join("");
-    var ano = D.stage1.anomaly.map(function (p) { return '<circle class="anopt" cx="' + X(p.x) + '" cy="' + Y(p.y) + '" r="0" fill="#c0392b"/>'; }).join("");
-    var ring = '<ellipse class="anoring" cx="' + X(12) + '" cy="' + Y(30) + '" rx="0" ry="0" fill="none" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="4 3"/>';
+    var diag = '<line x1="' + X(0) + '" y1="' + Y(0) + '" x2="' + X(MX) + '" y2="' + Y(MX) + '" stroke="#e5e7eb" stroke-dasharray="3 3"/>';
+    var nrm = D.stage1.normal.map(function (p) { return '<circle cx="' + X(p.x) + '" cy="' + Y(p.y) + '" r="3.2" fill="#059669" opacity="0.55"/>'; }).join("");
+    var ano = D.stage1.anomaly.map(function (p) { return '<circle class="anopt" cx="' + X(p.x) + '" cy="' + Y(p.y) + '" r="0" fill="#dc2626"/>'; }).join("");
+    var ring = '<ellipse class="anoring" cx="' + X(12) + '" cy="' + Y(30) + '" rx="0" ry="0" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4 3"/>';
     return '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" class="dsvg">' +
       diag + nrm + ring + ano +
-      '<text x="' + (pl + iw / 2) + '" y="' + (H - 4) + '" text-anchor="middle" font-size="9" fill="#9aa7b5">' + esc(D.stage1.xLabel) + '</text>' +
-      '<text x="10" y="' + (pt + ih / 2) + '" text-anchor="middle" font-size="9" fill="#9aa7b5" transform="rotate(-90 10 ' + (pt + ih / 2) + ')">' + esc(D.stage1.yLabel) + '</text>' +
+      '<text x="' + (pl + iw / 2) + '" y="' + (H - 4) + '" text-anchor="middle" font-size="9" fill="#9ca3af">' + esc(D.stage1.xLabel) + '</text>' +
+      '<text x="10" y="' + (pt + ih / 2) + '" text-anchor="middle" font-size="9" fill="#9ca3af" transform="rotate(-90 10 ' + (pt + ih / 2) + ')">' + esc(D.stage1.yLabel) + '</text>' +
       '</svg>';
   }
 
@@ -74,11 +74,11 @@
     var W = 300, H = 200;
     var bubbles = D.stage2.clusters.map(function (c, i) {
       var cx = 24 + c.x * (W - 48), cy = 18 + c.y * (H - 48), r = 6 + c.size * 1.6;
-      var fill = c.anomaly ? "#c0392b" : "#8e44ad";
+      var fill = c.anomaly ? "#dc2626" : "#8b5cf6";
       var op = c.anomaly ? 0.18 : 0.12;
       return '<g class="bub" data-i="' + i + '">' +
         '<circle class="bubc' + (c.anomaly ? " ano" : "") + '" cx="' + cx + '" cy="' + cy + '" r="0" data-r="' + r + '" fill="' + fill + '" fill-opacity="' + op + '" stroke="' + fill + '" stroke-width="1.5"/>' +
-        '<text x="' + cx + '" y="' + cy + '" text-anchor="middle" dy="3" font-size="9" font-weight="600" fill="' + (c.anomaly ? "#922" : "#5d4777") + '" opacity="0">' + c.size + '</text>' +
+        '<text x="' + cx + '" y="' + cy + '" text-anchor="middle" dy="3" font-size="9" font-weight="600" fill="' + (c.anomaly ? "#b91c1c" : "#6b46a3") + '" opacity="0">' + c.size + '</text>' +
         '</g>';
     }).join("");
     return '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" class="dsvg">' + bubbles + '</svg>';

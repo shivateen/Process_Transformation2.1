@@ -24,6 +24,27 @@ CSS — `setTheme`/`restoreTheme`/`persistTheme` and every `body.dark` rule have
 The **"Why" link and the Provocation entry point are also removed**: `provocation.js` still
 ships in the bundle but is unreachable — no sidebar entry, no link.
 
+### The palette — cool neutral, one system
+
+Every colour in the app resolves to a **token in `:root`** or to a step on one of seven shared
+ramps (gray · orange · amber · green · red · blue · violet). There are no hand-mixed one-off
+tints left; a stray hex is a bug. The chrome (topbar + sidebar) is near-black `--brand:#111219`,
+the canvas is `--bg:#f5f6f8`, and **Tiger orange `--accent:#f47a1e` is the only brand colour**,
+reserved for the accent rail, the logo mark and selected state. Status is always
+`--med` green / `--high` amber / `--crit` red — never improvised.
+
+The topbar is a fixed **52px** row; `--topbar-h` drives the sticky sidebar, the Command Centre
+tab bar and every full-height pane. Change it in one place.
+
+**Type is DM Sans + JetBrains Mono, base64-embedded** into the single-file output by
+`font_css()` in `build.py` (reading `src/fonts/*.woff2`). There is deliberately **no Google
+Fonts `<link>`** — the accelerator must render correctly from `file://` with no network. Adding
+a font means dropping a woff2 in `src/fonts/` and appending to `FONT_FACES`.
+
+Per-function accents (`build_taxonomy.py`) are a **categorical** set — ten distinct hues, one
+per function, O2C taking Tiger orange. They must stay distinguishable side by side, so check
+for collisions when adding a function.
+
 There are **no numbered stage badges** anywhere in the nav — order is carried by the stacking.
 
 ### 1 · Transformation Builder (`?persona=builder`, the default)
@@ -245,7 +266,8 @@ Generated. All edits go to `src/` (or the `scripts/` generators).
 | `src/js/governance.js` | Action & Governance (trust modes + Saga simulator) — Run & Govern sub-view |
 | `src/js/discovery.js` | Discovery Engine (math→text→LLM pipeline) — Discover & Fit sub-view |
 | `src/js/roi.js` | ROI & Attribution — Run & Govern sub-view |
-| `src/css/app.css` | Tiger brand theme, **light only** (sidebar `.sb-*` + Command Centre styles appended at the end; every `body.dark` / `.theme-toggle` / `.whylink` / horizontal-nav rule has been stripped) |
+| `src/css/app.css` | **Cool-neutral light theme** — tokens in `:root`, every colour on a shared ramp (sidebar `.sb-*` + Command Centre styles appended at the end; every `body.dark` / `.theme-toggle` / `.whylink` / horizontal-nav rule has been stripped) |
+| `src/fonts/*.woff2` | DM Sans + JetBrains Mono (latin + latin-ext subsets). Base64-inlined at build time; **not** fetched from a CDN |
 | `src/html/cockpit_body.html` | Platform shell markup (topbar + `#sidebar` + `#workcrumb` + `#view`; no `#modnav`, no `#themeToggle`, no `#whyLink`) |
 | `src/apps/index.html` | Platform landing page — the two tiles |
 | `scripts/build.py` | Regenerates data + assembles everything → `public/processiq.html` |
@@ -254,9 +276,13 @@ Generated. All edits go to `src/` (or the `scripts/` generators).
 
 **The two-tile architecture is live, light-theme only, with a shared vertical sidebar.** Boots
 into the Transformation Builder (Studio) by default; `?persona=command` opens the Command
-Centre. The build inlines the shell + engine + all modules + seven data files into one
-self-contained `public/processiq.html` (~1.84 MB). Fitment verdicts, the runtime simulator and
-Pattern Studio's mining pipeline are all deterministic; nothing invents data.
+Centre. The build inlines the shell + engine + all modules + seven data files **and the fonts**
+into one self-contained `public/processiq.html` (~2.17 MB). Fitment verdicts, the runtime
+simulator and Pattern Studio's mining pipeline are all deterministic; nothing invents data.
+
+The **cool-neutral visual refresh is applied across both surfaces** (see "The palette" above).
+It was a pure re-skin: the DOM every view renders is byte-for-byte identical to the previous
+build, so no behaviour changed.
 
 Known gaps / next increments:
 - **Capability KPI data is synthetic and shape-driven**, generated per widget kind rather than

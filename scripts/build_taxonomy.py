@@ -106,7 +106,7 @@ def build_themes():
             "id": "working-capital",
             "name": "Working Capital Optimization",
             "icon": "trending-up",
-            "accent": "#1E8E7E",
+            "accent": "#059669",
             "tagline": "Collect faster, pay smarter, deploy idle cash — compress the cash conversion cycle.",
             "compoundKPI": {
                 "name": "Cash Conversion Cycle",
@@ -139,7 +139,7 @@ def build_themes():
             "id": "revenue-leakage",
             "name": "Revenue Leakage Prevention",
             "icon": "shield-alert",
-            "accent": "#C62828",
+            "accent": "#dc2626",
             "tagline": "Stop money walking out the door through disputes, deductions, write-offs, and pricing errors.",
             "compoundKPI": {
                 "name": "Revenue Leakage Rate",
@@ -164,7 +164,7 @@ def build_themes():
             "id": "close-acceleration",
             "name": "Financial Close Acceleration",
             "icon": "clock",
-            "accent": "#1E5F8E",
+            "accent": "#2563eb",
             "tagline": "Compress close from 10 days to 4. Every day saved is a day for analysis instead of reconciliation.",
             "compoundKPI": {
                 "name": "Close Cycle Days",
@@ -189,7 +189,7 @@ def build_themes():
             "id": "controls-integrity",
             "name": "Compliance & Controls Integrity",
             "icon": "shield-check",
-            "accent": "#6D4B9C",
+            "accent": "#8b5cf6",
             "tagline": "Zero material weaknesses. Embedded controls, continuous monitoring, audit-ready always.",
             "compoundKPI": {
                 "name": "Control Health Score",
@@ -214,7 +214,7 @@ def build_themes():
             "id": "cash-visibility",
             "name": "Cash Visibility & Forecasting",
             "icon": "eye",
-            "accent": "#F57F17",
+            "accent": "#d97706",
             "tagline": "See your cash 13 weeks out with 90%+ accuracy. Predict customer payment behavior, not just due dates.",
             "compoundKPI": {
                 "name": "13-Week Forecast Accuracy",
@@ -403,7 +403,7 @@ def build_stub_functions():
     ]
     functions.append({
         "id": "p2p", "name": "Procure-to-Pay", "short": "P2P", "icon": "🧾",
-        "accent": "#7c4dff", "status": "live",
+        "accent": "#8b5cf6", "status": "live",
         "tagline": "Invoice integrity, matching, and payment timing that protects cash.",
         "valueChain": build_p2p_value_chain(),
         "processes": [{
@@ -505,7 +505,7 @@ def build_stub_functions():
     ]
     functions.append({
         "id": "r2r", "name": "Record-to-Report", "short": "R2R", "icon": "📒",
-        "accent": "#0aa3a3", "status": "sample",
+        "accent": "#0891b2", "status": "sample",
         "tagline": "A faster, cleaner close — reconciliations, accruals, intercompany.",
         "valueChain": build_r2r_value_chain(),
         "processes": [{
@@ -609,7 +609,7 @@ def build_stub_functions():
     ]
     functions.append({
         "id": "h2r", "name": "Hire-to-Retire", "short": "HR", "icon": "👤",
-        "accent": "#e0529c", "status": "sample",
+        "accent": "#db2777", "status": "sample",
         "tagline": "Onboarding that's ready on day one, compliantly.",
         "valueChain": build_h2r_value_chain(),
         "processes": [{
@@ -651,7 +651,7 @@ def build_stub_functions():
     ]
     functions.append({
         "id": "sc", "name": "Supply Chain", "short": "SC", "icon": "📦",
-        "accent": "#f08a24", "status": "sample",
+        "accent": "#d97706", "status": "sample",
         "tagline": "Availability and on-time delivery, exception-first.",
         "processes": [{
             "id": "sc-fulfill", "name": "Order Fulfillment & Replenishment",
@@ -745,7 +745,7 @@ def build_stub_functions():
     ]
     functions.append({
         "id": "fpa", "name": "Financial Planning & Analysis", "short": "FP&A", "icon": "📊",
-        "accent": "#3f5efb", "status": "sample",
+        "accent": "#2563eb", "status": "sample",
         "tagline": "Rolling forecast, variance insight, and decision support — the perform half of finance.",
         "valueChain": build_fpa_value_chain(),
         "processes": [{
@@ -842,7 +842,7 @@ def build_stub_functions():
     ]
     functions.append({
         "id": "tcm", "name": "Treasury & Cash Management", "short": "TCM", "icon": "🏦",
-        "accent": "#1f9d76", "status": "sample",
+        "accent": "#059669", "status": "sample",
         "tagline": "Cash visibility, liquidity, and FX / covenant risk — money in motion.",
         "valueChain": build_tcm_value_chain(),
         "processes": [{
@@ -938,7 +938,7 @@ def build_stub_functions():
     ]
     functions.append({
         "id": "tax", "name": "Tax Management", "short": "TAX", "icon": "🧮",
-        "accent": "#2d6cdf", "status": "sample",
+        "accent": "#4f46e5", "status": "sample",
         "tagline": "Determination, compliance, and provisioning — accurate, penalty-free tax.",
         "valueChain": build_tax_value_chain(),
         "processes": [{
@@ -1034,7 +1034,7 @@ def build_stub_functions():
     ]
     functions.append({
         "id": "tne", "name": "Travel & Expense", "short": "T&E", "icon": "💳",
-        "accent": "#d68910", "status": "sample",
+        "accent": "#65a30d", "status": "sample",
         "tagline": "Expense capture, policy, and reimbursement — spend that behaves.",
         "valueChain": build_tne_value_chain(),
         "processes": [{
@@ -1133,7 +1133,7 @@ def build_stub_functions():
     ]
     functions.append({
         "id": "icc", "name": "Internal Controls & Compliance", "short": "GRC", "icon": "🛡️",
-        "accent": "#c0392b", "status": "sample",
+        "accent": "#dc2626", "status": "sample",
         "tagline": "Continuous control monitoring and segregation of duties — trust, evidenced.",
         "valueChain": build_icc_value_chain(),
         "processes": [{
@@ -1524,7 +1524,7 @@ def build_ar_function(patterns):
     cat = lambda c: ids_for_category(patterns, c)
     return {
         "id": "o2c", "name": "Order-to-Cash", "short": "O2C", "icon": "💵",
-        "accent": "#e67e22", "status": "live",
+        "accent": "#f47a1e", "status": "live",
         "tagline": "AR collections, disputes, credit risk — the fully-built core.",
         "valueChain": build_o2c_value_chain(),
         "processes": [{

@@ -402,7 +402,8 @@
     { name: "Sense", sub: "observe" }, { name: "Diagnose", sub: "analyse" },
     { name: "Decide", sub: "route" }, { name: "Act", sub: "execute" }
   ];
-  var SWL_COLORS = ["#8e44ad", "#2980b9", "#16a085", "#d68910", "#c0392b", "#7c4dff", "#e0529c"];
+  // categorical — seven swimlanes, hues kept far enough apart to stay separable
+  var SWL_COLORS = ["#8b5cf6", "#2563eb", "#059669", "#d97706", "#dc2626", "#0891b2", "#db2777"];
 
   // classify an action-block key into a cognitive stage (0..3), first match wins
   function phaseOf(key) {

@@ -50,13 +50,13 @@
   /* ---------- confidence gauge (SVG) ---------- */
   function gauge(pct) {
     var r = 34, c = 2 * Math.PI * r, off = c * (1 - pct);
-    var col = pct > 0.85 ? "#8e44ad" : pct > 0.6 ? "#d68910" : "#9aa7b5";
+    var col = pct > 0.85 ? "#8b5cf6" : pct > 0.6 ? "#d97706" : "#9ca3af";
     return '<svg class="gauge" width="92" height="92" viewBox="0 0 92 92">' +
-      '<circle cx="46" cy="46" r="' + r + '" fill="none" stroke="#eef2f6" stroke-width="9"/>' +
+      '<circle cx="46" cy="46" r="' + r + '" fill="none" stroke="#e5e7eb" stroke-width="9"/>' +
       '<circle cx="46" cy="46" r="' + r + '" fill="none" stroke="' + col + '" stroke-width="9" stroke-linecap="round" ' +
       'stroke-dasharray="' + c + '" stroke-dashoffset="' + off + '" transform="rotate(-90 46 46)"/>' +
       '<text x="46" y="44" text-anchor="middle" font-size="21" font-weight="800" fill="' + col + '">' + (pct * 100 | 0) + '</text>' +
-      '<text x="46" y="60" text-anchor="middle" font-size="10" fill="#5d6b7d">% CONF</text></svg>';
+      '<text x="46" y="60" text-anchor="middle" font-size="10" fill="#6b7280">% CONF</text></svg>';
   }
 
   /* ---------- main cockpit ---------- */
