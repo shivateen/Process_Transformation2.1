@@ -2292,6 +2292,89 @@ textarea.pmi-in{resize:vertical;line-height:1.45}
 .cc-own.pat{background:var(--brand2);border-color:var(--brand2);color:#fff}
 .cc-own.pat:hover{background:var(--accent);border-color:var(--accent);color:#fff}
 
+/* ====================================================================== */
+/* TUTORIAL — spotlight, tooltip, hotspots, help menu                      */
+/* Colours come from the :root ramps; the spec's hardcoded hexes (#F08C1E, */
+/* #404040, Poppins) are deliberately not used — the accent here is the    */
+/* app's own --accent, and type inherits DM Sans.                          */
+/* ====================================================================== */
+
+/* topbar help button */
+.help-btn{width:28px;height:28px;flex-shrink:0;border-radius:50%;border:1px solid rgba(255,255,255,.22);
+  background:rgba(255,255,255,.06);color:#fff;font-size:13px;font-weight:700;line-height:1;
+  display:grid;place-items:center;transition:background .12s,border-color .12s}
+.help-btn:hover{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.4)}
+
+/* ---- spotlight layer ---- */
+.tut-layer{position:fixed;inset:0;z-index:9000;pointer-events:none}
+.tut-mask{position:fixed;background:rgba(17,18,25,.55);pointer-events:auto}
+.tut-ring{position:fixed;border:2px solid var(--accent);border-radius:10px;pointer-events:none;
+  box-shadow:0 0 0 3px rgba(244,122,30,.22);transition:top .18s,left .18s,width .18s,height .18s}
+body.tut-on{overflow:hidden}
+
+/* ---- tooltip ---- */
+.tut-tip{position:fixed;width:380px;max-width:calc(100vw - 24px);background:var(--panel);
+  border:1px solid var(--line);border-radius:12px;box-shadow:0 4px 20px rgba(17,24,39,.16);
+  pointer-events:auto;overflow:hidden;font-size:13px;color:var(--ink)}
+.tut-tip.tut-center{top:50%;left:50%;transform:translate(-50%,-50%);width:440px}
+.tut-bar{height:3px;background:var(--fill)}
+.tut-bar i{display:block;height:100%;background:var(--accent);transition:width .2s}
+.tut-body{padding:16px 18px 4px}
+.tut-count{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.tut-body h3{margin:4px 0 7px;font-size:15.5px;font-weight:750;letter-spacing:-.01em}
+.tut-body p{margin:0;line-height:1.55;color:var(--ink-2)}
+.tut-body code{font-family:var(--mono);font-size:10.5px;background:var(--fill);border:1px solid var(--line);
+  border-radius:5px;padding:2px 5px;display:inline-block;margin-top:5px;line-height:1.7;color:var(--ink-2)}
+.tut-acts{display:flex;align-items:center;gap:8px;padding:14px 18px 16px}
+.tut-sp{flex:1}
+.tut-acts button{font-size:12.5px;font-weight:650;border-radius:8px;padding:7px 14px;font-family:inherit}
+.tut-skip{background:none;border:none;color:var(--muted);font-weight:500;padding-left:0 !important}
+.tut-skip:hover{color:var(--ink);text-decoration:underline}
+.tut-back{background:var(--panel);border:1px solid var(--line);color:var(--ink-2)}
+.tut-back:hover{background:var(--hover)}
+.tut-next{background:var(--accent);border:1px solid var(--accent);color:#fff}
+.tut-next:hover{background:var(--brand2);border-color:var(--brand2)}
+.tut-next:focus-visible,.tut-back:focus-visible,.tut-skip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* the caret points back at the spotlight */
+.tut-tip::after{content:'';position:absolute;width:10px;height:10px;background:var(--panel);
+  border:1px solid var(--line);transform:rotate(45deg)}
+.tut-tip.tut-center::after,.tut-tip.tut-sheet::after{display:none}
+.tut-tip.down::after{top:-6px;left:50%;margin-left:-5px;border-right:none;border-bottom:none}
+.tut-tip.up::after{bottom:-6px;left:50%;margin-left:-5px;border-left:none;border-top:none}
+.tut-tip.right::after{left:-6px;top:50%;margin-top:-5px;border-right:none;border-top:none}
+.tut-tip.left::after{right:-6px;top:50%;margin-top:-5px;border-left:none;border-bottom:none}
+
+/* below 700px the tooltip becomes a bottom sheet */
+.tut-tip.tut-sheet{top:auto !important;left:0 !important;right:0;bottom:0;width:100%;max-width:100%;
+  border-radius:14px 14px 0 0;border-bottom:none;transform:none}
+
+/* ---- hotspots ---- */
+.tut-hots{position:fixed;inset:0;z-index:800;pointer-events:none}
+.tut-hot{position:fixed;width:14px;height:14px;padding:0;border:none;background:none;
+  pointer-events:auto;display:grid;place-items:center}
+.tut-hot-d{width:10px;height:10px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 0 2px var(--panel);grid-area:1/1}
+.tut-hot-r{width:10px;height:10px;border-radius:50%;background:var(--accent);grid-area:1/1;
+  animation:tutPulse 1.8s ease-out infinite}
+@keyframes tutPulse{0%{transform:scale(1);opacity:.65}70%{transform:scale(2.4);opacity:0}100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.tut-hot-r{animation:none}}
+
+/* ---- help menu ---- */
+.tut-menu{position:fixed;z-index:9100;min-width:250px;background:var(--panel);border:1px solid var(--line);
+  border-radius:12px;box-shadow:0 4px 20px rgba(17,24,39,.16);padding:6px;overflow:hidden}
+.tut-menu-h{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--muted);padding:7px 10px 5px}
+.tut-mi{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:none;border:none;
+  font-family:inherit;font-size:12.5px;font-weight:600;color:var(--ink);padding:8px 10px;border-radius:8px}
+.tut-mi:hover{background:var(--hover)}
+.tut-mi-n{flex:1}
+.tut-mi-d{font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--ok-ink);background:var(--ok-tint);border-radius:4px;padding:2px 5px}
+.tut-menu-r{height:1px;background:var(--line);margin:5px 0}
+.tut-mi.reset{color:var(--muted);font-weight:500}
+.tut-mi.reset:hover{color:var(--crit);background:var(--crit-tint)}
+
 </style>
 </head>
 <body>
@@ -2304,6 +2387,7 @@ textarea.pmi-in{resize:vertical;line-height:1.45}
     </div>
     <div class="stat"><b id="varStat">$0</b><span>Value at Risk</span></div>
     <div class="stat"><b id="dateStat">—</b><span>As of</span></div>
+    <button class="help-btn" id="helpBtn" data-tutorial="help" title="Learning &amp; guided tours" aria-label="Learning and guided tours">?</button>
   </div>
 
   <div class="shellrow" id="shellrow">
@@ -56814,7 +56898,7 @@ textarea.pmi-in{resize:vertical;line-height:1.45}
     }
     var nMined = MS.accepted.length;
     view.innerHTML =
-      '<div class="ps-tabs">' +
+      '<div class="ps-tabs" data-tutorial="ps-tabs">' +
         '<button class="ps-tab' + (state.tab === "library" ? " on" : "") + '" data-t="library">Library' +
           '<small>' + patterns.length + ' patterns</small></button>' +
         '<button class="ps-tab' + (state.tab === "mine" ? " on" : "") + '" data-t="mine">Mine' +
@@ -57490,7 +57574,7 @@ textarea.pmi-in{resize:vertical;line-height:1.45}
   function renderMine(view) {
     var steps = (MIN.meta && MIN.meta.steps) || [];
     var idx = steps.map(function (s) { return s.id; }).indexOf(MS.step);
-    var rail = '<div class="mn-rail">' + steps.map(function (s, i) {
+    var rail = '<div class="mn-rail" data-tutorial="ps-stepper">' + steps.map(function (s, i) {
       return '<button class="mn-rs' + (i === idx ? " on" : "") + (i < idx ? " done" : "") + '" data-step="' + s.id + '">' +
         '<span class="mn-rn">' + (i < idx ? "✓" : i + 1) + '</span>' +
         '<span class="mn-rt"><b>' + esc(s.label) + '</b><small>' + esc(s.blurb) + '</small></span></button>' +
@@ -57539,7 +57623,7 @@ textarea.pmi-in{resize:vertical;line-height:1.45}
         '<p class="mn-lead">The library you already have becomes the few-shot example set — what comes ' +
         'back is what it does <i>not</i> yet contain. Works for any function, not just the ones we ship.</p></div></div>' +
       toggle +
-      '<div class="mn-card">' + fnPick +
+      '<div class="mn-card" data-tutorial="ps-context">' + fnPick +
         '<div class="mn-q">' + esc(objQ) + '</div>' +
         '<textarea class="mn-obj" rows="3" placeholder="e.g. &quot;Reduce DSO by 10 days&quot; · &quot;Cut the close from 10 days to 4&quot; · ' +
           '&quot;Reduce inventory carrying cost by 15%&quot; · &quot;Improve forecast accuracy to 95%&quot;">' + esc(c.objective) + '</textarea>' +
@@ -59930,7 +60014,7 @@ textarea.pmi-in{resize:vertical;line-height:1.45}
       delta: Math.round((a.covered / (a.total || 1)) * 100) + "% coverage",
       direction: "flat", sub: "missions with agent coverage",
     });
-    return '<div class="cc-scorecard">' + tiles.map(statTile).join("") + '</div>';
+    return '<div class="cc-scorecard" data-tutorial="cc-scorecard">' + tiles.map(statTile).join("") + '</div>';
   }
 
   // one coloured block per mission, rows = lenses (or objectives, for the CFO).
@@ -59949,7 +60033,9 @@ textarea.pmi-in{resize:vertical;line-height:1.45}
     }
 
     var grid = rows.map(function (r) {
-      return '<div class="cc-hm-row">' +
+      // data-row is the theme letter on the CFO overview, the lens id on a persona —
+      // it is what a tutorial step targets to find a specific row.
+      return '<div class="cc-hm-row" data-tutorial="cc-heatmap-row" data-row="' + (r.obj || r.tab || "") + '">' +
         '<span class="cc-hm-l">' + esc(r.label) + '</span>' +
         '<span class="cc-hm-blocks">' + r.ms.map(function (m) {
           var mm = MIS[m];
@@ -59965,7 +60051,7 @@ textarea.pmi-in{resize:vertical;line-height:1.45}
     var line = gapped(tr, lo, hi, w, h, pad);
     var area = line ? line + " L" + (w - pad) + "," + (h - pad) + " L" + pad + "," + (h - pad) + " Z" : "";
 
-    return '<div class="cc-hm">' +
+    return '<div class="cc-hm" data-tutorial="cc-heatmap">' +
       '<div class="cc-hm-head"><b>Mission health</b>' +
         '<span class="cc-hm-key"><i class="on-track"></i>On track<i class="attention"></i>Attention' +
         '<i class="off-track"></i>Off track</span></div>' +
@@ -59989,7 +60075,7 @@ textarea.pmi-in{resize:vertical;line-height:1.45}
         '<b>' + m + '</b> ' + esc(mm.name) +
         (p.isOverview && own ? ' <i>' + own.icon + " " + esc(own.label) + '</i>' : '') + '</button>';
     }).join('<span class="cc-at-sep">·</span>');
-    return '<div class="cc-attention">' +
+    return '<div class="cc-attention" data-tutorial="cc-attention">' +
       '<span class="cc-at-w">⚠ ' + f.length + ' mission' + (f.length > 1 ? "s" : "") + ' need attention</span>' +
       '<span class="cc-at-list">' + top + '</span>' +
       '<button class="cc-at-all" data-jump="' + f[0] + '" data-tab="' + MIS[f[0]].tab + '">View all →</button>' +
@@ -60000,7 +60086,7 @@ textarea.pmi-in{resize:vertical;line-height:1.45}
   /* BELOW THE FOLD — sticky tab bar + mission cards                         */
   /* ====================================================================== */
   function tabBar(p, active) {
-    return '<div class="cc-tabbar" id="ccTabbar">' +
+    return '<div class="cc-tabbar" id="ccTabbar" data-tutorial="cc-tabbar">' +
       TABS.filter(function (t) { return (p.activeTabs || []).indexOf(t.id) >= 0; })
         .map(function (t) {
           var n = p.isOverview ? 0 : (((p.tabs || {})[t.id] || {}).missions || []).length;
@@ -60031,7 +60117,7 @@ textarea.pmi-in{resize:vertical;line-height:1.45}
         '<button class="cc-inbuilder" data-view="patternstudio" data-m="' + mid + '">View in Builder →</button>' +
       '</div>';
 
-    return '<div class="mc ' + m.status + (col ? " collapsed" : "") + '" data-m="' + mid + '" id="mc-' + mid + '">' +
+    return '<div class="mc ' + m.status + (col ? " collapsed" : "") + '" data-tutorial="cc-mission" data-m="' + mid + '" id="mc-' + mid + '">' +
       '<button class="mc-head" data-toggle="' + mid + '">' +
         '<span class="mc-dot ' + m.status + '" title="' + m.status + '"></span>' +
         '<span class="mc-id">' + mid + '</span>' +
@@ -60045,7 +60131,7 @@ textarea.pmi-in{resize:vertical;line-height:1.45}
         (m.agentCoverage ? '<span class="mc-agent">⚡ agent covered</span>' : '') +
         '</div>') +
       (col || !pats.length ? "" :
-        '<div class="mc-pats"><span class="mc-pats-l">Powered by</span>' +
+        '<div class="mc-pats" data-tutorial="cc-patterns"><span class="mc-pats-l">Powered by</span>' +
         pats.slice(0, 6).map(function (x) {
           return '<button class="dq-pat" data-pat="' + x.id + '" title="Open in Pattern Studio">#' +
             x.id + ' ' + esc(x.name) + '</button>';
@@ -60300,6 +60386,783 @@ textarea.pmi-in{resize:vertical;line-height:1.45}
   }
 
   window.PIQ.modules.cc = { render: render };
+})();
+
+/* tutorial.js — on-screen tutorial + guided onboarding.
+ *
+ * A from-scratch replacement for react-joyride: this app has no React, no bundler
+ * and no network (it must render from file://), so a spotlight/tooltip driver is
+ * implemented here directly. Same feature set: tours, a branded tooltip, hotspots,
+ * a help menu, localStorage persistence and analytics events.
+ *
+ * Public API — window.PIQ.tutorial:
+ *   register(tour)          add a tour  (see tours.js / README.md)
+ *   registerHotspot(spec)   add a pulsing dot that launches a tour
+ *   startTour(id) endTour() nextStep() prevStep()
+ *   isTourCompleted(id) resetTour(id) resetAll() dismissHotspot(hid)
+ *   state                   { activeTour, currentStepIndex, completedTours, dismissedHotspots }
+ *
+ * A tour survives a page load. The Command Centre and the Builder are separate
+ * page loads (PIQ.goBuilder does a real navigation), so the golden-path tour that
+ * crosses between them persists {activeTour, currentStepIndex} and resumes on boot.
+ * That is why a step's before() MUST be idempotent — see README.md.
+ */
+(function () {
+  "use strict";
+  var PIQ = window.PIQ;
+  var LS = "processiq_tutorial_state";
+  var MOBILE = 700;          // below this the tooltip becomes a bottom sheet
+  var WAIT_MS = 1800;        // how long to wait for a step's target to appear
+  var PAD = 6;               // spotlight padding around the target
+
+  var TOURS = {};            // id -> tour
+  var HOTSPOTS = [];         // { id, selector, tourId, title }
+  var run = null;            // { tour, idx } while a tour is on screen
+  var layer = null, dots = null, menu = null;
+  var autoChecked = {};      // tourId -> already considered for auto-start this page
+
+  /* ---- state ----------------------------------------------------------- */
+
+  function load() {
+    var s = {};
+    try { s = JSON.parse(localStorage.getItem(LS)) || {}; } catch (e) { s = {}; }
+    return {
+      activeTour: s.activeTour || null,
+      currentStepIndex: s.currentStepIndex || 0,
+      completedTours: s.completedTours || [],
+      dismissedHotspots: s.dismissedHotspots || [],
+    };
+  }
+  var state = load();
+  function save() { try { localStorage.setItem(LS, JSON.stringify(state)); } catch (e) {} }
+
+  function isTourCompleted(id) { return state.completedTours.indexOf(id) >= 0; }
+
+  /* ---- analytics ------------------------------------------------------- */
+  // No analytics vendor is bundled. Events go out as a DOM CustomEvent so a host
+  // page can forward them; PIQ.tutorial.track can be reassigned to do otherwise.
+  function track(event, props) {
+    var detail = { event: event, props: props || {} };
+    try { window.dispatchEvent(new CustomEvent("processiq:analytics", { detail: detail })); } catch (e) {}
+    if (window.console && console.debug) console.debug("[analytics]", event, detail.props);
+  }
+
+  /* ---- helpers --------------------------------------------------------- */
+
+  function q(sel) {
+    if (!sel) return null;
+    var el;
+    try { el = document.querySelector(sel); } catch (e) { return null; }
+    if (!el) return null;
+    var r = el.getBoundingClientRect();
+    return (r.width || r.height) ? el : null;   // must be laid out, not display:none
+  }
+
+  function esc(s) {
+    return (s == null ? "" : String(s))
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  // a step's copy may be a string or a function of the live app state
+  function text(v) { return typeof v === "function" ? v() : v; }
+
+  // poll for a selector — a step's target may arrive a frame or a render later
+  function waitFor(sel, ms, cb) {
+    if (!sel) return cb(null);
+    var el = q(sel);
+    if (el) return cb(el);
+    var t0 = Date.now();
+    (function poll() {
+      var e = q(sel);
+      if (e) return cb(e);
+      if (Date.now() - t0 > ms) return cb(null);
+      setTimeout(poll, 60);
+    })();
+  }
+
+  /* ---- the spotlight layer --------------------------------------------- */
+
+  function ensureLayer() {
+    if (layer) return layer;
+    layer = document.createElement("div");
+    layer.className = "tut-layer";
+    layer.id = "tutLayer";
+    layer.innerHTML =
+      '<div class="tut-mask t"></div><div class="tut-mask r"></div>' +
+      '<div class="tut-mask b"></div><div class="tut-mask l"></div>' +
+      '<div class="tut-ring"></div>' +
+      '<div class="tut-tip" role="dialog" aria-modal="true" aria-labelledby="tutTipTitle"></div>';
+    document.body.appendChild(layer);
+    return layer;
+  }
+
+  function destroyLayer() {
+    if (layer && layer.parentNode) layer.parentNode.removeChild(layer);
+    layer = null;
+  }
+
+  // Four rects around the target leave a real, clickable hole. Simpler and more
+  // robust across browsers than an SVG mask, and the target stays interactive.
+  function placeSpotlight(el, pad) {
+    var m = layer.querySelectorAll(".tut-mask"), ring = layer.querySelector(".tut-ring");
+    var W = window.innerWidth, H = window.innerHeight;
+    if (!el) {                                  // centre step — mask the whole screen
+      m[0].style.cssText = "top:0;left:0;right:0;bottom:0";
+      m[1].style.cssText = m[2].style.cssText = m[3].style.cssText = "display:none";
+      ring.style.display = "none";
+      return null;
+    }
+    m[1].style.display = m[2].style.display = m[3].style.display = "";
+    var r = el.getBoundingClientRect();
+    var top = Math.max(0, r.top - pad), left = Math.max(0, r.left - pad);
+    var right = Math.min(W, r.right + pad), bot = Math.min(H, r.bottom + pad);
+    m[0].style.cssText = "top:0;left:0;width:100%;height:" + top + "px";
+    m[1].style.cssText = "top:" + top + "px;left:" + right + "px;width:" + (W - right) + "px;height:" + (bot - top) + "px";
+    m[2].style.cssText = "top:" + bot + "px;left:0;width:100%;height:" + (H - bot) + "px";
+    m[3].style.cssText = "top:" + top + "px;left:0;width:" + left + "px;height:" + (bot - top) + "px";
+    ring.style.display = "";
+    ring.style.cssText = "display:block;top:" + top + "px;left:" + left + "px;width:" +
+      (right - left) + "px;height:" + (bot - top) + "px";
+    return { top: top, left: left, right: right, bottom: bot };
+  }
+
+  function placeTip(box, placement) {
+    var tip = layer.querySelector(".tut-tip");
+    var sheet = window.innerWidth <= MOBILE;
+    tip.classList.toggle("tut-sheet", sheet);
+    tip.classList.remove("tut-center", "up", "down", "left", "right");
+    if (sheet) { tip.style.cssText = ""; return; }        // CSS pins the bottom sheet
+    if (!box) { tip.classList.add("tut-center"); tip.style.cssText = ""; return; }
+
+    var W = window.innerWidth, H = window.innerHeight;
+    var tw = tip.offsetWidth || 380, th = tip.offsetHeight || 200, gap = 14;
+    var below = H - box.bottom, above = box.top;
+    var pos = placement;
+    if (!pos || pos === "auto") pos = below >= th + gap ? "down" : (above >= th + gap ? "up" : (box.left > W / 2 ? "left" : "right"));
+
+    var top, left;
+    if (pos === "down" || pos === "up") {
+      top = pos === "down" ? box.bottom + gap : box.top - th - gap;
+      left = box.left + (box.right - box.left) / 2 - tw / 2;
+    } else {
+      top = box.top + (box.bottom - box.top) / 2 - th / 2;
+      left = pos === "left" ? box.left - tw - gap : box.right + gap;
+    }
+    top = Math.max(10, Math.min(H - th - 10, top));
+    left = Math.max(10, Math.min(W - tw - 10, left));
+    tip.classList.add(pos);
+    tip.style.cssText = "top:" + top + "px;left:" + left + "px";
+  }
+
+  /* ---- rendering a step ------------------------------------------------ */
+
+  function paint(step, el) {
+    ensureLayer();
+    var tour = run.tour, n = tour.steps.length, i = run.idx;
+    var tip = layer.querySelector(".tut-tip");
+    var last = i === n - 1;
+    tip.innerHTML =
+      '<div class="tut-bar"><i style="width:' + Math.round(((i + 1) / n) * 100) + '%"></i></div>' +
+      '<div class="tut-body">' +
+        '<div class="tut-count">Step ' + (i + 1) + ' of ' + n + '</div>' +
+        (step.title ? '<h3 id="tutTipTitle">' + esc(text(step.title)) + '</h3>' : '') +
+        '<p>' + text(step.body) + '</p>' +
+      '</div>' +
+      '<div class="tut-acts">' +
+        '<button class="tut-skip" type="button">Skip tour</button>' +
+        '<span class="tut-sp"></span>' +
+        (i > 0 ? '<button class="tut-back" type="button">Back</button>' : '') +
+        '<button class="tut-next" type="button">' + (last ? "Done" : "Next") + '</button>' +
+      '</div>';
+    tip.querySelector(".tut-next").onclick = function () { last ? complete() : go(i + 1); };
+    tip.querySelector(".tut-skip").onclick = skip;
+    var back = tip.querySelector(".tut-back");
+    if (back) back.onclick = function () { go(i - 1); };
+
+    reposition();
+    tip.querySelector(".tut-next").focus();
+    track("tutorial_step_viewed", { tourId: tour.id, stepIndex: i });
+  }
+
+  function reposition() {
+    if (!run || !layer) return;
+    var step = run.tour.steps[run.idx];
+    var el = step.target ? q(step.target) : null;
+    var box = placeSpotlight(el, step.spotlightPadding == null ? PAD : step.spotlightPadding);
+    placeTip(box, step.placement);
+  }
+
+  function go(i) {
+    if (!run) return;
+    var tour = run.tour;
+    if (i >= tour.steps.length) return complete();
+    if (i < 0) i = 0;
+    run.idx = i;
+    state.activeTour = tour.id;
+    state.currentStepIndex = i;
+    save();
+
+    var step = tour.steps[i];
+
+    // A step whose target is already on screen never re-runs its before(). That is
+    // what makes resuming after a page load safe: the navigation that before() did
+    // has already happened, so we paint rather than navigate again.
+    if (!step.target || q(step.target)) return show(step);
+    if (step.before) {
+      try { step.before(); } catch (e) {
+        if (window.console) console.warn("[tutorial] before() failed on " + tour.id + " step " + i, e);
+      }
+    }
+    waitFor(step.target, WAIT_MS, function (el) {
+      if (!el) {
+        if (window.console) console.warn(
+          "[tutorial] target not found for " + tour.id + " step " + i +
+          ' ("' + step.target + '") — skipping this step');
+        return go(i + 1);
+      }
+      show(step);
+    });
+  }
+
+  // scroll the target into view, let the smooth-scroll settle, then paint
+  function show(step) {
+    var el = step.target ? q(step.target) : null;
+    if (!el) return paint(step, null);
+    var r = el.getBoundingClientRect();
+    if (r.top < 80 || r.bottom > window.innerHeight - 80) {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+      setTimeout(function () { if (run) paint(step, el); }, 420);
+    } else {
+      paint(step, el);
+    }
+  }
+
+  /* ---- lifecycle ------------------------------------------------------- */
+
+  function startTour(id) {
+    var tour = TOURS[id];
+    if (!tour) { if (window.console) console.warn("[tutorial] unknown tour: " + id); return; }
+    if (run) endTour();
+    run = { tour: tour, idx: 0 };
+    ensureLayer();
+    document.body.classList.add("tut-on");
+    refreshHotspots();
+    track("tutorial_started", { tourId: id });
+    go(0);
+  }
+
+  function finish(completed) {
+    if (!run) return;
+    var id = run.tour.id;
+    if (completed && !isTourCompleted(id)) state.completedTours.push(id);
+    state.activeTour = null;
+    state.currentStepIndex = 0;
+    save();
+    run = null;
+    document.body.classList.remove("tut-on");
+    destroyLayer();
+    refreshHotspots();
+    return id;
+  }
+
+  function complete() { var id = finish(true); if (id) track("tutorial_completed", { tourId: id }); }
+  function skip() {
+    if (!run) return;
+    var id = run.tour.id, i = run.idx;
+    finish(false);
+    track("tutorial_skipped", { tourId: id, stepIndex: i });
+  }
+  function endTour() { finish(false); }
+
+  /* ---- hotspots -------------------------------------------------------- */
+
+  function registerHotspot(spec) { HOTSPOTS.push(spec); }
+
+  function ensureDots() {
+    if (dots) return dots;
+    dots = document.createElement("div");
+    dots.className = "tut-hots";
+    dots.id = "tutHotspots";
+    document.body.appendChild(dots);
+    return dots;
+  }
+
+  function refreshHotspots() {
+    ensureDots();
+    dots.innerHTML = "";
+    if (run) return;                                  // no dots while a tour is running
+    HOTSPOTS.forEach(function (h) {
+      if (h.tourId && isTourCompleted(h.tourId)) return;
+      if (state.dismissedHotspots.indexOf(h.id) >= 0) return;
+      var el = q(h.selector);
+      if (!el) return;
+      var r = el.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > window.innerHeight) return;
+      var b = document.createElement("button");
+      b.className = "tut-hot";
+      b.type = "button";
+      b.title = h.title || "Show me around";
+      b.setAttribute("aria-label", b.title);
+      b.style.top = (r.top - 5) + "px";
+      b.style.left = (r.right - 7) + "px";
+      b.innerHTML = '<span class="tut-hot-r"></span><span class="tut-hot-d"></span>';
+      b.onclick = function (e) {
+        e.preventDefault(); e.stopPropagation();
+        dismissHotspot(h.id);
+        if (h.tourId) startTour(h.tourId);
+      };
+      dots.appendChild(b);
+    });
+  }
+
+  function dismissHotspot(hid) {
+    if (state.dismissedHotspots.indexOf(hid) < 0) state.dismissedHotspots.push(hid);
+    save();
+    refreshHotspots();
+  }
+
+  /* ---- help menu ------------------------------------------------------- */
+
+  function buildMenu() {
+    var btn = document.getElementById("helpBtn");
+    if (!btn || menu) return;
+    menu = document.createElement("div");
+    menu.className = "tut-menu";
+    menu.id = "tutMenu";
+    menu.hidden = true;
+    document.body.appendChild(menu);
+
+    btn.onclick = function (e) {
+      e.stopPropagation();
+      if (!menu.hidden) return closeMenu();
+      renderMenu();
+      menu.hidden = false;
+      var r = btn.getBoundingClientRect();
+      menu.style.top = (r.bottom + 8) + "px";
+      menu.style.right = Math.max(8, window.innerWidth - r.right) + "px";
+    };
+    document.addEventListener("click", function (e) {
+      if (menu && !menu.hidden && !menu.contains(e.target)) closeMenu();
+    });
+  }
+  function closeMenu() { if (menu) menu.hidden = true; }
+
+  function renderMenu() {
+    var items = Object.keys(TOURS).map(function (id) {
+      var t = TOURS[id];
+      return '<button class="tut-mi" data-tour="' + id + '">' +
+        '<span class="tut-mi-n">' + esc(t.menuLabel || t.title) + '</span>' +
+        (isTourCompleted(id) ? '<span class="tut-mi-d">done</span>' : '') + '</button>';
+    }).join("");
+    menu.innerHTML = '<div class="tut-menu-h">Learning</div>' + items +
+      '<div class="tut-menu-r"></div>' +
+      '<button class="tut-mi reset" data-reset="1">Reset all tutorials</button>';
+    menu.querySelectorAll("[data-tour]").forEach(function (b) {
+      b.onclick = function () { closeMenu(); startTour(b.dataset.tour); };
+    });
+    menu.querySelector("[data-reset]").onclick = function () { closeMenu(); resetAll(); };
+  }
+
+  function resetTour(id) {
+    state.completedTours = state.completedTours.filter(function (t) { return t !== id; });
+    save(); autoChecked = {}; refreshHotspots();
+  }
+  function resetAll() {
+    state = { activeTour: null, currentStepIndex: 0, completedTours: [], dismissedHotspots: [] };
+    save(); autoChecked = {}; refreshHotspots();
+  }
+
+  /* ---- auto-start + wiring --------------------------------------------- */
+
+  // A tour may declare autoStart(): truthy once its surface is on screen for the
+  // first time. Checked after every render of the shell.
+  function checkAuto() {
+    if (run) return;
+    for (var id in TOURS) {
+      var t = TOURS[id];
+      if (!t.autoStart || autoChecked[id] || isTourCompleted(id)) continue;
+      var ok = false;
+      try { ok = !!t.autoStart(); } catch (e) { ok = false; }
+      if (ok) { autoChecked[id] = true; return startTour(id); }
+    }
+  }
+
+  var pending = null;
+  function onRender() {
+    clearTimeout(pending);
+    pending = setTimeout(function () {
+      refreshHotspots();
+      checkAuto();
+      if (run) reposition();
+    }, 140);
+  }
+
+  function init() {
+    ensureDots();
+    buildMenu();
+
+    // The shell replaces #view / #sidebar wholesale on every navigation, and cfo.js
+    // re-renders in place on collapse/customise — an observer catches both, where
+    // wrapping PIQ.go would miss the in-place ones.
+    var host = document.getElementById("shellrow");
+    if (host && window.MutationObserver) {
+      new MutationObserver(onRender).observe(host, { childList: true, subtree: true });
+    }
+    window.addEventListener("resize", onRender);
+    window.addEventListener("scroll", function () {
+      if (run) reposition();
+      else refreshHotspots();
+    }, true);
+
+    document.addEventListener("keydown", function (e) {
+      if (!run) return;
+      if (e.key === "Escape") { e.preventDefault(); skip(); }
+      else if (e.key === "ArrowRight") { e.preventDefault(); go(run.idx + 1); }
+      else if (e.key === "ArrowLeft" && run.idx > 0) { e.preventDefault(); go(run.idx - 1); }
+    });
+
+    // Resume a tour that crossed a page load (Command Centre -> Builder). `run` is
+    // claimed synchronously: the observer above can fire first, and checkAuto() must
+    // see a tour already in flight or it would start a second one on top.
+    if (state.activeTour && TOURS[state.activeTour]) {
+      var at = state.currentStepIndex;
+      run = { tour: TOURS[state.activeTour], idx: at };
+      document.body.classList.add("tut-on");
+      ensureLayer();
+      setTimeout(function () { go(at); }, 260);
+    } else {
+      onRender();
+    }
+  }
+
+  PIQ.tutorial = {
+    register: function (t) { TOURS[t.id] = t; },
+    registerHotspot: registerHotspot,
+    tours: TOURS,
+    startTour: startTour,
+    endTour: endTour,
+    nextStep: function () { if (run) go(run.idx + 1); },
+    prevStep: function () { if (run) go(run.idx - 1); },
+    isTourCompleted: isTourCompleted,
+    resetTour: resetTour,
+    resetAll: resetAll,
+    dismissHotspot: dismissHotspot,
+    track: track,
+    init: init,
+    get state() { return state; },
+  };
+})();
+
+/* tours.js — the tour definitions + hotspot placements.
+ *
+ * Every target below was verified against the DOM the app actually renders, and
+ * every claim a step makes was verified against the data the app actually ships.
+ * See README.md for the step contract (in particular: before() must be idempotent).
+ */
+(function () {
+  "use strict";
+  var PIQ = window.PIQ;
+  var T = PIQ.tutorial;
+
+  /* ---- shared before() helpers ----------------------------------------
+     Each is a no-op when the app is already where the step needs it. That is what
+     lets a tour resume after the page load that these very helpers trigger.      */
+
+  // The Command Centre is a different page load from the Builder (?persona=command).
+  function ensureCommandCentre() {
+    if (PIQ.persona !== "command") {
+      window.location.href = "processiq.html?persona=command";
+      return true;                       // navigating; the tour resumes on boot
+    }
+    return false;
+  }
+
+  // The CFO overview is the only view whose heatmap rows are the 8 themes.
+  function ensureCFO() {
+    if (ensureCommandCentre()) return;
+    if (PIQ.cc.persona !== "cc-cfo" || PIQ.active !== "cc") {
+      PIQ.cc.persona = "cc-cfo";
+      PIQ.cc.custom = false;
+      PIQ.go("cc");
+    }
+  }
+
+  function psTab(which) {
+    return function () {
+      var b = document.querySelector('.ps-tab[data-t="' + which + '"]');
+      if (b && !b.classList.contains("on")) b.click();
+    };
+  }
+
+  /* ====================================================================== */
+  /* Tour A — Command Centre First Look                                      */
+  /* ====================================================================== */
+  T.register({
+    id: "command-centre-intro",
+    title: "Command Centre First Look",
+    menuLabel: "Replay the Command Centre tour",
+    // fires the first time a persona dashboard is on screen (the roster has no heatmap)
+    autoStart: function () {
+      return PIQ.active === "cc" && PIQ.cc.persona && document.querySelector(".cc-hm");
+    },
+    steps: [
+      {
+        title: "Welcome to ProcessIQ",
+        body: "This is your <b>Command Centre</b> — a single pane of glass across every " +
+              "mission the finance function is accountable for. Outcomes first; the patterns " +
+              "that move them sit underneath.",
+        placement: "center",
+      },
+      {
+        target: '[data-tutorial="cc-scorecard"]',
+        title: "The scorecard",
+        body: "The first tile is always <b>mission health</b> and the last is always the " +
+              "<b>automation ratio</b> — how much of this role is already agent-covered. " +
+              "The tiles between are this persona's own headline KPIs.",
+      },
+      {
+        target: '[data-tutorial="cc-heatmap"] .cc-hm-row:first-child .cc-hm-l',
+        title: "One row per lens",
+        // the CFO's rows are the 8 themes; a persona's rows are its lenses
+        body: function () {
+          var cfo = PIQ.cc.persona === "cc-cfo";
+          return cfo
+            ? "For the CFO, each row is one of the <b>8 themes</b> — from Total shareholder " +
+              "return to Risk &amp; compliance. Every mission in the enterprise sits on one of them."
+            : "Each row is a <b>lens</b> — a cadence at which this role is accountable. " +
+              "Daily and weekly work lands in Pulse; monthly in Intelligence; quarterly in Trajectory.";
+        },
+        placement: "right",
+      },
+      {
+        target: '[data-tutorial="cc-heatmap"] .cc-hm-b.off-track, [data-tutorial="cc-heatmap"] .cc-hm-b.attention',
+        title: "Colour is severity",
+        body: "One block per mission. Green is on track, <b>amber needs attention</b>, " +
+              "<b>red is off track</b>. Click any block to jump straight to that mission's card.",
+        spotlightPadding: 8,
+      },
+      {
+        target: '[data-tutorial="cc-attention"]',
+        title: "Nothing goes hunting for you",
+        body: "Flagged missions surface here automatically, most severe first. No searching, " +
+              "no report building.",
+      },
+      {
+        target: "#sidebar",
+        title: "Every role, its own view",
+        body: "Eleven personas, each seeing only the missions they own. Treasury watches daily " +
+              "cash; Risk &amp; Compliance watches monthly controls. The CFO sees all 60.",
+        placement: "right",
+        spotlightPadding: 0,
+      },
+      {
+        target: "#ccTabbar",
+        title: "Lenses, not tabs",
+        body: "A lens is a <b>cadence</b>. A persona with no mission at a cadence simply has no " +
+              "such lens — Tax has no daily work, so Tax has no Pulse.",
+      },
+      {
+        target: ".mc",
+        title: "From a block to the work",
+        body: "The mission card carries its status, its theme, the capabilities that measure it, " +
+              "the patterns that power it and the next action due. Two clicks from an amber block " +
+              "to the root cause — that's the promise. <b>Click any heatmap block to begin.</b>",
+      },
+    ],
+  });
+
+  /* ====================================================================== */
+  /* Tour B — Pattern Studio Walkthrough                                     */
+  /* ====================================================================== */
+  var toMine = psTab("mine");
+
+  T.register({
+    id: "pattern-studio-intro",
+    title: "Pattern Studio Walkthrough",
+    menuLabel: "Replay the Pattern Studio tour",
+    autoStart: function () {
+      return PIQ.active === "patternstudio" && document.querySelector(".ps-tabs");
+    },
+    steps: [
+      {
+        target: '[data-tutorial="ps-tabs"]',
+        title: "Catalogue and workshop",
+        body: "<b>Library</b> is the catalogue of every behavioural pattern we hold. " +
+              "<b>Mine</b> is where new ones are pulled out of a client's own documents.",
+      },
+      {
+        target: '[data-tutorial="ps-stepper"]',
+        before: toMine,
+        title: "Three steps, always",
+        body: "Mining follows one flow: set the <b>Context</b>, supply the <b>Documents</b>, " +
+              "read the <b>Results</b>. It is function-agnostic — Order-to-Cash, P2P, Supply " +
+              "Chain and the rest all run the same three steps.",
+      },
+      {
+        target: '[data-tutorial="ps-context"]',
+        before: toMine,
+        title: "1 · Context",
+        body: "Pick the function and state the objective — or flip to <b>“I have an objective”</b> " +
+              "and get a transformation blueprint back. Two or three clarifying questions follow, " +
+              "and only the ones that actually change the document checklist get asked.",
+      },
+      {
+        target: '.mn-rs[data-step="documents"]',
+        before: toMine,
+        title: "2 · Documents",
+        body: "The checklist is <b>composed for your context</b>, not a fixed list: an inventory " +
+              "objective promotes Warehouse &amp; Logistics to critical, and says so. A coverage " +
+              "meter tracks the critical dimensions, and the gap analysis names each missing " +
+              "document <i>and what it costs you</i>.",
+      },
+      {
+        target: '.mn-rs[data-step="results"]',
+        before: toMine,
+        title: "3 · Results",
+        body: "Three panels: a <b>maturity radar</b> scored from the evidence you actually " +
+              "uploaded, <b>KPI vs benchmark</b> against the industry median and top quartile, " +
+              "and an <b>impact bridge</b> ranking each candidate pattern by the KPI gap it closes. " +
+              "Then you Accept, Edit, Reject or Park it.",
+      },
+      {
+        target: ".pcard",
+        before: psTab("library"),
+        title: "What a pattern carries",
+        body: "Every pattern holds the analyst's <b>mental model</b> in their own words, its " +
+              "<b>happy path</b> as a chain of action blocks, the <b>HITL gate</b> a write action " +
+              "must pass, and the <b>missions</b> it serves. Accepted patterns arrive already " +
+              "wired into the taxonomy. <b>Pick one to investigate.</b>",
+      },
+    ],
+  });
+
+  /* ====================================================================== */
+  /* Tour C — Golden Path: trapped working capital                           */
+  /*                                                                        */
+  /* Anchored to real shipped data end to end:                              */
+  /*   Theme C  Free cash flow  ->  L2 C.1 Working Capital                  */
+  /*   M18      Days inventory outstanding at target   (status: off-track)  */
+  /*   #83      Serial Credit-Hold Override  (Critical, 2 HITL gates)       */
+  /* ====================================================================== */
+  T.register({
+    id: "golden-path-working-capital",
+    title: "Golden path — trapped working capital",
+    menuLabel: "Take the guided walkthrough",
+    steps: [
+      {
+        before: ensureCFO,
+        title: "Let's trace a real exception",
+        body: "<b>“Why is our working capital trapped?”</b><br><br>We'll follow that question " +
+              "from a red square on the CFO's heatmap all the way down to the action block that " +
+              "needs a human signature — without writing a query or building a report.",
+        placement: "center",
+      },
+      {
+        target: '[data-tutorial="cc-heatmap-row"][data-row="C"] .cc-hm-l',
+        before: ensureCFO,
+        title: "Theme C · Free cash flow",
+        body: "Working capital sits under <b>Theme C</b>, one of the eight themes the CFO is " +
+              "accountable for. Its L2 objective here is <b>C.1 · Working Capital</b>.",
+        placement: "right",
+      },
+      {
+        target: '[data-tutorial="cc-heatmap-row"][data-row="C"] .cc-hm-b[data-jump="M18"]',
+        before: ensureCFO,
+        title: "The red square",
+        body: "<b>M18 · Days inventory outstanding at target</b> is <b>off track</b>. It belongs " +
+              "to Supply Chain Finance and runs at a weekly cadence. One click investigates it.",
+        spotlightPadding: 8,
+      },
+      {
+        target: "#mc-M18",
+        // clicking the block routes to the owning persona and scrolls to the card
+        before: function () {
+          var b = document.querySelector('.cc-hm-b[data-jump="M18"]');
+          if (b) b.click();
+        },
+        title: "The mission, in full",
+        body: "The Command Centre routed us to the owner — <b>Supply Chain Finance</b>, Pulse lens " +
+              "— and opened the card. It is <b>agent covered</b>, was refreshed by the agent an " +
+              "hour ago, and its policy re-test is due in two days.",
+      },
+      {
+        target: "#mc-M18 .mc-pats",
+        title: "Ten patterns fired",
+        body: "These are the behavioural patterns powering this mission. They are not reports — " +
+              "each is an executable chain. Let's open the most severe: <b>#83 Serial Credit-Hold " +
+              "Override</b>, the only Critical one in the set.",
+      },
+      {
+        target: ".lib-detail .mental",
+        // crosses into the Builder — a real page load. The tour persists and resumes.
+        before: function () {
+          var b = document.querySelector('#mc-M18 .dq-pat[data-pat="83"]');
+          if (b) b.click();
+        },
+        title: "The analyst's read",
+        body: "Pattern Studio opened the pattern. This is the <b>mental model</b> — the judgement " +
+              "an experienced analyst applies, captured in their own words. It is what the pattern " +
+              "encodes, and why it is not a threshold rule.",
+      },
+      {
+        target: ".lib-detail .flatdag",
+        title: "The process flow",
+        body: "The happy path, as action blocks:" +
+              "<code>Read_Credit_Status_Log → Compute_Override_Rate_Per_User → " +
+              "Detect_Threshold_Breach → Escalate_Credit_Risk</code><br>" +
+              "Each block carries its own executor — an agent, a workflow, a script or a human task.",
+      },
+      {
+        target: ".lib-detail .branches",
+        title: "You choose the branch",
+        body: "Reality is not the happy path. Each variation is matched to a branch, and each " +
+              "branch names the action blocks it will run. <b>You pick the branch — ProcessIQ " +
+              "executes it.</b>",
+      },
+      {
+        target: ".lib-detail .gatebar",
+        title: "The gate before the write",
+        body: "Write actions stop for a human. Here that is <b>“Collections VP approves rep " +
+              "release-right freeze”</b> and <b>“Credit Manager approves override revocation”</b> — " +
+              "full context, one click to approve or reject.",
+      },
+      {
+        title: "That's the whole loop",
+        body: "From a red square on the CFO's heatmap, to the mission that owns it, to the pattern " +
+              "that explains it, to the action block waiting on a signature. <b>No data wrangling, " +
+              "no report building.</b>",
+        placement: "center",
+      },
+    ],
+  });
+
+  /* ---- hotspots --------------------------------------------------------
+     Each renders only while its tour is uncompleted and undismissed. There is no
+     Builder "New Pattern" button in this app — patterns are created through Mine →
+     Accept — so the Builder hotspot from the spec has no anchor and is not placed. */
+
+  T.registerHotspot({
+    id: "hs-cc-cell",
+    selector: '[data-tutorial="cc-heatmap"] .cc-hm-b.off-track, [data-tutorial="cc-heatmap"] .cc-hm-b.attention',
+    tourId: "command-centre-intro",
+    title: "New here? Take the Command Centre tour",
+  });
+  T.registerHotspot({
+    id: "hs-help",
+    selector: "#helpBtn",
+    tourId: "golden-path-working-capital",
+    title: "Take the guided walkthrough",
+  });
+  T.registerHotspot({
+    id: "hs-ps-mine",
+    selector: '.ps-tab[data-t="mine"]',
+    tourId: "pattern-studio-intro",
+    title: "Mine new patterns from documents — show me how",
+  });
+
+  /* start the tutorial layer once the shell has booted */
+  var boot = PIQ.boot;
+  PIQ.boot = function () { boot(); T.init(); };
 })();
 
 </script>

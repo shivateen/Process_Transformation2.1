@@ -71,7 +71,7 @@
     }
     var nMined = MS.accepted.length;
     view.innerHTML =
-      '<div class="ps-tabs">' +
+      '<div class="ps-tabs" data-tutorial="ps-tabs">' +
         '<button class="ps-tab' + (state.tab === "library" ? " on" : "") + '" data-t="library">Library' +
           '<small>' + patterns.length + ' patterns</small></button>' +
         '<button class="ps-tab' + (state.tab === "mine" ? " on" : "") + '" data-t="mine">Mine' +
@@ -747,7 +747,7 @@
   function renderMine(view) {
     var steps = (MIN.meta && MIN.meta.steps) || [];
     var idx = steps.map(function (s) { return s.id; }).indexOf(MS.step);
-    var rail = '<div class="mn-rail">' + steps.map(function (s, i) {
+    var rail = '<div class="mn-rail" data-tutorial="ps-stepper">' + steps.map(function (s, i) {
       return '<button class="mn-rs' + (i === idx ? " on" : "") + (i < idx ? " done" : "") + '" data-step="' + s.id + '">' +
         '<span class="mn-rn">' + (i < idx ? "✓" : i + 1) + '</span>' +
         '<span class="mn-rt"><b>' + esc(s.label) + '</b><small>' + esc(s.blurb) + '</small></span></button>' +
@@ -796,7 +796,7 @@
         '<p class="mn-lead">The library you already have becomes the few-shot example set — what comes ' +
         'back is what it does <i>not</i> yet contain. Works for any function, not just the ones we ship.</p></div></div>' +
       toggle +
-      '<div class="mn-card">' + fnPick +
+      '<div class="mn-card" data-tutorial="ps-context">' + fnPick +
         '<div class="mn-q">' + esc(objQ) + '</div>' +
         '<textarea class="mn-obj" rows="3" placeholder="e.g. &quot;Reduce DSO by 10 days&quot; · &quot;Cut the close from 10 days to 4&quot; · ' +
           '&quot;Reduce inventory carrying cost by 15%&quot; · &quot;Improve forecast accuracy to 95%&quot;">' + esc(c.objective) + '</textarea>' +
