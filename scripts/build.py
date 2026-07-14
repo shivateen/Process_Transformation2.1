@@ -84,9 +84,6 @@ def main():
         read("src", "js", "discovery.js"),
         read("src", "js", "processmap.js"),
         read("src", "js", "cfo.js"),
-        # tutorial last: the engine wraps PIQ.boot, and tours.js needs PIQ.tutorial
-        read("src", "js", "tutorial", "tutorial.js"),
-        read("src", "js", "tutorial", "tours.js"),
     ])
     patterns = read("src", "data", "patterns.json")
     portfolio = read("src", "data", "portfolio.json")
