@@ -93,17 +93,18 @@
     view.innerHTML = '<div class="lib"></div>';
     var root = view.querySelector(".lib");
 
-    // header + matrix
+    // header + stat row. The old category matrix is gone: it filtered by category,
+    // which the category chips below already do — two controls, one job.
     var header = el("div", "lib-head");
-    var matrix = catCounts().map(function (c) {
-      return '<div class="mx" data-cat="' + esc(c.category) + '">' +
-        '<b>' + c.count + '</b><span>' + esc(shortCat(c.category)) + '</span>' +
-        '<div class="mxbar">' + bar(c) + '</div></div>';
-    }).join("");
+    var blocks = patterns.reduce(function (n, p) { return n + (p.originalDAG || []).length; }, 0);
     header.innerHTML =
       '<div><div class="kv">The Expert\'s Playbook, Codified</div>' +
       '<h2 style="font-size:22px;margin:2px 0 0">' + patterns.length + ' Behavioural Patterns</h2></div>' +
-      '<div class="matrix">' + matrix + '</div>';
+      '<div class="lib-stats">' +
+        '<div class="lstat"><b>' + patterns.length + '</b><span>Total patterns</span></div>' +
+        '<div class="lstat"><b class="acc" id="libShown">' + patterns.length + '</b><span>Showing</span></div>' +
+        '<div class="lstat"><b class="ok">' + blocks + '</b><span>Action blocks</span></div>' +
+      '</div>';
     root.appendChild(header);
 
     // an inbound cross-tile filter is explained, and dismissible
@@ -171,16 +172,12 @@
       .replace("Cash Application & Remittance Friction", "Cash App & Remittance")
       .replace("Relationship & Contractual Abuse", "Relationship Abuse");
   }
-  function bar(c) {
-    var seg = [["Critical", c.Critical], ["High", c.High], ["Medium", c.Medium], ["Low", c.Low]];
-    return seg.filter(function (s) { return s[1]; }).map(function (s) {
-      return '<i style="flex:' + s[1] + ';background:' + PRIO[s[0]] + '"></i>';
-    }).join("");
-  }
 
   function renderList() {
     var list = document.getElementById("libList"); if (!list) return;
     var items = filtered();
+    var shown = document.getElementById("libShown");
+    if (shown) shown.textContent = items.length;
     if (!items.length) {
       list.innerHTML = '<div class="lib-none">' + (state.mission
         ? 'No pattern in the library serves <b>' + esc(state.mission) + '</b> yet. ' +
@@ -190,17 +187,70 @@
         : 'No patterns match these filters.') + '</div>';
       return;
     }
-    list.innerHTML = items.map(function (p) {
-      return '<div class="prow' + (state.selId === p.id ? " sel" : "") + '" data-id="' + p.id + '">' +
-        '<div class="pnum" style="background:' + PRIO[p.priority] + '">' + p.id + '</div>' +
-        '<div class="pmain"><div class="pn">' + esc(p.name) +
-          (p.mined ? '<span class="pmined">MINED</span>' : '') + '</div>' +
-        '<div class="pc">' + esc(shortCat(p.category)) + '</div></div>' +
-        '<div class="pf mono">' + esc(p.layer3_feature) + '</div></div>';
-    }).join("");
-    list.querySelectorAll(".prow").forEach(function (r) {
+    list.innerHTML = '<div class="pgrid">' + items.map(function (p) {
+      return '<button class="pcard' + (state.selId === p.id ? " sel" : "") + '" data-id="' + p.id + '">' +
+        '<div class="pcard-h">' +
+          '<span class="pnum" style="background:' + PRIO[p.priority] + '">' + p.id + '</span>' +
+          '<span class="pn">' + esc(p.name) + '</span>' +
+          (p.mined ? '<span class="pmined">MINED</span>' : '') +
+        '</div>' +
+        quoteBlock(p) + flowStrip(p) +
+        '<div class="pcard-f">' +
+          '<span>' + blockCount(p) + ' action block' + (blockCount(p) === 1 ? "" : "s") +
+            ((p.hitlGates || []).length ? ' · <b class="pcard-gate">HITL gate</b>' : '') + '</span>' +
+          servingLabel(p) +
+        '</div>' +
+      '</button>';
+    }).join("") + '</div>';
+    list.querySelectorAll(".pcard").forEach(function (r) {
       r.onclick = function () { state.selId = +r.dataset.id; renderList(); renderDetail(); };
     });
+  }
+
+  /* ---- pattern-card parts ------------------------------------------------
+     The card is the scannable face of a pattern: the analyst's mental model in
+     their own words, the happy path as a flow, and what it costs / what it moves.
+     Clicking it drives the same state.selId the detail pane reads.           */
+
+  // the analyst's mental model — why this pattern exists, in one line
+  function quoteBlock(p) {
+    if (!p.mentalModel) return "";
+    var q = String(p.mentalModel).trim();
+    if (q.length > 132) q = q.slice(0, 129).replace(/[\s,;.]+$/, "") + "…";
+    return '<div class="pquote">“' + esc(q) + '”</div>';
+  }
+
+  // happy path, first three steps + an overflow chip
+  function flowStrip(p) {
+    var dag = p.originalDAG || [];
+    if (!dag.length) return "";
+    // the arrow rides with the step that follows it, so a wrapped line can never
+    // end on an orphan "→" — it starts with "→ step" instead
+    var show = dag.slice(0, 3).map(function (s, i) {
+      var step = '<span class="pstep">' + esc(prettyStep(s)) + '</span>';
+      return i === 0 ? step : '<span class="pseq"><span class="parr">→</span>' + step + '</span>';
+    }).join("");
+    var rest = dag.length - 3;
+    return '<div class="pflow"><span class="pflow-k">Flow</span>' + show +
+      (rest > 0 ? '<span class="pseq"><span class="parr">→</span>' +
+        '<span class="pstep more">+' + rest + '</span></span>' : '') + '</div>';
+  }
+
+  // DAG verbs are Snake_Case_Machine_Names — make them readable on the card
+  function prettyStep(s) {
+    var t = String(s).split("(")[0].replace(/_/g, " ").trim();
+    return t.length > 18 ? t.slice(0, 17) + "…" : t;
+  }
+
+  function blockCount(p) {
+    return (p.originalDAG || []).length;
+  }
+
+  function servingLabel(p) {
+    var ms = p.servingMissions || [];
+    if (!ms.length) return '<span class="pcard-sv muted">unmapped</span>';
+    var show = ms.slice(0, 2).join(", ") + (ms.length > 2 ? " +" + (ms.length - 2) : "");
+    return '<span class="pcard-sv">Serving <b>' + esc(show) + '</b></span>';
   }
 
   function renderDetail() {
