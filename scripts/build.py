@@ -8,16 +8,49 @@ Mirrors the FinTran/CloseIQ build pattern: edit sources in src/, run this, serve
   python scripts/build.py
   python -m http.server 3000 --directory public   ->  http://localhost:3000/processiq.html
 """
-import os, json
+import os, json, base64
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, "src")
 PUB = os.path.join(ROOT, "public")
 
+# Latin + latin-ext subsets, base64-inlined so the single-file output keeps working
+# offline (a Google Fonts <link> would need the network). ~96 KB raw.
+FONT_FACES = [
+    ("DM Sans", "300 800", "dm-sans-latin-ext.woff2",
+     "U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,"
+     "U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,"
+     "U+2C60-2C7F,U+A720-A7FF"),
+    ("DM Sans", "300 800", "dm-sans-latin.woff2",
+     "U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,"
+     "U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD"),
+    ("JetBrains Mono", "400 700", "jetbrains-mono-latin-ext.woff2",
+     "U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,"
+     "U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,"
+     "U+2C60-2C7F,U+A720-A7FF"),
+    ("JetBrains Mono", "400 700", "jetbrains-mono-latin.woff2",
+     "U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,"
+     "U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD"),
+]
+
 
 def read(*parts):
     with open(os.path.join(ROOT, *parts), encoding="utf-8") as f:
         return f.read()
+
+
+def font_css():
+    """@font-face rules with the woff2 subsets inlined as data: URIs."""
+    out = []
+    for family, weight, filename, unicode_range in FONT_FACES:
+        with open(os.path.join(SRC, "fonts", filename), "rb") as f:
+            b64 = base64.b64encode(f.read()).decode("ascii")
+        out.append(
+            "@font-face{font-family:'%s';font-style:normal;font-weight:%s;font-display:swap;"
+            "src:url(data:font/woff2;base64,%s) format('woff2');unicode-range:%s}"
+            % (family, weight, b64, unicode_range)
+        )
+    return "\n".join(out)
 
 
 def main():
@@ -69,8 +102,9 @@ def main():
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta http-equiv="Cache-Control" content="no-cache"/>
 <title>Process Transformation Accelerator · Tiger Analytics</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+{fonts}
+</style>
 <style>
 {css}
 </style>
@@ -95,17 +129,18 @@ def main():
 <script>window.PIQ.boot();</script>
 </body>
 </html>
-""".format(css=css, body=body, patterns=patterns, portfolio=portfolio, roi=roi,
-           discovery=discovery, taxonomy=taxonomy, processmaps=processmaps, cfo=cfo,
+""".format(fonts=font_css(), css=css, body=body, patterns=patterns, portfolio=portfolio,
+           roi=roi, discovery=discovery, taxonomy=taxonomy, processmaps=processmaps, cfo=cfo,
            command_centre=command_centre, mining=mining, engine=engine, js_modules=js_modules)
 
     os.makedirs(PUB, exist_ok=True)
     out = os.path.join(PUB, "processiq.html")
     with open(out, "w", encoding="utf-8") as f:
         f.write(html)
-    # landing page
+    # landing page — same inlined fonts, so it too renders correctly offline
+    landing = read("src", "apps", "index.html").replace("/*@FONTS@*/", font_css())
     with open(os.path.join(PUB, "index.html"), "w", encoding="utf-8") as f:
-        f.write(read("src", "apps", "index.html"))
+        f.write(landing)
     kb = len(html.encode("utf-8")) / 1024
     print(f"\nBuilt {os.path.relpath(out, ROOT)}  ({kb:.0f} KB, self-contained)")
     print(f"Built {os.path.relpath(os.path.join(PUB, 'index.html'), ROOT)}  (landing)")

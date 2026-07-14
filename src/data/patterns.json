@@ -102,10 +102,10 @@
       }
     ],
     "priorityLegend": {
-      "Critical": "#c0392b",
-      "High": "#e67e22",
-      "Medium": "#27ae60",
-      "Low": "#2980b9"
+      "Critical": "#dc2626",
+      "High": "#d97706",
+      "Medium": "#059669",
+      "Low": "#2563eb"
     },
     "erp": {
       "primary": "SAP",

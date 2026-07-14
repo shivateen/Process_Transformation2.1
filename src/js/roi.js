@@ -159,21 +159,21 @@
     var grid = "";
     for (var g = 0; g <= 4; g++) {
       var v = maxV * g / 4, y = Y(v);
-      grid += '<line x1="' + padL + '" y1="' + y + '" x2="' + (W - padR) + '" y2="' + y + '" stroke="#eef2f6"/>' +
-        '<text x="' + (padL - 8) + '" y="' + (y + 4) + '" text-anchor="end" font-size="10" fill="#9aa7b5">' + money(v) + '</text>';
+      grid += '<line x1="' + padL + '" y1="' + y + '" x2="' + (W - padR) + '" y2="' + y + '" stroke="#e5e7eb"/>' +
+        '<text x="' + (padL - 8) + '" y="' + (y + 4) + '" text-anchor="end" font-size="10" fill="#9ca3af">' + money(v) + '</text>';
     }
     var dots = pts.map(function (p, i) {
       var anc = i === 0 ? "start" : i === pts.length - 1 ? "end" : "middle";
       return '<circle cx="' + X(i) + '" cy="' + Y(p.cumulative) + '" r="5" fill="#fff" stroke="var(--act)" stroke-width="3"/>' +
         '<text x="' + X(i) + '" y="' + (Y(p.cumulative) - 13) + '" text-anchor="' + anc + '" font-size="12" font-weight="800" fill="var(--brand)">' + money(p.cumulative) + '</text>' +
         '<text x="' + X(i) + '" y="' + (H - padB + 18) + '" text-anchor="' + anc + '" font-size="11" font-weight="700" fill="var(--ink)">' + p.period + '</text>' +
-        '<text x="' + X(i) + '" y="' + (H - padB + 32) + '" text-anchor="' + anc + '" font-size="9.5" fill="#9aa7b5">' + esc(p.label) + '</text>';
+        '<text x="' + X(i) + '" y="' + (H - padB + 32) + '" text-anchor="' + anc + '" font-size="9.5" fill="#9ca3af">' + esc(p.label) + '</text>';
     }).join("");
 
     pad.innerHTML =
       '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" style="display:block">' +
       '<defs><linearGradient id="roiArea" x1="0" y1="0" x2="0" y2="1">' +
-      '<stop offset="0" stop-color="#16a085" stop-opacity="0.28"/><stop offset="1" stop-color="#16a085" stop-opacity="0.02"/></linearGradient></defs>' +
+      '<stop offset="0" stop-color="#059669" stop-opacity="0.28"/><stop offset="1" stop-color="#059669" stop-opacity="0.02"/></linearGradient></defs>' +
       grid +
       '<path d="' + area + '" fill="url(#roiArea)"/>' +
       '<path d="' + line + '" fill="none" stroke="var(--act)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>' +
@@ -190,7 +190,7 @@
     var pad = el("div", "pad");
     var max = Math.max.apply(null, roi.attribution.map(function (a) { return a.recovery; }));
     var rows = roi.attribution.map(function (a, i) {
-      var col = a.priority ? PRIO[a.priority] : "#9aa7b5";
+      var col = a.priority ? PRIO[a.priority] : "#9ca3af";
       var w = (a.recovery / max * 100).toFixed(1);
       var idtag = a.patternId ? '<span class="aid">#' + a.patternId + '</span>' : '';
       var link = a.patternId ? ' data-pat="' + a.patternId + '"' : '';

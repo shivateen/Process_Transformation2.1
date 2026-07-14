@@ -31,7 +31,7 @@
 
   var MODES = {
     supervised: {
-      label: "Supervised", tag: "DAY 1", color: "#c0392b",
+      label: "Supervised", tag: "DAY 1", color: "#dc2626",
       blurb: "Nothing runs without a human. Every action — including read-only lookups — is queued for explicit approval before it executes. This is day one of a deployment, before the system has earned any trust.",
       bullets: ["Every action requires human approval", "READ and WRITE steps alike are gated", "No autonomous execution — full oversight", "Establishes the audit baseline", "Trust is earned from here, not assumed"],
       gate: function () { return true; },  // everything gated — reads included
