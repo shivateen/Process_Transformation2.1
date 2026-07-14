@@ -465,7 +465,7 @@
       delta: Math.round((a.covered / (a.total || 1)) * 100) + "% coverage",
       direction: "flat", sub: "missions with agent coverage",
     });
-    return '<div class="cc-scorecard">' + tiles.map(statTile).join("") + '</div>';
+    return '<div class="cc-scorecard" data-tutorial="cc-scorecard">' + tiles.map(statTile).join("") + '</div>';
   }
 
   // one coloured block per mission, rows = lenses (or objectives, for the CFO).
@@ -484,7 +484,9 @@
     }
 
     var grid = rows.map(function (r) {
-      return '<div class="cc-hm-row">' +
+      // data-row is the theme letter on the CFO overview, the lens id on a persona —
+      // it is what a tutorial step targets to find a specific row.
+      return '<div class="cc-hm-row" data-tutorial="cc-heatmap-row" data-row="' + (r.obj || r.tab || "") + '">' +
         '<span class="cc-hm-l">' + esc(r.label) + '</span>' +
         '<span class="cc-hm-blocks">' + r.ms.map(function (m) {
           var mm = MIS[m];
@@ -500,7 +502,7 @@
     var line = gapped(tr, lo, hi, w, h, pad);
     var area = line ? line + " L" + (w - pad) + "," + (h - pad) + " L" + pad + "," + (h - pad) + " Z" : "";
 
-    return '<div class="cc-hm">' +
+    return '<div class="cc-hm" data-tutorial="cc-heatmap">' +
       '<div class="cc-hm-head"><b>Mission health</b>' +
         '<span class="cc-hm-key"><i class="on-track"></i>On track<i class="attention"></i>Attention' +
         '<i class="off-track"></i>Off track</span></div>' +
@@ -524,7 +526,7 @@
         '<b>' + m + '</b> ' + esc(mm.name) +
         (p.isOverview && own ? ' <i>' + own.icon + " " + esc(own.label) + '</i>' : '') + '</button>';
     }).join('<span class="cc-at-sep">·</span>');
-    return '<div class="cc-attention">' +
+    return '<div class="cc-attention" data-tutorial="cc-attention">' +
       '<span class="cc-at-w">⚠ ' + f.length + ' mission' + (f.length > 1 ? "s" : "") + ' need attention</span>' +
       '<span class="cc-at-list">' + top + '</span>' +
       '<button class="cc-at-all" data-jump="' + f[0] + '" data-tab="' + MIS[f[0]].tab + '">View all →</button>' +
@@ -535,7 +537,7 @@
   /* BELOW THE FOLD — sticky tab bar + mission cards                         */
   /* ====================================================================== */
   function tabBar(p, active) {
-    return '<div class="cc-tabbar" id="ccTabbar">' +
+    return '<div class="cc-tabbar" id="ccTabbar" data-tutorial="cc-tabbar">' +
       TABS.filter(function (t) { return (p.activeTabs || []).indexOf(t.id) >= 0; })
         .map(function (t) {
           var n = p.isOverview ? 0 : (((p.tabs || {})[t.id] || {}).missions || []).length;
@@ -566,7 +568,7 @@
         '<button class="cc-inbuilder" data-view="patternstudio" data-m="' + mid + '">View in Builder →</button>' +
       '</div>';
 
-    return '<div class="mc ' + m.status + (col ? " collapsed" : "") + '" data-m="' + mid + '" id="mc-' + mid + '">' +
+    return '<div class="mc ' + m.status + (col ? " collapsed" : "") + '" data-tutorial="cc-mission" data-m="' + mid + '" id="mc-' + mid + '">' +
       '<button class="mc-head" data-toggle="' + mid + '">' +
         '<span class="mc-dot ' + m.status + '" title="' + m.status + '"></span>' +
         '<span class="mc-id">' + mid + '</span>' +
@@ -580,7 +582,7 @@
         (m.agentCoverage ? '<span class="mc-agent">⚡ agent covered</span>' : '') +
         '</div>') +
       (col || !pats.length ? "" :
-        '<div class="mc-pats"><span class="mc-pats-l">Powered by</span>' +
+        '<div class="mc-pats" data-tutorial="cc-patterns"><span class="mc-pats-l">Powered by</span>' +
         pats.slice(0, 6).map(function (x) {
           return '<button class="dq-pat" data-pat="' + x.id + '" title="Open in Pattern Studio">#' +
             x.id + ' ' + esc(x.name) + '</button>';
