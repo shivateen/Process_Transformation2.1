@@ -66,7 +66,7 @@ def main():
     build_command_centre.main()    # depends on patterns.json above
     build_mining.main()            # depends on patterns.json above
 
-    css = read("src", "css", "app.css")
+    css = read("src", "css", "app.css") + "\n" + read("src", "css", "sandbox.css")
     body = read("src", "html", "cockpit_body.html")
     engine = read("src", "js", "engine.js")
     # load order matters: shell defines window.PIQ, modules self-register, then boot
@@ -84,6 +84,10 @@ def main():
         read("src", "js", "discovery.js"),
         read("src", "js", "processmap.js"),
         read("src", "js", "cfo.js"),
+        # sandbox last: it wraps PIQ.boot and its two views register into PIQ.modules
+        read("src", "js", "sandbox.js"),
+        read("src", "js", "sandbox-personas.js"),
+        read("src", "js", "sandbox-design.js"),
     ])
     patterns = read("src", "data", "patterns.json")
     portfolio = read("src", "data", "portfolio.json")
