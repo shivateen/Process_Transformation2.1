@@ -25,19 +25,25 @@
   function esc(s) { return (s == null ? "" : String(s)).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
   /* ---- the pre-loaded O2C scenario -------------------------------------
+     Deck Unified Hierarchy: Theme → Objective → Mission → Capability → Pattern.
      Every id below is checked against taxonomy.json at activation — see verify().
-     The AR Collections process really does carry these 4 roles / 5 objectives /
-     31 patterns; the 13 pattern ids are the headline slice across them.        */
+     Working Capital's "Accelerate cash collection" objective carries the four O2C
+     collection missions; the 13 pattern ids are the headline slice across them.  */
   var DEMO = {
     themeId: "working-capital",                                   // Cash Conversion Cycle 58 -> 38 days
-    fnId: "o2c",
-    procId: "o2c-ar",                                             // AR Collections & Dispute Management
-    roleIds: ["o2c-analyst", "o2c-credit", "o2c-cashapp", "o2c-kam"],
-    objIds: ["o2c-o-dso", "o2c-o-dispute", "o2c-o-risk", "o2c-o-match", "o2c-o-rel"],
+    objectiveIds: ["obj-wc-collect"],                            // Accelerate cash collection
+    missionIds: ["m-o2c-o-dso", "m-o2c-o-arops", "m-o2c-o-match", "m-o2c-o-cashapp"],
+    capabilityIds: [
+      "cap-o2c-o-dso-1", "cap-o2c-o-dso-2", "cap-o2c-o-dso-3",
+      "cap-o2c-o-arops-1", "cap-o2c-o-arops-2",
+      "cap-o2c-o-match-1", "cap-o2c-o-match-2",
+      "cap-o2c-o-cashapp-1", "cap-o2c-o-cashapp-2",
+    ],
     patternIds: [1, 2, 3, 7, 10, 14, 17, 19, 22, 25, 27, 29, 31],
     blocks: {},                                                   // seeded from the patterns below
     dag: {},
     live: false,
+    fnFilter: null,
   };
 
   var TALKING_POINTS = {
@@ -112,19 +118,19 @@
   function verify(c) {
     var tax = PIQ.tax || {}, bad = [];
     var th = (tax.themes || []).filter(function (t) { return t.id === c.themeId; })[0];
-    if (!th) bad.push("theme:" + c.themeId);
-    var fn = (tax.functions || []).filter(function (f) { return f.id === c.fnId; })[0];
-    if (!fn) return bad.concat("function:" + c.fnId);
-    var pr = (fn.processes || []).filter(function (p) { return p.id === c.procId; })[0];
-    if (!pr) return bad.concat("process:" + c.procId);
-    var roles = pr.roles || [];
-    c.roleIds.forEach(function (r) {
-      if (!roles.some(function (x) { return x.id === r; })) bad.push("role:" + r);
+    if (!th) return bad.concat("theme:" + c.themeId);
+    var objIds = {}, misIds = {}, capIds = {};
+    (th.objectives || []).forEach(function (o) {
+      objIds[o.id] = 1;
+      (o.missions || []).forEach(function (m) {
+        misIds[m.id] = 1;
+        (m.capabilities || []).forEach(function (cp) { capIds[cp.id] = 1; });
+      });
     });
-    var objs = [];
-    roles.forEach(function (r) { (r.objectives || []).forEach(function (o) { objs.push(o.id); }); });
-    c.objIds.forEach(function (o) { if (objs.indexOf(o) < 0) bad.push("objective:" + o); });
-    c.patternIds.forEach(function (p) { if (!PIQ.pattern(p)) bad.push("pattern:#" + p); });
+    (c.objectiveIds || []).forEach(function (o) { if (!objIds[o]) bad.push("objective:" + o); });
+    (c.missionIds || []).forEach(function (m) { if (!misIds[m]) bad.push("mission:" + m); });
+    (c.capabilityIds || []).forEach(function (cp) { if (!capIds[cp]) bad.push("capability:" + cp); });
+    (c.patternIds || []).forEach(function (p) { if (!PIQ.pattern(p)) bad.push("pattern:#" + p); });
     return bad;
   }
 

@@ -46,10 +46,12 @@
   }
 
   function head(c, blocks, stp) {
-    var f = window.PIQ.fn(), p = window.PIQ.proc();
+    var t = window.PIQ.theme();
+    var objs = window.PIQ.objectives();
+    var sub = objs.length === 1 ? objs[0].name : (objs.length + " objective" + (objs.length !== 1 ? "s" : ""));
     return el("div", "fit-head",
       '<div><div class="kv">Stage 2 · Discover & Fit — Process discovery & agent fitment</div>' +
-      '<h2>' + esc(f.name) + ' › ' + esc((p || {}).name || "") + '</h2>' +
+      '<h2>' + esc(t ? t.name : "Composition") + ' › ' + esc(sub) + '</h2>' +
       '<p class="fit-lede">Every activity in the to-be flow is assessed for agent fit. The happy path is recorded and agentivised; the patterns become the variation handlers.</p></div>' +
       '<div class="fit-kpis">' +
         kpi(c.patternIds.length, "patterns") + kpi(blocks.length, "action blocks") + kpi(stp + "%", "straight-through") +

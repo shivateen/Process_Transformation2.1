@@ -1,17 +1,12 @@
 /* sandbox-design.js — the guided Design Studio demo (sandbox sub-view "sbguided").
  *
- * A seven-step auto-playing walkthrough of the Studio flow
- * (Theme → Function → Process → Personas → Objectives → Patterns → Configure),
+ * A six-step auto-playing walkthrough of the Studio flow, aligned to the deck's
+ * Unified Hierarchy (Theme → Objective → Mission → Capability → Pattern → Configure),
  * narrated, with the real taxonomy and the real 101-pattern library behind it.
  *
- * This is a SEPARATE view, not a patch to studio.js — the Studio is on the
- * do-not-modify list. "Explore freely" hands the user to the real Studio, which is
- * already safe: sandbox.js has swapped the composition and neutered persistence.
- *
- * Note on badges: the spec asked for a judgment-type badge (OPT/DIA/TIM/ADV/EXC).
- * No such field exists on a pattern. The real classification axes are `priority`
- * (Critical/High/Medium/Low) and `category` (12 behavioural families), and those are
- * what the pattern cards below show.
+ * This is a SEPARATE view, not a patch to studio.js. "Explore freely" hands the user
+ * to the real Studio, which is already safe: sandbox.js has swapped the composition
+ * and neutered persistence.
  */
 (function () {
   "use strict";
@@ -21,45 +16,40 @@
   function esc(s) { return (s == null ? "" : String(s)).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
   var AUTO_MS = 4000;
-  var STEPS = ["Theme", "Function", "Process", "Personas", "Objectives", "Patterns", "Configure"];
+  var STEPS = ["Theme", "Objective", "Mission", "Capability", "Pattern", "Configure"];
 
   var NARR = [
     { h: "Start at the CFO's altitude",
       b: "Themes span functions. Working Capital connects O2C collections to P2P payment timing " +
          "and Supply Chain inventory. Its compound KPI is the Cash Conversion Cycle — and it is " +
          "the thing the CFO is actually measured on." },
-    { h: "Zoom into the function",
-      b: "Order-to-Cash is fully built. Procure-to-Pay is live. The other eight ship as samples " +
-         "that prove the framework generalises — the accelerator is function-agnostic by design." },
-    { h: "Pick the process area",
-      b: "AR Collections & Dispute Management — where the money is. Four personas, thirty-one " +
-         "patterns, the densest coverage in the accelerator." },
-    { h: "Who does the work?",
-      b: "Personas own missions; missions own patterns. The Collections Analyst carries eighteen " +
-         "named behavioural patterns — not eighteen alerts, eighteen mental models with names, " +
-         "chains and branches." },
-    { h: "What are they trying to achieve?",
-      b: "Each objective maps to a measurable KPI. The patterns are the mechanism: they encode " +
-         "HOW the objective is achieved, not merely WHAT to measure." },
+    { h: "Decompose into objectives",
+      b: "An objective decomposes the theme into a measurable goal. “Accelerate cash collection” " +
+         "targets DSO and carries the missions that pursue it — the framework is the same whatever " +
+         "the function." },
+    { h: "Missions are persona-owned",
+      b: "A mission is a unit of accountability owned by one persona. The Collections Analyst owns " +
+         "“Accelerate collections / cut DSO” — not eighteen alerts, but named behavioural missions " +
+         "with capabilities, patterns and branches." },
+    { h: "Capabilities are the measurement bridge",
+      b: "A capability is a reusable KPI instrument — it tells you whether the mission is on track. " +
+         "“Promise-to-pay conversion” or “Aging-bucket shift detection” — each is powered by the " +
+         "patterns beneath it." },
     { h: "The behavioural intelligence layer",
       b: "Each pattern has a NAME. “#1 · The 29th-Day Tactic” is not “Late Payment Alert”. " +
          "Naming is the point — it means the analyst and the system share one mental model. " +
          "Process mining finds unnamed statistical deviations; ProcessIQ names the behaviour and " +
          "encodes the response." },
     { h: "From patterns to executable blocks",
-      b: "Every action block carries an executor binding. WRITE blocks default to human-in-the-loop; " +
-         "READ blocks run autonomously. The saga net handles failure: retry → compensate → escalate." },
+      b: "Every action block in the chain carries an executor binding. WRITE blocks default to " +
+         "human-in-the-loop; READ blocks run autonomously. The saga net handles failure: " +
+         "retry → compensate → escalate." },
   ];
 
   var state = { step: 0, playing: false, timer: null };
 
   function C() { return PIQ.composition; }
   function tax() { return PIQ.tax || {}; }
-  function fnO2C() { return (tax().functions || []).filter(function (f) { return f.id === "o2c"; })[0] || null; }
-  function procAR() {
-    var f = fnO2C(); if (!f) return null;
-    return (f.processes || []).filter(function (p) { return p.id === C().procId; })[0] || null;
-  }
 
   /* ---- render ----------------------------------------------------------- */
 
@@ -88,7 +78,6 @@
     document.getElementById("sdNext").onclick = function () { stop(); go(state.step + 1); };
     document.getElementById("sdPlay").onclick = function () { state.playing ? stop() : play(); };
 
-    // auto-play pauses while the pointer is over anything interactive
     wrap.addEventListener("mouseenter", function () { if (state.playing) clearTimeout(state.timer); }, true);
     wrap.addEventListener("mouseleave", function () { if (state.playing) queue(); }, true);
 
@@ -158,7 +147,7 @@
     document.getElementById("sdBack").disabled = state.step === 0;
     document.getElementById("sdNext").disabled = state.step === STEPS.length - 1;
     document.getElementById("sdStage").innerHTML =
-      [stTheme, stFunction, stProcess, stPersonas, stObjectives, stPatterns, stConfigure][state.step]();
+      [stTheme, stObjective, stMission, stCapability, stPatterns, stConfigure][state.step]();
     syncCtl();
     bindStage();
   }
@@ -172,10 +161,10 @@
     });
   }
 
-  /* ---- the seven stages, all read off the live taxonomy ----------------- */
+  /* ---- the six stages, all read off the live taxonomy ------------------- */
 
   function stTheme() {
-    var t = (tax().themes || []).filter(function (x) { return x.id === C().themeId; })[0];
+    var t = PIQ.theme();
     if (!t) return empty("theme");
     var k = t.compoundKPI || {};
     return '<div class="sd-one">' +
@@ -190,56 +179,42 @@
       "</div></div>";
   }
 
-  function stFunction() {
-    var fns = tax().functions || [];
-    return '<div class="sd-grid f">' + fns.map(function (f) {
-      return '<div class="sd-pick' + (f.id === C().fnId ? " on" : "") + '">' +
-        '<span class="sd-ico">' + (f.icon || "▣") + "</span><b>" + esc(f.name) + "</b>" +
-        '<span class="sd-st ' + esc(f.status) + '">' + esc(f.status) + "</span></div>";
+  function stObjective() {
+    var objs = PIQ.themeObjectives();
+    if (!objs.length) return empty("objective");
+    var sel = C().objectiveIds || [];
+    return '<div class="sd-grid p">' + objs.map(function (o) {
+      return '<div class="sd-pick' + (sel.indexOf(o.id) >= 0 ? " on" : "") + '">' +
+        "<b>" + esc(o.name) + "</b><small>Measured by " + esc(o.kpi) + "</small>" +
+        '<span class="sd-mini">' + o.missionCount + " missions</span></div>";
     }).join("") + "</div>";
   }
 
-  function stProcess() {
-    var f = fnO2C(); if (!f) return empty("function");
-    return '<div class="sd-grid p">' + (f.processes || []).map(function (p) {
-      var roles = (p.roles || []).length, pats = 0;
-      (p.roles || []).forEach(function (r) {
-        (r.objectives || []).forEach(function (o) { pats += (o.patternIds || []).length; });
-      });
-      return '<div class="sd-pick' + (p.id === C().procId ? " on" : "") + '">' +
-        "<b>" + esc(p.name) + "</b><small>" + esc(p.desc || "") + "</small>" +
-        '<span class="sd-mini">' + roles + " personas · " + pats + " patterns</span></div>";
+  function stMission() {
+    var missions = PIQ.objectiveMissions();
+    if (!missions.length) return empty("mission");
+    var sel = C().missionIds || [];
+    return '<div class="sd-grid r">' + missions.map(function (m) {
+      return '<div class="sd-pick' + (sel.indexOf(m.id) >= 0 ? " on" : "") + '">' +
+        "<b>" + esc(m.name) + "</b>" +
+        '<span class="sd-mini">' + esc(m.persona) + " · " + m.capabilityCount + " capabilit" +
+          (m.capabilityCount === 1 ? "y" : "ies") + "</span></div>";
     }).join("") + "</div>";
   }
 
-  function stPersonas() {
-    var p = procAR(); if (!p) return empty("process");
-    return '<div class="sd-grid r">' + (p.roles || []).map(function (r) {
-      var pats = 0;
-      (r.objectives || []).forEach(function (o) { pats += (o.patternIds || []).length; });
-      var on = C().roleIds.indexOf(r.id) >= 0;
-      return '<div class="sd-pick' + (on ? " on" : "") + '">' +
-        "<b>" + esc(r.name) + "</b>" +
-        '<span class="sd-mini">' + (r.objectives || []).length + " objective" +
-          ((r.objectives || []).length === 1 ? "" : "s") + "</span>" +
-        '<span class="sd-cnt">' + pats + "</span></div>";
-    }).join("") + "</div>";
-  }
-
-  function stObjectives() {
-    var p = procAR(); if (!p) return empty("process");
-    var rows = [];
-    (p.roles || []).forEach(function (r) {
-      (r.objectives || []).forEach(function (o) {
-        rows.push('<div class="sd-obj' + (C().objIds.indexOf(o.id) >= 0 ? " on" : "") + '">' +
-          '<div class="sd-obj-l"><b>' + esc(o.name) + "</b><small>" + esc(r.name) + "</small></div>" +
-          '<div class="sd-obj-k">' + esc(o.kpi || "—") + "</div>" +
-          '<div class="sd-obj-n">' + (o.patternIds || []).length + "</div></div>");
-      });
-    });
-    return '<div class="sd-objs"><div class="sd-obj hd"><div class="sd-obj-l">Objective</div>' +
-      '<div class="sd-obj-k">KPI</div><div class="sd-obj-n">Patterns</div></div>' +
-      rows.join("") + "</div>";
+  function stCapability() {
+    var caps = PIQ.missionCapabilities();
+    if (!caps.length) return empty("capability");
+    var sel = C().capabilityIds || [];
+    return '<div class="sd-objs"><div class="sd-obj hd"><div class="sd-obj-l">Capability</div>' +
+      '<div class="sd-obj-k">Instrument</div><div class="sd-obj-n">Patterns</div></div>' +
+      caps.map(function (cp) {
+        return '<div class="sd-obj' + (sel.indexOf(cp.id) >= 0 ? " on" : "") + '">' +
+          '<div class="sd-obj-l"><b>' + esc(cp.name) + "</b><small>" +
+            esc(cp.current) + " → " + esc(cp.target) + " " + esc(cp.unit) + "</small></div>" +
+          '<div class="sd-obj-k">' + esc(cp.kpiName) + "</div>" +
+          '<div class="sd-obj-n">' + (cp.patternCount || 0) + "</div></div>";
+      }).join("") + "</div>";
   }
 
   function stPatterns() {
@@ -249,6 +224,7 @@
       if (!p) return "";
       var mm = String(p.mentalModel || "");
       if (mm.length > 96) mm = mm.slice(0, 93).replace(/[\s,;.]+$/, "") + "…";
+      var steps = (PIQ.chainSteps ? PIQ.chainSteps(p) : (p.originalDAG || []));
       return '<button class="sd-pcard pri-' + esc(String(p.priority).toLowerCase()) + '" data-pat="' + id + '">' +
         '<div class="sd-pc-h"><span class="sd-pc-n">#' + id + "</span><b>" + esc(p.name) + "</b></div>" +
         '<div class="sd-pc-t">' +
@@ -256,11 +232,11 @@
           '<span class="sd-tag cat">' + esc(shortCat(p.category)) + "</span>" +
         "</div>" +
         '<div class="sd-pc-mm">“' + esc(mm) + '”</div>' +
-        '<div class="sd-pc-f">' + (p.originalDAG || []).length + " action blocks" +
+        '<div class="sd-pc-f">' + steps.length + " action blocks" +
           ((p.hitlGates || []).length ? ' · <b>HITL gate</b>' : "") + "</div>" +
         "</button>";
     }).join("") + "</div>" +
-    '<p class="sd-note">Click any pattern to open its mental model, its process flow and its ' +
+    '<p class="sd-note">Click any pattern to open its mental model, its action chain and its ' +
     "branches. Every one of these is executable — none of them is a chart.</p>";
   }
 
@@ -294,8 +270,8 @@
     return '<div class="sd-cfg">' +
       '<div class="sd-sum">' +
         '<div class="sd-sum-i"><b>1</b><span>theme</span></div><i>→</i>' +
-        '<div class="sd-sum-i"><b>1</b><span>function</span></div><i>→</i>' +
-        '<div class="sd-sum-i"><b>' + (C().roleIds || []).length + "</b><span>personas</span></div><i>→</i>" +
+        '<div class="sd-sum-i"><b>' + (C().objectiveIds || []).length + "</b><span>objectives</span></div><i>→</i>" +
+        '<div class="sd-sum-i"><b>' + (C().missionIds || []).length + "</b><span>missions</span></div><i>→</i>" +
         '<div class="sd-sum-i"><b>' + (C().patternIds || []).length + "</b><span>patterns</span></div><i>→</i>" +
         '<div class="sd-sum-i acc"><b>' + blocks.length + "</b><span>action blocks</span></div>" +
       "</div>" +
