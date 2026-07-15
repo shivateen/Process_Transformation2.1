@@ -139,10 +139,12 @@
   }
 
   function head() {
-    var f = window.PIQ.fn(), p = window.PIQ.proc();
+    var t = window.PIQ.theme();
+    var objs = window.PIQ.objectives();
+    var sub = objs.length === 1 ? objs[0].name : (objs.length + " objective" + (objs.length !== 1 ? "s" : ""));
     return el("div", "rt-head",
       '<div><div class="kv">Stage 4 · Run & Govern — Agentic workflow in production</div>' +
-      '<h2>' + esc(f.name) + ' › ' + esc((p || {}).name || "") + ' <span class="livedot">● LIVE</span></h2></div>' +
+      '<h2>' + esc(t ? t.name : "Composition") + ' › ' + esc(sub) + ' <span class="livedot">● LIVE</span></h2></div>' +
       '<div class="rt-ctrl">' +
         '<button class="btn go sm" id="rtStep">Process next ▸</button>' +
         '<button class="btn sm" id="rtAuto">Auto-run ⏵</button>' +

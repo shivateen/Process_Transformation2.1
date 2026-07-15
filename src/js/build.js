@@ -47,11 +47,14 @@
   }
 
   function head() {
-    var f = window.PIQ.fn(), p = window.PIQ.proc(), c = C();
+    var c = C();
+    var t = window.PIQ.theme();
+    var objs = window.PIQ.objectives();
+    var sub = objs.length === 1 ? objs[0].name : (objs.length + " objective" + (objs.length !== 1 ? "s" : ""));
     var blocks = window.PIQ.collectBlocks(c.patternIds);
     return el("div", "fit-head",
       '<div><div class="kv">Build — Implementation Studio</div>' +
-      '<h2>' + esc(f.name) + ' › ' + esc((p || {}).name || "") + (c.live ? ' <span class="livedot">● LIVE</span>' : '') + '</h2>' +
+      '<h2>' + esc(t ? t.name : "Composition") + ' › ' + esc(sub) + (c.live ? ' <span class="livedot">● LIVE</span>' : '') + '</h2>' +
       '<p class="fit-lede">The configured action blocks and their fitment verdicts are chained into an executable agent ' +
       'DAG — tech stack bound, execution mode set, rollback and connectivity checked — then promoted to production.</p></div>' +
       '<div class="fit-kpis">' + kpi(c.patternIds.length, "patterns") + kpi(blocks.length, "blocks") +

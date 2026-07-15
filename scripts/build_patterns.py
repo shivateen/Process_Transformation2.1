@@ -261,6 +261,15 @@ def main():
         c["count"] += 1
         c[p["priority"]] = c.get(p["priority"], 0) + 1
 
+    # deck "Unified Hierarchy" rename: originalDAG -> actionChain{id,name,steps}.
+    # originalDAG is retained as a back-compat alias so no downstream reader breaks.
+    for p in patterns:
+        p["actionChain"] = {
+            "id": "ac-" + str(p.get("id")),
+            "name": p.get("name", "Pattern") + " — action chain",
+            "steps": p.get("originalDAG") or [],
+        }
+
     out = {
         "meta": {
             "title": "ProcessIQ — Order-to-Cash Pattern Library",

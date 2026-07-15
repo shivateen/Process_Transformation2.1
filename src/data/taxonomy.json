@@ -27,7 +27,10 @@
       }
     ],
     "functionCount": 10,
-    "themeCount": 5
+    "themeCount": 8,
+    "objectiveCount": 21,
+    "missionCount": 31,
+    "capabilityCount": 44
   },
   "themes": [
     {
@@ -71,7 +74,329 @@
           "compoundImpact": "Cash position drops 40-60% in final 5 business days of quarter",
           "response": "Pre-emptive collection calls week 3 of quarter + supplier payment staggering"
         }
-      ]
+      ],
+      "objectives": [
+        {
+          "id": "obj-wc-collect",
+          "name": "Accelerate cash collection",
+          "themeId": "working-capital",
+          "kpi": "DSO (days)",
+          "functionIds": [
+            "o2c"
+          ],
+          "missions": [
+            {
+              "id": "m-o2c-o-dso",
+              "name": "Accelerate collections / cut DSO",
+              "persona": "Collections Analyst",
+              "functionId": "o2c",
+              "kpi": "DSO (days)",
+              "description": "Collections Analyst owns this mission — accelerate collections / cut dso.",
+              "capabilities": [
+                {
+                  "id": "cap-o2c-o-dso-1",
+                  "name": "Aging-bucket shift detection",
+                  "kpiName": "Aging-bucket shift detection",
+                  "kpiFormula": "Σ elapsed / count",
+                  "unit": "days",
+                  "current": 17,
+                  "target": 10,
+                  "patternIds": [
+                    10,
+                    11,
+                    12
+                  ],
+                  "patternCount": 3
+                },
+                {
+                  "id": "cap-o2c-o-dso-2",
+                  "name": "Promise-to-pay conversion",
+                  "kpiName": "Promise-to-pay conversion",
+                  "kpiFormula": "Σ elapsed / count",
+                  "unit": "days",
+                  "current": 18,
+                  "target": 10,
+                  "patternIds": [
+                    13,
+                    14,
+                    15
+                  ],
+                  "patternCount": 3
+                },
+                {
+                  "id": "cap-o2c-o-dso-3",
+                  "name": "Auto-escalation effectiveness",
+                  "kpiName": "Auto-escalation effectiveness",
+                  "kpiFormula": "Σ elapsed / count",
+                  "unit": "days",
+                  "current": 19,
+                  "target": 10,
+                  "patternIds": [
+                    16,
+                    17,
+                    18
+                  ],
+                  "patternCount": 3
+                }
+              ],
+              "capabilityCount": 3
+            },
+            {
+              "id": "m-o2c-o-arops",
+              "name": "Steer DSO & govern cross-process AR",
+              "persona": "AR Controller",
+              "functionId": "o2c",
+              "kpi": "DSO (days)",
+              "description": "AR Controller owns this mission — steer dso & govern cross-process ar.",
+              "capabilities": [
+                {
+                  "id": "cap-o2c-o-arops-1",
+                  "name": "DSO decomposition",
+                  "kpiName": "DSO decomposition",
+                  "kpiFormula": "Σ elapsed / count",
+                  "unit": "days",
+                  "current": 19,
+                  "target": 10,
+                  "patternIds": [
+                    92,
+                    93,
+                    94,
+                    95,
+                    96
+                  ],
+                  "patternCount": 5
+                },
+                {
+                  "id": "cap-o2c-o-arops-2",
+                  "name": "Cross-process AR governance",
+                  "kpiName": "Cross-process AR governance",
+                  "kpiFormula": "Σ elapsed / count",
+                  "unit": "days",
+                  "current": 20,
+                  "target": 10,
+                  "patternIds": [
+                    97,
+                    98,
+                    99,
+                    100,
+                    101
+                  ],
+                  "patternCount": 5
+                }
+              ],
+              "capabilityCount": 2
+            },
+            {
+              "id": "m-o2c-o-match",
+              "name": "Lift auto-match / cash-application rate",
+              "persona": "Cash Application Specialist",
+              "functionId": "o2c",
+              "kpi": "Auto-match %",
+              "description": "Cash Application Specialist owns this mission — lift auto-match / cash-application rate.",
+              "capabilities": [
+                {
+                  "id": "cap-o2c-o-match-1",
+                  "name": "Remittance auto-match rate",
+                  "kpiName": "Remittance auto-match rate",
+                  "kpiFormula": "in-policy events / total events",
+                  "unit": "%",
+                  "current": 69,
+                  "target": 85,
+                  "patternIds": [
+                    24
+                  ],
+                  "patternCount": 1
+                },
+                {
+                  "id": "cap-o2c-o-match-2",
+                  "name": "Unapplied-cash aging",
+                  "kpiName": "Unapplied-cash aging",
+                  "kpiFormula": "in-policy events / total events",
+                  "unit": "%",
+                  "current": 70,
+                  "target": 86,
+                  "patternIds": [
+                    25,
+                    26
+                  ],
+                  "patternCount": 2
+                }
+              ],
+              "capabilityCount": 2
+            },
+            {
+              "id": "m-o2c-o-cashapp",
+              "name": "Lift auto-match, cut unapplied cash",
+              "persona": "Cash Application Specialist",
+              "functionId": "o2c",
+              "kpi": "Auto-match %",
+              "description": "Cash Application Specialist owns this mission — lift auto-match, cut unapplied cash.",
+              "capabilities": [
+                {
+                  "id": "cap-o2c-o-cashapp-1",
+                  "name": "Cash-application STP rate",
+                  "kpiName": "Cash-application STP rate",
+                  "kpiFormula": "in-policy events / total events",
+                  "unit": "%",
+                  "current": 71,
+                  "target": 87,
+                  "patternIds": [
+                    42,
+                    43,
+                    44,
+                    45,
+                    46
+                  ],
+                  "patternCount": 5
+                },
+                {
+                  "id": "cap-o2c-o-cashapp-2",
+                  "name": "Short-pay detection",
+                  "kpiName": "Short-pay detection",
+                  "kpiFormula": "in-policy events / total events",
+                  "unit": "%",
+                  "current": 72,
+                  "target": 88,
+                  "patternIds": [
+                    47,
+                    48,
+                    49,
+                    50,
+                    51
+                  ],
+                  "patternCount": 5
+                }
+              ],
+              "capabilityCount": 2
+            }
+          ],
+          "missionCount": 4
+        },
+        {
+          "id": "obj-wc-pay",
+          "name": "Optimise payment & spend timing",
+          "themeId": "working-capital",
+          "kpi": "DPO (days)",
+          "functionIds": [
+            "p2p"
+          ],
+          "missions": [
+            {
+              "id": "m-p2p-o-wc",
+              "name": "Protect cash through payment timing",
+              "persona": "Treasury / Working Capital Analyst",
+              "functionId": "p2p",
+              "kpi": "Days Payable Outstanding",
+              "description": "Treasury / Working Capital Analyst owns this mission — protect cash through payment timing.",
+              "capabilities": [
+                {
+                  "id": "cap-p2p-o-wc",
+                  "name": "Days Payable Outstanding",
+                  "kpiName": "Days Payable Outstanding",
+                  "kpiFormula": "Σ elapsed / count",
+                  "unit": "days",
+                  "current": 16,
+                  "target": 10,
+                  "patternIds": [
+                    2001,
+                    2007
+                  ],
+                  "patternCount": 2
+                }
+              ],
+              "capabilityCount": 1
+            },
+            {
+              "id": "m-p2p-o-spend",
+              "name": "Control spend leakage & supplier terms",
+              "persona": "Category / Procurement Manager",
+              "functionId": "p2p",
+              "kpi": "Contract compliance %",
+              "description": "Category / Procurement Manager owns this mission — control spend leakage & supplier terms.",
+              "capabilities": [
+                {
+                  "id": "cap-p2p-o-spend",
+                  "name": "Contract compliance %",
+                  "kpiName": "Contract compliance %",
+                  "kpiFormula": "in-policy events / total events",
+                  "unit": "%",
+                  "current": 69,
+                  "target": 85,
+                  "patternIds": [
+                    2004,
+                    2005,
+                    2008
+                  ],
+                  "patternCount": 3
+                }
+              ],
+              "capabilityCount": 1
+            }
+          ],
+          "missionCount": 2
+        },
+        {
+          "id": "obj-wc-inventory",
+          "name": "Right-size inventory & availability",
+          "themeId": "working-capital",
+          "kpi": "Inventory cover",
+          "functionIds": [
+            "sc"
+          ],
+          "missions": [
+            {
+              "id": "m-sc-o-stock",
+              "name": "Prevent stockouts on critical SKUs",
+              "persona": "Supply Planner",
+              "functionId": "sc",
+              "kpi": "Stockout incidents",
+              "description": "Supply Planner owns this mission — prevent stockouts on critical skus.",
+              "capabilities": [
+                {
+                  "id": "cap-sc-o-stock",
+                  "name": "Stockout incidents",
+                  "kpiName": "Stockout incidents",
+                  "kpiFormula": "composite health index",
+                  "unit": "index",
+                  "current": 50,
+                  "target": 70,
+                  "patternIds": [
+                    5001
+                  ],
+                  "patternCount": 1
+                }
+              ],
+              "capabilityCount": 1
+            },
+            {
+              "id": "m-sc-o-eta",
+              "name": "Protect on-time-in-full delivery",
+              "persona": "Logistics Coordinator",
+              "functionId": "sc",
+              "kpi": "OTIF %",
+              "description": "Logistics Coordinator owns this mission — protect on-time-in-full delivery.",
+              "capabilities": [
+                {
+                  "id": "cap-sc-o-eta",
+                  "name": "OTIF %",
+                  "kpiName": "OTIF %",
+                  "kpiFormula": "in-policy events / total events",
+                  "unit": "%",
+                  "current": 66,
+                  "target": 82,
+                  "patternIds": [
+                    5002
+                  ],
+                  "patternCount": 1
+                }
+              ],
+              "capabilityCount": 1
+            }
+          ],
+          "missionCount": 2
+        }
+      ],
+      "objectiveCount": 3
     },
     {
       "id": "revenue-leakage",
@@ -104,7 +429,364 @@
           "compoundImpact": "Average loss per bust-out event: $180K-$500K",
           "response": "Immediate credit freeze + legal hold + CFO notification"
         }
-      ]
+      ],
+      "objectives": [
+        {
+          "id": "obj-rl-dispute",
+          "name": "Stop dispute & deduction leakage",
+          "themeId": "revenue-leakage",
+          "kpi": "Leakage $",
+          "functionIds": [
+            "o2c"
+          ],
+          "missions": [
+            {
+              "id": "m-o2c-o-dispute",
+              "name": "Resolve disputes & deductions faster",
+              "persona": "Collections Analyst",
+              "functionId": "o2c",
+              "kpi": "Dispute cycle time",
+              "description": "Collections Analyst owns this mission — resolve disputes & deductions faster.",
+              "capabilities": [
+                {
+                  "id": "cap-o2c-o-dispute-1",
+                  "name": "Dispute root-cause classification",
+                  "kpiName": "Dispute root-cause classification",
+                  "kpiFormula": "composite health index",
+                  "unit": "index",
+                  "current": 53,
+                  "target": 73,
+                  "patternIds": [
+                    1,
+                    2,
+                    3,
+                    4
+                  ],
+                  "patternCount": 4
+                },
+                {
+                  "id": "cap-o2c-o-dispute-2",
+                  "name": "Deduction validity scoring",
+                  "kpiName": "Deduction validity scoring",
+                  "kpiFormula": "composite health index",
+                  "unit": "index",
+                  "current": 54,
+                  "target": 74,
+                  "patternIds": [
+                    5,
+                    6,
+                    7,
+                    8,
+                    9
+                  ],
+                  "patternCount": 5
+                }
+              ],
+              "capabilityCount": 2
+            },
+            {
+              "id": "m-o2c-o-disputes",
+              "name": "Resolve disputes within SLA, maximise recovery",
+              "persona": "Dispute Analyst",
+              "functionId": "o2c",
+              "kpi": "Dispute cycle time",
+              "description": "Dispute Analyst owns this mission — resolve disputes within sla, maximise recovery.",
+              "capabilities": [
+                {
+                  "id": "cap-o2c-o-disputes-1",
+                  "name": "Dispute SLA conformance",
+                  "kpiName": "Dispute SLA conformance",
+                  "kpiFormula": "composite health index",
+                  "unit": "index",
+                  "current": 54,
+                  "target": 74,
+                  "patternIds": [
+                    52,
+                    53,
+                    54,
+                    55,
+                    56
+                  ],
+                  "patternCount": 5
+                },
+                {
+                  "id": "cap-o2c-o-disputes-2",
+                  "name": "Recovery-rate tracking",
+                  "kpiName": "Recovery-rate tracking",
+                  "kpiFormula": "composite health index",
+                  "unit": "index",
+                  "current": 55,
+                  "target": 75,
+                  "patternIds": [
+                    57,
+                    58,
+                    59,
+                    60,
+                    61
+                  ],
+                  "patternCount": 5
+                }
+              ],
+              "capabilityCount": 2
+            },
+            {
+              "id": "m-o2c-o-deduct",
+              "name": "Recover invalid deductions, find the leakage root",
+              "persona": "Deductions Analyst",
+              "functionId": "o2c",
+              "kpi": "Deduction recovery %",
+              "description": "Deductions Analyst owns this mission — recover invalid deductions, find the leakage root.",
+              "capabilities": [
+                {
+                  "id": "cap-o2c-o-deduct-1",
+                  "name": "Deduction recovery yield",
+                  "kpiName": "Deduction recovery yield",
+                  "kpiFormula": "in-policy events / total events",
+                  "unit": "%",
+                  "current": 70,
+                  "target": 86,
+                  "patternIds": [
+                    62,
+                    63,
+                    64,
+                    65,
+                    66
+                  ],
+                  "patternCount": 5
+                },
+                {
+                  "id": "cap-o2c-o-deduct-2",
+                  "name": "Trade-claim leakage root-cause",
+                  "kpiName": "Trade-claim leakage root-cause",
+                  "kpiFormula": "in-policy events / total events",
+                  "unit": "%",
+                  "current": 71,
+                  "target": 87,
+                  "patternIds": [
+                    67,
+                    68,
+                    69,
+                    70,
+                    71
+                  ],
+                  "patternCount": 5
+                }
+              ],
+              "capabilityCount": 2
+            },
+            {
+              "id": "m-o2c-o-rel",
+              "name": "Curb contractual & relationship abuse",
+              "persona": "Strategic Account Manager",
+              "functionId": "o2c",
+              "kpi": "Margin leakage $",
+              "description": "Strategic Account Manager owns this mission — curb contractual & relationship abuse.",
+              "capabilities": [
+                {
+                  "id": "cap-o2c-o-rel-1",
+                  "name": "Contract-term drift detection",
+                  "kpiName": "Contract-term drift detection",
+                  "kpiFormula": "exposure at risk (rolling)",
+                  "unit": "$M",
+                  "current": 2.1,
+                  "target": 0.9,
+                  "patternIds": [
+                    27,
+                    28
+                  ],
+                  "patternCount": 2
+                },
+                {
+                  "id": "cap-o2c-o-rel-2",
+                  "name": "Margin-leakage attribution",
+                  "kpiName": "Margin-leakage attribution",
+                  "kpiFormula": "exposure at risk (rolling)",
+                  "unit": "$M",
+                  "current": 2.2,
+                  "target": 1.0,
+                  "patternIds": [
+                    29,
+                    30,
+                    31
+                  ],
+                  "patternCount": 3
+                }
+              ],
+              "capabilityCount": 2
+            }
+          ],
+          "missionCount": 4
+        },
+        {
+          "id": "obj-rl-billing",
+          "name": "Bill accurately, protect revenue",
+          "themeId": "revenue-leakage",
+          "kpi": "Billing error rate %",
+          "functionIds": [
+            "o2c"
+          ],
+          "missions": [
+            {
+              "id": "m-o2c-o-billing",
+              "name": "Bill accurately, on time, first time",
+              "persona": "Billing Specialist",
+              "functionId": "o2c",
+              "kpi": "Billing error rate %",
+              "description": "Billing Specialist owns this mission — bill accurately, on time, first time.",
+              "capabilities": [
+                {
+                  "id": "cap-o2c-o-billing-1",
+                  "name": "Billing accuracy scoring",
+                  "kpiName": "Billing accuracy scoring",
+                  "kpiFormula": "in-policy events / total events",
+                  "unit": "%",
+                  "current": 71,
+                  "target": 87,
+                  "patternIds": [
+                    72,
+                    73,
+                    74,
+                    75,
+                    76
+                  ],
+                  "patternCount": 5
+                },
+                {
+                  "id": "cap-o2c-o-billing-2",
+                  "name": "Revenue-integrity checks",
+                  "kpiName": "Revenue-integrity checks",
+                  "kpiFormula": "in-policy events / total events",
+                  "unit": "%",
+                  "current": 72,
+                  "target": 88,
+                  "patternIds": [
+                    77,
+                    78,
+                    79,
+                    80,
+                    81
+                  ],
+                  "patternCount": 5
+                }
+              ],
+              "capabilityCount": 2
+            },
+            {
+              "id": "m-o2c-o-order",
+              "name": "Keep orders clean & handoff-ready",
+              "persona": "Order Management Specialist",
+              "functionId": "o2c",
+              "kpi": "Order rework %",
+              "description": "Order Management Specialist owns this mission — keep orders clean & handoff-ready.",
+              "capabilities": [
+                {
+                  "id": "cap-o2c-o-order-1",
+                  "name": "Order data-quality scoring",
+                  "kpiName": "Order data-quality scoring",
+                  "kpiFormula": "in-policy events / total events",
+                  "unit": "%",
+                  "current": 69,
+                  "target": 85,
+                  "patternIds": [
+                    82,
+                    83,
+                    84,
+                    85,
+                    86
+                  ],
+                  "patternCount": 5
+                },
+                {
+                  "id": "cap-o2c-o-order-2",
+                  "name": "Order-to-billing handoff integrity",
+                  "kpiName": "Order-to-billing handoff integrity",
+                  "kpiFormula": "in-policy events / total events",
+                  "unit": "%",
+                  "current": 70,
+                  "target": 86,
+                  "patternIds": [
+                    87,
+                    88,
+                    89,
+                    90,
+                    91
+                  ],
+                  "patternCount": 5
+                }
+              ],
+              "capabilityCount": 2
+            }
+          ],
+          "missionCount": 2
+        },
+        {
+          "id": "obj-rl-tax",
+          "name": "Get tax determination right",
+          "themeId": "revenue-leakage",
+          "kpi": "Determination error %",
+          "functionIds": [
+            "tax"
+          ],
+          "missions": [
+            {
+              "id": "m-tax-o-file",
+              "name": "File on time and accurately",
+              "persona": "Tax Analyst",
+              "functionId": "tax",
+              "kpi": "Penalty exposure $",
+              "description": "Tax Analyst owns this mission — file on time and accurately.",
+              "capabilities": [
+                {
+                  "id": "cap-tax-o-file",
+                  "name": "Penalty exposure $",
+                  "kpiName": "Penalty exposure $",
+                  "kpiFormula": "exposure at risk (rolling)",
+                  "unit": "$M",
+                  "current": 2.2,
+                  "target": 1.0,
+                  "patternIds": [
+                    8000,
+                    8001,
+                    8002,
+                    8003
+                  ],
+                  "patternCount": 4
+                }
+              ],
+              "capabilityCount": 1
+            },
+            {
+              "id": "m-tax-o-det",
+              "name": "Get determination right at source",
+              "persona": "Tax Specialist",
+              "functionId": "tax",
+              "kpi": "Determination error %",
+              "description": "Tax Specialist owns this mission — get determination right at source.",
+              "capabilities": [
+                {
+                  "id": "cap-tax-o-det",
+                  "name": "Determination error %",
+                  "kpiName": "Determination error %",
+                  "kpiFormula": "in-policy events / total events",
+                  "unit": "%",
+                  "current": 67,
+                  "target": 83,
+                  "patternIds": [
+                    8004,
+                    8005,
+                    8006,
+                    8007
+                  ],
+                  "patternCount": 4
+                }
+              ],
+              "capabilityCount": 1
+            }
+          ],
+          "missionCount": 2
+        }
+      ],
+      "objectiveCount": 3
     },
     {
       "id": "close-acceleration",
@@ -135,7 +817,134 @@
           "compoundImpact": "Each $1M unapplied cash adds ~0.5 days to close cycle",
           "response": "Auto-match waterfall runs Day -3 before close; exceptions routed to Cash App team with 24-hour SLA"
         }
-      ]
+      ],
+      "objectives": [
+        {
+          "id": "obj-ca-recon",
+          "name": "Keep reconciliations clean & current",
+          "themeId": "close-acceleration",
+          "kpi": "Aged breaks",
+          "functionIds": [
+            "r2r"
+          ],
+          "missions": [
+            {
+              "id": "m-r2r-o-recon",
+              "name": "Keep reconciliations clean & current",
+              "persona": "GL Accountant",
+              "functionId": "r2r",
+              "kpi": "Aged breaks",
+              "description": "GL Accountant owns this mission — keep reconciliations clean & current.",
+              "capabilities": [
+                {
+                  "id": "cap-r2r-o-recon",
+                  "name": "Aged breaks",
+                  "kpiName": "Aged breaks",
+                  "kpiFormula": "composite health index",
+                  "unit": "index",
+                  "current": 51,
+                  "target": 71,
+                  "patternIds": [
+                    3001,
+                    3004,
+                    3005,
+                    3006
+                  ],
+                  "patternCount": 4
+                }
+              ],
+              "capabilityCount": 1
+            }
+          ],
+          "missionCount": 1
+        },
+        {
+          "id": "obj-ca-close",
+          "name": "Run a controlled, fast close",
+          "themeId": "close-acceleration",
+          "kpi": "Close cycle days",
+          "functionIds": [
+            "o2c",
+            "r2r"
+          ],
+          "missions": [
+            {
+              "id": "m-r2r-o-close",
+              "name": "Run a controlled, on-time close",
+              "persona": "Controller",
+              "functionId": "r2r",
+              "kpi": "Close cycle days",
+              "description": "Controller owns this mission — run a controlled, on-time close.",
+              "capabilities": [
+                {
+                  "id": "cap-r2r-o-close",
+                  "name": "Close cycle days",
+                  "kpiName": "Close cycle days",
+                  "kpiFormula": "Σ elapsed / count",
+                  "unit": "days",
+                  "current": 19,
+                  "target": 10,
+                  "patternIds": [
+                    3002,
+                    3003,
+                    3007,
+                    3008
+                  ],
+                  "patternCount": 4
+                }
+              ],
+              "capabilityCount": 1
+            },
+            {
+              "id": "m-o2c-o-arops",
+              "name": "Steer DSO & govern cross-process AR",
+              "persona": "AR Controller",
+              "functionId": "o2c",
+              "kpi": "DSO (days)",
+              "description": "AR Controller owns this mission — steer dso & govern cross-process ar.",
+              "capabilities": [
+                {
+                  "id": "cap-o2c-o-arops-1",
+                  "name": "DSO decomposition",
+                  "kpiName": "DSO decomposition",
+                  "kpiFormula": "Σ elapsed / count",
+                  "unit": "days",
+                  "current": 19,
+                  "target": 10,
+                  "patternIds": [
+                    92,
+                    93,
+                    94,
+                    95,
+                    96
+                  ],
+                  "patternCount": 5
+                },
+                {
+                  "id": "cap-o2c-o-arops-2",
+                  "name": "Cross-process AR governance",
+                  "kpiName": "Cross-process AR governance",
+                  "kpiFormula": "Σ elapsed / count",
+                  "unit": "days",
+                  "current": 20,
+                  "target": 10,
+                  "patternIds": [
+                    97,
+                    98,
+                    99,
+                    100,
+                    101
+                  ],
+                  "patternCount": 5
+                }
+              ],
+              "capabilityCount": 2
+            }
+          ],
+          "missionCount": 2
+        }
+      ],
+      "objectiveCount": 2
     },
     {
       "id": "controls-integrity",
@@ -168,7 +977,251 @@
           "compoundImpact": "SOX finding: segregation of duties failure + credit risk exposure",
           "response": "Block override if customer has active dispute manipulation pattern; auto-escalate to Credit VP"
         }
-      ]
+      ],
+      "objectives": [
+        {
+          "id": "obj-ci-detect",
+          "name": "Detect control failures early",
+          "themeId": "controls-integrity",
+          "kpi": "Control exceptions",
+          "functionIds": [
+            "icc"
+          ],
+          "missions": [
+            {
+              "id": "m-icc-o-detect",
+              "name": "Detect control failures early",
+              "persona": "Controls Analyst",
+              "functionId": "icc",
+              "kpi": "Control exceptions",
+              "description": "Controls Analyst owns this mission — detect control failures early.",
+              "capabilities": [
+                {
+                  "id": "cap-icc-o-detect",
+                  "name": "Control exceptions",
+                  "kpiName": "Control exceptions",
+                  "kpiFormula": "composite health index",
+                  "unit": "index",
+                  "current": 52,
+                  "target": 72,
+                  "patternIds": [
+                    10000,
+                    10001,
+                    10002,
+                    10003
+                  ],
+                  "patternCount": 4
+                }
+              ],
+              "capabilityCount": 1
+            }
+          ],
+          "missionCount": 1
+        },
+        {
+          "id": "obj-ci-sod",
+          "name": "Prevent toxic access & SoD conflicts",
+          "themeId": "controls-integrity",
+          "kpi": "Open SoD conflicts",
+          "functionIds": [
+            "icc"
+          ],
+          "missions": [
+            {
+              "id": "m-icc-o-sod",
+              "name": "Prevent toxic access combinations",
+              "persona": "Access Reviewer",
+              "functionId": "icc",
+              "kpi": "Open SoD conflicts",
+              "description": "Access Reviewer owns this mission — prevent toxic access combinations.",
+              "capabilities": [
+                {
+                  "id": "cap-icc-o-sod",
+                  "name": "Open SoD conflicts",
+                  "kpiName": "Open SoD conflicts",
+                  "kpiFormula": "composite health index",
+                  "unit": "index",
+                  "current": 49,
+                  "target": 69,
+                  "patternIds": [
+                    10004,
+                    10005,
+                    10006,
+                    10007
+                  ],
+                  "patternCount": 4
+                }
+              ],
+              "capabilityCount": 1
+            }
+          ],
+          "missionCount": 1
+        },
+        {
+          "id": "obj-ci-credit",
+          "name": "Enforce credit & AR governance",
+          "themeId": "controls-integrity",
+          "kpi": "Credit exposure $",
+          "functionIds": [
+            "o2c"
+          ],
+          "missions": [
+            {
+              "id": "m-o2c-o-credit",
+              "name": "Contain credit exposure before losses",
+              "persona": "Credit Analyst",
+              "functionId": "o2c",
+              "kpi": "Bad-debt exposure $",
+              "description": "Credit Analyst owns this mission — contain credit exposure before losses.",
+              "capabilities": [
+                {
+                  "id": "cap-o2c-o-credit-1",
+                  "name": "Exposure concentration",
+                  "kpiName": "Exposure concentration",
+                  "kpiFormula": "exposure at risk (rolling)",
+                  "unit": "$M",
+                  "current": 2.4,
+                  "target": 1.1,
+                  "patternIds": [
+                    32,
+                    33,
+                    34,
+                    35,
+                    36
+                  ],
+                  "patternCount": 5
+                },
+                {
+                  "id": "cap-o2c-o-credit-2",
+                  "name": "Credit-hold effectiveness",
+                  "kpiName": "Credit-hold effectiveness",
+                  "kpiFormula": "exposure at risk (rolling)",
+                  "unit": "$M",
+                  "current": 2.5,
+                  "target": 1.1,
+                  "patternIds": [
+                    37,
+                    38,
+                    39,
+                    40,
+                    41
+                  ],
+                  "patternCount": 5
+                }
+              ],
+              "capabilityCount": 2
+            },
+            {
+              "id": "m-o2c-o-risk",
+              "name": "Detect insolvency & credit risk early",
+              "persona": "Credit & Risk Manager",
+              "functionId": "o2c",
+              "kpi": "Bad-debt write-off $",
+              "description": "Credit & Risk Manager owns this mission — detect insolvency & credit risk early.",
+              "capabilities": [
+                {
+                  "id": "cap-o2c-o-risk-1",
+                  "name": "Insolvency early-warning",
+                  "kpiName": "Insolvency early-warning",
+                  "kpiFormula": "exposure at risk (rolling)",
+                  "unit": "$M",
+                  "current": 2.2,
+                  "target": 1.0,
+                  "patternIds": [
+                    19,
+                    20
+                  ],
+                  "patternCount": 2
+                },
+                {
+                  "id": "cap-o2c-o-risk-2",
+                  "name": "Credit-limit breach detection",
+                  "kpiName": "Credit-limit breach detection",
+                  "kpiFormula": "exposure at risk (rolling)",
+                  "unit": "$M",
+                  "current": 2.3,
+                  "target": 1.0,
+                  "patternIds": [
+                    21,
+                    22,
+                    23
+                  ],
+                  "patternCount": 3
+                }
+              ],
+              "capabilityCount": 2
+            }
+          ],
+          "missionCount": 2
+        },
+        {
+          "id": "obj-ci-workforce",
+          "name": "Assure workforce compliance & readiness",
+          "themeId": "controls-integrity",
+          "kpi": "Open compliance gaps",
+          "functionIds": [
+            "h2r"
+          ],
+          "missions": [
+            {
+              "id": "m-h2r-o-doc",
+              "name": "Close compliance & eligibility gaps pre-start",
+              "persona": "Compliance Officer",
+              "functionId": "h2r",
+              "kpi": "Open compliance gaps",
+              "description": "Compliance Officer owns this mission — close compliance & eligibility gaps pre-start.",
+              "capabilities": [
+                {
+                  "id": "cap-h2r-o-doc",
+                  "name": "Open compliance gaps",
+                  "kpiName": "Open compliance gaps",
+                  "kpiFormula": "composite health index",
+                  "unit": "index",
+                  "current": 49,
+                  "target": 69,
+                  "patternIds": [
+                    4002,
+                    4006,
+                    4007,
+                    4008
+                  ],
+                  "patternCount": 4
+                }
+              ],
+              "capabilityCount": 1
+            },
+            {
+              "id": "m-h2r-o-prov",
+              "name": "Guarantee day-one readiness",
+              "persona": "HR Business Partner",
+              "functionId": "h2r",
+              "kpi": "Day-1 readiness %",
+              "description": "HR Business Partner owns this mission — guarantee day-one readiness.",
+              "capabilities": [
+                {
+                  "id": "cap-h2r-o-prov",
+                  "name": "Day-1 readiness %",
+                  "kpiName": "Day-1 readiness %",
+                  "kpiFormula": "in-policy events / total events",
+                  "unit": "%",
+                  "current": 68,
+                  "target": 84,
+                  "patternIds": [
+                    4001,
+                    4003,
+                    4004,
+                    4005
+                  ],
+                  "patternCount": 4
+                }
+              ],
+              "capabilityCount": 1
+            }
+          ],
+          "missionCount": 2
+        }
+      ],
+      "objectiveCount": 4
     },
     {
       "id": "cash-visibility",
@@ -201,7 +1254,903 @@
           "compoundImpact": "Forecast error of $2-5M per quarter from payment timing drift",
           "response": "Override forecast model with behavioral prediction for flagged customers"
         }
-      ]
+      ],
+      "objectives": [
+        {
+          "id": "obj-cv-forecast",
+          "name": "Forecast cash accurately",
+          "themeId": "cash-visibility",
+          "kpi": "Forecast accuracy %",
+          "functionIds": [
+            "fpa",
+            "tcm"
+          ],
+          "missions": [
+            {
+              "id": "m-tcm-o-cash",
+              "name": "Maximise cash visibility & yield",
+              "persona": "Cash Manager",
+              "functionId": "tcm",
+              "kpi": "Idle cash $",
+              "description": "Cash Manager owns this mission — maximise cash visibility & yield.",
+              "capabilities": [
+                {
+                  "id": "cap-tcm-o-cash",
+                  "name": "Idle cash $",
+                  "kpiName": "Idle cash $",
+                  "kpiFormula": "exposure at risk (rolling)",
+                  "unit": "$M",
+                  "current": 2.2,
+                  "target": 1.0,
+                  "patternIds": [
+                    7000,
+                    7001,
+                    7002,
+                    7003
+                  ],
+                  "patternCount": 4
+                }
+              ],
+              "capabilityCount": 1
+            },
+            {
+              "id": "m-fpa-o-fc",
+              "name": "Keep the rolling forecast accurate & bias-free",
+              "persona": "FP&A Analyst",
+              "functionId": "fpa",
+              "kpi": "Forecast accuracy %",
+              "description": "FP&A Analyst owns this mission — keep the rolling forecast accurate & bias-free.",
+              "capabilities": [
+                {
+                  "id": "cap-fpa-o-fc",
+                  "name": "Forecast accuracy %",
+                  "kpiName": "Forecast accuracy %",
+                  "kpiFormula": "in-policy events / total events",
+                  "unit": "%",
+                  "current": 66,
+                  "target": 82,
+                  "patternIds": [
+                    6000,
+                    6001,
+                    6002,
+                    6003
+                  ],
+                  "patternCount": 4
+                }
+              ],
+              "capabilityCount": 1
+            }
+          ],
+          "missionCount": 2
+        },
+        {
+          "id": "obj-cv-risk",
+          "name": "Contain FX & liquidity risk",
+          "themeId": "cash-visibility",
+          "kpi": "Unhedged exposure $",
+          "functionIds": [
+            "tcm"
+          ],
+          "missions": [
+            {
+              "id": "m-tcm-o-risk",
+              "name": "Contain FX & covenant risk",
+              "persona": "Treasury Risk Analyst",
+              "functionId": "tcm",
+              "kpi": "Unhedged exposure $",
+              "description": "Treasury Risk Analyst owns this mission — contain fx & covenant risk.",
+              "capabilities": [
+                {
+                  "id": "cap-tcm-o-risk",
+                  "name": "Unhedged exposure $",
+                  "kpiName": "Unhedged exposure $",
+                  "kpiFormula": "exposure at risk (rolling)",
+                  "unit": "$M",
+                  "current": 2.2,
+                  "target": 1.0,
+                  "patternIds": [
+                    7004,
+                    7005,
+                    7006,
+                    7007
+                  ],
+                  "patternCount": 4
+                }
+              ],
+              "capabilityCount": 1
+            }
+          ],
+          "missionCount": 1
+        },
+        {
+          "id": "obj-cv-behaviour",
+          "name": "Predict customer payment behaviour",
+          "themeId": "cash-visibility",
+          "kpi": "Promise-kept %",
+          "functionIds": [
+            "o2c",
+            "p2p"
+          ],
+          "missions": [
+            {
+              "id": "m-o2c-o-dso",
+              "name": "Accelerate collections / cut DSO",
+              "persona": "Collections Analyst",
+              "functionId": "o2c",
+              "kpi": "DSO (days)",
+              "description": "Collections Analyst owns this mission — accelerate collections / cut dso.",
+              "capabilities": [
+                {
+                  "id": "cap-o2c-o-dso-1",
+                  "name": "Aging-bucket shift detection",
+                  "kpiName": "Aging-bucket shift detection",
+                  "kpiFormula": "Σ elapsed / count",
+                  "unit": "days",
+                  "current": 17,
+                  "target": 10,
+                  "patternIds": [
+                    10,
+                    11,
+                    12
+                  ],
+                  "patternCount": 3
+                },
+                {
+                  "id": "cap-o2c-o-dso-2",
+                  "name": "Promise-to-pay conversion",
+                  "kpiName": "Promise-to-pay conversion",
+                  "kpiFormula": "Σ elapsed / count",
+                  "unit": "days",
+                  "current": 18,
+                  "target": 10,
+                  "patternIds": [
+                    13,
+                    14,
+                    15
+                  ],
+                  "patternCount": 3
+                },
+                {
+                  "id": "cap-o2c-o-dso-3",
+                  "name": "Auto-escalation effectiveness",
+                  "kpiName": "Auto-escalation effectiveness",
+                  "kpiFormula": "Σ elapsed / count",
+                  "unit": "days",
+                  "current": 19,
+                  "target": 10,
+                  "patternIds": [
+                    16,
+                    17,
+                    18
+                  ],
+                  "patternCount": 3
+                }
+              ],
+              "capabilityCount": 3
+            },
+            {
+              "id": "m-p2p-o-integrity",
+              "name": "Stop duplicate, ghost & fraudulent payments",
+              "persona": "AP Analyst",
+              "functionId": "p2p",
+              "kpi": "Fraud & duplicate leakage $",
+              "description": "AP Analyst owns this mission — stop duplicate, ghost & fraudulent payments.",
+              "capabilities": [
+                {
+                  "id": "cap-p2p-o-integrity",
+                  "name": "Fraud & duplicate leakage $",
+                  "kpiName": "Fraud & duplicate leakage $",
+                  "kpiFormula": "exposure at risk (rolling)",
+                  "unit": "$M",
+                  "current": 2.7,
+                  "target": 1.2,
+                  "patternIds": [
+                    2002,
+                    2003,
+                    2006
+                  ],
+                  "patternCount": 3
+                }
+              ],
+              "capabilityCount": 1
+            }
+          ],
+          "missionCount": 2
+        }
+      ],
+      "objectiveCount": 3
+    },
+    {
+      "id": "tsr",
+      "name": "Total Shareholder Return (TSR)",
+      "icon": "award",
+      "accent": "#0891b2",
+      "tagline": "Margin, capital returns and disciplined spend that compound into shareholder value.",
+      "strategic": true,
+      "compoundKPI": {
+        "name": "Total Shareholder Return",
+        "formula": "(Δ Share Price + Dividends) / Beginning Price",
+        "unit": "%",
+        "current": 8,
+        "target": 15
+      },
+      "functionIds": [
+        "o2c",
+        "fpa",
+        "tne"
+      ],
+      "crossProcessPatterns": [],
+      "objectives": [
+        {
+          "id": "obj-tsr-margin",
+          "name": "Protect & grow margin",
+          "themeId": "tsr",
+          "kpi": "Operating margin %",
+          "functionIds": [
+            "o2c",
+            "tne"
+          ],
+          "missions": [
+            {
+              "id": "m-o2c-o-rel",
+              "name": "Curb contractual & relationship abuse",
+              "persona": "Strategic Account Manager",
+              "functionId": "o2c",
+              "kpi": "Margin leakage $",
+              "description": "Strategic Account Manager owns this mission — curb contractual & relationship abuse.",
+              "capabilities": [
+                {
+                  "id": "cap-o2c-o-rel-1",
+                  "name": "Contract-term drift detection",
+                  "kpiName": "Contract-term drift detection",
+                  "kpiFormula": "exposure at risk (rolling)",
+                  "unit": "$M",
+                  "current": 2.1,
+                  "target": 0.9,
+                  "patternIds": [
+                    27,
+                    28
+                  ],
+                  "patternCount": 2
+                },
+                {
+                  "id": "cap-o2c-o-rel-2",
+                  "name": "Margin-leakage attribution",
+                  "kpiName": "Margin-leakage attribution",
+                  "kpiFormula": "exposure at risk (rolling)",
+                  "unit": "$M",
+                  "current": 2.2,
+                  "target": 1.0,
+                  "patternIds": [
+                    29,
+                    30,
+                    31
+                  ],
+                  "patternCount": 3
+                }
+              ],
+              "capabilityCount": 2
+            },
+            {
+              "id": "m-o2c-o-billing",
+              "name": "Bill accurately, on time, first time",
+              "persona": "Billing Specialist",
+              "functionId": "o2c",
+              "kpi": "Billing error rate %",
+              "description": "Billing Specialist owns this mission — bill accurately, on time, first time.",
+              "capabilities": [
+                {
+                  "id": "cap-o2c-o-billing-1",
+                  "name": "Billing accuracy scoring",
+                  "kpiName": "Billing accuracy scoring",
+                  "kpiFormula": "in-policy events / total events",
+                  "unit": "%",
+                  "current": 71,
+                  "target": 87,
+                  "patternIds": [
+                    72,
+                    73,
+                    74,
+                    75,
+                    76
+                  ],
+                  "patternCount": 5
+                },
+                {
+                  "id": "cap-o2c-o-billing-2",
+                  "name": "Revenue-integrity checks",
+                  "kpiName": "Revenue-integrity checks",
+                  "kpiFormula": "in-policy events / total events",
+                  "unit": "%",
+                  "current": 72,
+                  "target": 88,
+                  "patternIds": [
+                    77,
+                    78,
+                    79,
+                    80,
+                    81
+                  ],
+                  "patternCount": 5
+                }
+              ],
+              "capabilityCount": 2
+            },
+            {
+              "id": "m-tne-o-audit",
+              "name": "Catch out-of-policy & fraudulent spend",
+              "persona": "Expense Auditor",
+              "functionId": "tne",
+              "kpi": "Expense leakage $",
+              "description": "Expense Auditor owns this mission — catch out-of-policy & fraudulent spend.",
+              "capabilities": [
+                {
+                  "id": "cap-tne-o-audit",
+                  "name": "Expense leakage $",
+                  "kpiName": "Expense leakage $",
+                  "kpiFormula": "exposure at risk (rolling)",
+                  "unit": "$M",
+                  "current": 2.3,
+                  "target": 1.0,
+                  "patternIds": [
+                    9000,
+                    9001,
+                    9002,
+                    9003
+                  ],
+                  "patternCount": 4
+                }
+              ],
+              "capabilityCount": 1
+            }
+          ],
+          "missionCount": 3
+        },
+        {
+          "id": "obj-tsr-capital",
+          "name": "Return capital efficiently",
+          "themeId": "tsr",
+          "kpi": "Payout quality",
+          "functionIds": [
+            "fpa",
+            "tcm"
+          ],
+          "missions": [
+            {
+              "id": "m-fpa-o-var",
+              "name": "Deliver explained, timely variances",
+              "persona": "Finance Business Partner",
+              "functionId": "fpa",
+              "kpi": "Variance cycle time",
+              "description": "Finance Business Partner owns this mission — deliver explained, timely variances.",
+              "capabilities": [
+                {
+                  "id": "cap-fpa-o-var",
+                  "name": "Variance cycle time",
+                  "kpiName": "Variance cycle time",
+                  "kpiFormula": "composite health index",
+                  "unit": "index",
+                  "current": 49,
+                  "target": 69,
+                  "patternIds": [
+                    6004,
+                    6005,
+                    6006,
+                    6007
+                  ],
+                  "patternCount": 4
+                }
+              ],
+              "capabilityCount": 1
+            },
+            {
+              "id": "m-tcm-o-cash",
+              "name": "Maximise cash visibility & yield",
+              "persona": "Cash Manager",
+              "functionId": "tcm",
+              "kpi": "Idle cash $",
+              "description": "Cash Manager owns this mission — maximise cash visibility & yield.",
+              "capabilities": [
+                {
+                  "id": "cap-tcm-o-cash",
+                  "name": "Idle cash $",
+                  "kpiName": "Idle cash $",
+                  "kpiFormula": "exposure at risk (rolling)",
+                  "unit": "$M",
+                  "current": 2.2,
+                  "target": 1.0,
+                  "patternIds": [
+                    7000,
+                    7001,
+                    7002,
+                    7003
+                  ],
+                  "patternCount": 4
+                }
+              ],
+              "capabilityCount": 1
+            }
+          ],
+          "missionCount": 2
+        }
+      ],
+      "objectiveCount": 2
+    },
+    {
+      "id": "roic",
+      "name": "Return on Invested Capital (ROIC)",
+      "icon": "recycle",
+      "accent": "#db2777",
+      "tagline": "Turn invested capital faster and lift operating returns across the value chain.",
+      "strategic": true,
+      "compoundKPI": {
+        "name": "Return on Invested Capital",
+        "formula": "NOPAT / Invested Capital",
+        "unit": "%",
+        "current": 11,
+        "target": 18
+      },
+      "functionIds": [
+        "o2c",
+        "p2p",
+        "sc"
+      ],
+      "crossProcessPatterns": [],
+      "objectives": [
+        {
+          "id": "obj-roic-capital",
+          "name": "Improve capital efficiency",
+          "themeId": "roic",
+          "kpi": "Invested-capital turns",
+          "functionIds": [
+            "o2c",
+            "p2p",
+            "sc"
+          ],
+          "missions": [
+            {
+              "id": "m-o2c-o-dso",
+              "name": "Accelerate collections / cut DSO",
+              "persona": "Collections Analyst",
+              "functionId": "o2c",
+              "kpi": "DSO (days)",
+              "description": "Collections Analyst owns this mission — accelerate collections / cut dso.",
+              "capabilities": [
+                {
+                  "id": "cap-o2c-o-dso-1",
+                  "name": "Aging-bucket shift detection",
+                  "kpiName": "Aging-bucket shift detection",
+                  "kpiFormula": "Σ elapsed / count",
+                  "unit": "days",
+                  "current": 17,
+                  "target": 10,
+                  "patternIds": [
+                    10,
+                    11,
+                    12
+                  ],
+                  "patternCount": 3
+                },
+                {
+                  "id": "cap-o2c-o-dso-2",
+                  "name": "Promise-to-pay conversion",
+                  "kpiName": "Promise-to-pay conversion",
+                  "kpiFormula": "Σ elapsed / count",
+                  "unit": "days",
+                  "current": 18,
+                  "target": 10,
+                  "patternIds": [
+                    13,
+                    14,
+                    15
+                  ],
+                  "patternCount": 3
+                },
+                {
+                  "id": "cap-o2c-o-dso-3",
+                  "name": "Auto-escalation effectiveness",
+                  "kpiName": "Auto-escalation effectiveness",
+                  "kpiFormula": "Σ elapsed / count",
+                  "unit": "days",
+                  "current": 19,
+                  "target": 10,
+                  "patternIds": [
+                    16,
+                    17,
+                    18
+                  ],
+                  "patternCount": 3
+                }
+              ],
+              "capabilityCount": 3
+            },
+            {
+              "id": "m-p2p-o-wc",
+              "name": "Protect cash through payment timing",
+              "persona": "Treasury / Working Capital Analyst",
+              "functionId": "p2p",
+              "kpi": "Days Payable Outstanding",
+              "description": "Treasury / Working Capital Analyst owns this mission — protect cash through payment timing.",
+              "capabilities": [
+                {
+                  "id": "cap-p2p-o-wc",
+                  "name": "Days Payable Outstanding",
+                  "kpiName": "Days Payable Outstanding",
+                  "kpiFormula": "Σ elapsed / count",
+                  "unit": "days",
+                  "current": 16,
+                  "target": 10,
+                  "patternIds": [
+                    2001,
+                    2007
+                  ],
+                  "patternCount": 2
+                }
+              ],
+              "capabilityCount": 1
+            },
+            {
+              "id": "m-sc-o-stock",
+              "name": "Prevent stockouts on critical SKUs",
+              "persona": "Supply Planner",
+              "functionId": "sc",
+              "kpi": "Stockout incidents",
+              "description": "Supply Planner owns this mission — prevent stockouts on critical skus.",
+              "capabilities": [
+                {
+                  "id": "cap-sc-o-stock",
+                  "name": "Stockout incidents",
+                  "kpiName": "Stockout incidents",
+                  "kpiFormula": "composite health index",
+                  "unit": "index",
+                  "current": 50,
+                  "target": 70,
+                  "patternIds": [
+                    5001
+                  ],
+                  "patternCount": 1
+                }
+              ],
+              "capabilityCount": 1
+            }
+          ],
+          "missionCount": 3
+        },
+        {
+          "id": "obj-roic-returns",
+          "name": "Raise operating returns",
+          "themeId": "roic",
+          "kpi": "NOPAT margin %",
+          "functionIds": [
+            "fpa",
+            "o2c",
+            "tne"
+          ],
+          "missions": [
+            {
+              "id": "m-o2c-o-deduct",
+              "name": "Recover invalid deductions, find the leakage root",
+              "persona": "Deductions Analyst",
+              "functionId": "o2c",
+              "kpi": "Deduction recovery %",
+              "description": "Deductions Analyst owns this mission — recover invalid deductions, find the leakage root.",
+              "capabilities": [
+                {
+                  "id": "cap-o2c-o-deduct-1",
+                  "name": "Deduction recovery yield",
+                  "kpiName": "Deduction recovery yield",
+                  "kpiFormula": "in-policy events / total events",
+                  "unit": "%",
+                  "current": 70,
+                  "target": 86,
+                  "patternIds": [
+                    62,
+                    63,
+                    64,
+                    65,
+                    66
+                  ],
+                  "patternCount": 5
+                },
+                {
+                  "id": "cap-o2c-o-deduct-2",
+                  "name": "Trade-claim leakage root-cause",
+                  "kpiName": "Trade-claim leakage root-cause",
+                  "kpiFormula": "in-policy events / total events",
+                  "unit": "%",
+                  "current": 71,
+                  "target": 87,
+                  "patternIds": [
+                    67,
+                    68,
+                    69,
+                    70,
+                    71
+                  ],
+                  "patternCount": 5
+                }
+              ],
+              "capabilityCount": 2
+            },
+            {
+              "id": "m-tne-o-flow",
+              "name": "Frictionless, compliant reimbursement",
+              "persona": "T&E Analyst",
+              "functionId": "tne",
+              "kpi": "Auto-approval %",
+              "description": "T&E Analyst owns this mission — frictionless, compliant reimbursement.",
+              "capabilities": [
+                {
+                  "id": "cap-tne-o-flow",
+                  "name": "Auto-approval %",
+                  "kpiName": "Auto-approval %",
+                  "kpiFormula": "in-policy events / total events",
+                  "unit": "%",
+                  "current": 68,
+                  "target": 84,
+                  "patternIds": [
+                    9004,
+                    9005,
+                    9006,
+                    9007
+                  ],
+                  "patternCount": 4
+                }
+              ],
+              "capabilityCount": 1
+            },
+            {
+              "id": "m-fpa-o-fc",
+              "name": "Keep the rolling forecast accurate & bias-free",
+              "persona": "FP&A Analyst",
+              "functionId": "fpa",
+              "kpi": "Forecast accuracy %",
+              "description": "FP&A Analyst owns this mission — keep the rolling forecast accurate & bias-free.",
+              "capabilities": [
+                {
+                  "id": "cap-fpa-o-fc",
+                  "name": "Forecast accuracy %",
+                  "kpiName": "Forecast accuracy %",
+                  "kpiFormula": "in-policy events / total events",
+                  "unit": "%",
+                  "current": 66,
+                  "target": 82,
+                  "patternIds": [
+                    6000,
+                    6001,
+                    6002,
+                    6003
+                  ],
+                  "patternCount": 4
+                }
+              ],
+              "capabilityCount": 1
+            }
+          ],
+          "missionCount": 3
+        }
+      ],
+      "objectiveCount": 2
+    },
+    {
+      "id": "fcf",
+      "name": "Free Cash Flow (FCF)",
+      "icon": "banknote",
+      "accent": "#65a30d",
+      "tagline": "Convert earnings to cash and instil the discipline that keeps it flowing.",
+      "strategic": true,
+      "compoundKPI": {
+        "name": "Free Cash Flow",
+        "formula": "Operating Cash Flow − CapEx",
+        "unit": "$M",
+        "current": 120,
+        "target": 180
+      },
+      "functionIds": [
+        "o2c",
+        "p2p",
+        "r2r",
+        "tcm"
+      ],
+      "crossProcessPatterns": [],
+      "objectives": [
+        {
+          "id": "obj-fcf-convert",
+          "name": "Convert earnings to cash",
+          "themeId": "fcf",
+          "kpi": "FCF conversion %",
+          "functionIds": [
+            "o2c",
+            "p2p"
+          ],
+          "missions": [
+            {
+              "id": "m-o2c-o-cashapp",
+              "name": "Lift auto-match, cut unapplied cash",
+              "persona": "Cash Application Specialist",
+              "functionId": "o2c",
+              "kpi": "Auto-match %",
+              "description": "Cash Application Specialist owns this mission — lift auto-match, cut unapplied cash.",
+              "capabilities": [
+                {
+                  "id": "cap-o2c-o-cashapp-1",
+                  "name": "Cash-application STP rate",
+                  "kpiName": "Cash-application STP rate",
+                  "kpiFormula": "in-policy events / total events",
+                  "unit": "%",
+                  "current": 71,
+                  "target": 87,
+                  "patternIds": [
+                    42,
+                    43,
+                    44,
+                    45,
+                    46
+                  ],
+                  "patternCount": 5
+                },
+                {
+                  "id": "cap-o2c-o-cashapp-2",
+                  "name": "Short-pay detection",
+                  "kpiName": "Short-pay detection",
+                  "kpiFormula": "in-policy events / total events",
+                  "unit": "%",
+                  "current": 72,
+                  "target": 88,
+                  "patternIds": [
+                    47,
+                    48,
+                    49,
+                    50,
+                    51
+                  ],
+                  "patternCount": 5
+                }
+              ],
+              "capabilityCount": 2
+            },
+            {
+              "id": "m-o2c-o-arops",
+              "name": "Steer DSO & govern cross-process AR",
+              "persona": "AR Controller",
+              "functionId": "o2c",
+              "kpi": "DSO (days)",
+              "description": "AR Controller owns this mission — steer dso & govern cross-process ar.",
+              "capabilities": [
+                {
+                  "id": "cap-o2c-o-arops-1",
+                  "name": "DSO decomposition",
+                  "kpiName": "DSO decomposition",
+                  "kpiFormula": "Σ elapsed / count",
+                  "unit": "days",
+                  "current": 19,
+                  "target": 10,
+                  "patternIds": [
+                    92,
+                    93,
+                    94,
+                    95,
+                    96
+                  ],
+                  "patternCount": 5
+                },
+                {
+                  "id": "cap-o2c-o-arops-2",
+                  "name": "Cross-process AR governance",
+                  "kpiName": "Cross-process AR governance",
+                  "kpiFormula": "Σ elapsed / count",
+                  "unit": "days",
+                  "current": 20,
+                  "target": 10,
+                  "patternIds": [
+                    97,
+                    98,
+                    99,
+                    100,
+                    101
+                  ],
+                  "patternCount": 5
+                }
+              ],
+              "capabilityCount": 2
+            },
+            {
+              "id": "m-p2p-o-wc",
+              "name": "Protect cash through payment timing",
+              "persona": "Treasury / Working Capital Analyst",
+              "functionId": "p2p",
+              "kpi": "Days Payable Outstanding",
+              "description": "Treasury / Working Capital Analyst owns this mission — protect cash through payment timing.",
+              "capabilities": [
+                {
+                  "id": "cap-p2p-o-wc",
+                  "name": "Days Payable Outstanding",
+                  "kpiName": "Days Payable Outstanding",
+                  "kpiFormula": "Σ elapsed / count",
+                  "unit": "days",
+                  "current": 16,
+                  "target": 10,
+                  "patternIds": [
+                    2001,
+                    2007
+                  ],
+                  "patternCount": 2
+                }
+              ],
+              "capabilityCount": 1
+            }
+          ],
+          "missionCount": 3
+        },
+        {
+          "id": "obj-fcf-discipline",
+          "name": "Instil cash discipline",
+          "themeId": "fcf",
+          "kpi": "Cash cycle days",
+          "functionIds": [
+            "r2r",
+            "tcm"
+          ],
+          "missions": [
+            {
+              "id": "m-r2r-o-close",
+              "name": "Run a controlled, on-time close",
+              "persona": "Controller",
+              "functionId": "r2r",
+              "kpi": "Close cycle days",
+              "description": "Controller owns this mission — run a controlled, on-time close.",
+              "capabilities": [
+                {
+                  "id": "cap-r2r-o-close",
+                  "name": "Close cycle days",
+                  "kpiName": "Close cycle days",
+                  "kpiFormula": "Σ elapsed / count",
+                  "unit": "days",
+                  "current": 19,
+                  "target": 10,
+                  "patternIds": [
+                    3002,
+                    3003,
+                    3007,
+                    3008
+                  ],
+                  "patternCount": 4
+                }
+              ],
+              "capabilityCount": 1
+            },
+            {
+              "id": "m-tcm-o-risk",
+              "name": "Contain FX & covenant risk",
+              "persona": "Treasury Risk Analyst",
+              "functionId": "tcm",
+              "kpi": "Unhedged exposure $",
+              "description": "Treasury Risk Analyst owns this mission — contain fx & covenant risk.",
+              "capabilities": [
+                {
+                  "id": "cap-tcm-o-risk",
+                  "name": "Unhedged exposure $",
+                  "kpiName": "Unhedged exposure $",
+                  "kpiFormula": "exposure at risk (rolling)",
+                  "unit": "$M",
+                  "current": 2.2,
+                  "target": 1.0,
+                  "patternIds": [
+                    7004,
+                    7005,
+                    7006,
+                    7007
+                  ],
+                  "patternCount": 4
+                }
+              ],
+              "capabilityCount": 1
+            }
+          ],
+          "missionCount": 2
+        }
+      ],
+      "objectiveCount": 2
     }
   ],
   "functions": [
@@ -1923,6 +3872,16 @@
         "traceCount": 10746,
         "additionalCoverage": 138,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-2002",
+        "name": "Duplicate Invoice Injection — action chain",
+        "steps": [
+          "Fingerprint_Invoice(vendor+amount+date)",
+          "Match_Against_Posted_And_Open",
+          "Auto_Block_If_Match",
+          "Notify_AP"
+        ]
       }
     },
     "2003": {
@@ -1997,6 +3956,16 @@
         "traceCount": 11119,
         "additionalCoverage": 167,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-2003",
+        "name": "Ghost Vendor — action chain",
+        "steps": [
+          "Match_Invoice_To_Receipt",
+          "Check_Vendor_Master_Age",
+          "Detect_No_GR_No_Service",
+          "Hold_Payment"
+        ]
       }
     },
     "2006": {
@@ -2069,6 +4038,16 @@
         "traceCount": 12238,
         "additionalCoverage": 254,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-2006",
+        "name": "Three-Way Match Override Abuse — action chain",
+        "steps": [
+          "Track_Match_Overrides(user+vendor)",
+          "Detect_Repeat_Override",
+          "Check_Investigation_Evidence",
+          "Route_By_Pattern"
+        ]
       }
     },
     "2001": {
@@ -2140,6 +4119,16 @@
         "traceCount": 10373,
         "additionalCoverage": 109,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-2001",
+        "name": "Early Pay Discount Trap — action chain",
+        "steps": [
+          "Read_Payment_Terms",
+          "Compute_Discount_Value",
+          "Compare_Cost_Of_Cash",
+          "Schedule_By_Cash_Position"
+        ]
       }
     },
     "2004": {
@@ -2212,6 +4201,16 @@
         "traceCount": 11492,
         "additionalCoverage": 196,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-2004",
+        "name": "PO Split Below Approval Threshold — action chain",
+        "steps": [
+          "Aggregate_POs(vendor+requester+window)",
+          "Compare_To_Approval_Tiers",
+          "Detect_SubThreshold_Split",
+          "Re_Tier_Approval"
+        ]
       }
     },
     "2005": {
@@ -2284,6 +4283,16 @@
         "traceCount": 11865,
         "additionalCoverage": 225,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-2005",
+        "name": "Retroactive Price Change — action chain",
+        "steps": [
+          "Read_PO_Price_History",
+          "Compare_Approved_vs_Current",
+          "Detect_PostApproval_Edit",
+          "Match_Against_Approved_Price"
+        ]
       }
     },
     "2007": {
@@ -2364,6 +4373,16 @@
         "traceCount": 12611,
         "additionalCoverage": 283,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-2007",
+        "name": "Payment Term Erosion — action chain",
+        "steps": [
+          "Compute_Effective_DPO(vendor)",
+          "Compare_To_Contract_Terms",
+          "Detect_Early_Drift",
+          "Reschedule_To_Terms"
+        ]
       }
     },
     "2008": {
@@ -2436,6 +4455,16 @@
         "traceCount": 12984,
         "additionalCoverage": 312,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-2008",
+        "name": "Supplier Concentration Risk — action chain",
+        "steps": [
+          "Aggregate_Spend_By_Category_Vendor",
+          "Compute_Concentration_Share",
+          "Detect_Over_Threshold",
+          "Flag_For_Sourcing"
+        ]
       }
     },
     "3001": {
@@ -2487,7 +4516,17 @@
       ],
       "hitlGates": [
         "Controller signs off write-off"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-3001",
+        "name": "Stuck Reconciliation Item — action chain",
+        "steps": [
+          "Pull_Recon_Breaks",
+          "Classify_Timing_vs_Real",
+          "Auto_Clear_Timing",
+          "Assign_Owner"
+        ]
+      }
     },
     "3004": {
       "id": 3004,
@@ -2546,7 +4585,17 @@
       ],
       "hitlGates": [
         "GL accountant clears bank outlier"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-3004",
+        "name": "Bank Reconciliation Outlier — action chain",
+        "steps": [
+          "Pull_Bank_vs_Ledger",
+          "Auto_Match_Clearing_Items",
+          "Isolate_Unmatched_Outliers",
+          "Investigate_And_Clear"
+        ]
+      }
     },
     "3005": {
       "id": 3005,
@@ -2605,7 +4654,17 @@
       ],
       "hitlGates": [
         "Controller approves write-off"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-3005",
+        "name": "Suspense Account Creep — action chain",
+        "steps": [
+          "Scan_Suspense_Clearing_Accounts",
+          "Age_Parked_Items",
+          "Propose_Reclass",
+          "Drain_To_Correct_Account"
+        ]
+      }
     },
     "3006": {
       "id": 3006,
@@ -2664,7 +4723,17 @@
       ],
       "hitlGates": [
         "Controller reviews certification quality"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-3006",
+        "name": "Auto-Certified Reconciliation — action chain",
+        "steps": [
+          "Measure_Certification_Behaviour",
+          "Check_Evidence_Attached",
+          "Flag_RubberStamp_Recons",
+          "Route_High_Risk_For_Review"
+        ]
+      }
     },
     "3002": {
       "id": 3002,
@@ -2715,7 +4784,17 @@
       ],
       "hitlGates": [
         "Accountant approves accrual"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-3002",
+        "name": "Late / Missing Accrual — action chain",
+        "steps": [
+          "Scan_Recurring_Accruals",
+          "Detect_Missing",
+          "Estimate_Amount",
+          "Propose_Journal"
+        ]
+      }
     },
     "3003": {
       "id": 3003,
@@ -2766,7 +4845,17 @@
       ],
       "hitlGates": [
         "Group accountant approves true-up"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-3003",
+        "name": "Intercompany Out-of-Balance — action chain",
+        "steps": [
+          "Match_IC_Legs",
+          "Detect_Imbalance",
+          "Identify_Missing_Leg",
+          "Notify_Counterparty"
+        ]
+      }
     },
     "3007": {
       "id": 3007,
@@ -2825,7 +4914,17 @@
       ],
       "hitlGates": [
         "Controller approves close plan change"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-3007",
+        "name": "Close Task Critical-Path Slip — action chain",
+        "steps": [
+          "Track_Close_Task_Status",
+          "Compute_Critical_Path",
+          "Detect_Blocking_Slip",
+          "Auto_Nudge_Bottleneck"
+        ]
+      }
     },
     "3008": {
       "id": 3008,
@@ -2884,7 +4983,17 @@
       ],
       "hitlGates": [
         "Controller approves cut-off adjustment"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-3008",
+        "name": "Period Cut-Off Error — action chain",
+        "steps": [
+          "Scan_Transactions_Around_CutOff",
+          "Test_Service_vs_Posting_Date",
+          "Detect_Wrong_Period",
+          "Propose_Reclass_Journal"
+        ]
+      }
     },
     "4001": {
       "id": 4001,
@@ -2943,7 +5052,17 @@
       ],
       "hitlGates": [
         "HRBP confirms day-1 readiness"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-4001",
+        "name": "Stalled Onboarding Provisioning — action chain",
+        "steps": [
+          "Track_Provisioning_Tasks",
+          "Detect_Stall",
+          "Identify_Bottleneck",
+          "Auto_Nudge_Owner"
+        ]
+      }
     },
     "4003": {
       "id": 4003,
@@ -3002,7 +5121,17 @@
       ],
       "hitlGates": [
         "HRBP confirms day-1 readiness"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-4003",
+        "name": "Manager Onboarding No-Show — action chain",
+        "steps": [
+          "Track_Manager_Onboarding_Tasks",
+          "Detect_Incomplete",
+          "Auto_Nudge_Manager",
+          "Confirm_Ready"
+        ]
+      }
     },
     "4004": {
       "id": 4004,
@@ -3061,7 +5190,17 @@
       ],
       "hitlGates": [
         "IT lead approves expedited provisioning"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-4004",
+        "name": "Access Not Ready Day-1 — action chain",
+        "steps": [
+          "Track_Access_Requests",
+          "Detect_Unprovisioned_Systems",
+          "Auto_Expedite_With_IT",
+          "Verify_Login_Ready"
+        ]
+      }
     },
     "4005": {
       "id": 4005,
@@ -3120,7 +5259,17 @@
       ],
       "hitlGates": [
         "HRBP confirms candidate still starting"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-4005",
+        "name": "Ghost-Start Risk — action chain",
+        "steps": [
+          "Track_PreBoarding_Engagement",
+          "Score_NoShow_Risk",
+          "Auto_ReEngage_Candidate",
+          "Alert_If_Elevated"
+        ]
+      }
     },
     "4002": {
       "id": 4002,
@@ -3179,7 +5328,17 @@
       ],
       "hitlGates": [
         "Compliance approves conditional start"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-4002",
+        "name": "Missing Compliance Document — action chain",
+        "steps": [
+          "Checklist_Required_Docs",
+          "Detect_Missing",
+          "Auto_Request_From_Hire",
+          "Block_If_Unresolved"
+        ]
+      }
     },
     "4006": {
       "id": 4006,
@@ -3238,7 +5397,17 @@
       ],
       "hitlGates": [
         "Compliance approves conditional start"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-4006",
+        "name": "Background-Check Stall — action chain",
+        "steps": [
+          "Track_BGCheck_Status",
+          "Detect_Stall",
+          "Auto_Chase_Vendor",
+          "Assess_Conditional_Start"
+        ]
+      }
     },
     "4007": {
       "id": 4007,
@@ -3299,7 +5468,17 @@
       ],
       "hitlGates": [
         "Compliance approves sponsorship/renewal"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-4007",
+        "name": "Expiring Work Authorization — action chain",
+        "steps": [
+          "Read_Work_Authorization",
+          "Compute_Expiry_Runway",
+          "Detect_Short_Runway",
+          "Schedule_Renewal_Track"
+        ]
+      }
     },
     "4008": {
       "id": 4008,
@@ -3358,7 +5537,17 @@
       ],
       "hitlGates": [
         "Compliance confirms licensing"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-4008",
+        "name": "Certification / License Gap — action chain",
+        "steps": [
+          "Identify_Required_Licenses",
+          "Verify_Against_Registry",
+          "Detect_Gap",
+          "Request_Evidence"
+        ]
+      }
     },
     "5001": {
       "id": 5001,
@@ -3417,7 +5606,17 @@
       ],
       "hitlGates": [
         "Planner approves expedite cost"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-5001",
+        "name": "Stockout Risk Signal — action chain",
+        "steps": [
+          "Read_Demand_Signal",
+          "Compute_Cover_vs_LeadTime",
+          "Detect_Risk",
+          "Propose_Replenishment"
+        ]
+      }
     },
     "5002": {
       "id": 5002,
@@ -3476,7 +5675,17 @@
       ],
       "hitlGates": [
         "Logistics lead approves reroute"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-5002",
+        "name": "Delivery Slippage — action chain",
+        "steps": [
+          "Track_Shipment_ETA",
+          "Detect_Slip",
+          "Assess_Impact",
+          "Trigger_Customer_Comms"
+        ]
+      }
     },
     "6000": {
       "id": 6000,
@@ -3537,7 +5746,17 @@
       ],
       "hitlGates": [
         "FP&A lead challenges submission"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-6000",
+        "name": "Budget Sandbagging — action chain",
+        "steps": [
+          "Compare_Budget_vs_RunRate",
+          "Score_Sandbag_Risk",
+          "Attach_Trend_Evidence",
+          "Flag_For_Challenge"
+        ]
+      }
     },
     "6001": {
       "id": 6001,
@@ -3598,7 +5817,17 @@
       ],
       "hitlGates": [
         "FP&A lead approves haircut"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-6001",
+        "name": "Hockey-Stick Forecast — action chain",
+        "steps": [
+          "Read_Forecast_Curve",
+          "Detect_BackLoading",
+          "Compare_To_History",
+          "Risk_Adjust_Outlook"
+        ]
+      }
     },
     "6002": {
       "id": 6002,
@@ -3657,7 +5886,17 @@
       ],
       "hitlGates": [
         "FP&A lead approves reforecast"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-6002",
+        "name": "Forecast Drift — action chain",
+        "steps": [
+          "Check_Assumption_Freshness",
+          "Compare_Drivers_To_Actuals",
+          "Detect_Drift",
+          "Prompt_Refresh"
+        ]
+      }
     },
     "6003": {
       "id": 6003,
@@ -3716,7 +5955,17 @@
       ],
       "hitlGates": [
         "Finance director approves reforecast scope"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-6003",
+        "name": "Reforecast Trigger Miss — action chain",
+        "steps": [
+          "Monitor_Material_Events",
+          "Assess_Forecast_Impact",
+          "Trigger_Reforecast",
+          "Notify_Stakeholders"
+        ]
+      }
     },
     "6004": {
       "id": 6004,
@@ -3777,7 +6026,17 @@
       ],
       "hitlGates": [
         "Business partner provides root cause"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-6004",
+        "name": "Unexplained Variance — action chain",
+        "steps": [
+          "Pull_Variance_By_Driver",
+          "Test_Commentary_Quality",
+          "Decompose_Root_Cause",
+          "Request_Real_Explanation"
+        ]
+      }
     },
     "6005": {
       "id": 6005,
@@ -3828,7 +6087,17 @@
       ],
       "hitlGates": [
         "FP&A lead reviews component story"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-6005",
+        "name": "Offsetting Variance Masking — action chain",
+        "steps": [
+          "Decompose_Net_Variance",
+          "Detect_Offsetting_Components",
+          "Surface_Gross_Drivers",
+          "Report_Components"
+        ]
+      }
     },
     "6006": {
       "id": 6006,
@@ -3885,7 +6154,17 @@
           "escLevel": 1
         }
       ],
-      "hitlGates": []
+      "hitlGates": [],
+      "actionChain": {
+        "id": "ac-6006",
+        "name": "Phasing / Timing Distortion — action chain",
+        "steps": [
+          "Trace_Variance_To_Period",
+          "Detect_Phasing",
+          "Reclass_To_Correct_Period",
+          "Annotate_Timing"
+        ]
+      }
     },
     "6007": {
       "id": 6007,
@@ -3944,7 +6223,17 @@
       ],
       "hitlGates": [
         "FP&A lead arbitrates allocation"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-6007",
+        "name": "Allocation Dispute — action chain",
+        "steps": [
+          "Split_Controllable_vs_Allocated",
+          "Attribute_Allocation_Source",
+          "Restate_On_Controllable",
+          "Notify_Both_Owners"
+        ]
+      }
     },
     "7000": {
       "id": 7000,
@@ -4003,7 +6292,17 @@
       ],
       "hitlGates": [
         "Cash manager approves transfer"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-7000",
+        "name": "Idle Balance Sweep Miss — action chain",
+        "steps": [
+          "Scan_Account_Balances",
+          "Detect_Idle_Above_Target",
+          "Compute_Sweep",
+          "Execute_Cash_Sweep"
+        ]
+      }
     },
     "7001": {
       "id": 7001,
@@ -4063,7 +6362,17 @@
       ],
       "hitlGates": [
         "Treasurer approves contingency draw"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-7001",
+        "name": "Cash-Forecast Variance — action chain",
+        "steps": [
+          "Compare_Actual_vs_Forecast_Cash",
+          "Detect_Material_Miss",
+          "Trace_Driver",
+          "Update_Liquidity_View"
+        ]
+      }
     },
     "7002": {
       "id": 7002,
@@ -4123,7 +6432,17 @@
       ],
       "hitlGates": [
         "Treasurer approves repatriation"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-7002",
+        "name": "Trapped Cash — action chain",
+        "steps": [
+          "Classify_Cash_By_Availability",
+          "Detect_Restrictions",
+          "Ring_Fence_Trapped",
+          "Restate_Available_Liquidity"
+        ]
+      }
     },
     "7003": {
       "id": 7003,
@@ -4184,7 +6503,17 @@
       ],
       "hitlGates": [
         "Cash manager confirms not duplicate"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-7003",
+        "name": "Duplicate / Fat-Finger Payment — action chain",
+        "steps": [
+          "Fingerprint_Payment(beneficiary+amount+ref)",
+          "Match_Against_Recent_Releases",
+          "Hold_Suspected_Duplicate",
+          "Route_For_Verification"
+        ]
+      }
     },
     "7004": {
       "id": 7004,
@@ -4245,7 +6574,17 @@
       ],
       "hitlGates": [
         "Treasury risk approves hedge"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-7004",
+        "name": "FX Exposure Drift — action chain",
+        "steps": [
+          "Aggregate_Net_FX_Exposure",
+          "Compare_To_Hedge_Policy",
+          "Detect_Band_Breach",
+          "Propose_Hedge"
+        ]
+      }
     },
     "7005": {
       "id": 7005,
@@ -4306,7 +6645,17 @@
       ],
       "hitlGates": [
         "Treasurer reviews covenant plan"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-7005",
+        "name": "Covenant Early-Warning — action chain",
+        "steps": [
+          "Project_Covenant_Ratios",
+          "Compare_To_Thresholds",
+          "Detect_Proximity",
+          "Alert_With_Runway"
+        ]
+      }
     },
     "7006": {
       "id": 7006,
@@ -4367,7 +6716,17 @@
       ],
       "hitlGates": [
         "Treasury risk approves reallocation"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-7006",
+        "name": "Counterparty Concentration — action chain",
+        "steps": [
+          "Aggregate_Exposure_By_Counterparty",
+          "Compare_To_Limits",
+          "Overlay_Credit_Signals",
+          "Propose_Rebalance"
+        ]
+      }
     },
     "7007": {
       "id": 7007,
@@ -4418,7 +6777,17 @@
       ],
       "hitlGates": [
         "Treasury risk reviews hedge option"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-7007",
+        "name": "Interest-Rate Reset Surprise — action chain",
+        "steps": [
+          "Scan_Upcoming_Resets",
+          "Reprice_At_Forward_Curve",
+          "Compare_To_Budget",
+          "Update_Interest_Forecast"
+        ]
+      }
     },
     "8000": {
       "id": 8000,
@@ -4477,7 +6846,17 @@
       ],
       "hitlGates": [
         "Tax manager approves extension/priority"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-8000",
+        "name": "Filing-Deadline Slip — action chain",
+        "steps": [
+          "Track_Return_Calendar",
+          "Detect_At_Risk_Filings",
+          "Chase_Owners",
+          "Escalate_If_Stalled"
+        ]
+      }
     },
     "8001": {
       "id": 8001,
@@ -4537,7 +6916,17 @@
       ],
       "hitlGates": [
         "Tax manager approves adjustment"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-8001",
+        "name": "Return-to-Ledger Mismatch — action chain",
+        "steps": [
+          "Compare_Return_To_GL",
+          "Compute_Delta",
+          "Trace_Difference",
+          "Reconcile_Before_Filing"
+        ]
+      }
     },
     "8002": {
       "id": 8002,
@@ -4596,7 +6985,17 @@
       ],
       "hitlGates": [
         "Tax specialist confirms period"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-8002",
+        "name": "Credit-Note Timing Gap — action chain",
+        "steps": [
+          "Match_CreditNote_To_Sale",
+          "Determine_Correct_Period",
+          "Apply_In_Right_Return",
+          "Document_Basis"
+        ]
+      }
     },
     "8003": {
       "id": 8003,
@@ -4655,7 +7054,17 @@
       ],
       "hitlGates": [
         "Tax specialist resolves clearance rule"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-8003",
+        "name": "e-Invoicing Clearance Reject — action chain",
+        "steps": [
+          "Ingest_Clearance_Responses",
+          "Detect_Rejections",
+          "Diagnose_Format_Error",
+          "Auto_Correct_And_Resubmit"
+        ]
+      }
     },
     "8004": {
       "id": 8004,
@@ -4713,7 +7122,17 @@
       ],
       "hitlGates": [
         "Tax specialist confirms treatment"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-8004",
+        "name": "Reverse-Charge Miscode — action chain",
+        "steps": [
+          "Read_Transaction_Attributes",
+          "Determine_Correct_Mechanism",
+          "Detect_Miscode",
+          "Correct_Tax_Treatment"
+        ]
+      }
     },
     "8005": {
       "id": 8005,
@@ -4774,7 +7193,17 @@
       ],
       "hitlGates": [
         "Tax manager approves registration"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-8005",
+        "name": "Nexus Threshold Breach — action chain",
+        "steps": [
+          "Track_Sales_By_Jurisdiction",
+          "Compare_To_Nexus_Thresholds",
+          "Detect_Breach",
+          "Initiate_Registration"
+        ]
+      }
     },
     "8006": {
       "id": 8006,
@@ -4833,7 +7262,17 @@
       ],
       "hitlGates": [
         "Tax analyst confirms exemption status"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-8006",
+        "name": "Exemption-Certificate Gap — action chain",
+        "steps": [
+          "Check_Certificate_Validity",
+          "Detect_Expired_Or_Missing",
+          "Request_Renewal",
+          "Suspend_Exemption_If_Unresolved"
+        ]
+      }
     },
     "8007": {
       "id": 8007,
@@ -4892,7 +7331,17 @@
       ],
       "hitlGates": [
         "Tax analyst approves corrections"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-8007",
+        "name": "Rate-Change Lag — action chain",
+        "steps": [
+          "Monitor_Statutory_Rate_Changes",
+          "Compare_To_Engine_Config",
+          "Detect_Stale_Rate",
+          "Update_And_Restate"
+        ]
+      }
     },
     "9000": {
       "id": 9000,
@@ -4952,7 +7401,17 @@
       ],
       "hitlGates": [
         "Expense auditor confirms duplicate"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-9000",
+        "name": "Duplicate Receipt Submission — action chain",
+        "steps": [
+          "Fingerprint_Receipt(merchant+amount+date)",
+          "Match_Across_Reports_And_Card",
+          "Flag_Duplicate",
+          "Block_Second_Claim"
+        ]
+      }
     },
     "9001": {
       "id": 9001,
@@ -5003,7 +7462,17 @@
       ],
       "hitlGates": [
         "Expense auditor reviews split"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-9001",
+        "name": "Split-to-Dodge-Limit — action chain",
+        "steps": [
+          "Aggregate_Related_Lines(merchant+day)",
+          "Compare_To_Thresholds",
+          "Detect_Sub_Limit_Split",
+          "Re_Apply_Rule"
+        ]
+      }
     },
     "9002": {
       "id": 9002,
@@ -5062,7 +7531,17 @@
       ],
       "hitlGates": [
         "Expense auditor rules on split"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-9002",
+        "name": "Weekend / Personal Blur — action chain",
+        "steps": [
+          "Cross_Ref_Dates_To_Calendar",
+          "Detect_Non_Business_Days",
+          "Split_Business_vs_Personal",
+          "Reimburse_Business_Only"
+        ]
+      }
     },
     "9003": {
       "id": 9003,
@@ -5121,7 +7600,17 @@
       ],
       "hitlGates": [
         "Expense auditor reviews claimant pattern"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-9003",
+        "name": "Mileage / Per-Diem Inflation — action chain",
+        "steps": [
+          "Compute_Route_Distance",
+          "Compare_To_Claimed",
+          "Detect_Inflation",
+          "Cap_At_Standard"
+        ]
+      }
     },
     "9004": {
       "id": 9004,
@@ -5180,7 +7669,17 @@
       ],
       "hitlGates": [
         "Cost-centre manager approves exception"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-9004",
+        "name": "Out-of-Policy Class/Rate — action chain",
+        "steps": [
+          "Evaluate_Against_Policy",
+          "Detect_Out_Of_Policy",
+          "Check_Exception_On_File",
+          "Route_By_Rule"
+        ]
+      }
     },
     "9005": {
       "id": 9005,
@@ -5239,7 +7738,17 @@
       ],
       "hitlGates": [
         "Manager approves receipt waiver"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-9005",
+        "name": "Missing-Receipt Loop — action chain",
+        "steps": [
+          "Detect_Missing_Receipt",
+          "Auto_Remind_Claimant",
+          "Escalate_On_Timeout",
+          "Hold_Until_Resolved"
+        ]
+      }
     },
     "9006": {
       "id": 9006,
@@ -5298,7 +7807,17 @@
       ],
       "hitlGates": [
         "Manager approves late claim"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-9006",
+        "name": "Late Submission Beyond Window — action chain",
+        "steps": [
+          "Check_Expense_Date_vs_Window",
+          "Detect_Late_Submission",
+          "Quantify_Reclaim_Loss",
+          "Route_By_Policy"
+        ]
+      }
     },
     "9007": {
       "id": 9007,
@@ -5357,7 +7876,17 @@
       ],
       "hitlGates": [
         "Controls reviews approval quality"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-9007",
+        "name": "Manager Rubber-Stamp — action chain",
+        "steps": [
+          "Measure_Approval_Behaviour",
+          "Detect_RubberStamp_Pattern",
+          "Re_Route_Flagged_Reports",
+          "Notify_Controls"
+        ]
+      }
     },
     "10000": {
       "id": 10000,
@@ -5418,7 +7947,17 @@
       ],
       "hitlGates": [
         "Controls analyst reviews journal"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-10000",
+        "name": "Journal-Entry Anomaly — action chain",
+        "steps": [
+          "Scan_Manual_Journals",
+          "Score_Anomaly(round+timing+poster)",
+          "Attach_Context",
+          "Route_High_Risk"
+        ]
+      }
     },
     "10001": {
       "id": 10001,
@@ -5477,7 +8016,17 @@
       ],
       "hitlGates": [
         "Controls lead reassigns owner"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-10001",
+        "name": "Control-Owner Gap — action chain",
+        "steps": [
+          "Map_Controls_To_Owners",
+          "Detect_Vacant_Ownership",
+          "Propose_Reassignment",
+          "Notify_Control_Manager"
+        ]
+      }
     },
     "10002": {
       "id": 10002,
@@ -5540,7 +8089,17 @@
       "hitlGates": [
         "Controls analyst validates change",
         "Controller confirms suspected fraud"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-10002",
+        "name": "Master-Data Change Without Approval — action chain",
+        "steps": [
+          "Monitor_Master_Data_Changes",
+          "Match_To_Approval_Records",
+          "Detect_Unapproved",
+          "Correlate_With_Payments"
+        ]
+      }
     },
     "10003": {
       "id": 10003,
@@ -5599,7 +8158,17 @@
       ],
       "hitlGates": [
         "Security approves account suspension"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-10003",
+        "name": "After-Hours Privileged Access — action chain",
+        "steps": [
+          "Monitor_Privileged_Sessions",
+          "Detect_Anomalous_Access(time+geo+action)",
+          "Request_Justification",
+          "Contain_If_Unexplained"
+        ]
+      }
     },
     "10004": {
       "id": 10004,
@@ -5658,7 +8227,17 @@
       ],
       "hitlGates": [
         "Access owner approves entitlement change"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-10004",
+        "name": "Toxic SoD Combination — action chain",
+        "steps": [
+          "Analyze_User_Entitlements",
+          "Detect_Toxic_Combination",
+          "Propose_Mitigation",
+          "Enforce_Separation"
+        ]
+      }
     },
     "10005": {
       "id": 10005,
@@ -5717,7 +8296,17 @@
       ],
       "hitlGates": [
         "Manager recertifies access"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-10005",
+        "name": "Access-Creep After Role Change — action chain",
+        "steps": [
+          "Compare_Access_To_Current_Role",
+          "Detect_Residual_Entitlements",
+          "Propose_Revocation",
+          "Recertify_With_Manager"
+        ]
+      }
     },
     "10006": {
       "id": 10006,
@@ -5775,7 +8364,17 @@
       ],
       "hitlGates": [
         "Access owner confirms disable"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-10006",
+        "name": "Dormant Privileged Account — action chain",
+        "steps": [
+          "Scan_Privileged_Accounts",
+          "Detect_Dormancy",
+          "Disable_Provisionally",
+          "Notify_Owner_To_Justify"
+        ]
+      }
     },
     "10007": {
       "id": 10007,
@@ -5833,7 +8432,17 @@
       ],
       "hitlGates": [
         "Controls reviews firefighter activity"
-      ]
+      ],
+      "actionChain": {
+        "id": "ac-10007",
+        "name": "Emergency-Access Never Closed — action chain",
+        "steps": [
+          "Track_Emergency_Grants",
+          "Detect_Expired_Window",
+          "Review_Actions_Taken",
+          "Revoke_Access"
+        ]
+      }
     }
   }
 }

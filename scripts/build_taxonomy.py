@@ -235,6 +235,57 @@ def build_themes():
                 },
             ],
         },
+        {
+            "id": "tsr",
+            "name": "Total Shareholder Return (TSR)",
+            "icon": "award",
+            "accent": "#0891b2",
+            "tagline": "Margin, capital returns and disciplined spend that compound into shareholder value.",
+            "strategic": True,
+            "compoundKPI": {
+                "name": "Total Shareholder Return",
+                "formula": "(Δ Share Price + Dividends) / Beginning Price",
+                "unit": "%",
+                "current": 8,
+                "target": 15,
+            },
+            "functionIds": ["o2c", "fpa", "tne"],
+            "crossProcessPatterns": [],
+        },
+        {
+            "id": "roic",
+            "name": "Return on Invested Capital (ROIC)",
+            "icon": "recycle",
+            "accent": "#db2777",
+            "tagline": "Turn invested capital faster and lift operating returns across the value chain.",
+            "strategic": True,
+            "compoundKPI": {
+                "name": "Return on Invested Capital",
+                "formula": "NOPAT / Invested Capital",
+                "unit": "%",
+                "current": 11,
+                "target": 18,
+            },
+            "functionIds": ["o2c", "p2p", "sc"],
+            "crossProcessPatterns": [],
+        },
+        {
+            "id": "fcf",
+            "name": "Free Cash Flow (FCF)",
+            "icon": "banknote",
+            "accent": "#65a30d",
+            "tagline": "Convert earnings to cash and instil the discipline that keeps it flowing.",
+            "strategic": True,
+            "compoundKPI": {
+                "name": "Free Cash Flow",
+                "formula": "Operating Cash Flow − CapEx",
+                "unit": "$M",
+                "current": 120,
+                "target": 180,
+            },
+            "functionIds": ["o2c", "p2p", "r2r", "tcm"],
+            "crossProcessPatterns": [],
+        },
     ]
 
 
@@ -1607,6 +1658,204 @@ def build_ar_function(patterns):
     }
 
 
+# =====================================================================
+# Deck "Unified Hierarchy" transform:
+#   Theme → Objective → Mission → Capability → Pattern → ActionChain
+# The function → process → role → objective authoring above stays the
+# source of real KPIs + patternIds; here we lift it into the deck's tree.
+# A Mission = a persona-owned role-objective; a Capability = a reusable
+# KPI instrument between the mission and its patterns.
+# =====================================================================
+
+# O2C (fully built) missions get 2–3 named capability instruments; each
+# carries a contiguous slice of the mission's real pattern ids. Every other
+# (sample) mission gets ONE capability carrying all its patterns.
+O2C_CAPS = {
+    "o2c-o-dso":      ["Aging-bucket shift detection", "Promise-to-pay conversion", "Auto-escalation effectiveness"],
+    "o2c-o-dispute":  ["Dispute root-cause classification", "Deduction validity scoring"],
+    "o2c-o-risk":     ["Insolvency early-warning", "Credit-limit breach detection"],
+    "o2c-o-match":    ["Remittance auto-match rate", "Unapplied-cash aging"],
+    "o2c-o-rel":      ["Contract-term drift detection", "Margin-leakage attribution"],
+    "o2c-o-order":    ["Order data-quality scoring", "Order-to-billing handoff integrity"],
+    "o2c-o-credit":   ["Exposure concentration", "Credit-hold effectiveness"],
+    "o2c-o-billing":  ["Billing accuracy scoring", "Revenue-integrity checks"],
+    "o2c-o-disputes": ["Dispute SLA conformance", "Recovery-rate tracking"],
+    "o2c-o-cashapp":  ["Cash-application STP rate", "Short-pay detection"],
+    "o2c-o-deduct":   ["Deduction recovery yield", "Trade-claim leakage root-cause"],
+    "o2c-o-arops":    ["DSO decomposition", "Cross-process AR governance"],
+}
+
+# The Objective layer (21): each theme's objectives, and which missions
+# (by their SOURCE role-objective id) belong under each. Missions may be
+# reused across themes — the 3 strategic themes deliberately reference
+# operational missions cross-functionally.
+THEME_OBJECTIVES = {
+    "working-capital": [
+        ("obj-wc-collect", "Accelerate cash collection", "DSO (days)",
+         ["o2c-o-dso", "o2c-o-arops", "o2c-o-match", "o2c-o-cashapp"]),
+        ("obj-wc-pay", "Optimise payment & spend timing", "DPO (days)",
+         ["p2p-o-wc", "p2p-o-spend"]),
+        ("obj-wc-inventory", "Right-size inventory & availability", "Inventory cover",
+         ["sc-o-stock", "sc-o-eta"]),
+    ],
+    "revenue-leakage": [
+        ("obj-rl-dispute", "Stop dispute & deduction leakage", "Leakage $",
+         ["o2c-o-dispute", "o2c-o-disputes", "o2c-o-deduct", "o2c-o-rel"]),
+        ("obj-rl-billing", "Bill accurately, protect revenue", "Billing error rate %",
+         ["o2c-o-billing", "o2c-o-order"]),
+        ("obj-rl-tax", "Get tax determination right", "Determination error %",
+         ["tax-o-file", "tax-o-det"]),
+    ],
+    "close-acceleration": [
+        ("obj-ca-recon", "Keep reconciliations clean & current", "Aged breaks",
+         ["r2r-o-recon"]),
+        ("obj-ca-close", "Run a controlled, fast close", "Close cycle days",
+         ["r2r-o-close", "o2c-o-arops"]),
+    ],
+    "controls-integrity": [
+        ("obj-ci-detect", "Detect control failures early", "Control exceptions",
+         ["icc-o-detect"]),
+        ("obj-ci-sod", "Prevent toxic access & SoD conflicts", "Open SoD conflicts",
+         ["icc-o-sod"]),
+        ("obj-ci-credit", "Enforce credit & AR governance", "Credit exposure $",
+         ["o2c-o-credit", "o2c-o-risk"]),
+        ("obj-ci-workforce", "Assure workforce compliance & readiness", "Open compliance gaps",
+         ["h2r-o-doc", "h2r-o-prov"]),
+    ],
+    "cash-visibility": [
+        ("obj-cv-forecast", "Forecast cash accurately", "Forecast accuracy %",
+         ["tcm-o-cash", "fpa-o-fc"]),
+        ("obj-cv-risk", "Contain FX & liquidity risk", "Unhedged exposure $",
+         ["tcm-o-risk"]),
+        ("obj-cv-behaviour", "Predict customer payment behaviour", "Promise-kept %",
+         ["o2c-o-dso", "p2p-o-integrity"]),
+    ],
+    "tsr": [
+        ("obj-tsr-margin", "Protect & grow margin", "Operating margin %",
+         ["o2c-o-rel", "o2c-o-billing", "tne-o-audit"]),
+        ("obj-tsr-capital", "Return capital efficiently", "Payout quality",
+         ["fpa-o-var", "tcm-o-cash"]),
+    ],
+    "roic": [
+        ("obj-roic-capital", "Improve capital efficiency", "Invested-capital turns",
+         ["o2c-o-dso", "p2p-o-wc", "sc-o-stock"]),
+        ("obj-roic-returns", "Raise operating returns", "NOPAT margin %",
+         ["o2c-o-deduct", "tne-o-flow", "fpa-o-fc"]),
+    ],
+    "fcf": [
+        ("obj-fcf-convert", "Convert earnings to cash", "FCF conversion %",
+         ["o2c-o-cashapp", "o2c-o-arops", "p2p-o-wc"]),
+        ("obj-fcf-discipline", "Instil cash discipline", "Cash cycle days",
+         ["r2r-o-close", "tcm-o-risk"]),
+    ],
+}
+
+
+def kpi_meta(kpi, seed):
+    """Deterministic (unit, current, target, formula) derived from a KPI label.
+    No live data in this build — synthetic but stable per KPI + seed."""
+    k = (kpi or "").lower()
+    if "%" in kpi:
+        cur = 58 + seed % 22
+        return "%", cur, min(98, cur + 16), "in-policy events / total events"
+    if "$" in kpi:
+        cur = 1.2 + (seed % 40) / 10.0
+        return "$M", round(cur, 1), round(max(0.2, cur * 0.45), 1), "exposure at risk (rolling)"
+    if "day" in k:
+        cur = 8 + seed % 40
+        return "days", cur, max(2, cur - (6 + seed % 8)), "Σ elapsed / count"
+    cur = 40 + seed % 45
+    return "index", cur, min(100, cur + 20), "composite health index"
+
+
+def make_capability(cap_id, name, mission_kpi, pattern_ids, seed):
+    unit, cur, tgt, formula = kpi_meta(mission_kpi, seed)
+    return {
+        "id": cap_id,
+        "name": name,
+        "kpiName": name,
+        "kpiFormula": formula,
+        "unit": unit,
+        "current": cur,
+        "target": tgt,
+        "patternIds": pattern_ids,
+        "patternCount": len(pattern_ids),
+    }
+
+
+def build_capabilities(src_obj_id, obj, fn_id):
+    """One capability per sample mission; 2–3 named instruments for O2C,
+    splitting the mission's real pattern ids into contiguous slices."""
+    pids = list(obj.get("patternIds") or [])
+    facets = O2C_CAPS.get(src_obj_id)
+    if not facets:
+        return [make_capability("cap-" + src_obj_id, obj["kpi"], obj["kpi"], pids, len(src_obj_id))]
+    n = len(facets)
+    caps = []
+    for i, fname in enumerate(facets):
+        lo = (len(pids) * i) // n
+        hi = (len(pids) * (i + 1)) // n
+        slice_ids = pids[lo:hi] if hi > lo else pids[i:i + 1]
+        caps.append(make_capability("cap-" + src_obj_id + "-" + str(i + 1), fname, obj["kpi"],
+                                    slice_ids, len(src_obj_id) + i))
+    return caps
+
+
+def build_mission_index(functions):
+    """srcObjId -> Mission (persona-owned role-objective + its capabilities)."""
+    idx = {}
+    for f in functions:
+        for pr in f.get("processes", []):
+            for role in pr.get("roles", []):
+                for obj in role.get("objectives", []):
+                    src = obj["id"]
+                    caps = build_capabilities(src, obj, f["id"])
+                    idx[src] = {
+                        "id": "m-" + src,
+                        "name": obj["name"],
+                        "persona": role["name"],
+                        "functionId": f["id"],
+                        "kpi": obj["kpi"],
+                        "description": role["name"] + " owns this mission — " + obj["name"].lower() + ".",
+                        "capabilities": caps,
+                        "capabilityCount": len(caps),
+                    }
+    return idx
+
+
+def attach_objectives(themes, mission_idx):
+    """Resolve THEME_OBJECTIVES into nested objectives→missions on each theme."""
+    for t in themes:
+        specs = THEME_OBJECTIVES.get(t["id"], [])
+        objectives = []
+        for (oid, oname, okpi, mission_srcs) in specs:
+            missions = [mission_idx[s] for s in mission_srcs if s in mission_idx]
+            fn_ids = sorted(set(m["functionId"] for m in missions))
+            objectives.append({
+                "id": oid,
+                "name": oname,
+                "themeId": t["id"],
+                "kpi": okpi,
+                "functionIds": fn_ids,
+                "missions": missions,
+                "missionCount": len(missions),
+            })
+        t["objectives"] = objectives
+        t["objectiveCount"] = len(objectives)
+
+
+def add_action_chain(p):
+    """Deck rename: originalDAG → actionChain{id,name,steps}. Keep originalDAG
+    as a back-compat alias so the 31-pattern readers never null-ref."""
+    steps = p.get("originalDAG") or []
+    p["actionChain"] = {
+        "id": "ac-" + str(p.get("id")),
+        "name": p.get("name", "Pattern") + " — action chain",
+        "steps": steps,
+    }
+    return p
+
+
 def main():
     data = load_ar_patterns()
     patterns = data["patterns"]
@@ -1626,6 +1875,22 @@ def main():
                     n += len(o["patternIds"])
         f["patternCount"] = n
 
+    # ---- deck Unified Hierarchy: lift into Theme → Objective → Mission → Capability ----
+    mission_idx = build_mission_index(functions)
+    attach_objectives(themes, mission_idx)
+    for p in stub_patterns.values():
+        add_action_chain(p)
+
+    # distinct missions / capabilities actually reachable from the theme tree
+    seen_m, seen_c = set(), set()
+    for t in themes:
+        for o in t.get("objectives", []):
+            for m in o["missions"]:
+                seen_m.add(m["id"])
+                for c in m["capabilities"]:
+                    seen_c.add(c["id"])
+    objective_count = sum(len(t.get("objectives", [])) for t in themes)
+
     out = {
         "meta": {
             "title": "Process Transformation Accelerator — Navigation Spine",
@@ -1644,6 +1909,9 @@ def main():
             ],
             "functionCount": len(functions),
             "themeCount": len(themes),
+            "objectiveCount": objective_count,
+            "missionCount": len(seen_m),
+            "capabilityCount": len(seen_c),
         },
         "themes": themes,
         "functions": functions,
@@ -1654,7 +1922,8 @@ def main():
     with open(path, "w", encoding="utf-8") as f:
         json.dump(out, f, indent=2, ensure_ascii=False)
     print("Built", os.path.relpath(path, ROOT),
-          "(%d themes, %d functions, %d sample patterns)" % (len(themes), len(functions), len(stub_patterns)))
+          "(%d themes, %d objectives, %d missions, %d capabilities, %d functions, %d sample patterns)" %
+          (len(themes), objective_count, len(seen_m), len(seen_c), len(functions), len(stub_patterns)))
 
 
 if __name__ == "__main__":

@@ -2277,3 +2277,65 @@ textarea.pmi-in{resize:vertical;line-height:1.45}
 .mc-pats-m{font-size:10.5px;color:var(--muted);font-weight:700}
 .cc-own.pat{background:var(--brand2);border-color:var(--brand2);color:#fff}
 .cc-own.pat:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* ---- Studio: Unified-Hierarchy additions -------------------------------- */
+/* Function filter (studio-owned header control) + action-chain step cards.   */
+.st-intro-ctl{display:flex;align-items:center;gap:12px}
+.st-fnfilter{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;
+  text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.st-fnfilter select{font:inherit;font-size:12px;font-weight:600;text-transform:none;letter-spacing:0;
+  color:var(--brand);background:#fff;border:1px solid var(--line);border-radius:8px;padding:5px 9px;cursor:pointer}
+.st-fnfilter select:hover{border-color:var(--brand2)}
+
+.aclist{display:grid;gap:14px;margin-top:6px}
+.accard{border:1px solid var(--line);border-radius:12px;background:#fff;padding:12px 14px}
+.accard-h{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.accard-h .pat-prio{width:8px;height:8px;border-radius:50%;flex:0 0 auto}
+.accard-n{font-weight:800;font-size:13.5px;color:var(--brand);flex:1;min-width:0}
+.accard-h .linkbtn{flex:0 0 auto}
+.accard .dsteps{margin:0}
+.accard .dprev{margin-top:10px}
+
+/* ---- "Coming soon" stages (Builder sidebar pill + overview page) --------- */
+.sb-group.soon .sb-head{opacity:.72}
+.sb-group.soon .sb-subs{opacity:.6}
+.sb-soon{flex:0 0 auto;font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;
+  color:#fff;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);
+  border-radius:20px;padding:2px 6px;white-space:nowrap}
+
+.soon-view{padding:6px 4px}
+.soon-card{max-width:760px;margin:0 auto;background:var(--card,#fff);border:1px solid var(--line);
+  border-radius:16px;padding:26px 28px}
+.soon-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.soon-eyebrow{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:4px}
+.soon-head h2{margin:0;font-size:22px}
+.soon-badge{flex:0 0 auto;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;
+  color:#fff;background:var(--accent);border-radius:20px;padding:5px 12px;white-space:nowrap}
+.soon-lede{color:var(--muted);line-height:1.6;margin:14px 0 22px;font-size:14px}
+.soon-subs-h{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);
+  margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.soon-subs{display:grid;gap:12px}
+.soon-sub{border:1px solid var(--line);border-radius:12px;padding:13px 15px;background:var(--bg,#f5f6f8)}
+.soon-sub-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.soon-sub-n{font-weight:800;font-size:14px;color:var(--brand)}
+.soon-tag{flex:0 0 auto;font-size:8.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;
+  color:var(--accent);background:rgba(244,122,30,.1);border:1px solid rgba(244,122,30,.28);
+  border-radius:20px;padding:2px 8px;white-space:nowrap}
+.soon-sub-d{margin:6px 0 0;color:var(--muted);line-height:1.5;font-size:12.5px}
+.soon-foot{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:22px;
+  padding-top:16px;border-top:1px solid var(--line)}
+.soon-foot .muted{font-size:12px;line-height:1.4}
+
+/* ---- Pattern step: sub-tabs (candidates | embedded Pattern Studio) ------- */
+.st-subtabs{display:flex;gap:6px;margin-bottom:14px;border-bottom:1px solid var(--line);padding-bottom:2px}
+.st-subtab{display:inline-flex;align-items:center;gap:6px;background:none;border:0;cursor:pointer;
+  font:inherit;font-size:13px;font-weight:700;color:var(--muted);padding:8px 12px;border-radius:8px 8px 0 0;
+  border-bottom:2px solid transparent;margin-bottom:-3px}
+.st-subtab:hover{color:var(--brand)}
+.st-subtab.on{color:var(--brand);border-bottom-color:var(--accent)}
+.st-subtab small{font-size:10px;font-weight:600;color:var(--muted);text-transform:none}
+.st-subn{font-size:10.5px;font-weight:800;color:#fff;background:var(--brand2);border-radius:20px;padding:1px 7px}
+.st-subtab.on .st-subn{background:var(--accent)}
+.st-psembed{margin-top:4px}
+/* the embedded Pattern Studio owns its own scroll rhythm inside the wizard body */
+.st-psembed .ps-tabs{margin-top:0}

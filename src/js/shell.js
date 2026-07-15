@@ -22,16 +22,18 @@
     modules: {},     // registered by each module file
     active: null,    // current sub-view id
     _erpListeners: [],
-    // the process an SME is composing — threaded through all three stages
+    // the process an SME is composing — threaded through all three stages.
+    // Deck Unified Hierarchy: Theme → Objective → Mission → Capability → Pattern.
     composition: {
-      themeId: null,      // business theme (spans functions) — optional top-level lens
-      fnId: null, procId: null,
-      roleIds: [],        // all personas participating in the chosen process
-      objIds: [],         // objectives in scope (across the selected personas)
-      patternIds: [],     // selected patterns
-      blocks: {},         // blockKey -> { mode:'auto'|'hitl', tech:string, configured:bool }
-      dag: {},            // patternId -> { steps:[{k:string,on:bool}] } happy-path customisation
-      live: false,        // promoted to Run & Govern
+      themeId: null,       // business theme (Theme, L1)
+      objectiveIds: [],    // objectives in scope under the theme (L2)
+      missionIds: [],      // persona-owned missions in scope (L3)
+      capabilityIds: [],   // KPI-instrument capabilities in scope (L4)
+      patternIds: [],      // selected patterns (L5)
+      blocks: {},          // blockKey -> { mode:'auto'|'hitl', tech:string, configured:bool }
+      dag: {},             // patternId -> { steps:[{k:string,on:bool}] } action-chain customisation
+      live: false,         // promoted to Run & Govern
+      fnFilter: null,      // function is a cross-cutting FILTER lens, not a hierarchy level
     },
   };
 
@@ -40,18 +42,38 @@
      numbers anywhere — the order is carried by the stacking, not by a badge. */
   var STAGES = [
     { id: "design", label: "Design", tag: "Missions → Actions", sub: [
-        { id: "studio", label: "Studio" },
-        { id: "patternstudio", label: "Pattern Studio" } ] },
-    { id: "fit", label: "Discover & Fit", tag: "Discovery & Fit", sub: [
-        { id: "discovery", label: "Discovery Engine" },
-        { id: "fitment", label: "Agent Fitment" } ] },
-    { id: "build", label: "Build", tag: "Implementation Studio", sub: [
-        { id: "build", label: "Implementation Studio" } ] },
-    { id: "run", label: "Run & Govern", tag: "Agentic Workflow", sub: [
-        { id: "runtime", label: "Live Operations" },
-        { id: "cockpit", label: "Cognitive Cockpit" },
-        { id: "governance", label: "Governance" },
-        { id: "roi", label: "ROI & Attribution" } ] },
+        { id: "studio", label: "Transformation Studio" },
+        // Pattern Studio is now embedded inside the Transformation Studio's Pattern
+        // step; kept here (hidden from the sidebar) so cross-tile deep-links to it
+        // and ?view=patternstudio still resolve via stageOf().
+        { id: "patternstudio", label: "Pattern Studio", hidden: true } ] },
+    { id: "fit", label: "Discover & Fit", tag: "Discovery & Fit", soon: true,
+      blurb: "Take the process you composed in Design and pressure-test it against reality: mine the " +
+             "event log and client documents for patterns you haven't named yet, then assess every " +
+             "action block for how much an agent can safely own.",
+      sub: [
+        { id: "discovery", label: "Discovery Engine",
+          desc: "Mines the event log and source documents (math → text → LLM pipeline) to surface new behavioural patterns beyond the seeded library, ready for SME approval." },
+        { id: "fitment", label: "Agent Fitment",
+          desc: "Scores every action block for agent fit — Full-auto, Assisted or Human-led — agentivises the happy path, and produces the to-be flow." } ] },
+    { id: "build", label: "Build", tag: "Action chains → agents", soon: true,
+      blurb: "Turn the configured action chains into running software: bind each action block to an " +
+             "executor, wire the guardrails, and promote a validated agent chain to production.",
+      sub: [
+        { id: "build", label: "Implementation Studio",
+          desc: "Assembles the configured action blocks into validated agent chains — tech stack bound, execution mode set, rollback and connectivity checked — then promotes to production." } ] },
+    { id: "run", label: "Run & Govern", tag: "Agentic Workflow", soon: true,
+      blurb: "Operate the live process: straight-through on the happy path, variations matched to " +
+             "patterns and routed for approval, all under continuous oversight and value tracking.",
+      sub: [
+        { id: "runtime", label: "Live Operations",
+          desc: "Straight-through processing on the happy path; variations matched to patterns and routed for approval, with live KPIs." },
+        { id: "cockpit", label: "Cognitive Cockpit",
+          desc: "The Sense → Diagnose → Decide → Act operating picture across the running agents." },
+        { id: "governance", label: "Governance",
+          desc: "Trust modes and the Saga simulator — retry → compensate → escalate, with HITL gates on WRITE blocks." },
+        { id: "roi", label: "ROI & Attribution",
+          desc: "Tracks realised value and attributes it back to the patterns and action blocks that delivered it." } ] },
   ];
   PIQ.STAGES = STAGES;
 
@@ -77,7 +99,7 @@
   /* stage completion, read off the composition — drives the sidebar status dots */
   PIQ.stageStatus = function (stageId) {
     var c = PIQ.composition;
-    if (stageId === "design") return c.patternIds.length ? "done" : (c.fnId ? "wip" : "todo");
+    if (stageId === "design") return c.patternIds.length ? "done" : ((c.themeId || c.objectiveIds.length) ? "wip" : "todo");
     if (stageId === "fit") {
       if (!c.patternIds.length) return "todo";
       return Object.keys(c.blocks || {}).length ? "done" : "wip";
@@ -133,13 +155,13 @@
     return out;
   };
   // cross-process compound patterns applicable to the current composition:
-  // the selected theme's, or (if none) every theme touching the chosen function.
+  // the selected theme's, or (if none) every theme touching the filtered function.
   PIQ.compoundPatterns = function () {
     var c = PIQ.composition, out = [];
     (PIQ.tax.themes || []).forEach(function (t) {
       if (c.themeId) { if (t.id !== c.themeId) return; }
-      else if (c.fnId && (t.functionIds || []).indexOf(c.fnId) < 0) return;
-      else if (!c.fnId && !c.themeId) return;
+      else if (c.fnFilter && (t.functionIds || []).indexOf(c.fnFilter) < 0) return;
+      else if (!c.fnFilter && !c.themeId) return;
       (t.crossProcessPatterns || []).forEach(function (cp) {
         out.push({ theme: t, cp: cp, constituents: PIQ.compoundConstituents(cp) });
       });
@@ -147,53 +169,114 @@
     return out;
   };
 
+  /* ---- Unified Hierarchy navigation: Theme → Objective → Mission → Capability → Pattern.
+     "*All()" helpers return every child of the current selection (the pool a wizard
+     step chooses from); the bare helpers return only the in-scope (selected) items. */
+
+  // function is a cross-cutting FILTER now, not a hierarchy level
   PIQ.fn = function () {
-    return (PIQ.tax.functions || []).filter(function (f) { return f.id === PIQ.composition.fnId; })[0] || null;
+    var id = PIQ.composition.fnFilter;
+    if (!id) return null;
+    return (PIQ.tax.functions || []).filter(function (f) { return f.id === id; })[0] || null;
   };
-  PIQ.proc = function () {
-    var f = PIQ.fn(); var c = PIQ.composition; if (!f) return null;
-    return f.processes.filter(function (x) { return x.id === c.procId; })[0] || null;
+
+  // every objective under the selected theme (L2 pool)
+  PIQ.themeObjectives = function () {
+    var t = PIQ.theme();
+    return (t && t.objectives) ? t.objectives : [];
   };
-  // personas (roles) currently in scope
-  PIQ.roles = function () {
-    var p = PIQ.proc(); var c = PIQ.composition; if (!p) return [];
-    return p.roles.filter(function (r) { return c.roleIds.indexOf(r.id) >= 0; });
-  };
-  // objectives in scope, across every selected persona
+  // objectives in scope (selected)
   PIQ.objectives = function () {
-    var p = PIQ.proc(); var c = PIQ.composition; if (!p) return [];
-    var out = [];
-    p.roles.forEach(function (r) {
-      if (c.roleIds.indexOf(r.id) < 0) return;
-      (r.objectives || []).forEach(function (o) { if (c.objIds.indexOf(o.id) >= 0) out.push(o); });
+    var c = PIQ.composition;
+    return PIQ.themeObjectives().filter(function (o) { return c.objectiveIds.indexOf(o.id) >= 0; });
+  };
+  PIQ.objective = function () { return PIQ.objectives()[0] || null; };
+
+  // distinct missions under the in-scope objectives (L3 pool), function-filtered
+  PIQ.objectiveMissions = function () {
+    var seen = {}, out = [], fnf = PIQ.composition.fnFilter;
+    PIQ.objectives().forEach(function (o) {
+      (o.missions || []).forEach(function (m) {
+        if (seen[m.id]) return;
+        if (fnf && m.functionId !== fnf) return;
+        seen[m.id] = 1; out.push(m);
+      });
     });
     return out;
   };
-  // first in-scope objective — kept for compact single-line labels
-  PIQ.objective = function () { return PIQ.objectives()[0] || null; };
-  // union of every pattern id across the in-scope objectives
-  PIQ.objectivePatternIds = function () {
+  // missions in scope (selected)
+  PIQ.missions = function () {
+    var c = PIQ.composition;
+    return PIQ.objectiveMissions().filter(function (m) { return c.missionIds.indexOf(m.id) >= 0; });
+  };
+
+  // distinct capabilities under the in-scope missions (L4 pool)
+  PIQ.missionCapabilities = function () {
     var seen = {}, out = [];
-    PIQ.objectives().forEach(function (o) {
-      (o.patternIds || []).forEach(function (id) { if (!seen[id]) { seen[id] = 1; out.push(id); } });
+    PIQ.missions().forEach(function (m) {
+      (m.capabilities || []).forEach(function (cap) {
+        if (seen[cap.id]) return; seen[cap.id] = 1; out.push(cap);
+      });
+    });
+    return out;
+  };
+  // capabilities in scope (selected)
+  PIQ.capabilities = function () {
+    var c = PIQ.composition;
+    return PIQ.missionCapabilities().filter(function (cap) { return c.capabilityIds.indexOf(cap.id) >= 0; });
+  };
+
+  // personas (roles) in scope — derived from the selected missions, grouped by persona
+  PIQ.roles = function () {
+    var byName = {}, out = [];
+    PIQ.missions().forEach(function (m) {
+      var r = byName[m.persona];
+      if (!r) { r = byName[m.persona] = { id: "persona-" + m.persona, name: m.persona, missions: [], functionIds: [] }; out.push(r); }
+      r.missions.push(m);
+      if (r.functionIds.indexOf(m.functionId) < 0) r.functionIds.push(m.functionId);
     });
     return out;
   };
 
-  // ---- happy-path DAG customisation (per-composition, per-pattern) ----------
-  // The editable step list: seeds from originalDAG, then persists reorder + on/off.
+  // union of every pattern id across the in-scope CAPABILITIES (falls back to the
+  // in-scope missions' capabilities when no capability has been explicitly selected)
+  PIQ.objectivePatternIds = function () {
+    var caps = PIQ.capabilities();
+    if (!caps.length) caps = PIQ.missionCapabilities();
+    var seen = {}, out = [];
+    caps.forEach(function (cap) {
+      (cap.patternIds || []).forEach(function (id) { if (!seen[id]) { seen[id] = 1; out.push(id); } });
+    });
+    return out;
+  };
+
+  // the action chains of the currently selected patterns (deck L6)
+  PIQ.actionChains = function () {
+    return PIQ.selectedPatterns().map(function (p) {
+      return { pattern: p, chain: p.actionChain || { id: "ac-" + p.id, name: p.name, steps: (p.originalDAG || []) } };
+    });
+  };
+
+  // ---- action-chain customisation (per-composition, per-pattern) ----------
+  // Canonical source is pattern.actionChain.steps (deck rename); originalDAG is a
+  // retained back-compat alias. The editable step list seeds from the chain, then
+  // persists reorder + on/off.
+  function chainSteps(p) {
+    if (!p) return [];
+    if (p.actionChain && p.actionChain.steps) return p.actionChain.steps;
+    return p.originalDAG || [];
+  }
+  PIQ.chainSteps = chainSteps;
   PIQ.dagSteps = function (id) {
     var ov = (PIQ.composition.dag || {})[id];
     if (ov && ov.steps) return ov.steps;
-    var p = PIQ.pattern(id);
-    return ((p && p.originalDAG) || []).map(function (k) { return { k: k, on: true }; });
+    return chainSteps(PIQ.pattern(id)).map(function (k) { return { k: k, on: true }; });
   };
   // resolved happy path the rest of the app runs on: enabled steps in user order.
   PIQ.happyDAG = function (id) {
     var ov = (PIQ.composition.dag || {})[id];
     if (ov && ov.steps) return ov.steps.filter(function (s) { return s.on; }).map(function (s) { return s.k; });
-    var p = PIQ.pattern(id);
-    return (p && p.originalDAG) ? p.originalDAG.slice() : [];
+    return chainSteps(PIQ.pattern(id)).slice();
   };
   PIQ.dagCustomised = function (id) {
     var ov = (PIQ.composition.dag || {})[id];
@@ -210,7 +293,7 @@
     var stubs = PIQ.tax && PIQ.tax.stubPatterns ? PIQ.tax.stubPatterns : {};
     var all = (PIQ.patterns || []).concat(Object.keys(stubs).map(function (id) { return stubs[id]; }));
     all.forEach(function (p) {
-      (p.originalDAG || []).forEach(add);
+      chainSteps(p).forEach(add);
       (p.branchingDAG || []).forEach(function (b) { (b.actions || []).forEach(add); });
     });
     PIQ._actionRepo = Object.keys(set).sort();
@@ -258,14 +341,15 @@
   };
 
   PIQ.resetComposition = function () {
-    PIQ.composition = { themeId: null, fnId: null, procId: null, roleIds: [], objIds: [],
-      patternIds: [], blocks: {}, dag: {}, live: false };
+    PIQ.composition = { themeId: null, objectiveIds: [], missionIds: [], capabilityIds: [],
+      patternIds: [], blocks: {}, dag: {}, live: false, fnFilter: null };
     PIQ.persistComposition();
   };
 
   /* ---- composition persistence (survives reloads) ----------------------
-     The app is light-theme only — there is no theme mode to persist.        */
-  var STORE_KEY = "piq.composition.v1";
+     The app is light-theme only — there is no theme mode to persist.
+     Key bumped to v2 for the Unified-Hierarchy composition shape.           */
+  var STORE_KEY = "piq.composition.v2";
   PIQ.persistComposition = function () {
     try { localStorage.setItem(STORE_KEY, JSON.stringify(PIQ.composition)); } catch (e) {}
   };
@@ -273,17 +357,18 @@
     try {
       var raw = localStorage.getItem(STORE_KEY); if (!raw) return;
       var saved = JSON.parse(raw); if (!saved || typeof saved !== "object") return;
-      // only restore if the saved function still exists in the taxonomy
-      if (saved.fnId && !(PIQ.tax.functions || []).some(function (f) { return f.id === saved.fnId; })) return;
+      // only restore if the saved theme still exists in the taxonomy
+      if (saved.themeId && !(PIQ.tax.themes || []).some(function (t) { return t.id === saved.themeId; })) return;
       PIQ.composition = {
         themeId: saved.themeId || null,
-        fnId: saved.fnId || null, procId: saved.procId || null,
-        roleIds: Array.isArray(saved.roleIds) ? saved.roleIds : [],
-        objIds: Array.isArray(saved.objIds) ? saved.objIds : [],
+        objectiveIds: Array.isArray(saved.objectiveIds) ? saved.objectiveIds : [],
+        missionIds: Array.isArray(saved.missionIds) ? saved.missionIds : [],
+        capabilityIds: Array.isArray(saved.capabilityIds) ? saved.capabilityIds : [],
         patternIds: Array.isArray(saved.patternIds) ? saved.patternIds : [],
         blocks: saved.blocks && typeof saved.blocks === "object" ? saved.blocks : {},
         dag: saved.dag && typeof saved.dag === "object" ? saved.dag : {},
         live: !!saved.live,
+        fnFilter: saved.fnFilter || null,
       };
     } catch (e) {}
   };
@@ -297,26 +382,32 @@
     return '<button class="sb-back" data-home="1">← Home</button>';
   }
 
-  /* Builder sidebar: four collapsible stages, each with its sub-views. */
+  /* Builder sidebar: four stacked stages, each with its sub-views. Stages flagged
+     `soon` render a "Coming soon" pill and are non-navigable (Design-only for now). */
   function builderSidebar(bar) {
     var stage = stageOf(PIQ.active);
     bar.innerHTML = homeLink() + STAGES.map(function (st) {
       var open = !collapsed[st.id];
       var status = PIQ.stageStatus(st.id);
-      var items = st.sub.map(function (s) {
+      var items = st.sub.filter(function (s) { return !s.hidden; }).map(function (s) {
         return '<button class="sb-item' + (PIQ.active === s.id ? " on" : "") + '" data-v="' + s.id + '">' +
           '<span class="sb-label">' + esc(s.label) + '</span></button>';
       }).join("");
-      return '<div class="sb-group' + (open ? " open" : "") + (stage && stage.id === st.id ? " cur" : "") + '" data-st="' + st.id + '">' +
+      // soon stages stay clickable (they open a "coming soon" overview) but swap the
+      // caret for a pill and carry a dimmed `soon` class.
+      var tail = st.soon ? '<span class="sb-soon">Coming soon</span>'
+                         : '<span class="sb-caret">' + (open ? "▾" : "▸") + '</span>';
+      return '<div class="sb-group' + (open ? " open" : "") + (st.soon ? " soon" : "") +
+          (stage && stage.id === st.id ? " cur" : "") + '" data-st="' + st.id + '">' +
         '<button class="sb-head" data-head="' + st.id + '">' +
           '<span class="sb-status ' + status + '">' + STATUS_GLYPH[status] + '</span>' +
           '<span class="sb-txt">' + esc(st.label) + '<small>' + esc(st.tag) + '</small></span>' +
-          '<span class="sb-caret">' + (open ? "▾" : "▸") + '</span>' +
+          tail +
         '</button>' +
         '<div class="sb-subs">' + items + '</div></div>';
     }).join("");
 
-    bar.querySelectorAll(".sb-head").forEach(function (h) {
+    bar.querySelectorAll(".sb-head[data-head]").forEach(function (h) {
       h.onclick = function () {
         var id = h.dataset.head;
         // header of the stage you are standing in = pure expand/collapse; header of
@@ -444,16 +535,18 @@
   }
 
   function crumb() {
-    var c = PIQ.composition, f = PIQ.fn(), t = PIQ.theme();
-    if (!f && !t) return '<span class="cr-empty">No process selected — start in Studio</span>';
-    var parts = [];
-    if (t) parts.push(t.name);
-    if (f) parts.push(f.name);
-    var p = PIQ.proc();
-    if (p) parts.push(p.name);
+    var c = PIQ.composition, t = PIQ.theme();
+    if (!t) return '<span class="cr-empty">No theme selected — start in Studio</span>';
+    var parts = [t.name];
+    var objs = PIQ.objectives();
+    if (objs.length === 1) parts.push(objs[0].name);
+    else if (objs.length > 1) parts.push(objs.length + " objectives");
+    var missions = PIQ.missions();
+    if (missions.length === 1) parts.push(missions[0].name);
+    else if (missions.length > 1) parts.push(missions.length + " missions");
     var s = parts.map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('<i>›</i>');
-    var nr = c.roleIds.length;
-    if (nr) s += '<i>›</i><span class="cr-count">' + nr + ' persona' + (nr > 1 ? "s" : "") + '</span>';
+    var nc = PIQ.capabilities().length;
+    if (nc) s += '<i>›</i><span class="cr-count">' + nc + ' capabilit' + (nc > 1 ? "ies" : "y") + '</span>';
     var n = c.patternIds.length;
     if (n) s += '<i>›</i><span class="cr-count">' + n + ' pattern' + (n > 1 ? "s" : "") + '</span>';
     if (c.live) s += '<span class="cr-live">● LIVE</span>';
@@ -462,6 +555,20 @@
   function esc(s) { return (s == null ? "" : String(s)).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
   function go(id) {
+    // stages flagged `soon` are not yet available — show a "coming soon" panel
+    // (also catches the Studio hand-off that would otherwise jump into Discover & Fit)
+    var st = PIQ.persona === "builder" ? stageOf(id) : null;
+    if (st && st.soon) {
+      PIQ.active = id;
+      PIQ.persistComposition();
+      renderSidebar();
+      renderCrumb();
+      var v = document.getElementById("view");
+      v.innerHTML = "";
+      v.appendChild(soonCard(st));
+      window.scrollTo(0, 0);
+      return;
+    }
     PIQ.active = id;
     PIQ.persistComposition();
     renderSidebar();
@@ -472,6 +579,32 @@
     if (mod && mod.render) { mod.render(view); }
     else { view.appendChild(stubCard(id)); }
     window.scrollTo(0, 0);
+  }
+
+  function soonCard(st) {
+    var subs = (st.sub || []).map(function (s) {
+      return '<div class="soon-sub">' +
+        '<div class="soon-sub-h"><span class="soon-sub-n">' + esc(s.label) + '</span>' +
+          '<span class="soon-tag">Coming soon</span></div>' +
+        (s.desc ? '<p class="soon-sub-d">' + esc(s.desc) + '</p>' : '') +
+      '</div>';
+    }).join("");
+    var d = document.createElement("div");
+    d.className = "soon-view";
+    d.innerHTML = '<div class="soon-card">' +
+      '<div class="soon-head">' +
+        '<div><div class="soon-eyebrow">' + esc(st.tag) + '</div>' +
+        '<h2>' + esc(st.label) + '</h2></div>' +
+        '<div class="soon-badge">Coming soon</div></div>' +
+      (st.blurb ? '<p class="soon-lede">' + esc(st.blurb) + '</p>' : '') +
+      '<div class="soon-subs-h">What ships in this stage</div>' +
+      '<div class="soon-subs">' + subs + '</div>' +
+      '<div class="soon-foot"><span class="muted">Your composition is saved and will flow through here when this stage ships.</span>' +
+        '<button class="btn go sm" id="soonBack">← Back to Design</button></div>' +
+    '</div>';
+    var b = d.querySelector("#soonBack");
+    if (b) b.onclick = function () { go("studio"); };
+    return d;
   }
   PIQ.go = go;
   // modules mutate the composition; this re-reads the status dots + breadcrumb

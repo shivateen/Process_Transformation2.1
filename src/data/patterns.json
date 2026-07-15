@@ -190,6 +190,16 @@
         "traceCount": 8373,
         "additionalCoverage": 89,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-1",
+        "name": "29th-Day Tactic — action chain",
+        "steps": [
+          "Generate_Contextual_Email",
+          "Update_SAP_Dispute(Reject)",
+          "Toggle_Dunning_Block(Remove)",
+          "Send_SMTP_Email"
+        ]
       }
     },
     {
@@ -266,6 +276,14 @@
         "traceCount": 8746,
         "additionalCoverage": 118,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-2",
+        "name": "Dispute Code Hopping — action chain",
+        "steps": [
+          "Update_SAP_Master_Data(Flag Account)",
+          "Update_CRM_Task(Escalate to Manager)"
+        ]
       }
     },
     {
@@ -341,6 +359,15 @@
         "traceCount": 9119,
         "additionalCoverage": 147,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-3",
+        "name": "Dispute Splitting — action chain",
+        "steps": [
+          "Update_SAP_Dispute(Merge Cases)",
+          "Generate_Contextual_Email",
+          "Send_SMTP_Email"
+        ]
       }
     },
     {
@@ -418,6 +445,15 @@
         "traceCount": 9492,
         "additionalCoverage": 176,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-4",
+        "name": "Friday Afternoon Slicing — action chain",
+        "steps": [
+          "Update_SAP_Dispute(Auto-Deny)",
+          "Execute_SAP_Clearing(Offset Undisputed)",
+          "Send_SMTP_Email"
+        ]
       }
     },
     {
@@ -491,6 +527,14 @@
         "traceCount": 9865,
         "additionalCoverage": 205,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-5",
+        "name": "Price Tolerance Exploitation — action chain",
+        "steps": [
+          "Update_SAP_Master_Data(Lower Tolerance Limit)",
+          "Update_CRM_Task(Notify AE)"
+        ]
       }
     },
     {
@@ -565,6 +609,15 @@
         "traceCount": 10238,
         "additionalCoverage": 234,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-6",
+        "name": "Attachment Omission — action chain",
+        "steps": [
+          "Generate_Contextual_Email(Request Docs)",
+          "Send_SMTP_Email",
+          "Toggle_Dunning_Block(Remove)"
+        ]
       }
     },
     {
@@ -638,6 +691,15 @@
         "traceCount": 10611,
         "additionalCoverage": 263,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-7",
+        "name": "Freight/Tax Skimming — action chain",
+        "steps": [
+          "Update_SAP_Dispute(Reject Tax Exemption)",
+          "Generate_Contextual_Email",
+          "Send_SMTP_Email"
+        ]
       }
     },
     {
@@ -713,6 +775,14 @@
         "traceCount": 10984,
         "additionalCoverage": 292,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-8",
+        "name": "Month-End RMA Dump — action chain",
+        "steps": [
+          "Update_SAP_Master_Data(Flag RMA Abuse)",
+          "Update_CRM_Task(Escalate to Supply Chain)"
+        ]
       }
     },
     {
@@ -789,6 +859,15 @@
         "traceCount": 11357,
         "additionalCoverage": 61,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-9",
+        "name": "'Missing Backup' Loop — action chain",
+        "steps": [
+          "Parse_Document_Evidence(Fetch ALL docs)",
+          "Generate_Contextual_Email(Attach ALL)",
+          "Update_SAP_Dispute(Close)"
+        ]
       }
     },
     {
@@ -867,6 +946,15 @@
         "traceCount": 11730,
         "additionalCoverage": 90,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-10",
+        "name": "Missing PO Trap — action chain",
+        "steps": [
+          "Parse_Document_Evidence(Find original email PO)",
+          "Generate_Contextual_Email",
+          "Update_SAP_Dispute(Close)"
+        ]
       }
     },
     {
@@ -942,6 +1030,15 @@
         "traceCount": 12103,
         "additionalCoverage": 119,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-11",
+        "name": "Approval Musical Chairs — action chain",
+        "steps": [
+          "Extract_CRM_Context(Find Exec Sponsor)",
+          "Generate_Contextual_Email(Escalation)",
+          "Update_CRM_Task"
+        ]
       }
     },
     {
@@ -1018,6 +1115,14 @@
         "traceCount": 12476,
         "additionalCoverage": 148,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-12",
+        "name": "System Migration Stall — action chain",
+        "steps": [
+          "Generate_Contextual_Email(Request firm P2P date)",
+          "Update_SAP_Master_Data(Set Dunning Block until P2P)"
+        ]
       }
     },
     {
@@ -1091,6 +1196,14 @@
         "traceCount": 12849,
         "additionalCoverage": 177,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-13",
+        "name": "Legal Entity Shell Game — action chain",
+        "steps": [
+          "Extract_SAP_Context",
+          "Update_CRM_Task(Alert Master Data Team to fix Entity routing)"
+        ]
       }
     },
     {
@@ -1164,6 +1277,14 @@
         "traceCount": 13222,
         "additionalCoverage": 206,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-14",
+        "name": "Portal Sabotage — action chain",
+        "steps": [
+          "Generate_Contextual_Email(Provide correct XML format)",
+          "Send_SMTP_Email"
+        ]
       }
     },
     {
@@ -1237,6 +1358,15 @@
         "traceCount": 13595,
         "additionalCoverage": 235,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-15",
+        "name": "Invoice Format Grievance — action chain",
+        "steps": [
+          "Update_SAP_Dispute(Reject timeline)",
+          "Toggle_Dunning_Block(Remove)",
+          "Send_SMTP_Email"
+        ]
       }
     },
     {
@@ -1310,6 +1440,14 @@
         "traceCount": 13968,
         "additionalCoverage": 264,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-16",
+        "name": "Disconnected AP Alias — action chain",
+        "steps": [
+          "Extract_CRM_Context(Find alternative contact)",
+          "Update_SAP_Master_Data(Update AP Email)"
+        ]
       }
     },
     {
@@ -1382,6 +1520,14 @@
         "traceCount": 14341,
         "additionalCoverage": 293,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-17",
+        "name": "Check is in the Mail — action chain",
+        "steps": [
+          "Generate_Contextual_Email(Mandate ACH Transfer next time)",
+          "Update_CRM_Task"
+        ]
       }
     },
     {
@@ -1452,6 +1598,13 @@
         "traceCount": 14714,
         "additionalCoverage": 62,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-18",
+        "name": "Bank Holiday Arbitrage — action chain",
+        "steps": [
+          "Update_SAP_Master_Data(Adjust Base Due Date to avoid regional holidays)"
+        ]
       }
     },
     {
@@ -1519,6 +1672,14 @@
         "traceCount": 15087,
         "additionalCoverage": 91,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-19",
+        "name": "Bust-Out Fraud Precursor — action chain",
+        "steps": [
+          "Toggle_SAP_Delivery_Block(Apply immediately)",
+          "Update_CRM_Task(URGENT: Alert Credit Risk VP)"
+        ]
       }
     },
     {
@@ -1596,6 +1757,14 @@
         "traceCount": 15460,
         "additionalCoverage": 120,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-20",
+        "name": "Partial Breadcrumbing — action chain",
+        "steps": [
+          "Toggle_SAP_Dunning_Block(Remove)",
+          "Generate_Contextual_Email(Demand full balance)"
+        ]
       }
     },
     {
@@ -1672,6 +1841,14 @@
         "traceCount": 15833,
         "additionalCoverage": 149,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-21",
+        "name": "Credit Block Bypass — action chain",
+        "steps": [
+          "Toggle_SAP_Delivery_Block(Apply to all pending SOs)",
+          "Update_CRM_Task(Alert AE)"
+        ]
       }
     },
     {
@@ -1748,6 +1925,14 @@
         "traceCount": 16206,
         "additionalCoverage": 178,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-22",
+        "name": "Bureau Downgrade — action chain",
+        "steps": [
+          "Update_SAP_Master_Data(Lower Credit Limit to 50%)",
+          "Generate_Contextual_Email(Notify Customer)"
+        ]
       }
     },
     {
@@ -1821,6 +2006,14 @@
         "traceCount": 16579,
         "additionalCoverage": 207,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-23",
+        "name": "Threshold Skimming — action chain",
+        "steps": [
+          "Extract_SAP_Context",
+          "Update_CRM_Task(Force manual portfolio review)"
+        ]
       }
     },
     {
@@ -1896,6 +2089,14 @@
         "traceCount": 16952,
         "additionalCoverage": 236,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-24",
+        "name": "Remittance Decoupling — action chain",
+        "steps": [
+          "Generate_Contextual_Email(Auto-request remittance for unapplied wire)",
+          "Send_SMTP_Email"
+        ]
       }
     },
     {
@@ -1971,6 +2172,14 @@
         "traceCount": 17325,
         "additionalCoverage": 265,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-25",
+        "name": "Duplicate Payment Bait — action chain",
+        "steps": [
+          "Update_SAP_Master_Data(Freeze Cash Refunds)",
+          "Execute_SAP_Clearing(Force On-Account Credit instead)"
+        ]
       }
     },
     {
@@ -2043,6 +2252,14 @@
         "traceCount": 17698,
         "additionalCoverage": 294,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-26",
+        "name": "Unapplied Cash Weaponization — action chain",
+        "steps": [
+          "Execute_SAP_Clearing(Auto-offset historical credit against oldest AR)",
+          "Generate_Contextual_Email"
+        ]
       }
     },
     {
@@ -2117,6 +2334,15 @@
         "traceCount": 18071,
         "additionalCoverage": 63,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-27",
+        "name": "Creeping Payment Terms — action chain",
+        "steps": [
+          "Extract_SAP_Context",
+          "Generate_Contextual_Email(Internal Summary)",
+          "Update_CRM_Task(Escalate to AE)"
+        ]
       }
     },
     {
@@ -2193,6 +2419,15 @@
         "traceCount": 18444,
         "additionalCoverage": 92,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-28",
+        "name": "Unearned Discount Harvesting — action chain",
+        "steps": [
+          "Execute_SAP_Clearing(Reverse Discount)",
+          "Update_SAP_Dispute(Open Chargeback)",
+          "Send_SMTP_Email"
+        ]
       }
     },
     {
@@ -2270,6 +2505,14 @@
         "traceCount": 18817,
         "additionalCoverage": 121,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-29",
+        "name": "Strategic Shielding — action chain",
+        "steps": [
+          "Extract_CRM_Context",
+          "Update_CRM_Task(Alert Sales Director of override policy breach)"
+        ]
       }
     },
     {
@@ -2345,6 +2588,15 @@
         "traceCount": 19190,
         "additionalCoverage": 150,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-30",
+        "name": "End-of-Quarter Ghosting — action chain",
+        "steps": [
+          "Toggle_Dunning_Block(Remove)",
+          "Generate_Contextual_Email(Firm EOQ Demand)",
+          "Send_SMTP_Email"
+        ]
       }
     },
     {
@@ -2420,6 +2672,14 @@
         "traceCount": 19563,
         "additionalCoverage": 179,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-31",
+        "name": "Chronic Promise Breaker — action chain",
+        "steps": [
+          "Update_SAP_Master_Data(Disable self-service portal P2P options)",
+          "Toggle_SAP_Delivery_Block"
+        ]
       }
     },
     {
@@ -2499,6 +2759,16 @@
         "traceCount": 19936,
         "additionalCoverage": 208,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-32",
+        "name": "Limit Increase Farming — action chain",
+        "steps": [
+          "Pull_Limit_Change_History",
+          "Compute_Utilization_Trend",
+          "Score_Request_vs_Demand",
+          "Route_Credit_Analyst_Review"
+        ]
       }
     },
     {
@@ -2578,6 +2848,16 @@
         "traceCount": 8309,
         "additionalCoverage": 237,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-33",
+        "name": "Score Drift Masking — action chain",
+        "steps": [
+          "Ingest_Bureau_Feed",
+          "Compare_Internal_vs_External_Score",
+          "Detect_Downgrade_Gap",
+          "Flag_For_Reassessment"
+        ]
       }
     },
     {
@@ -2658,6 +2938,17 @@
         "traceCount": 8682,
         "additionalCoverage": 266,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-34",
+        "name": "Pre-Ask Payment Polish — action chain",
+        "steps": [
+          "Pull_Clearing_History",
+          "Compute_DaysToPay_Shift",
+          "Correlate_With_Limit_Request",
+          "Score_Behavior_Authenticity",
+          "Route_Analyst_Decision"
+        ]
       }
     },
     {
@@ -2740,6 +3031,17 @@
         "traceCount": 9055,
         "additionalCoverage": 295,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-35",
+        "name": "Bust-Out Setup — action chain",
+        "steps": [
+          "Scan_New_Account_Cohort",
+          "Fingerprint_Order_Ramp",
+          "Detect_Exposure_Spike",
+          "Score_BustOut_Risk",
+          "Escalate_Fraud_Review"
+        ]
       }
     },
     {
@@ -2821,6 +3123,17 @@
         "traceCount": 9428,
         "additionalCoverage": 64,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-36",
+        "name": "Sales Override Pressure — action chain",
+        "steps": [
+          "Monitor_Block_Release_Events",
+          "Trace_Releaser_Identity",
+          "Aggregate_By_Period_Close",
+          "Score_Override_Pattern",
+          "Flag_Risk_Discipline_Breach"
+        ]
       }
     },
     {
@@ -2903,6 +3216,17 @@
         "traceCount": 9801,
         "additionalCoverage": 93,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-37",
+        "name": "Hidden Parent Exposure — action chain",
+        "steps": [
+          "Pull_Party_Hierarchy",
+          "Aggregate_Group_Exposure",
+          "Compare_To_Group_Cap",
+          "Score_Concentration_Risk",
+          "Route_Portfolio_Review"
+        ]
       }
     },
     {
@@ -2984,6 +3308,16 @@
         "traceCount": 10174,
         "additionalCoverage": 122,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-38",
+        "name": "Seasonal Peak Overreach — action chain",
+        "steps": [
+          "Monitor_Monthly_Utilization",
+          "Detect_Seasonal_Peak",
+          "Compare_To_SellThrough",
+          "Route_Analyst_Review"
+        ]
       }
     },
     {
@@ -3065,6 +3399,16 @@
         "traceCount": 10547,
         "additionalCoverage": 151,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-39",
+        "name": "Uninsured Exposure Creep — action chain",
+        "steps": [
+          "Pull_Live_Exposure",
+          "Reconcile_Against_Insured_Cap",
+          "Compute_Uninsured_Gap",
+          "Flag_Cover_Shortfall"
+        ]
       }
     },
     {
@@ -3147,6 +3491,17 @@
         "traceCount": 10920,
         "additionalCoverage": 180,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-40",
+        "name": "Collateral Erosion — action chain",
+        "steps": [
+          "Scan_Collateral_Records",
+          "Compute_Coverage_Ratio",
+          "Check_Validity_Runway",
+          "Assess_Issuer_Rating",
+          "Flag_Security_Shortfall"
+        ]
       }
     },
     {
@@ -3227,6 +3582,16 @@
         "traceCount": 11293,
         "additionalCoverage": 209,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-41",
+        "name": "Just-Under Tiering — action chain",
+        "steps": [
+          "Pull_Limit_Request_Distribution",
+          "Compare_Against_Tier_Boundaries",
+          "Detect_JustUnder_Clustering",
+          "Route_Controls_Review"
+        ]
       }
     },
     {
@@ -3303,6 +3668,17 @@
         "traceCount": 11666,
         "additionalCoverage": 238,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-42",
+        "name": "Naked Remittance Payment — action chain",
+        "steps": [
+          "Read_Bank_Statement_Items",
+          "Detect_Missing_Remittance_Reference",
+          "Score_Payer_Reference_History",
+          "Route_To_Fuzzy_Match",
+          "Apply_Predicted_Invoice_Set"
+        ]
       }
     },
     {
@@ -3381,6 +3757,17 @@
         "traceCount": 12039,
         "additionalCoverage": 267,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-43",
+        "name": "Duplicate Refund Bait — action chain",
+        "steps": [
+          "Fingerprint_Payment_Reference",
+          "Match_Against_Cleared_Items",
+          "Detect_Duplicate_Remittance",
+          "Flag_Refund_Risk",
+          "Block_Auto_Refund"
+        ]
       }
     },
     {
@@ -3457,6 +3844,17 @@
         "traceCount": 12412,
         "additionalCoverage": 296,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-44",
+        "name": "Short-Pay As Error — action chain",
+        "steps": [
+          "Read_Received_Amount",
+          "Compute_Payment_Shortfall",
+          "Compare_Deduction_History",
+          "Flag_Unauthorized_ShortPay",
+          "Post_Partial_And_Open_Residual"
+        ]
       }
     },
     {
@@ -3535,6 +3933,17 @@
         "traceCount": 12785,
         "additionalCoverage": 65,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-45",
+        "name": "Unapplied Cash Weaponization — action chain",
+        "steps": [
+          "Monitor_Unapplied_Balances",
+          "Aggregate_Per_Customer_Aging",
+          "Detect_Correlated_Buildup",
+          "Escalate_To_Collector",
+          "Update_Application_Priority"
+        ]
       }
     },
     {
@@ -3611,6 +4020,17 @@
         "traceCount": 13158,
         "additionalCoverage": 94,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-46",
+        "name": "Lockbox Format Break — action chain",
+        "steps": [
+          "Ingest_Lockbox_Advice_File",
+          "Parse_Reference_Tokens",
+          "Compare_Format_Signature",
+          "Flag_Parse_Regression",
+          "Route_To_Remittance_Parser"
+        ]
       }
     },
     {
@@ -3687,6 +4107,17 @@
         "traceCount": 13531,
         "additionalCoverage": 123,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-47",
+        "name": "Multi-Invoice Bundle Defeat — action chain",
+        "steps": [
+          "Read_Bundled_Payment",
+          "Match_Subset_Of_Invoices",
+          "Compute_Residual_Gap",
+          "Flag_Embedded_ShortPay",
+          "Apply_Matched_Set"
+        ]
       }
     },
     {
@@ -3763,6 +4194,17 @@
         "traceCount": 13904,
         "additionalCoverage": 152,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-48",
+        "name": "On-Account Dispute Shield — action chain",
+        "steps": [
+          "Read_OnAccount_Instruction",
+          "Trace_Linked_Dispute",
+          "Detect_Clearing_Avoidance",
+          "Recommend_Forced_Application",
+          "Update_Dunning_Status"
+        ]
       }
     },
     {
@@ -3839,6 +4281,17 @@
         "traceCount": 14277,
         "additionalCoverage": 181,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-49",
+        "name": "Cross-Entity Misdirection — action chain",
+        "steps": [
+          "Scan_Bank_Entity_Assignment",
+          "Match_Reference_Across_Entities",
+          "Detect_Entity_Mismatch",
+          "Route_Intercompany_Transfer",
+          "Apply_In_Correct_Entity"
+        ]
       }
     },
     {
@@ -3917,6 +4370,17 @@
         "traceCount": 14650,
         "additionalCoverage": 210,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-50",
+        "name": "Debit-Memo Netting Trap — action chain",
+        "steps": [
+          "Parse_Advice_Netting_Line",
+          "Reconcile_Against_Approved_Memos",
+          "Detect_Unapproved_Offset",
+          "Flag_Netting_Trap",
+          "Post_Payment_And_Open_Deduction"
+        ]
       }
     },
     {
@@ -3993,6 +4457,17 @@
         "traceCount": 15023,
         "additionalCoverage": 239,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-51",
+        "name": "Format-Switch Automation Break — action chain",
+        "steps": [
+          "Fingerprint_Remittance_Format",
+          "Compute_Format_Entropy",
+          "Detect_Channel_Churn",
+          "Assign_To_ML_Predictor",
+          "Apply_Predicted_Match"
+        ]
       }
     },
     {
@@ -4079,6 +4554,17 @@
         "traceCount": 15396,
         "additionalCoverage": 268,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-52",
+        "name": "Serial Frivolous Filer — action chain",
+        "steps": [
+          "Pull_Customer_Dispute_History",
+          "Compute_Rolling_Rejection_Ratio",
+          "Classify_Frivolity_Profile",
+          "Flag_Serial_Filer",
+          "Update_Case_Fast_Track"
+        ]
       }
     },
     {
@@ -4155,6 +4641,17 @@
         "traceCount": 15769,
         "additionalCoverage": 297,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-53",
+        "name": "Reason-Code Hopping — action chain",
+        "steps": [
+          "Read_Dispute_Change_Documents",
+          "Trace_Reason_Code_Sequence",
+          "Detect_Post_Evidence_Flip",
+          "Flag_Goalpost_Shift",
+          "Hold_Case_For_Review"
+        ]
       }
     },
     {
@@ -4231,6 +4728,17 @@
         "traceCount": 16142,
         "additionalCoverage": 66,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-54",
+        "name": "Promo Pricing Gaming — action chain",
+        "steps": [
+          "Pull_Invoice_Pricing_Conditions",
+          "Compare_Invoiced_Vs_Promo_Price",
+          "Score_Discrepancy_Validity",
+          "Propose_Resolution",
+          "Reject_Unfounded_Claim"
+        ]
       }
     },
     {
@@ -4307,6 +4815,17 @@
         "traceCount": 16515,
         "additionalCoverage": 95,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-55",
+        "name": "Shortage vs POD — action chain",
+        "steps": [
+          "Pull_Delivery_And_POD",
+          "Match_Disputed_Line_To_Quantity",
+          "Detect_POD_Contradiction",
+          "Recommend_Resolution",
+          "Reject_Claim_With_Evidence"
+        ]
       }
     },
     {
@@ -4393,6 +4912,17 @@
         "traceCount": 16888,
         "additionalCoverage": 124,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-56",
+        "name": "Quality Claim Inflation — action chain",
+        "steps": [
+          "Pull_Quality_Case_And_Billing",
+          "Compute_Defect_To_Claim_Ratio",
+          "Score_Escalation_Proportionality",
+          "Propose_Partial_Credit",
+          "Apply_Capped_Credit"
+        ]
       }
     },
     {
@@ -4469,6 +4999,17 @@
         "traceCount": 17261,
         "additionalCoverage": 153,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-57",
+        "name": "Cross-Channel Duplicate — action chain",
+        "steps": [
+          "Ingest_Multichannel_Disputes",
+          "Match_Invoice_Fingerprint",
+          "Detect_Duplicate_Cluster",
+          "Assign_Master_Case",
+          "Update_Merge_Duplicates"
+        ]
       }
     },
     {
@@ -4555,6 +5096,17 @@
         "traceCount": 17634,
         "additionalCoverage": 182,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-58",
+        "name": "SLA Deadline Gaming — action chain",
+        "steps": [
+          "Monitor_SLA_Filing_Window",
+          "Compute_Deadline_Proximity",
+          "Detect_Auto_Credit_Exploit",
+          "Escalate_Priority_Review",
+          "Hold_Auto_Credit"
+        ]
       }
     },
     {
@@ -4631,6 +5183,17 @@
         "traceCount": 18007,
         "additionalCoverage": 211,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-59",
+        "name": "Dispute-Deduction Double-Dip — action chain",
+        "steps": [
+          "Pull_Dispute_And_Residuals",
+          "Match_Reason_And_Amount",
+          "Detect_Double_Claim",
+          "Flag_Overlap",
+          "Update_Net_Single_Credit"
+        ]
       }
     },
     {
@@ -4717,6 +5280,17 @@
         "traceCount": 18380,
         "additionalCoverage": 240,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-60",
+        "name": "RMA Phantom Items — action chain",
+        "steps": [
+          "Pull_RMA_Return_Lines",
+          "Trace_Purchase_History",
+          "Detect_No_Matching_Sale",
+          "Flag_Phantom_Return",
+          "Reject_Credit_Request"
+        ]
       }
     },
     {
@@ -4795,6 +5369,17 @@
         "traceCount": 18753,
         "additionalCoverage": 269,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-61",
+        "name": "Legitimate Root Cause — action chain",
+        "steps": [
+          "Pull_Invoice_And_Contract_Terms",
+          "Compare_Against_Baseline",
+          "Classify_Internal_Failure",
+          "Recommend_Fast_Credit",
+          "Credit_And_Log_Root_Cause"
+        ]
       }
     },
     {
@@ -4871,6 +5456,17 @@
         "traceCount": 19126,
         "additionalCoverage": 298,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-62",
+        "name": "Promo Over-Claim — action chain",
+        "steps": [
+          "Pull_Deduction_Line",
+          "Compare_Agreed_Promo_Rate",
+          "Compute_Overclaim_Delta",
+          "Deny_Excess_Portion",
+          "Recover_Invalid_Amount"
+        ]
       }
     },
     {
@@ -4949,6 +5545,17 @@
         "traceCount": 19499,
         "additionalCoverage": 67,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-63",
+        "name": "Promo Stacking — action chain",
+        "steps": [
+          "Scan_Invoice_Conditions",
+          "Aggregate_Applied_Promos",
+          "Detect_Non_Cumulative_Conflict",
+          "Route_To_Validation",
+          "Deny_Conflicting_Deductions"
+        ]
       }
     },
     {
@@ -5027,6 +5634,17 @@
         "traceCount": 19872,
         "additionalCoverage": 96,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-64",
+        "name": "Threshold Splitting — action chain",
+        "steps": [
+          "Monitor_Deduction_Inflow",
+          "Aggregate_By_Customer_Window",
+          "Detect_Split_Cluster",
+          "Hold_Auto_Writeoff",
+          "Assign_Consolidated_Case"
+        ]
       }
     },
     {
@@ -5103,6 +5721,17 @@
         "traceCount": 8245,
         "additionalCoverage": 125,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-65",
+        "name": "Expired Promo Claim — action chain",
+        "steps": [
+          "Read_Claimed_Promo_Code",
+          "Trace_Condition_Validity",
+          "Compute_Expiry_Gap",
+          "Flag_Expired_Claim",
+          "Deny_Post_Expiry_Deduction"
+        ]
       }
     },
     {
@@ -5181,6 +5810,17 @@
         "traceCount": 8618,
         "additionalCoverage": 154,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-66",
+        "name": "Freight FOB Abuse — action chain",
+        "steps": [
+          "Read_Freight_Deduction",
+          "Check_Shipment_Incoterm",
+          "Match_Term_To_Claim",
+          "Flag_FOB_Freight_Abuse",
+          "Deny_Invalid_Freight_Claim"
+        ]
       }
     },
     {
@@ -5257,6 +5897,17 @@
         "traceCount": 8991,
         "additionalCoverage": 183,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-67",
+        "name": "Slotting Fee Claim — action chain",
+        "steps": [
+          "Read_Slotting_Deduction",
+          "Match_To_Trade_Agreement",
+          "Validate_Fee_Basis",
+          "Flag_Unagreed_Slotting",
+          "Deny_Uncontracted_Fee"
+        ]
       }
     },
     {
@@ -5335,6 +5986,17 @@
         "traceCount": 9364,
         "additionalCoverage": 212,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-68",
+        "name": "Scan Allowance Gaming — action chain",
+        "steps": [
+          "Pull_Scan_Deduction",
+          "Reconcile_Claimed_Vs_Shipped",
+          "Compute_Scan_Ratio",
+          "Flag_Inflated_Scan",
+          "Apply_Capped_Allowance"
+        ]
       }
     },
     {
@@ -5411,6 +6073,17 @@
         "traceCount": 9737,
         "additionalCoverage": 241,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-69",
+        "name": "Co-op Ad Over-Claim — action chain",
+        "steps": [
+          "Read_Coop_Deduction",
+          "Compute_Accrued_Fund",
+          "Compare_Claim_To_Fund",
+          "Flag_Fund_Overdraw",
+          "Hold_Pending_Proof"
+        ]
       }
     },
     {
@@ -5487,6 +6160,17 @@
         "traceCount": 10110,
         "additionalCoverage": 270,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-70",
+        "name": "Price Protection Window — action chain",
+        "steps": [
+          "Read_Protection_Deduction",
+          "Trace_Price_Change_Date",
+          "Compute_Window_Breach",
+          "Flag_Retroactive_Claim",
+          "Deny_Out_Of_Window_Amount"
+        ]
       }
     },
     {
@@ -5563,6 +6247,17 @@
         "traceCount": 10483,
         "additionalCoverage": 299,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-71",
+        "name": "Ageing Exploitation — action chain",
+        "steps": [
+          "Monitor_Open_Deduction_Age",
+          "Score_Ageing_Bucket",
+          "Detect_Window_Lapse_Risk",
+          "Escalate_Before_Cutoff",
+          "Update_Case_Priority"
+        ]
       }
     },
     {
@@ -5647,6 +6342,16 @@
         "traceCount": 10856,
         "additionalCoverage": 68,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-72",
+        "name": "Silent Delivery Bounce — action chain",
+        "steps": [
+          "Scan_Output_Log",
+          "Match_Delivery_Status",
+          "Flag_Failed_Delivery",
+          "Resend_Via_Fallback_Channel"
+        ]
       }
     },
     {
@@ -5724,6 +6429,17 @@
         "traceCount": 11229,
         "additionalCoverage": 97,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-73",
+        "name": "Exploitable Price Seed — action chain",
+        "steps": [
+          "Pull_Billing_Conditions",
+          "Compare_To_Contract_Price",
+          "Score_Variance_Severity",
+          "Flag_Mispriced_Line",
+          "Hold_Invoice_Release"
+        ]
       }
     },
     {
@@ -5801,6 +6517,17 @@
         "traceCount": 11602,
         "additionalCoverage": 126,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-74",
+        "name": "Cross-Border Tax Miss — action chain",
+        "steps": [
+          "Read_Tax_Jurisdiction",
+          "Compute_Expected_Tax",
+          "Detect_Rate_Mismatch",
+          "Flag_Tax_Error",
+          "Hold_Invoice_Release"
+        ]
       }
     },
     {
@@ -5878,6 +6605,17 @@
         "traceCount": 11975,
         "additionalCoverage": 155,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-75",
+        "name": "Reversal Term Reset — action chain",
+        "steps": [
+          "Pull_Reversal_Documents",
+          "Trace_Reissue_Linkage",
+          "Compare_Due_Dates",
+          "Flag_Term_Reset",
+          "Escalate_For_Review"
+        ]
       }
     },
     {
@@ -5953,6 +6691,16 @@
         "traceCount": 12348,
         "additionalCoverage": 184,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-76",
+        "name": "Stalled Pro-Forma — action chain",
+        "steps": [
+          "Monitor_Proforma_Backlog",
+          "Compute_Conversion_Lag",
+          "Detect_Missing_Final",
+          "Route_To_Billing_Owner"
+        ]
       }
     },
     {
@@ -6030,6 +6778,17 @@
         "traceCount": 12721,
         "additionalCoverage": 213,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-77",
+        "name": "Unaccrued Rebate Gap — action chain",
+        "steps": [
+          "Pull_Active_Rebate_Agreements",
+          "Reconcile_Billed_Vs_Accrual",
+          "Compute_Unaccrued_Gap",
+          "Flag_Missing_Accrual",
+          "Accrue_Rebate_Liability"
+        ]
       }
     },
     {
@@ -6107,6 +6866,17 @@
         "traceCount": 13094,
         "additionalCoverage": 242,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-78",
+        "name": "Unapproved Credit Memo — action chain",
+        "steps": [
+          "Scan_Credit_Memos",
+          "Check_Approval_Trail",
+          "Detect_Missing_Approval",
+          "Flag_Bypass",
+          "Block_Memo_Posting"
+        ]
       }
     },
     {
@@ -6183,6 +6953,16 @@
         "traceCount": 13467,
         "additionalCoverage": 271,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-79",
+        "name": "Milestone Billing Gap — action chain",
+        "steps": [
+          "Read_Billing_Plan",
+          "Reconcile_Milestone_Completion",
+          "Detect_Unbilled_Milestone",
+          "Route_To_Revenue_Owner"
+        ]
       }
     },
     {
@@ -6260,6 +7040,17 @@
         "traceCount": 13840,
         "additionalCoverage": 300,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-80",
+        "name": "Order-Change Duplicate — action chain",
+        "steps": [
+          "Scan_New_Invoices",
+          "Match_Delivery_Fingerprint",
+          "Detect_Duplicate_Pair",
+          "Flag_Duplicate",
+          "Hold_Second_Invoice"
+        ]
       }
     },
     {
@@ -6337,6 +7128,17 @@
         "traceCount": 14213,
         "additionalCoverage": 69,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-81",
+        "name": "Intercompany Price Drift — action chain",
+        "steps": [
+          "Pull_Intercompany_Invoices",
+          "Compare_To_Transfer_Price",
+          "Compute_Markup_Drift",
+          "Flag_TP_Deviation",
+          "Route_To_IC_Accounting"
+        ]
       }
     },
     {
@@ -6412,6 +7214,16 @@
         "traceCount": 14586,
         "additionalCoverage": 98,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-82",
+        "name": "Post-Booking Edit Churn — action chain",
+        "steps": [
+          "Pull_Change_Documents",
+          "Aggregate_Edits_Per_Order",
+          "Score_Repricing_Intent",
+          "Flag_Churn_Candidate"
+        ]
       }
     },
     {
@@ -6489,6 +7301,16 @@
         "traceCount": 14959,
         "additionalCoverage": 127,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-83",
+        "name": "Serial Credit-Hold Override — action chain",
+        "steps": [
+          "Read_Credit_Status_Log",
+          "Compute_Override_Rate_Per_User",
+          "Detect_Threshold_Breach",
+          "Escalate_Credit_Risk"
+        ]
       }
     },
     {
@@ -6556,6 +7378,16 @@
         "traceCount": 15332,
         "additionalCoverage": 156,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-84",
+        "name": "Threshold Split Gaming — action chain",
+        "steps": [
+          "Scan_Same_Day_Orders",
+          "Aggregate_By_Customer_ShipTo",
+          "Compare_Sum_To_Threshold",
+          "Flag_Split_Cluster"
+        ]
       }
     },
     {
@@ -6631,6 +7463,16 @@
         "traceCount": 15705,
         "additionalCoverage": 185,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-85",
+        "name": "Phantom Rush Flagging — action chain",
+        "steps": [
+          "Read_Shipping_Priority",
+          "Compute_Requested_Lead_Gap",
+          "Detect_Priority_Date_Mismatch",
+          "Flag_False_Rush"
+        ]
       }
     },
     {
@@ -6698,6 +7540,16 @@
         "traceCount": 16078,
         "additionalCoverage": 214,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-86",
+        "name": "Disproportionate Free Goods — action chain",
+        "steps": [
+          "Pull_Free_And_Billed_Lines",
+          "Compute_Free_To_Value_Ratio",
+          "Detect_Margin_Erosion",
+          "Flag_Free_Goods_Abuse"
+        ]
       }
     },
     {
@@ -6775,6 +7627,16 @@
         "traceCount": 16451,
         "additionalCoverage": 243,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-87",
+        "name": "Return Reorder Cycling — action chain",
+        "steps": [
+          "Trace_Return_To_Reorder",
+          "Match_Material_And_Customer",
+          "Compare_Pricing_Delta",
+          "Flag_Cycling_Pattern"
+        ]
       }
     },
     {
@@ -6843,6 +7705,16 @@
         "traceCount": 16824,
         "additionalCoverage": 272,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-88",
+        "name": "Post-Approval Ship Swap — action chain",
+        "steps": [
+          "Monitor_ShipTo_Changes",
+          "Trace_Change_Vs_Credit_Release",
+          "Detect_Control_Area_Shift",
+          "Escalate_Credit_Bypass"
+        ]
       }
     },
     {
@@ -6921,6 +7793,16 @@
         "traceCount": 17197,
         "additionalCoverage": 301,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-89",
+        "name": "Blanket PO Overdraw — action chain",
+        "steps": [
+          "Pull_Contract_Releases",
+          "Aggregate_Cumulative_Drawdown",
+          "Compare_To_Contract_Ceiling",
+          "Flag_Overdraw"
+        ]
       }
     },
     {
@@ -6997,6 +7879,16 @@
         "traceCount": 17570,
         "additionalCoverage": 70,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-90",
+        "name": "Lead-Time Price Lock — action chain",
+        "steps": [
+          "Read_Pricing_And_Delivery_Dates",
+          "Compute_Gap_Vs_LeadTime",
+          "Detect_Price_Front_Running",
+          "Flag_Lead_Time_Lock"
+        ]
       }
     },
     {
@@ -7065,6 +7957,16 @@
         "traceCount": 17943,
         "additionalCoverage": 99,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-91",
+        "name": "Manual Override Concentration — action chain",
+        "steps": [
+          "Scan_Manual_Price_Conditions",
+          "Aggregate_Override_Rate_Per_User",
+          "Compare_To_Peer_Baseline",
+          "Flag_Override_Concentration"
+        ]
       }
     },
     {
@@ -7152,6 +8054,17 @@
         "traceCount": 18316,
         "additionalCoverage": 128,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-92",
+        "name": "Phantom DSO Compression — action chain",
+        "steps": [
+          "Pull_Billing_And_Delivery_Docs",
+          "Compute_Baseline_Date_Drift",
+          "Correlate_Drift_To_DSO_Trend",
+          "Flag_Backdated_Batches",
+          "Notify_Billing_Lead"
+        ]
       }
     },
     {
@@ -7239,6 +8152,17 @@
         "traceCount": 18689,
         "additionalCoverage": 157,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-93",
+        "name": "Provision Smoothing Gambit — action chain",
+        "steps": [
+          "Pull_WriteOffs_And_Recoveries",
+          "Score_Recoverability_At_WriteOff",
+          "Detect_Post_WriteOff_Cash",
+          "Flag_Premature_WriteOffs",
+          "Recommend_Provision_Restatement"
+        ]
       }
     },
     {
@@ -7326,6 +8250,17 @@
         "traceCount": 19062,
         "additionalCoverage": 186,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-94",
+        "name": "Fragmented Exposure Blindspot — action chain",
+        "steps": [
+          "Scan_Customer_Master_Records",
+          "Correlate_By_TaxId_And_Address",
+          "Aggregate_Cluster_Exposure",
+          "Compare_To_Single_Name_Cap",
+          "Flag_Fragmented_Entities"
+        ]
       }
     },
     {
@@ -7413,6 +8348,17 @@
         "traceCount": 19435,
         "additionalCoverage": 215,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-95",
+        "name": "Ageing Bucket Reset — action chain",
+        "steps": [
+          "Pull_Clearing_And_Reposting_Docs",
+          "Trace_Reference_And_Amount_Match",
+          "Compute_Reset_Days_Recovered",
+          "Flag_Reage_Churn",
+          "Recommend_Baseline_Restore"
+        ]
       }
     },
     {
@@ -7500,6 +8446,17 @@
         "traceCount": 19808,
         "additionalCoverage": 244,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-96",
+        "name": "Month-End Cash Surge — action chain",
+        "steps": [
+          "Ingest_Receipts_And_Bank_Lines",
+          "Compute_Application_Lag",
+          "Detect_Period_End_Volume_Spike",
+          "Flag_Held_Cash_Dumps",
+          "Recommend_Value_Date_Reanchor"
+        ]
       }
     },
     {
@@ -7587,6 +8544,17 @@
         "traceCount": 8181,
         "additionalCoverage": 273,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-97",
+        "name": "Intercompany Netting Abuse — action chain",
+        "steps": [
+          "Pull_AR_By_Trading_Partner",
+          "Reconcile_Netting_To_Elimination_Ledger",
+          "Detect_Cross_Netting_Of_External_AR",
+          "Flag_Masked_External_Exposure",
+          "Recommend_Netting_Unbundle"
+        ]
       }
     },
     {
@@ -7674,6 +8642,17 @@
         "traceCount": 8554,
         "additionalCoverage": 302,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-98",
+        "name": "Credit Handoff Gap — action chain",
+        "steps": [
+          "Pull_Credit_Decision_Changes",
+          "Correlate_To_Collection_Strategy",
+          "Detect_Unpropagated_Risk_Flags",
+          "Flag_Handoff_Gaps",
+          "Assign_Intensive_Collection"
+        ]
       }
     },
     {
@@ -7761,6 +8740,17 @@
         "traceCount": 8927,
         "additionalCoverage": 71,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-99",
+        "name": "Dispute Deduction Doublecount — action chain",
+        "steps": [
+          "Pull_Disputes_And_Deductions",
+          "Correlate_By_Invoice_And_Reason",
+          "Compute_Overlapping_Reserved_Amount",
+          "Flag_Double_Counted_Loss",
+          "Recommend_Record_Linkage"
+        ]
       }
     },
     {
@@ -7848,6 +8838,17 @@
         "traceCount": 9300,
         "additionalCoverage": 100,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-100",
+        "name": "Unapplied Cash Hoarding — action chain",
+        "steps": [
+          "Aggregate_Unapplied_Balances",
+          "Correlate_To_Open_Invoices",
+          "Score_Ageing_Of_Unapplied",
+          "Flag_Deliberate_Hoarding",
+          "Recommend_Forced_Application"
+        ]
       }
     },
     {
@@ -7935,6 +8936,17 @@
         "traceCount": 9673,
         "additionalCoverage": 129,
         "method": "PM4Py conformance analysis"
+      },
+      "actionChain": {
+        "id": "ac-101",
+        "name": "Threshold Splitting WriteOffs — action chain",
+        "steps": [
+          "Pull_WriteOffs_And_Deductions",
+          "Compute_Distance_To_Threshold",
+          "Correlate_Slices_By_Customer_Clerk",
+          "Flag_Threshold_Splitting",
+          "Escalate_Aggregated_Amount"
+        ]
       }
     }
   ]
