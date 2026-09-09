@@ -52006,11 +52006,16 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
      workspace. Non-allowed stages render locked (non-navigable). ------------ */
   var PERSONAS = {
     cfo:      { label: "Finance Command Centre",   stages: ["cfo"],           entry: "command" },
-    designer: { label: "Transformation Designer",  stages: ["design"],        entry: "studio" },
+    /* The two landing-page tiles ("O2C Transformation Builder" and "Mission
+       Desk") share the SAME stage scope — Setup and the Vertiv Mission Desk —
+       and differ only in which one they land on. That is what lets a visitor
+       switch between the two from the top nav once they are in, rather than
+       being boxed into whichever tile they happened to click. */
+    designer: { label: "Transformation Designer",  stages: ["design", "vertiv"], entry: "studio" },
     studio:   { label: "Implementation Studio",    stages: ["fit", "build"],  entry: "fitment" },
     manage:   { label: "Manage & Operate",         stages: ["run"],           entry: "runtime" },
     mission:  { label: "Mission Command Centre",   stages: ["mission"],       entry: "missionhq" },
-    vertiv:   { label: "Vertiv Mission Desk",      stages: ["vertiv"],        entry: "vertiv" },
+    vertiv:   { label: "Vertiv Mission Desk",      stages: ["design", "vertiv"], entry: "vertiv" },
   };
   PIQ.persona = null;
   function personaAllows(stageId) {
@@ -52392,27 +52397,34 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
     var nav = document.getElementById("modnav");
     var stage = stageOf(PIQ.active);
     nav.innerHTML = "";
-    STAGES.forEach(function (st, i) {
+    /* A stage a persona cannot reach is removed from the strip entirely rather
+       than shown padlocked. A padlocked stub earns its place only when the
+       visitor might plausibly want in; a persona scoped to two stages has no
+       use for five greyed-out placeholders between them — it just reads as
+       clutter. (An unscoped visit, persona === null, allows every stage, so
+       nothing is ever hidden there — this only thins the strip when a persona
+       is actually narrowing it.) */
+    var visible = STAGES.filter(function (st) { return personaAllows(st.id); });
+    visible.forEach(function (st, i) {
       // Mission Command and the Finance Command Centre are consumption surfaces,
-      // not part of the build pipeline — separate them visually from stages 1–4.
-      if (st.id === "mission" || st.id === "vertiv") {
+      // and the Vertiv Mission Desk is its own client instance — separate them
+      // visually from the build-pipeline stages with a divider rather than an
+      // arrow. Judged against the two VISIBLE neighbours, not the full list, so
+      // a persona that skips straight from Setup to the Mission Desk gets one
+      // clean divider rather than an arrow implying five hidden steps between.
+      if (i > 0 && (st.id === "mission" || st.id === "vertiv")) {
         var sep = document.createElement("span"); sep.className = "stage-sep";
         sep.innerHTML = '<span class="sep-line"></span>'; nav.appendChild(sep);
-      }
-      var allowed = personaAllows(st.id);
-      var b = document.createElement("button");
-      b.className = "stagetab" + (stage && stage.id === st.id ? " on" : "") + (allowed ? "" : " locked");
-      b.innerHTML = '<span class="stnum">' + st.n + '</span>' +
-        '<span class="stlbl">' + st.label + '<small>' + st.tag + '</small></span>' +
-        (allowed ? '' : '<span class="stlock">🔒</span>');
-      if (allowed) b.onclick = function () { go(st.sub[0].id); };
-      else b.title = "Locked for this persona — open the full workspace from the landing page";
-      nav.appendChild(b);
-      if (i < STAGES.length - 1 && STAGES[i + 1].id !== "cfo" &&
-          STAGES[i + 1].id !== "vertiv") {
+      } else if (i > 0) {
         var a = document.createElement("span"); a.className = "stage-arrow"; a.textContent = "→";
         nav.appendChild(a);
       }
+      var b = document.createElement("button");
+      b.className = "stagetab" + (stage && stage.id === st.id ? " on" : "");
+      b.innerHTML = '<span class="stnum">' + st.n + '</span>' +
+        '<span class="stlbl">' + st.label + '<small>' + st.tag + '</small></span>';
+      b.onclick = function () { go(st.sub[0].id); };
+      nav.appendChild(b);
     });
   }
 
