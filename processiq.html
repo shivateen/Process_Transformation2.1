@@ -49373,9 +49373,9 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
     },
     {
       "level": "L5",
-      "mission": "Eight leaf missions",
+      "mission": "Order Manager Missions",
       "owner": "Order Manager",
-      "sourced": true,
+      "sourced": false,
       "isOperator": true,
       "kpis": []
     }
@@ -52421,7 +52421,12 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
       }
       var b = document.createElement("button");
       b.className = "stagetab" + (stage && stage.id === st.id ? " on" : "");
-      b.innerHTML = '<span class="stnum">' + st.n + '</span>' +
+      /* The stage number only means "step X of the pipeline" when the strip
+         shows a real, contiguous sequence — that is only ever true for the
+         unscoped full workspace. A persona-scoped strip skips stages (Setup=1
+         next to Mission Desk=7, say), and "1 ... 7" reads as a broken sequence
+         rather than the intentional two-tab view it actually is. */
+      b.innerHTML = (PIQ.persona ? '' : '<span class="stnum">' + st.n + '</span>') +
         '<span class="stlbl">' + st.label + '<small>' + st.tag + '</small></span>';
       b.onclick = function () { go(st.sub[0].id); };
       nav.appendChild(b);
