@@ -2145,10 +2145,14 @@ textarea.pmi-in{resize:vertical;line-height:1.45}
 .v-rphase{margin-top:10px}
 .v-rp-h{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--brand2);
   margin-bottom:5px}
+.v-rp-sum{font-size:12.5px;color:var(--ink);line-height:1.5;background:#faf8f4;
+  border:1px solid var(--line);border-radius:9px;padding:9px 11px;margin-bottom:5px}
+.v-rphase.collapsed .v-rp-h{opacity:.75}
 .v-step{display:flex;gap:10px;align-items:flex-start;background:#faf8f4;border:1px solid var(--line);
   border-radius:9px;padding:9px 11px;margin-bottom:5px;animation:cxIn .22s ease-out}
 @keyframes cxIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
 .v-step.gate{background:#fdf2e9;border-color:#f6c89a}
+.v-step.gate.compact .v-st-f{margin-top:0}
 .v-st-t{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;border-radius:5px;
   padding:3px 7px;flex-shrink:0;background:#efeae1;color:var(--muted);min-width:96px;text-align:center}
 .v-st-t.t-acquisition{background:#e7f0fb;color:#25689e}
@@ -2163,6 +2167,38 @@ textarea.pmi-in{resize:vertical;line-height:1.45}
 .v-st-use{margin-top:5px}
 .v-st-gate{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#a85a16;
   flex-shrink:0}
+
+/* ---- Cockpit: the prioritized action list ---- */
+.v-clist{display:flex;flex-direction:column;gap:6px}
+.v-crow{display:grid;grid-template-columns:1.6fr 1fr 1fr auto;gap:14px;align-items:center;
+  background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:10px 14px;
+  box-shadow:var(--shadow)}
+.v-cr-m{display:flex;align-items:baseline;gap:8px;font-size:13px;font-weight:650;min-width:0}
+.v-cr-tag{font-size:8.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;
+  background:#e6f7ef;color:#12704c;border-radius:5px;padding:2px 6px;flex-shrink:0}
+.v-cr-kpi{font-size:11px;color:var(--muted);display:flex;gap:6px;align-items:baseline}
+.v-cr-kpi b{font-size:14px;color:var(--ink)}
+.v-cr-kpi.ok b{color:#12704c}
+.v-cr-t{color:var(--muted)}
+.v-cr-feed{font-size:10.5px;color:var(--muted)}
+.v-cr-act{text-align:right}
+
+/* ---- Home ---- */
+.v-home-hero{margin-bottom:14px}
+.v-home-greet{font-size:22px;font-weight:750}
+.v-home-sub{font-size:12.5px;color:var(--muted);margin-top:3px}
+.v-home-block{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:14px 16px;box-shadow:var(--shadow);margin-bottom:14px}
+.v-home-stand{display:flex;align-items:center;gap:16px;font-size:12px;color:var(--muted)}
+.v-home-stand b{font-size:13px;color:var(--ink)}
+.v-home-stand.off{color:var(--muted);font-size:12px}
+.v-home-list{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.v-home-row{display:grid;grid-template-columns:auto 1.6fr 1fr auto;gap:12px;align-items:center;
+  background:#faf8f4;border:1px solid var(--line);border-radius:9px;padding:8px 12px;font-size:12.5px}
+.v-home-kv{font-size:11px;color:var(--muted)}
+.v-home-kv.ok{color:#12704c}
+.v-home-notice{font-size:12.5px;color:var(--ink);line-height:1.5;background:#faf8f4;
+  border:1px solid var(--line);border-radius:9px;padding:10px 12px}
 
 /* the artefact */
 .v-artefact{margin-top:14px;border:1px solid #a9e0c6;background:#f4fbf7;border-radius:var(--radius);
@@ -49990,6 +50026,7 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
       {
         "phase": "Sense",
         "sourced": true,
+        "summary": "17 confirmed date changes surfaced, 9 of them arrived this morning from the Supply-Driven Re-Scheduling mission — 6 are already outside their contractual notice window.",
         "steps": [
           {
             "type": "Acquisition",
@@ -50020,6 +50057,7 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
       {
         "phase": "Understand",
         "sourced": true,
+        "summary": "Contract terms attached to every change; the notice patterns that actually get accepted are identified. 2 first-of-their-kind changes have no comparable history and are flagged for your approval.",
         "steps": [
           {
             "type": "Acquisition",
@@ -50061,6 +50099,7 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
       {
         "phase": "Plan",
         "sourced": true,
+        "summary": "14 notices drafted with full evidence. 5 are routed to you for approval — 3 fall outside the notice window, 2 are first-of-kind — and 12 are clear to dispatch on their own.",
         "steps": [
           {
             "type": "Derivation",
@@ -50091,6 +50130,7 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
       {
         "phase": "Act",
         "sourced": true,
+        "summary": "15 re-promise notices prepared and dispatched to customers through their required channel; 2 are held pending a site window.",
         "steps": [
           {
             "type": "Acquisition",
@@ -50133,6 +50173,7 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
       {
         "phase": "Evaluate",
         "sourced": true,
+        "summary": "All 3 target milestones now sit inside contractual grace — $0.51M of liquidated damages avoided, and the notification rate is up 1.1 point with a 91% projection for 30 September.",
         "steps": [
           {
             "type": "Acquisition",
@@ -59022,13 +59063,21 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
     return box;
   }
 
-  /* ---- the staged run ---- */
+  /* ---- the staged run ----
+     Feedback from the design review: fully expanded steps read as "explaining
+     the plumbing" to an end user. Collapsed (the default) shows one plain
+     summary sentence per phase; a single toggle for the whole run (fewest
+     clicks) reveals the full type/text/finding/agent detail exactly as it
+     rendered before. Gate steps ("needs you") are the exception — they stay
+     visible even while their phase is collapsed, since they are HITL
+     checkpoints, not plumbing. */
   function runView(run, st) {
     var box = el("div", "v-run");
     var m = run.mission;
     var phases = run.phases;
     var revealed = V().revealed();
     var done = run.done;
+    var detail = !!st.runDetail;
 
     var stages = phases.map(function (p, i) {
       var status = V().phaseStatus(i);
@@ -59038,25 +59087,14 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
     }).join("");
 
     var body = revealed.map(function (g) {
-      return '<div class="v-rphase"><div class="v-rp-h">' + esc(g.phase) + '</div>' +
-        g.steps.map(function (s) {
-          return '<div class="v-step' + (s.gate ? " gate" : "") + '">' +
-            '<span class="v-st-t t-' + esc(s.type.toLowerCase()) + '">' + esc(s.type) + '</span>' +
-            '<div class="v-st-main">' +
-              '<div class="v-st-x">' + esc(s.text) + '</div>' +
-              '<div class="v-st-f">' + esc(s.finding) + '</div>' +
-              '<div class="v-st-use">' +
-                V().agents(s.agents).map(function (a) {
-                  return '<button type="button" class="v-chip sm' + (a.risk ? " risky" : "") +
-                    '" data-vagent="' + esc(a.id) + '">' + esc(a.name) + '</button>'; }).join("") +
-                V().sources(s.sources).map(function (x) {
-                  return '<button type="button" class="v-chip sm src" data-vsource="' +
-                    esc(x.id) + '">' + esc(x.name) + '</button>'; }).join("") +
-              '</div>' +
-            '</div>' +
-            (s.gate ? '<span class="v-st-gate">needs you</span>' : '') +
-          '</div>';
-        }).join("") + '</div>';
+      var full = phases.filter(function (p) { return p.phase === g.phase; })[0];
+      var gateSteps = g.steps.filter(function (s) { return s.gate; });
+      var inner = detail
+        ? g.steps.map(stepHtml).join("")
+        : (full && full.summary ? '<div class="v-rp-sum">' + esc(full.summary) + '</div>' : '') +
+          gateSteps.map(gateCompactHtml).join("");
+      return '<div class="v-rphase' + (detail ? "" : " collapsed") + '">' +
+        '<div class="v-rp-h">' + esc(g.phase) + '</div>' + inner + '</div>';
     }).join("");
 
     box.innerHTML =
@@ -59069,6 +59107,8 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
               esc(V().data.departmental.name) + '</button></div>' : '') +
         '</div>' +
         '<div class="v-run-c">' +
+          '<button type="button" class="btn ghost sm" data-vrundetail="1">' +
+            (detail ? "Hide step detail" : "Show step detail") + '</button>' +
           (done ? '<button class="btn sm" data-vrunend="close">Close</button>'
                 : '<button class="btn go sm" data-vrunstep="1">Step →</button>' +
                   '<button class="btn sm" data-vrunauto="1">Run all ⏵</button>') +
@@ -59081,6 +59121,36 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
         'Evaluate.</div>') + '</div>' +
       (done ? artefact(run) : '');
     return box;
+  }
+
+  function stepHtml(s) {
+    return '<div class="v-step' + (s.gate ? " gate" : "") + '">' +
+      '<span class="v-st-t t-' + esc(s.type.toLowerCase()) + '">' + esc(s.type) + '</span>' +
+      '<div class="v-st-main">' +
+        '<div class="v-st-x">' + esc(s.text) + '</div>' +
+        '<div class="v-st-f">' + esc(s.finding) + '</div>' +
+        '<div class="v-st-use">' +
+          V().agents(s.agents).map(function (a) {
+            return '<button type="button" class="v-chip sm' + (a.risk ? " risky" : "") +
+              '" data-vagent="' + esc(a.id) + '">' + esc(a.name) + '</button>'; }).join("") +
+          V().sources(s.sources).map(function (x) {
+            return '<button type="button" class="v-chip sm src" data-vsource="' +
+              esc(x.id) + '">' + esc(x.name) + '</button>'; }).join("") +
+        '</div>' +
+      '</div>' +
+      (s.gate ? '<span class="v-st-gate">needs you</span>' : '') +
+    '</div>';
+  }
+
+  /* The design-review refinement: even a gate step, while its phase is
+     collapsed, should not surface the agents/sources/type-tag "plumbing" —
+     only the plain finding and the fact that it needs the operator. Full
+     detail (type, agents, sources) is still one click away via the toggle. */
+  function gateCompactHtml(s) {
+    return '<div class="v-step gate compact">' +
+      '<div class="v-st-main"><div class="v-st-f">' + esc(s.finding) + '</div></div>' +
+      '<span class="v-st-gate">needs you</span>' +
+    '</div>';
   }
 
   function params(run) {
@@ -59213,13 +59283,14 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
      KPIs at stake and the one mission that answers it, is launchable in a click,
      names the data it came from — and can be dismissed, because the operator is
      allowed to disagree. */
-  function opportunities(st) {
+  function opportunities(st, limit) {
     var D = V().data;
     st.dismissed = st.dismissed || {};
     var live = D.opportunities.filter(function (o) { return !st.dismissed[o.id]; });
+    var shown = limit ? live.slice(0, limit) : live;
     return '<div class="v-side-b"><div class="v-sub-h">Opportunities' +
       '<small>' + live.length + ' open · detected in the data, not requested</small></div>' +
-      (live.length ? live.map(function (o) {
+      (shown.length ? shown.map(function (o) {
         var m = V().mission(o.missionId);
         return '<div class="v-opp">' +
           '<div class="v-opp-v">' + esc(o.value) + '</div>' +
@@ -59301,6 +59372,7 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
       var o = V().opportunity(b.getAttribute("data-vopp"));
       return launch(o.missionId, "opportunity", null, st, draw);
     }
+    if ((b = t.closest("[data-vrundetail]"))) { st.runDetail = !st.runDetail; return repaint(); }
     if ((b = t.closest("[data-vrunstep]"))) { V().step(); return repaint(); }
     if ((b = t.closest("[data-vrunauto]"))) {
       if (st.timer) return;
@@ -59349,6 +59421,14 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
       st.area = "missions"; st.tab = "control";
       return draw();
     }
+    /* Home's single chat entry point — routes into the existing Chat area
+       and state rather than rebuilding any conversation logic. */
+    if ((b = t.closest("[data-vhomeask]"))) {
+      var hi = document.getElementById("vHomeAsk");
+      st.draft = hi ? hi.value : "";
+      st.area = "chat";
+      return draw();
+    }
   };
 
   function launch(missionId, trigger, target, st, draw) {
@@ -59363,7 +59443,116 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
     draw();
   }
 
+  /* Exposed so Home (vertiv_desk_home.js) can reuse the exact same opportunity
+     card markup and the exact same launch path Mission Control uses, instead
+     of duplicating either. */
+  X.opportunities = opportunities;
+  X.launch = launch;
+
   window.PIQ.VDeskViews = X;
+})();
+
+/* Vertiv Mission Desk — Home.
+ *
+ * Design-review feedback: opening straight into the eight-mission Mission
+ * Bank was overwhelming. Home is the new entry point — a daily snapshot
+ * (greeting, today's opportunity, standing, a short "ready now" list) that
+ * gets the operator oriented and moving without making them survey the
+ * whole mission library first. Mission Bank still exists; it is reachable
+ * from Missions → Mission Bank, just no longer the first thing on screen.
+ *
+ * Deliberately thin: every piece here reuses a function or a data field that
+ * already exists elsewhere on the desk (opportunities() from the Chat view,
+ * launch() from Mission Control, the gamification state, D.missions,
+ * D.departmental) rather than inventing new content or a second way to
+ * compute something the rest of the desk already computes.
+ */
+(function () {
+  "use strict";
+
+  function el(t, c, h) { var n = document.createElement(t); if (c) n.className = c; if (h != null) n.innerHTML = h; return n; }
+  function esc(s) { return (s == null ? "" : String(s)).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+  function V() { return window.PIQ.V; }
+  function G() { return window.PIQ.VGame; }
+
+  var X = {};
+
+  X.render = function (main, st, draw, repaint) {
+    var D = V().data;
+    var wrap = el("div", "vsec v-home");
+    wrap.innerHTML = greeting(D) +
+      window.PIQ.VDeskViews.opportunities(st, 1) +
+      standingSnapshot() +
+      startList(D) +
+      askBar(D);
+    main.appendChild(wrap);
+  };
+
+  function greeting(D) {
+    var due = D.missions.filter(function (m) { return m.due; }).length;
+    return '<div class="v-home-hero">' +
+      '<div class="v-home-greet">Good morning, ' + esc(D.meta.persona.role) + '</div>' +
+      '<div class="v-home-sub">' + due + ' of your ' + D.meta.persona.owns +
+        ' missions are due today.</div>' +
+    '</div>';
+  }
+
+  /* Reuses G() exactly as the left-panel standing() in vertiv_desk.js does —
+     a condensed line rather than the full rank-track/badges/leaderboard
+     panel, per the brief: "reuse... or a condensed version of it." */
+  function standingSnapshot() {
+    if (!G().enabled()) {
+      return '<div class="v-home-block v-home-stand off">Gamification is off for this ' +
+        'session — missions, runs and the ladder are unaffected.</div>';
+    }
+    var r = G().rank(), s = G().state(), lb = G().leaderboard();
+    return '<div class="v-home-block v-home-stand">' +
+      '<b>' + esc(r.name) + '</b><span>rank ' + r.current + ' of ' + r.of + '</span>' +
+      '<span>' + s.points.toLocaleString("en-US") + ' pts</span>' +
+      '<span>' + G().streak().weeks + '-week streak</span>' +
+      '<span>' + lb.position + ' of ' + lb.of + ' on the pod</span>' +
+    '</div>';
+  }
+
+  /* "Do NOT render all 8 missions here" — only what is due today, and as a
+     one-line row rather than a full Mission Bank card. Run -> is wired to
+     the same launch() Mission Control uses; the six missions that are cards
+     only in this build get "Open ->" to their record instead, so nothing on
+     Home is a dead button. */
+  function startList(D) {
+    var due = D.missions.filter(function (m) { return m.due; });
+    return '<div class="v-home-block"><div class="v-sub-h">Where would you like to start?' +
+      '<small>' + due.length + ' missions due today</small></div>' +
+      '<div class="v-home-list">' + due.map(function (m) {
+        var good = V().onTarget(m.kpi);
+        return '<div class="v-home-row">' +
+          '<span class="v-mc-id">' + esc(m.id) + '</span>' +
+          '<b>' + esc(m.name) + '</b>' +
+          '<span class="v-home-kv' + (good ? " ok" : "") + '">' + esc(m.kpi.name) + ' ' +
+            esc(V().fmt(m.kpi.now, m.kpi.unit)) + '</span>' +
+          (m.executable
+            ? '<button class="btn go xs" data-vrun="' + esc(m.id) + '">Run →</button>'
+            : '<button type="button" class="v-link" data-vmission="' + esc(m.id) +
+              '">Open →</button>') +
+        '</div>';
+      }).join("") + '</div></div>';
+  }
+
+  /* The proactive callout ("the system doing the noticing") plus a single
+     lightweight entry point into Chat — routes into the existing Chat state
+     rather than rebuilding conversation logic. */
+  function askBar(D) {
+    return '<div class="v-home-block v-home-ask">' +
+      '<div class="v-sub-h">New this morning<small>the system noticing, not you asking</small></div>' +
+      '<div class="v-home-notice">' + esc(D.departmental.context) + '</div>' +
+      '<div class="v-ask-row">' +
+        '<input type="text" class="v-in" id="vHomeAsk" placeholder="Ask about a mission or a KPI…"/>' +
+        '<button class="btn go sm" data-vhomeask="1">Ask AI →</button>' +
+      '</div>' +
+    '</div>';
+  }
+
+  window.PIQ.VDeskHome = X;
 })();
 
 /* Vertiv Mission Desk — the Order Manager's working surface.
@@ -59402,20 +59591,26 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
   function G() { return window.PIQ.VGame; }
 
   /* view state — area, tab, and whatever is open inside them */
-  var st = { area: "missions", tab: "bank", agent: null, mission: null,
-             chat: [], timer: null, traced: false, intent: null };
+  var st = { area: "home", tab: "cockpit", agent: null, mission: null,
+             chat: [], timer: null, traced: false, intent: null,
+             ladderCollapsed: false, runDetail: false };
   var host = null;
 
   var AREAS = [
+    { zone: "Operate", id: "home",     label: "Home", icon: "⌂" },
     { zone: "Operate", id: "missions", label: "Missions", icon: "◆" },
     { zone: "Operate", id: "chat",     label: "Chat", icon: "✎" },
     { zone: "System",  id: "agents",   label: "Agents", icon: "◈" },
     { zone: "System",  id: "sources",  label: "Data Sources", icon: "▤" }
   ];
+  /* Cockpit/Workbench/History/Bank — the design-review restructure. Cockpit
+     is the new default: collapsed ladder + a prioritized action list. Bank
+     (the full 8-mission library) stays reachable but demoted, as agreed. */
   var TABS = [
-    { id: "bank",    label: "Mission Bank" },
-    { id: "control", label: "Mission Control" },
-    { id: "history", label: "Run History" }
+    { id: "cockpit", label: "Cockpit" },
+    { id: "control", label: "Workbench" },
+    { id: "history", label: "History" },
+    { id: "bank",    label: "Mission Bank" }
   ];
 
   /* ---------------- shell ---------------- */
@@ -59490,11 +59685,14 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
 
   function drawArea(main) {
     main.innerHTML = "";
-    if (st.area === "missions") {
+    if (st.area === "home") {
+      window.PIQ.VDeskHome.render(main, st, draw, repaint);
+    } else if (st.area === "missions") {
       main.appendChild(ladder());
       main.appendChild(tabs());
-      if (st.tab === "bank") bank(main);
+      if (st.tab === "cockpit") cockpit(main);
       else if (st.tab === "control") control(main);
+      else if (st.tab === "bank") bank(main);
       else history(main);
     } else if (st.area === "chat") {
       chat(main);
@@ -59518,6 +59716,35 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
      The shape matters: this is NOT a five-node chain. L3 carries two KPIs and L4
      is two separate missions with two KPIs each, so the demo's trace follows one
      explicit route through the ladder rather than "the KPI at each level". */
+  function levelRow(lv, traceIds) {
+    var kpis = lv.kpis.map(function (k) {
+      var good = V().onTarget(k);
+      var lit = traceIds[k.id] ? " lit" : "";
+      return '<button type="button" class="v-k' + (good ? " ok" : "") + lit +
+          '" data-vkpi="' + esc(k.id) + '">' +
+        '<span class="v-k-n">' + esc(k.name) + '</span>' +
+        '<span class="v-k-v">' + esc(V().fmt(k.now, k.unit)) + '</span>' +
+        '<span class="v-k-t">target ' + esc(V().fmt(k.target, k.unit)) +
+          (k.delta ? ' <i class="' + (k.delta > 0 ? "up" : "down") + '">' +
+            (k.delta > 0 ? "▲" : "▼") + " " + Math.abs(k.delta) + '</i>' : '') + '</span>' +
+      '</button>';
+    }).join("");
+    if (!kpis && lv.isOperator) {
+      kpis = '<div class="v-k-mine">Eight mission KPIs — the Mission Bank below</div>';
+    }
+    return '<div class="v-lv' + (lv.isOperator ? " mine" : "") + '">' +
+      '<div class="v-lv-l"><span class="v-lv-n">' + esc(lv.level) + '</span>' +
+        '<span class="v-lv-m">' + esc(lv.mission) + '</span>' +
+        '<span class="v-lv-o">' + esc(lv.owner) + '</span>' +
+        (lv.isOperator ? '<span class="v-lv-you">your level</span>' : '') + '</div>' +
+      '<div class="v-lv-k">' + kpis + '</div>' +
+    '</div>';
+  }
+
+  /* Collapsible per the design review: KPIs "worked well" and stay visible by
+     default, but the operator can reclaim the vertical space once they know
+     where they stand. A trace in progress forces it open — the trace has to
+     show all five levels, so collapse is suspended rather than respected. */
   function ladder() {
     var D = V().data;
     var wrap = el("div", "v-ladder");
@@ -59526,38 +59753,25 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
       traceIds[D.trace.hops[0].from] = 1;
       D.trace.hops.forEach(function (h) { traceIds[h.to] = 1; });
     }
+    var collapsed = st.ladderCollapsed && !st.traced;
 
-    var rows = D.ladder.map(function (lv, i) {
-      var kpis = lv.kpis.map(function (k) {
-        var good = V().onTarget(k);
-        var lit = traceIds[k.id] ? " lit" : "";
-        return '<button type="button" class="v-k' + (good ? " ok" : "") + lit +
-            '" data-vkpi="' + esc(k.id) + '">' +
-          '<span class="v-k-n">' + esc(k.name) + '</span>' +
-          '<span class="v-k-v">' + esc(V().fmt(k.now, k.unit)) + '</span>' +
-          '<span class="v-k-t">target ' + esc(V().fmt(k.target, k.unit)) +
-            (k.delta ? ' <i class="' + (k.delta > 0 ? "up" : "down") + '">' +
-              (k.delta > 0 ? "▲" : "▼") + " " + Math.abs(k.delta) + '</i>' : '') + '</span>' +
-        '</button>';
-      }).join("");
-      if (!kpis && lv.isOperator) {
-        kpis = '<div class="v-k-mine">Eight mission KPIs — the Mission Bank below</div>';
-      }
-      return '<div class="v-lv' + (lv.isOperator ? " mine" : "") + '">' +
-        '<div class="v-lv-l"><span class="v-lv-n">' + esc(lv.level) + '</span>' +
-          '<span class="v-lv-m">' + esc(lv.mission) + '</span>' +
-          '<span class="v-lv-o">' + esc(lv.owner) + '</span>' +
-          (lv.isOperator ? '<span class="v-lv-you">your level</span>' : '') + '</div>' +
-        '<div class="v-lv-k">' + kpis + '</div>' +
-      '</div>';
-    }).join("");
+    var rows;
+    if (collapsed) {
+      var mine = D.ladder.filter(function (lv) { return lv.isOperator; })[0];
+      rows = mine ? levelRow(mine, traceIds) : "";
+    } else {
+      rows = D.ladder.map(function (lv) { return levelRow(lv, traceIds); }).join("");
+    }
 
     wrap.innerHTML = '<div class="v-lad-h">The ladder above this desk' +
         '<small>every KPI names the parent it feeds — L1 is the COO\'s number</small>' +
+        '<button type="button" class="btn ghost xs" data-vladtoggle="1">' +
+          (collapsed ? "Expand ladder" : "Collapse ladder") + '</button>' +
         (st.traced
           ? '<button type="button" class="btn ghost xs" data-vtrace="off">Clear the trace</button>'
           : '') +
-      '</div>' + rows + (st.traced ? traceStrip() : '');
+      '</div>' + '<div class="v-ladder-rows' + (collapsed ? " collapsed" : "") + '">' + rows +
+      '</div>' + (st.traced ? traceStrip() : '');
     return wrap;
   }
 
@@ -59601,6 +59815,47 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
     st: st, el: el, esc: esc, draw: draw, repaint: repaint,
     drawArea: drawArea, TABS: TABS, AREAS: AREAS
   };
+
+  /* ---------------- Cockpit ----------------
+     The design-review restructure: a prioritized action list rather than the
+     raw Mission Bank grid, so the operator can see what to run and why under
+     time pressure. Due missions only, ranked furthest-from-target first, each
+     row showing the parent KPI it feeds — the "contribution weighting" the
+     review asked for. The KPI ladder above (collapsible, Phase 2) is the
+     "collapsible KPIs up top" half of this tab; this is the action-list half. */
+  function cockpit(main) {
+    var D = V().data;
+    var wrap = el("div", "vsec");
+    wrap.appendChild(el("div", "v-h", "Cockpit <small>today's missions, furthest from target " +
+      "first — what to run, and what it moves</small>"));
+
+    var due = D.missions.filter(function (m) { return m.due; });
+    due.sort(function (a, b) { return V().progress(a.kpi) - V().progress(b.kpi); });
+
+    var list = el("div", "v-clist");
+    list.innerHTML = due.map(function (m) {
+      var parent = V().kpi(m.parentKpi);
+      var good = V().onTarget(m.kpi);
+      return '<div class="v-crow">' +
+        '<div class="v-cr-m"><span class="v-mc-id">' + esc(m.id) + '</span><b>' + esc(m.name) +
+          '</b>' + (m.executable ? '<span class="v-cr-tag">wired to run</span>' : '') + '</div>' +
+        '<div class="v-cr-kpi' + (good ? " ok" : "") + '">' +
+          '<span>' + esc(m.kpi.name) + '</span><b>' + esc(V().fmt(m.kpi.now, m.kpi.unit)) +
+          '</b><span class="v-cr-t">of ' + esc(V().fmt(m.kpi.target, m.kpi.unit)) + '</span>' +
+        '</div>' +
+        '<div class="v-cr-feed">feeds <button type="button" class="v-chip sm" data-vkpi="' +
+          esc(m.parentKpi) + '">' + esc(parent ? parent.name : m.parentKpi) + '</button></div>' +
+        '<div class="v-cr-act">' +
+          (m.executable
+            ? '<button class="btn go xs" data-vrun="' + esc(m.id) + '">Run →</button>'
+            : '<button type="button" class="v-link" data-vmission="' + esc(m.id) +
+              '">Open →</button>') +
+        '</div>' +
+      '</div>';
+    }).join("");
+    wrap.appendChild(list);
+    main.appendChild(wrap);
+  }
 
   /* ---------------- 4.2 · Mission Bank ----------------
      The eight missions the operator owns, with enough context to choose one:
@@ -59829,6 +60084,7 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
       return draw();
     }
     if ((b = t.closest("[data-vtrace]"))) { st.traced = false; return draw(); }
+    if ((b = t.closest("[data-vladtoggle]"))) { st.ladderCollapsed = !st.ladderCollapsed; return draw(); }
     if (window.PIQ.VDeskViews) window.PIQ.VDeskViews.onClick(e, st, draw, repaint);
   }
 
