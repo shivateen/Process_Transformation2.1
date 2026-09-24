@@ -2148,6 +2148,21 @@ textarea.pmi-in{resize:vertical;line-height:1.45}
 .v-rp-sum{font-size:12.5px;color:var(--ink);line-height:1.5;background:#faf8f4;
   border:1px solid var(--line);border-radius:9px;padding:9px 11px;margin-bottom:5px}
 .v-rphase.collapsed .v-rp-h{opacity:.75}
+
+/* ---- the trace log (expanded run detail) ---- */
+.v-tl-policy{font-size:11px;color:var(--muted);background:#faf8f4;border:1px solid var(--line);
+  border-radius:8px;padding:8px 11px;margin:8px 0 4px;display:flex;align-items:center;gap:8px;
+  flex-wrap:wrap}
+.v-rphase.tracelog{border-left:2px solid var(--line);padding-left:13px;margin-top:14px}
+.v-tl-entry{padding:8px 0;border-bottom:1px dashed var(--line)}
+.v-tl-entry:last-child{border-bottom:none}
+.v-tl-entry.gate{background:#fdf2e9;border-radius:8px;padding:9px 11px;border-bottom:none;
+  margin:6px 0;position:relative}
+.v-tl-src{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;
+  color:var(--brand2)}
+.v-tl-src b{color:var(--ink);text-transform:none;font-weight:700;letter-spacing:0}
+.v-tl-do{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.5}
+.v-tl-out{font-size:12.5px;font-weight:650;margin-top:3px;line-height:1.5}
 .v-step{display:flex;gap:10px;align-items:flex-start;background:#faf8f4;border:1px solid var(--line);
   border-radius:9px;padding:9px 11px;margin-bottom:5px;animation:cxIn .22s ease-out}
 @keyframes cxIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
@@ -2184,9 +2199,12 @@ textarea.pmi-in{resize:vertical;line-height:1.45}
 .v-cr-act{text-align:right}
 
 /* ---- Home ---- */
-.v-home-hero{margin-bottom:14px}
+.v-home-hero{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:16px 18px;box-shadow:var(--shadow);margin-bottom:14px}
 .v-home-greet{font-size:22px;font-weight:750}
 .v-home-sub{font-size:12.5px;color:var(--muted);margin-top:3px}
+.v-home-hero .v-home-notice{margin:12px 0 0}
+.v-home-hero .v-ask-row{margin-top:10px}
 .v-home-block{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
   padding:14px 16px;box-shadow:var(--shadow);margin-bottom:14px}
 .v-home-stand{display:flex;align-items:center;gap:16px;font-size:12px;color:var(--muted)}
@@ -49280,7 +49298,7 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
         "The system proposes work rather than waiting to be asked."
       ]
     ],
-    "scaleNote": "M10 is wired to run. The other seven missions are cards in the Mission Bank, per the build scope.",
+    "scaleNote": "M10 and M7 are wired to run. The other six missions are cards in the Mission Bank, per the build scope.",
     "sourceNote": "Nine underlying enterprise systems. Order and delivery data complete through week ending 30 August.",
     "sept": {
       "sca_now": 85.0,
@@ -49887,6 +49905,7 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
         "S5",
         "S14"
       ],
+      "executable": true,
       "record": {
         "sourced": false,
         "archetype": "Sustaining",
@@ -49896,7 +49915,6 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
         "exitCondition": "Median change order cycle time at or below 3 days."
       },
       "finding": "",
-      "executable": false,
       "agentCount": 3,
       "sourceCount": 3,
       "runIds": [
@@ -50212,6 +50230,195 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
           }
         ]
       }
+    ],
+    "M7": [
+      {
+        "phase": "Sense",
+        "sourced": false,
+        "summary": "9 open change requests this week, 3 of them touching a milestone inside 30 days - 6 push a date out, 3 are margin-only.",
+        "steps": [
+          {
+            "type": "Acquisition",
+            "agents": [
+              "A16"
+            ],
+            "sources": [
+              "S1",
+              "S14"
+            ],
+            "text": "New and open customer change requests pulled from the order and change-order log, matched to their originating order and current committed milestone.",
+            "finding": "9 open change requests this week, 3 of them touching a milestone inside 30 days."
+          },
+          {
+            "type": "Transformation",
+            "agents": [
+              "A12"
+            ],
+            "sources": [
+              "S14",
+              "S1"
+            ],
+            "text": "Convert each change request into its schedule displacement against the current committed dates.",
+            "finding": "6 of 9 push a milestone out; 3 have no schedule impact and can be priced on margin alone."
+          }
+        ]
+      },
+      {
+        "phase": "Understand",
+        "sourced": false,
+        "summary": "Contract position resolved for 8 of 9; the one with no executed agreement is flagged for your approval before it is priced.",
+        "steps": [
+          {
+            "type": "Acquisition",
+            "agents": [
+              "A16"
+            ],
+            "sources": [
+              "S5"
+            ],
+            "text": "Attach the executed contract position and margin terms for each affected order from the contract repository.",
+            "finding": "Executed contract found for 8 of 9 orders; 1 has no executed agreement on file."
+          },
+          {
+            "type": "Derivation",
+            "agents": [
+              "A13"
+            ],
+            "sources": [
+              "S5",
+              "S1"
+            ],
+            "text": "Price the margin and damages impact of each proposed change against the contract, on both sides of the trade.",
+            "finding": "5 changes improve margin, 3 are margin-negative, ranging -$18K to -$64K."
+          },
+          {
+            "type": "Validation",
+            "agents": [
+              "A16"
+            ],
+            "sources": [
+              "S5"
+            ],
+            "text": "Route any change with no executed contract position to the Order Manager rather than pricing it against an assumed agreement.",
+            "finding": "1 change has no executed contract on file and is flagged for your approval before it is priced.",
+            "gate": true
+          }
+        ]
+      },
+      {
+        "phase": "Plan",
+        "sourced": false,
+        "summary": "5 changes clear to accept autonomously; 4 are routed to you - 3 margin-negative and 1 with no executed contract.",
+        "steps": [
+          {
+            "type": "Derivation",
+            "agents": [
+              "A13"
+            ],
+            "sources": [
+              "S5"
+            ],
+            "text": "Determine the schedule and margin trade-off for each change: revised milestone, cost impact, and whether it stays inside the contract's change-order allowance.",
+            "finding": "5 changes clear to price and accept autonomously; 3 margin-negative changes and the 1 unexecuted-contract change are routed to you - 4 in total."
+          },
+          {
+            "type": "Validation",
+            "agents": [
+              "A16"
+            ],
+            "sources": [
+              "S5"
+            ],
+            "text": "Route any change that is margin-negative, moves a committed milestone, or lacks an executed contract position to the Order Manager for approval.",
+            "finding": "4 changes routed to you: 3 margin-negative, 1 unexecuted contract. 5 clear to accept autonomously.",
+            "gate": true
+          }
+        ]
+      },
+      {
+        "phase": "Act",
+        "sourced": false,
+        "summary": "8 change-order acceptances logged and released to the customer commitment; 1 held pending a capacity check.",
+        "steps": [
+          {
+            "type": "Acquisition",
+            "agents": [
+              "A12"
+            ],
+            "sources": [
+              "S14",
+              "S1"
+            ],
+            "text": "Bring the revised milestone schedule and the site/production impact for each accepted change.",
+            "finding": "Revised schedules attached for 8 of 9; 1 awaits a capacity check from planning."
+          },
+          {
+            "type": "Transformation",
+            "agents": [
+              "A13"
+            ],
+            "sources": [
+              "S5"
+            ],
+            "text": "Draft the change-order acceptance record: revised schedule, margin impact and the contract clause the change rests on.",
+            "finding": "8 acceptance records drafted, each citing the governing contract clause."
+          },
+          {
+            "type": "Effectuation",
+            "agents": [
+              "A16"
+            ],
+            "sources": [
+              "S14",
+              "S1"
+            ],
+            "text": "Log the accepted change against the order and the change-order log, and release the revised schedule to the customer commitment.",
+            "finding": "8 changes logged and released; 1 held pending the capacity check."
+          }
+        ]
+      },
+      {
+        "phase": "Evaluate",
+        "sourced": false,
+        "summary": "Change order cycle time down to 4.6 days, net margin +$41K across the 8 accepted changes - still above the 3.0-day exit condition.",
+        "steps": [
+          {
+            "type": "Acquisition",
+            "agents": [
+              "A13"
+            ],
+            "sources": [
+              "S14"
+            ],
+            "text": "Identify changes accepted, held or declined, and their cycle time from request to acceptance.",
+            "finding": "8 accepted, 1 held. Cycle time ranges 1.2 to 4.8 days on the accepted set."
+          },
+          {
+            "type": "Derivation",
+            "agents": [
+              "A12"
+            ],
+            "sources": [
+              "S14",
+              "S1"
+            ],
+            "text": "Compute the median change-order cycle time and the margin variance on accepted changes.",
+            "finding": "Median cycle time 5.4 to 4.6 days (-0.8 d). Net margin impact +$41K across the 8 accepted changes."
+          },
+          {
+            "type": "Consolidation",
+            "agents": [
+              "A13"
+            ],
+            "sources": [
+              "S1",
+              "S14"
+            ],
+            "text": "Roll up cycle time and margin variance at customer and company level.",
+            "finding": "Change order cycle time 5.4d to 4.6d (-0.8 d). Projected 3.6d at current cadence, still above the 3.0d exit condition."
+          }
+        ]
+      }
     ]
   },
   "artefacts": {
@@ -50260,6 +50467,44 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
         "delta": 1.1,
         "unit": "%"
       }
+    },
+    "M7": {
+      "title": "Weekly Change Order Pack",
+      "subtitle": "8 changes accepted, 1 held, net margin +$41K",
+      "sourced": false,
+      "rows": [
+        [
+          "Changes processed",
+          "9 open this week"
+        ],
+        [
+          "Accepted autonomously",
+          "5 (4 required your approval)"
+        ],
+        [
+          "Held",
+          "1 awaiting a capacity check from planning"
+        ],
+        [
+          "Net margin impact",
+          "+$41K across 8 accepted changes"
+        ],
+        [
+          "Median change order cycle time",
+          "5.4 days to 4.6 days (-0.8 d)"
+        ],
+        [
+          "Projection at current cadence",
+          "3.6 days - still above the 3.0-day exit condition"
+        ]
+      ],
+      "kpiMoved": {
+        "id": "K-M7",
+        "from": 5.4,
+        "to": 4.6,
+        "delta": -0.8,
+        "unit": "d"
+      }
     }
   },
   "params": {
@@ -50305,6 +50550,52 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
           "Notice pack, dispatch on approval",
           "Notice pack, draft only",
           "Exposure summary only"
+        ],
+        "value": 0
+      }
+    ],
+    "M7": [
+      {
+        "id": "scope",
+        "label": "Scope",
+        "sourced": false,
+        "options": [
+          "Open change requests this week",
+          "All requests this quarter",
+          "Single customer"
+        ],
+        "value": 0
+      },
+      {
+        "id": "horizon",
+        "label": "Horizon",
+        "sourced": false,
+        "options": [
+          "Next 30 days",
+          "Next 14 days",
+          "This week only"
+        ],
+        "value": 0
+      },
+      {
+        "id": "confidence",
+        "label": "Confidence basis",
+        "sourced": false,
+        "options": [
+          "Contract terms + margin history",
+          "Contract terms only",
+          "Margin history only"
+        ],
+        "value": 0
+      },
+      {
+        "id": "output",
+        "label": "Output",
+        "sourced": false,
+        "options": [
+          "Acceptance pack, release on approval",
+          "Acceptance pack, draft only",
+          "Margin exposure summary only"
         ],
         "value": 0
       }
@@ -58453,6 +58744,17 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
     return true;
   };
 
+  /* Sign and unit for a KPI's movement. M10's KPI is a percentage that
+     improves upward, so a hardcoded "+…pt" happened to read correctly; M7's
+     is a day count that improves downward (delta is authored negative), so
+     the sign and the unit both have to follow kpiMoved itself rather than
+     assuming M10's shape. */
+  function fmtDelta(km) {
+    var sign = km.delta >= 0 ? "+" : "";
+    var unit = km.unit === "%" ? " pt" : (km.unit ? " " + km.unit : "");
+    return sign + km.delta + unit;
+  }
+
   /* A finished run writes itself into the audit trail immediately. The timestamp
      is a LABEL, not a clock reading — this codebase has no Date.now() in it and
      a mockup has no business inventing one. */
@@ -58472,12 +58774,12 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
       duration: "4m 18s",
       status: "complete",
       outcome: art && art.kpiMoved
-        ? m.kpi.name + " +" + art.kpiMoved.delta + " pt"
+        ? m.kpi.name + " " + fmtDelta(art.kpiMoved)
         : "Complete",
       activatedBy: state.activatedBy,
       activatedTarget: state.activatedTarget,
       kpi: m.kpi.id,
-      moved: art && art.kpiMoved ? "+" + art.kpiMoved.delta + " pt" : "",
+      moved: art && art.kpiMoved ? fmtDelta(art.kpiMoved) : "",
       artefact: art ? art.title : "",
       live: true,
       sourced: false
@@ -59064,13 +59366,13 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
   }
 
   /* ---- the staged run ----
-     Feedback from the design review: fully expanded steps read as "explaining
-     the plumbing" to an end user. Collapsed (the default) shows one plain
-     summary sentence per phase; a single toggle for the whole run (fewest
-     clicks) reveals the full type/text/finding/agent detail exactly as it
-     rendered before. Gate steps ("needs you") are the exception — they stay
-     visible even while their phase is collapsed, since they are HITL
-     checkpoints, not plumbing. */
+     Design-review call, 24 September: fully collapsed by default (one plain
+     summary sentence per phase; gate steps stay visible as HITL checkpoints,
+     never plumbing). The single toggle now reveals a TRACE LOG rather than
+     the old structured type-tag cards — Aswin's framing: "this is the source
+     I used, this is the policy I used, this is the agent I used, this is the
+     output — so people can read it" as a connected narrative when the demo
+     wants to show the reasoning, not a UI a viewer has to learn to parse. */
   function runView(run, st) {
     var box = el("div", "v-run");
     var m = run.mission;
@@ -59090,10 +59392,10 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
       var full = phases.filter(function (p) { return p.phase === g.phase; })[0];
       var gateSteps = g.steps.filter(function (s) { return s.gate; });
       var inner = detail
-        ? g.steps.map(stepHtml).join("")
+        ? g.steps.map(traceEntry).join("")
         : (full && full.summary ? '<div class="v-rp-sum">' + esc(full.summary) + '</div>' : '') +
           gateSteps.map(gateCompactHtml).join("");
-      return '<div class="v-rphase' + (detail ? "" : " collapsed") + '">' +
+      return '<div class="v-rphase' + (detail ? " tracelog" : " collapsed") + '">' +
         '<div class="v-rp-h">' + esc(g.phase) + '</div>' + inner + '</div>';
     }).join("");
 
@@ -59116,6 +59418,7 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
       '</div>' +
       params(run) +
       '<div class="v-stages">' + stages + '</div>' +
+      (detail ? policyLine(run.missionId) : '') +
       '<div class="v-rbody">' + (body || '<div class="v-rempty">Press <b>Step</b> or ' +
         '<b>Run all</b> — the mission works through Sense, Understand, Plan, Act and ' +
         'Evaluate.</div>') + '</div>' +
@@ -59123,21 +59426,28 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
     return box;
   }
 
-  function stepHtml(s) {
-    return '<div class="v-step' + (s.gate ? " gate" : "") + '">' +
-      '<span class="v-st-t t-' + esc(s.type.toLowerCase()) + '">' + esc(s.type) + '</span>' +
-      '<div class="v-st-main">' +
-        '<div class="v-st-x">' + esc(s.text) + '</div>' +
-        '<div class="v-st-f">' + esc(s.finding) + '</div>' +
-        '<div class="v-st-use">' +
-          V().agents(s.agents).map(function (a) {
-            return '<button type="button" class="v-chip sm' + (a.risk ? " risky" : "") +
-              '" data-vagent="' + esc(a.id) + '">' + esc(a.name) + '</button>'; }).join("") +
-          V().sources(s.sources).map(function (x) {
-            return '<button type="button" class="v-chip sm src" data-vsource="' +
-              esc(x.id) + '">' + esc(x.name) + '</button>'; }).join("") +
-        '</div>' +
+  /* Named once at the top of the trace log rather than re-asserted on every
+     step — the policy that governs the run, not a claim about which single
+     step consulted it (the step data doesn't carry that granularity). */
+  function policyLine(missionId) {
+    var pols = V().policiesForMission(missionId);
+    if (!pols.length) return '';
+    return '<div class="v-tl-policy">Operating under ' + pols.map(function (p) {
+      return '<button type="button" class="v-chip pol" data-vpolicy="' + esc(p.id) +
+        '" title="' + esc(p.excerpt) + '">' + esc(p.name) + '</button>'; }).join(" ") + '</div>';
+  }
+
+  /* One line of the trace log: who read what, what it did, what it found —
+     in that order, so a reader can follow the chain step to step rather than
+     parsing a type tag and a row of chips. */
+  function traceEntry(s) {
+    var who = V().agents(s.agents).map(function (a) { return a.name; }).join(", ");
+    var what = V().sources(s.sources).map(function (x) { return x.name; }).join(", ");
+    return '<div class="v-tl-entry' + (s.gate ? " gate" : "") + '">' +
+      '<div class="v-tl-src">' + esc(who) + (what ? ' read <b>' + esc(what) + '</b>' : '') +
       '</div>' +
+      '<div class="v-tl-do">' + esc(s.text) + '</div>' +
+      '<div class="v-tl-out">→ ' + esc(s.finding) + '</div>' +
       (s.gate ? '<span class="v-st-gate">needs you</span>' : '') +
     '</div>';
   }
@@ -59162,20 +59472,28 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
     }).join("") + '</div>';
   }
 
-  /* The artefact the run leaves behind, and the moment the ladder lights up. */
+  /* The artefact the run leaves behind, and the moment the ladder lights up.
+     The ladder trace is authored for exactly one route — M10's climb to the
+     COO's number (V().data.trace.missionId) — so only that mission's
+     artefact offers the trace CTA. M7 (added as the second runnable mission)
+     ends in its own artefact table with no trace footer, rather than showing
+     M10's route under a different mission's run. */
   function artefact(run) {
     var a = run.artefact;
     if (!a) return '';
+    var traced = V().data.trace.missionId === run.missionId;
     return '<div class="v-artefact">' +
       '<div class="v-art-h">' + esc(a.title) + '<small>' + esc(a.subtitle) + '</small></div>' +
       '<table class="v-art-t">' + a.rows.map(function (r) {
         return '<tr><td>' + esc(r[0]) + '</td><td>' + esc(r[1]) + '</td></tr>'; }).join("") +
       '</table>' +
-      '<div class="v-art-f">' +
-        '<button class="btn go sm" data-vtraceon="1">Trace this run up the ladder →</button>' +
-        '<span>Proactive Notification Rate → Average Date Slip → Schedule Commitment ' +
-        'Adherence → On-Time Delivery to Commit → Backlog Conversion Yield</span>' +
-      '</div>' +
+      (traced
+        ? '<div class="v-art-f">' +
+          '<button class="btn go sm" data-vtraceon="1">Trace this run up the ladder →</button>' +
+          '<span>Proactive Notification Rate → Average Date Slip → Schedule Commitment ' +
+          'Adherence → On-Time Delivery to Commit → Backlog Conversion Yield</span>' +
+        '</div>'
+        : '') +
     '</div>';
   }
 
@@ -59477,23 +59795,34 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
 
   var X = {};
 
+  /* Order per the design-review call, 24 September: "at the top new today...
+     then there is opportunities right below that... and below that is where
+     would you like to start." The Ask-AI entry point belongs with New Today
+     ("the ability to ask AI any questions about that"), not stranded at the
+     bottom — so it is folded into the hero rather than its own block. Standing
+     was not part of that narrated flow; it stays, but demoted to the end. */
   X.render = function (main, st, draw, repaint) {
     var D = V().data;
     var wrap = el("div", "vsec v-home");
-    wrap.innerHTML = greeting(D) +
+    wrap.innerHTML = newToday(D) +
       window.PIQ.VDeskViews.opportunities(st, 1) +
-      standingSnapshot() +
       startList(D) +
-      askBar(D);
+      standingSnapshot();
     main.appendChild(wrap);
   };
 
-  function greeting(D) {
+  function newToday(D) {
     var due = D.missions.filter(function (m) { return m.due; }).length;
     return '<div class="v-home-hero">' +
       '<div class="v-home-greet">Good morning, ' + esc(D.meta.persona.role) + '</div>' +
       '<div class="v-home-sub">' + due + ' of your ' + D.meta.persona.owns +
         ' missions are due today.</div>' +
+      '<div class="v-home-notice"><span class="v-lab">New today</span>' +
+        esc(D.departmental.context) + '</div>' +
+      '<div class="v-ask-row">' +
+        '<input type="text" class="v-in" id="vHomeAsk" placeholder="Ask about a mission or a KPI…"/>' +
+        '<button class="btn go sm" data-vhomeask="1">Ask AI →</button>' +
+      '</div>' +
     '</div>';
   }
 
@@ -59536,20 +59865,6 @@ pre.v-prompt{margin:7px 0 0;font-family:var(--mono);font-size:11.5px;line-height
               '">Open →</button>') +
         '</div>';
       }).join("") + '</div></div>';
-  }
-
-  /* The proactive callout ("the system doing the noticing") plus a single
-     lightweight entry point into Chat — routes into the existing Chat state
-     rather than rebuilding conversation logic. */
-  function askBar(D) {
-    return '<div class="v-home-block v-home-ask">' +
-      '<div class="v-sub-h">New this morning<small>the system noticing, not you asking</small></div>' +
-      '<div class="v-home-notice">' + esc(D.departmental.context) + '</div>' +
-      '<div class="v-ask-row">' +
-        '<input type="text" class="v-in" id="vHomeAsk" placeholder="Ask about a mission or a KPI…"/>' +
-        '<button class="btn go sm" data-vhomeask="1">Ask AI →</button>' +
-      '</div>' +
-    '</div>';
   }
 
   window.PIQ.VDeskHome = X;
