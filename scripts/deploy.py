@@ -20,7 +20,7 @@ PUB = os.path.join(ROOT, "public")
 TMP = os.path.join(ROOT, ".deploy-gh-pages")
 BRANCH = "gh-pages"
 URL = "https://shivateen.github.io/Process_Transformation2.1/"
-PUBLISH = ["index.html", "processiq.html"]  # + .nojekyll, written below
+PUBLISH = ["index.html", "processiq.html", "o2c-transformation.html"]  # + .nojekyll, written below
 
 
 def git(args, cwd=ROOT, check=True):
