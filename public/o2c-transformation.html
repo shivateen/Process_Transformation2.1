@@ -341,6 +341,25 @@ select option{background:var(--surface);color:var(--ink)}
 .lg-i:first-child{border-top:0}
 .board{display:flex;flex-direction:column;gap:8px}
 .issue{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 14px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;border-left:3px solid var(--ic)}
+.grp-h{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin:2px 0 -2px}
+.grp-h b{font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.grp-h.lead b{color:var(--accent)} .grp-h.lag b{color:var(--muted)}
+.mcard.lag{border-top-style:dashed;background:var(--surface-2)}
+.mbar{height:6px;border-radius:3px;background:var(--sunk);overflow:hidden}
+.mbar i{display:block;height:100%;background:var(--accent);transition:width .5s}
+.delta{font-size:11px;font-weight:700;color:var(--good)}
+.bump{animation:bump 1.1s ease-out}
+@keyframes bump{0%{background:color-mix(in srgb,var(--accent) 35%,transparent);border-radius:6px}100%{background:transparent}}
+.pipe{display:flex;flex-direction:column;gap:4px;font-size:12.5px;background:var(--surface-2);border-radius:10px;padding:10px 12px}
+.pipe span{display:flex;gap:8px;align-items:baseline}
+.krow.lagrow{border-left:3px solid transparent;padding-left:10px}
+.krow.lagrow.sel{border-left-color:var(--accent);background:var(--accent-soft);border-radius:0 8px 8px 0}
+.krow.dim{opacity:.32}
+.krow.hl{background:var(--accent-soft);border-radius:8px;padding-inline:10px}
+.lg-i{grid-template-columns:48px minmax(0,1fr) auto!important}
+.lg-i .chips{justify-content:flex-end}
+tr.live td{background:var(--accent-soft)}
+th.grp{text-align:center!important;border-bottom:2px solid var(--line)!important}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:9px;font-size:13px;font-weight:600;z-index:60;max-width:calc(100vw - 32px)}
 .disclaim{font-size:11.5px;color:var(--muted);text-align:center}
 .src-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 14px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}
@@ -352,7 +371,7 @@ select option{background:var(--surface);color:var(--ink)}
 .anum{width:28px;height:28px;border-radius:50%;background:var(--head);color:var(--head-ink);display:grid;place-items:center;font-weight:800;font-size:12px}
 .act ul{margin:6px 0;padding-left:18px;font-size:13px;display:flex;flex-direction:column;gap:3px}
 @media (max-width:640px){.bar,.steps{padding-inline:16px} main{padding-inline:16px} .field{grid-template-columns:minmax(0,1fr) 80px} .field .u{display:none} .psel select{min-width:0}}
-@media (prefers-reduced-motion:reduce){.spin{animation:none}}
+@media (prefers-reduced-motion:reduce){.spin,.bump{animation:none}.mbar i{transition:none}}
 </style></head><body>
 
 <header id="hdr"></header>
@@ -375,6 +394,8 @@ const amt=n=>n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDi
 const n0=n=>Math.round(n).toLocaleString('en-US');
 const mxn=n=>n==null?'—':'MXN '+Math.round(n).toLocaleString('en-US');
 const mxnM=n=>'MXN '+(Math.round(n*10)/10).toLocaleString('en-US')+'M';
+const mxnM2=n=>'MXN '+(n/1e6).toFixed(2)+'M';
+const pct1=(a,b)=>(Math.round(a/b*1000)/10)+'%';
 const mxnS=v=>v>=1?(Math.round(v*10)/10)+'M':Math.round(v*1000)+'K';
 const fast=()=>{try{return matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){return false}};
 function toast(m){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(toast.h);toast.h=setTimeout(()=>t.hidden=true,2600)}
@@ -439,9 +460,22 @@ const HKPIS=[
  {nd:'N5',n:'Past due over 30 days, share of AR',v:12.2,u:'%',dir:-1,med:8,tq:5,lo:0,hi:18,o:['col'],src:['BSID','KNB1']},
  {nd:'N5',n:'Payments applied within 1 day',v:81,u:'%',dir:1,med:90,tq:95,lo:60,hi:100,o:['cash','col'],src:['FEBEP','o_celonis_Payment']},
  {nd:'N5',n:'Deductions, share of Modern trade sales',v:8.5,u:'%',dir:-1,med:6.5,tq:4.5,lo:2,hi:12,o:['ded'],src:['Case','BSAD']},
+ {nd:'N5',n:'UCX cases linked to an invoice',v:63,u:'%',dir:1,med:80,tq:92,lo:40,hi:100,o:['col','ded'],src:['Case','VBRK']},
+ {nd:'N5',n:'Promises to pay kept',v:71,u:'%',dir:1,med:78,tq:88,lo:50,hi:100,o:['col'],src:['UDM_P2P_ATTR','BSAD']},
  {nd:'N2',n:'End-to-end touchless orders (per order)',v:52,u:'%',dir:1,med:65,tq:80,lo:30,hi:100,o:['tch'],src:['o_celonis_SalesOrderItem','o_celonis_BillingDocument','o_celonis_Payment']},
 ];
 
+/* Leading vs lagging (4DX-style lead and lag measures). Lagging = results the CFO reports; leading = what teams can move this week and that predicts a lagging result.
+   Classification is Tiger's judgement for this demo; confirm with the client. */
+const LAG={'OTIF % (cases)':['otif','OTIF','Lagging for logistics; it also leads lost sales'],'DSO, DSD chains':['dso','DSO'],'Past due over 30 days, share of AR':['pd','Past due > 30'],
+ 'Deductions, share of Modern trade sales':['ded','Deductions'],'End-to-end touchless orders (per order)':['tch','E2E touchless']};
+const DRIVES={'Orders with complete customer & price data':['tch'],'Promotions live ≥ 48 h before start':['ded'],'New customer setup time':['tch'],
+ 'Touchless order rate (this step)':['tch'],'Blocked order rate':['otif','tch'],'Order change rate':['tch','ded'],'Invoice matches accepted delivery':['pd','ded','dso'],
+ 'Average time to bill':['dso'],'CFDI re-issue rate':['dso','tch'],'Payments applied within 1 day':['dso','pd'],'UCX cases linked to an invoice':['pd','dso','ded'],
+ 'Promises to pay kept':['pd','dso']};
+const AMB={'Promises to pay kept':'An outcome for the collector; a leading measure for DSO'};
+HKPIS.forEach(k=>{if(LAG[k.n]){k.lt='lag';k.id=LAG[k.n][0];k.short=LAG[k.n][1];if(LAG[k.n][2])k.amb=LAG[k.n][2]}else{k.lt='lead';k.dr=DRIVES[k.n]||[];if(AMB[k.n])k.amb=AMB[k.n]}});
+const LAGK=id=>HKPIS.find(k=>k.lt==='lag'&&k.id===id);
 /* ---------- systems and tables ---------- */
 const SYS=[
  {k:'sf',n:'Salesforce',d:'SFA & eB2B orders · UCX cases · Consumer Goods Cloud promotions & visits',lg:'SF',col:'#1f74b8'},
@@ -665,14 +699,14 @@ const THREAD={id:'INV-90881234',chain:'Cadena Norte',store:'Store 0381 · Monter
  ]};
 const ITEMS=[
  {id:'INV-90881234',lane:'recl',chain:'Cadena Norte',store:'Store 0381 · Monterrey',sapAmt:48600,coll:0,dpd:9,reason:'Paid MXN 43,740 (unapplied) + 4 cases refused at the store',ms:'C3',thread:true},
- {id:'STMT-SG-0921',lane:'collect',chain:'Super Golfo',store:'46 stores · Veracruz region',sapAmt:312400,coll:312400,dpd:21,reason:'Collectible. One broken promise (15 Sep).',ms:'C1',pat:'P01',conf:.92,act:'Call the AP lead with one consolidated statement for all 46 stores; ask for a dated promise'},
- {id:'INV-90879020',lane:'collect',chain:'Hiper Pacífico',store:'Store 112 · Mazatlán',sapAmt:96800,coll:96800,dpd:14,reason:'Collectible. Two reminders, no response.',ms:'C1',pat:'P01',conf:.88,act:'Escalate to the key account manager with the statement'},
- {id:'INV-90876551',lane:'collect',chain:'Farmacias Centro',store:'Store 027 · Querétaro',sapAmt:74250,coll:74250,dpd:33,reason:'Collectible. The UCX case claims a promotion price the agreement does not include.',ms:'C1',pat:'P02',conf:.86,act:'Reject case CS-207981 citing agreement §5.3; request payment'},
- {id:'INV-90883310',lane:'collect',chain:'MiniSuper Express',store:'Store 1190 · Saltillo',sapAmt:41900,coll:41900,dpd:8,reason:'Collectible. First reminder due.',ms:'C1',pat:'P01',conf:.93,act:'Send the first reminder with the CFDI attached'},
+ {id:'STMT-SG-0921',lane:'collect',chain:'Super Golfo',store:'46 stores · Veracruz region',sapAmt:312400,coll:312400,dpd:21,reason:'Collectible. One broken promise (15 Sep).',ms:'C1',pat:'P01',conf:.92,act:'Call the AP lead with one consolidated statement for all 46 stores; ask for a dated promise',out:{k:'promise',txt:'Promise secured: MXN 312,400 for 15 Oct',lg:'secured a promise from Super Golfo: MXN 312,400 for 15 Oct'}},
+ {id:'INV-90879020',lane:'collect',chain:'Hiper Pacífico',store:'Store 112 · Mazatlán',sapAmt:96800,coll:96800,dpd:14,reason:'Collectible. Two reminders, no response.',ms:'C1',pat:'P01',conf:.88,act:'Escalate to the key account manager with the statement',out:{k:'contact',txt:'Escalated to the key account manager',lg:'escalated Hiper Pacífico INV-90879020 to the key account manager'}},
+ {id:'INV-90876551',lane:'collect',chain:'Farmacias Centro',store:'Store 027 · Querétaro',sapAmt:74250,coll:74250,dpd:33,reason:'Collectible. The UCX case claims a promotion price the agreement does not include.',ms:'C1',pat:'P02',conf:.86,act:'Reject case CS-207981 citing agreement §5.3; request payment',out:{k:'contact',txt:'Case CS-207981 rejected; payment requested',lg:'rejected case CS-207981 and requested payment from Farmacias Centro'}},
+ {id:'INV-90883310',lane:'collect',chain:'MiniSuper Express',store:'Store 1190 · Saltillo',sapAmt:41900,coll:41900,dpd:8,reason:'Collectible. First reminder due.',ms:'C1',pat:'P01',conf:.93,act:'Send the first reminder with the CFDI attached',out:{k:'contact',txt:'First reminder sent with the CFDI',lg:'sent the first reminder to MiniSuper Express, INV-90883310'}},
  {id:'INV-90880115',lane:'unsure',chain:'Hiper Pacífico',store:'Store 088 · Culiacán',sapAmt:18900,coll:18900,dpd:11,reason:'Short-paid MXN 2,100 with memo “ajuste”. Pricing or shortage?',ms:'C3',pat:'P05',conf:.64,act:'Ask the store for the reason; hold the short-paid amount'},
  {id:'PAY-77120',lane:'unsure',chain:'Super Golfo',store:'Chain level',sapAmt:55000,coll:0,dpd:0,reason:'MXN 55,000 received without remittance; three invoices could fit.',ms:'CA',pat:'P09',conf:.61,act:'Pull remittance detail from the Super Golfo portal before applying'},
- {id:'INV-90881702',lane:'recl',chain:'Cadena Norte',store:'Store 0377 · Monterrey',sapAmt:36450,coll:0,dpd:3,reason:'Not yet due. SAP counts from the invoice date; contrarecibo 8 Sep makes it due 8 Oct.',ms:'C3',pat:'P04',conf:.95},
- {id:'INV-90877841',lane:'recl',chain:'Farmacias Centro',store:'Store 031 · Querétaro',sapAmt:22600,coll:0,dpd:6,reason:'Paid 4 Oct, not yet applied.',ms:'CA',pat:'P09',conf:.9},
+ {id:'INV-90881702',lane:'recl',chain:'Cadena Norte',store:'Store 0377 · Monterrey',sapAmt:36450,coll:0,dpd:3,reason:'Not yet due. SAP counts from the invoice date; contrarecibo 8 Sep makes it due 8 Oct.',ms:'C3',pat:'P04',conf:.95,to:'elena',toL:'Master data'},
+ {id:'INV-90877841',lane:'recl',chain:'Farmacias Centro',store:'Store 031 · Querétaro',sapAmt:22600,coll:0,dpd:6,reason:'Paid 4 Oct, not yet applied.',ms:'CA',pat:'P09',conf:.9,to:'paola',toL:'Cash application'},
  {id:'INV-90882250',lane:'paused',chain:'Cadena Norte',store:'Store 0402 · Apodaca',sapAmt:27300,coll:null,dpd:7,reason:'Route 233 handheld feed is 26 hours old.',ms:'C1'},
  {id:'INV-90882261',lane:'paused',chain:'MiniSuper Express',store:'Store 1204 · Apodaca',sapAmt:19800,coll:null,dpd:5,reason:'Route 233 handheld feed is 26 hours old.',ms:'C1'},
  {id:'INV-90882279',lane:'paused',chain:'Super Golfo',store:'Store 3310 · Apodaca',sapAmt:14100,coll:null,dpd:4,reason:'Route 233 handheld feed is 26 hours old.',ms:'C1'},
@@ -684,20 +718,53 @@ const ROUTED=[
  {id:'CS-208002',to:'Customer service',what:'Link case to invoice 90879311',amt:15600,st:'Done'},
  {id:'INV-90877302',to:'Commercial',what:'Valid promotion claim, credit note',amt:22400,st:'In progress'},
 ];
-const TEAM=[{n:'Ana Ruiz',reg:'North',cl:4.2,tg:6.0,pr:71,ro:82,ov:4.1},{n:'Luis Ortega',reg:'Centre',cl:5.8,tg:5.5,pr:84,ro:91,ov:2.6},{n:'Sofía Méndez',reg:'Gulf',cl:3.1,tg:4.8,pr:66,ro:74,ov:6.8},{n:'Diego Ramírez',reg:'Pacific',cl:3.9,tg:4.2,pr:79,ro:88,ov:3.3}];
+const TEAM=[
+ {k:'ana',n:'Ana Ruiz',reg:'North',cl:4.2,tg:6.0,pr:71,ok:33,tot:40,ov:5,dec:122,pn:6,pa:1.42e6,wk:0},
+ {k:'luis',n:'Luis Ortega',reg:'Centre',cl:5.8,tg:5.5,pr:84,ok:41,tot:45,ov:3,dec:115,pn:11,pa:2.6e6,wk:380000},
+ {k:'sofia',n:'Sofía Méndez',reg:'Gulf',cl:3.1,tg:4.8,pr:66,ok:37,tot:50,ov:8,dec:118,pn:5,pa:0.9e6,wk:210000},
+ {k:'diego',n:'Diego Ramírez',reg:'Pacific',cl:3.9,tg:4.2,pr:79,ok:44,tot:50,ov:4,dec:121,pn:9,pa:1.98e6,wk:300000}];
+/* Mexico org. Collections and route accounting report into local finance (Ricardo Salas). [name, role, manager] */
+const PEOPLE={
+ ana:['Ana Ruiz','Collections analyst · North','marisol'],luis:['Luis Ortega','Collections analyst · Centre','marisol'],
+ sofia:['Sofía Méndez','Collections analyst · Gulf','marisol'],diego:['Diego Ramírez','Collections analyst · Pacific','marisol'],
+ marisol:['Marisol Vega','Collections lead · Mexico','ricardo'],jorge:['Jorge Treviño','Route accounting lead · Monterrey','ricardo'],
+ pedro:['Pedro Garza','Route settlement clerk · Monterrey','jorge'],paola:['Paola Herrera','Cash application lead · Mexico','ricardo'],
+ elena:['Elena Castro','Customer master data lead · Mexico','ricardo'],laura:['Laura Pineda','Billing & CFDI lead · Mexico','ricardo'],
+ daniela:['Daniela Flores','Customer service lead · Mexico',null],valeria:['Valeria Núñez','Commercial pricing lead · Mexico',null],
+ arturo:['Arturo Lozano','Order management lead · GCC',null],hector:['Héctor Ramos','Logistics lead · Monterrey',null],
+ ricardo:['Ricardo Salas','OTC process owner · Finance, Mexico',null],agent:['Agent','Mission agent',null]};
+const PMAP={col:'ana',lead:'marisol',ra:'jorge',po:'ricardo'};
+const nm=k=>PEOPLE[k]?PEOPLE[k][0]:k;
+const up=k=>{const r=[];let m=PEOPLE[k]&&PEOPLE[k][2];while(m){r.push(m);m=PEOPLE[m][2]}return r};
+/* Visibility: your own actions, anything routed to you, and anything done by or routed to people below you. The OTC process owner sees all OTC events. */
+function canSee(e,P){if(P==='ricardo')return true;if(e.who===P||e.aud.includes(P))return true;return[e.who].concat(e.aud).some(x=>up(x).includes(P))}
+function relTag(e,P){if(e.who===P)return['You','acc'];if(e.aud.includes(P))return['To you','good'];if(up(e.who).includes(P))return['Your team',''];if(e.aud.some(x=>up(x).includes(P)))return['To your team',''];return['Across OTC','']}
+const MOWN={PR:'valeria',MD:'elena',OM:'arturo',DL:'hector',RA:'jorge',BL:'laura',CS:'daniela',CA:'paola',C1:'marisol',C2:'marisol',C3:'marisol'};
+const ACC_OPTS=['marisol','jorge','paola','elena','laura','daniela','valeria','arturo','hector','ricardo'];
+const RESP_OPTS=['Collections analysts','Route settlement clerks','Cash application analysts','Customer data specialists','Customer service agents','Order specialists','Pricing analysts','Route planners','Billing analysts'];
 
 /* ================= state ================= */
 const S={
  conn:{},busy:{},cstep:0,scope:['col'],tables:{},req:[],xtab:'tables',xsel:null,xsys:'all',kg:0,kgLog:[],rf:'all',
  bstep:0,obj:'col',targets:{},scen:'base',mSel:null,pSel:null,modes:{},locked:false,lockedObj:null,
- persona:'col',lane:'recl',sel:'INV-90881234',done:{},threadDone:false,oppSent:{},rulePromoted:{},staleSnooze:false,log:[],
+ persona:'col',lane:'recl',sel:'INV-90881234',done:{},res:{},dmeta:{},seq:0,seen:{},mPrev:{},hlag:null,own:{},threadDone:false,oppSent:{},rulePromoted:{},staleSnooze:false,log:[],
  opt:'B',v:null
 };
 OBJS.forEach(o=>S.targets[o.id]=o.def);
 PATS.forEach(p=>S.modes[p.id]=p.mode);
 const VDEF={rev:23,pd30:342,tgt:220,un0:71,un1:20,sh0:61,sh1:15};
 S.v={...VDEF};
-function logIt(who,txt){S.log.unshift({t:nowStr(),who,txt});S.log=S.log.slice(0,30)}
+function logIt(who,txt,aud,t){S.seq++;if(!t){S.clk=(S.clk||9*60+2)+3;t=String(Math.floor(S.clk/60)).padStart(2,'0')+':'+String(S.clk%60).padStart(2,'0')}S.log.unshift({id:S.seq,t,who,txt,aud:aud||[]});S.log=S.log.slice(0,80)}
+/* Earlier this morning, across the team, so the per-persona filter is visible from the first view */
+logIt('agent','reclassified 3 of Ana Ruiz’s invoices before her call list was published',['ana'],'07:55');
+logIt('paola','applied MXN 61,200 to INV-90878120, routed by Sofía Méndez',['sofia'],'08:02');
+logIt('pedro','posted route 219 settlement: 2 refusals recorded on the handheld',[],'08:15');
+logIt('daniela','linked 12 UCX cases to invoices in the Centre region',[],'08:24');
+logIt('sofia','routed a store-reference payment on INV-90878330 to cash application',['paola'],'08:31');
+logIt('luis','secured a promise: Mercado Bajío MXN 184,000 for 10 Oct',[],'08:40');
+logIt('agent','paused dunning on 3 of Ana Ruiz’s invoices: route 233 handheld feed is 26 hours old',['ana'],'08:52');
+Object.values(PMAP).forEach(p=>S.seen[p]=S.seq);
+function bump(key,val){const c=S.mPrev[key]!==undefined&&S.mPrev[key]!==val;S.mPrev[key]=val;return c?'bump':''}
 
 /* ================= domain helpers ================= */
 const conn=k=>S.conn[k]===2;
@@ -865,10 +932,18 @@ function qtrack(k){const span=k.hi-k.lo,pc=v=>Math.max(0,Math.min(100,(v-k.lo)/s
 function kpos(k){const b=(a,c)=>k.dir<0?a<=c:a>=c;if(b(k.v,k.tq))return['Top quartile','good'];if(b(k.v,k.med))return['Above median','good'];if(b(k.v,k.med+(k.med-k.tq)))return['Below median','warn'];return['Bottom quartile','bad']}
 function cHealth(){
   if(!conn('sap'))return `<div class="head"><div><div class="eyebrow">Client context · O2C health check</div><h2>O2C health check</h2></div></div><div class="empty">Connect SAP first.<button class="btn pri" data-act="cstep" data-i="0">Go to Sources</button></div>`;
-  const groups=NODES.map(nd=>`<div class="kgrp"><h4><span style="color:${nd.c}">■</span> ${esc(nd.n)}</h4>${HKPIS.filter(k=>k.nd===nd.id).map(k=>{const p=kpos(k),ready=k.src.every(tIncluded);
-    return `<div class="krow"><div><b>${esc(k.n)}</b><div class="chips" style="margin-top:4px">${k.src.map(s=>`<span class="chip src ${tIncluded(s)?'':'off'}">${esc(s)}</span>`).join('')}</div></div>
-     <div>${ready?`<div class="kv"><b class="num">${k.v}${k.u}</b><span class="chip ${p[1]}">${p[0]}</span></div>${qtrack(k)}`:'<span class="note">Needs an excluded table</span>'}</div>
-     <div class="chips">${k.o.map(o=>`<span class="chip ${S.scope.includes(o)?'acc':''}">${esc(OB(o).short)}</span>`).join('')}</div></div>`}).join('')}</div>`).join('');
+  const nd=id=>NODES.find(n=>n.id===id);
+  const val=(k,ready)=>ready?`<div class="kv"><b class="num">${k.v}${k.u}</b><span class="chip ${kpos(k)[1]}">${kpos(k)[0]}</span></div>${qtrack(k)}`:'<span class="note">Needs an excluded table</span>';
+  const srcs=k=>`<div class="chips" style="margin-top:4px"><span class="chip" style="color:${nd(k.nd).c}">${esc(nd(k.nd).n)}</span>${k.src.map(s=>`<span class="chip src ${tIncluded(s)?'':'off'}">${esc(s)}</span>`).join('')}</div>`;
+  const lags=HKPIS.filter(k=>k.lt==='lag'),leads=HKPIS.filter(k=>k.lt==='lead'),H=S.hlag;
+  const lagRows=lags.map(k=>{const ready=k.src.every(tIncluded),drv=leads.filter(l=>l.dr.includes(k.id)).length;
+    return `<div class="krow lagrow ${H===k.id?'sel':''}"><div><b>${esc(k.n)}</b>${k.amb?`<div class="note">${esc(k.amb)}</div>`:''}${srcs(k)}</div><div>${val(k,ready)}</div>
+     <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-start"><button class="btn sm ${H===k.id?'pri':''}" data-act="hlag" data-k="${k.id}" aria-pressed="${H===k.id}">${H===k.id?'Showing':'Show'} its ${drv} leading driver${drv===1?'':'s'}</button>
+     <div class="chips">${k.o.map(o=>`<span class="chip ${S.scope.includes(o)?'acc':''}">${esc(OB(o).short)}</span>`).join('')}</div></div></div>`}).join('');
+  const leadGroups=NODES.map(n=>{const ks=leads.filter(k=>k.nd===n.id);if(!ks.length)return '';
+    return `<div class="kgrp"><h4><span style="color:${n.c}">■</span> ${esc(n.n)}</h4>${ks.map(k=>{const ready=k.src.every(tIncluded),on=H&&k.dr.includes(H);
+    return `<div class="krow ${H?(on?'hl':'dim'):''}"><div><b>${esc(k.n)}</b>${k.amb?`<div class="note">${esc(k.amb)}</div>`:''}${srcs(k)}</div><div>${val(k,ready)}</div>
+     <div><div class="eyebrow" style="margin-bottom:4px">Drives</div><div class="chips">${k.dr.map(d=>`<span class="chip ${d===H?'acc':''}">${esc(LAGK(d).short)}</span>`).join('')}</div></div></div>`}).join('')}</div>`}).join('');
   const col=S.scope.includes('col');
   return `<div class="head"><div><div class="eyebrow">Client context · O2C health check</div><h2>Where Mexico’s order-to-cash stands, step by step</h2>
     <p class="lede">KPIs computed from 18 months of the connected systems, placed against peer quartiles. Gaps rank the objectives in the builder.</p></div><span class="illus">Illustrative benchmarks</span></div>
@@ -882,8 +957,10 @@ function cHealth(){
     <div class="tw" style="margin-top:6px"><table class="t"><thead><tr><th>Category</th><th class="r">Amount</th><th>Found by joining</th><th>Owner</th></tr></thead><tbody>
     ${WF.map(w=>`<tr><td><b>${esc(w.l)}</b></td><td class="r num">${mxnM(w.v)}</td><td>${w.src.map(s=>`<span class="chip src">${esc(s)}</span>`).join(' ')}</td><td>${esc(w.to)}</td></tr>`).join('')}
     <tr><td><b>Genuinely collectible</b></td><td class="r num"><b>${mxnM(COLLECTIBLE)}</b></td><td>Everything above ruled out</td><td>Collector</td></tr></tbody></table></div></section>`:''}
-   <section class="panel"><div class="ph"><div><h3>KPIs by process step</h3><p class="sub">Dot = Mexico. Grey tick = peer median. Green tick = top quartile. Objective tags show what each KPI informs.</p></div></div>${groups}</section>
-   <section class="panel"><div class="ph"><div><h3>Hand-off contracts across the process</h3><p class="sub">What each step owes the next. Bar = actual, tick = target.</p></div></div>${HANDOFFS.map(hrow).join('')}</section>
+   <section class="panel"><div class="ph"><div><span class="grp-h lag"><b>Lagging measures</b></span><h3 style="margin-top:4px">The results the CFO reports</h3><p class="sub">${lags.length} measures. They move only when cash lands, orders ship or deductions post. Pick one to see what drives it. Dot = Mexico · grey tick = peer median · green tick = top quartile.</p></div></div>${lagRows}</section>
+   <section class="panel"><div class="ph"><div><span class="grp-h lead"><b>Leading measures</b></span><h3 style="margin-top:4px">What teams can move this week</h3><p class="sub">${leads.length} measures, by process step. Each names the lagging results it predicts. ${H?`Highlighted: the drivers of <b>${esc(LAGK(H).short)}</b>.`:''}</p></div>${H?'<button class="btn sm" data-act="hlag" data-k="">Show all</button>':''}</div>${leadGroups}</section>
+   <p class="note">Leading and lagging classification is Tiger’s for this demo, following the lead/lag measure idea from <i>The 4 Disciplines of Execution</i>. Some measures sit on both sides depending on who owns them; those carry a note.</p>
+   <section class="panel"><div class="ph"><div><h3>Hand-off contracts across the process</h3><p class="sub">Leading measures between teams: what each step owes the next. Bar = actual, tick = target.</p></div></div>${HANDOFFS.map(hrow).join('')}</section>
    ${nextBtn('cstep',3,'Knowledge graph')}`;
 }
 function kgLines(){const ts=TABLES.filter(t=>tOn(t.id));
@@ -1004,10 +1081,12 @@ function bPatterns(){
 function bOwners(){
   const MODES=['Supervised','Assisted','Balanced','Autonomous'];
   const rows=relMissions().filter(m=>S.mSel.has(m.id)).map(m=>{const ps=selPats().filter(p=>p.m===m.id);if(!ps.length)return '';
-    return `<tr class="mh"><td colspan="6"><span style="color:${m.c}">■</span> ${esc(m.n)} · mission owner ${esc(m.owner)}</td></tr>`+ps.map(p=>`<tr><td><b>${esc(p.n)}</b></td><td>Global process owner</td><td>${esc(m.owner)}</td><td>${esc(m.r)}</td><td>${esc(p.ch)}</td>
-     <td><select data-act="mode" data-k="${p.id}" aria-label="Autonomy for ${esc(p.n)}">${MODES.map(x=>`<option ${x===S.modes[p.id]?'selected':''}>${x}</option>`).join('')}</select></td></tr>`).join('')}).join('');
+    return `<tr class="mh"><td colspan="6"><span style="color:${m.c}">■</span> ${esc(m.n)} · mission owner ${esc(nm(MOWN[m.id]))}, ${esc(m.owner)}</td></tr>`+ps.map(p=>{const o=S.own[p.id]||{},a=o.a||MOWN[m.id],r=o.r||m.r;return `<tr><td><b>${esc(p.n)}</b></td><td>Global process owner</td>
+     <td><select data-act="owna" data-k="${p.id}" aria-label="Accountable for ${esc(p.n)}">${ACC_OPTS.map(x=>`<option value="${x}" ${x===a?'selected':''}>${esc(nm(x))} · ${esc(PEOPLE[x][1].split(' · ')[0])}</option>`).join('')}</select></td>
+     <td><select data-act="ownr" data-k="${p.id}" aria-label="Responsible for ${esc(p.n)}">${RESP_OPTS.map(x=>`<option ${x===r?'selected':''}>${esc(x)}</option>`).join('')}</select></td><td>${esc(p.ch)}</td>
+     <td><select data-act="mode" data-k="${p.id}" aria-label="Autonomy for ${esc(p.n)}">${MODES.map(x=>`<option ${x===S.modes[p.id]?'selected':''}>${x}</option>`).join('')}</select></td></tr>`}).join('')}).join('');
   return `<div class="head"><div><div class="eyebrow">Transformation builder · Owners</div><h2>Who owns each pattern, and where the work shows up</h2>
-    <p class="lede">The standard owner is global; accountability is local. Work is delivered where each team already works: the mission desk, Salesforce, or the Celonis task inbox.</p></div></div>
+    <p class="lede">The standard owner is global; accountability is local. Pick the accountable person from the Mexico organisation and the responsible team. Work is delivered where each team already works: the mission desk, Salesforce, or the Celonis task inbox.</p></div>${Object.keys(S.own).length?`<span class="chip acc">${Object.keys(S.own).length} owner change${Object.keys(S.own).length>1?'s':''}</span>`:''}</div>
    <section class="panel"><div class="tw"><table class="t"><thead><tr><th>Pattern</th><th>Standard owner</th><th>Accountable (Mexico)</th><th>Responsible</th><th>Delivered in</th><th>Autonomy</th></tr></thead><tbody>${rows}</tbody></table></div></section>
    <section class="panel"><div class="ph"><div><h3>Lock the blueprint</h3><p class="sub">Generates the desks for every accountable and responsible role.</p></div>${S.locked?'<a class="btn pri" href="#desk">Open Mission desk →</a>':'<button class="btn pri" data-act="lock">Lock blueprint & generate desks</button>'}</div>
     ${S.locked?`<div class="done-banner">✓ Blueprint locked for “${esc(OB(S.lockedObj).n)}”.${S.lockedObj==='col'?'':' The desk in this demo is built out for collections; other objectives open on the collections desk as a sample.'}</div>`:''}</section>
@@ -1039,18 +1118,43 @@ function bPilot(){
 }
 
 /* ================= mission desk (collections) ================= */
-const PERSONAS=[['col','Ana Ruiz','Collections analyst · DSD chains, North'],['lead','Marisol Vega','Collections lead · Mexico'],['ra','Jorge Treviño','Route accounting lead · Monterrey'],['po','Ricardo Salas','OTC process owner · Mexico']];
+const PERSONAS=[['col','Ana Ruiz','Collections analyst · DSD chains, North'],['lead','Marisol Vega','Collections lead · Mexico'],['ra','Jorge Treviño','Route accounting lead · Monterrey'],['po','Ricardo Salas','OTC process owner · Finance, Mexico']];
 PAGE.desk=()=>{header('desk');steps(null);
   const p=PERSONAS.find(x=>x[0]===S.persona);
   const banner=S.locked&&S.lockedObj==='col'?'':`<div class="warnline"><b>${S.locked?'Sample desk':'Demo blueprint'}</b><span>${S.locked?'This demo’s desk is built out for collections.':'No blueprint locked yet, so the desk runs on the collections blueprint.'}</span><a class="btn sm" href="#bld">Open Transformation builder</a></div>`;
-  const ctl=`<div class="head"><div><div class="eyebrow">Mission desk · collections · week 6 since go-live</div><h2>${p[0]==='col'?'Good morning, Ana':esc(p[1])}</h2><p class="lede">${esc(p[2])}</p></div>
+  const ctl=`<div class="head"><div><div class="eyebrow">Mission desk · collections · week 6 since go-live</div><h2>${p[0]==='col'?'Good morning, Ana':esc(p[1])}</h2><p class="lede">${esc(p[2])} · ${PEOPLE[PMAP[p[0]]][2]?'reports to '+esc(nm(PEOPLE[PMAP[p[0]]][2])):'local finance, Mexico'}</p></div>
    <label class="psel"><span class="av">${p[1].split(' ').map(w=>w[0]).join('')}</span><span><small>Viewing as</small><select id="persona" aria-label="Persona">${PERSONAS.map(x=>`<option value="${x[0]}" ${x[0]===S.persona?'selected':''}>${esc(x[1])} · ${esc(x[2].split(' · ')[0])}</option>`).join('')}</select></span></label></div>`;
   return banner+ctl+{col:dCollector,lead:dLead,ra:dRoute,po:dOwner}[S.persona]()+history()+footer;
 };
-function history(){return `<details class="panel"><summary style="cursor:pointer"><b>History</b> <span class="chip">${S.log.length}</span></summary><div style="margin-top:8px">${S.log.length?S.log.map(l=>`<div class="lg-i"><span class="num muted">${esc(l.t)}</span><span><b>${esc(l.who)}</b> ${esc(l.txt)}</span></div>`).join(''):'<p class="note">Actions taken on any desk are recorded here.</p>'}</div></details>`}
+function history(){const P=PMAP[S.persona],vis=S.log.filter(e=>canSee(e,P)),seen=S.seen[P]||0,isNew=e=>e.id>seen&&e.who!==P,nw=vis.filter(isNew).length,hid=S.log.length-vis.length;
+  const scope={ana:'Your own actions, plus anything routed to you or done on your items.',marisol:'Your actions, your four collectors’ actions, and anything routed to them.',
+   jorge:'Your actions, your route settlement team’s, and items routed to route accounting.',ricardo:'Everything across OTC: collections and route accounting report to you as process owner.'}[P];
+  return `<details class="panel" ${nw?'open':''}><summary style="cursor:pointer"><b>History</b> <span class="chip">${vis.length}</span>${nw?` <span class="chip acc">${nw} new since you last looked</span>`:''}${hid?` <span class="note" style="margin-left:6px">${hid} event${hid>1?'s':''} outside your chain hidden</span>`:''}</summary>
+   <p class="note" style="margin-top:6px">Visible to ${esc(nm(P))}: ${scope}</p><div style="margin-top:6px">${vis.length?vis.map(e=>{const r=relTag(e,P);return `<div class="lg-i"><span class="num muted">${esc(e.t)}</span><span><b>${esc(nm(e.who))}</b> ${esc(e.txt)}</span><span class="chips">${isNew(e)?'<span class="chip warn">New</span>':''}<span class="chip ${r[1]}">${r[0]}</span></span></div>`}).join(''):'<p class="note">Nothing yet.</p>'}</div></details>`}
+function anaM(){const T=TEAM[0],R=Object.entries(S.res).filter(([k,r])=>r.by==='ana');
+  const col=ITEMS.filter(i=>i.lane==='collect'),list=col.reduce((a,i)=>a+i.coll,0);
+  const worked=col.filter(i=>S.res[i.id]&&['promise','contact'].includes(S.res[i.id].k)).reduce((a,i)=>a+i.coll,0);
+  const prom=R.filter(([k,r])=>r.k==='promise'),newP=prom.reduce((a,[k,r])=>a+r.amt,0);
+  const routed=(S.threadDone?1:0)+R.filter(([k,r])=>r.k==='route').length;
+  const ov=R.filter(([k,r])=>r.k==='override').length,dec=R.filter(([k,r])=>r.ag).length+(S.threadDone?1:0);
+  return{list,worked,pn:T.pn+prom.length,pa:T.pa+newP,newP,newN:prom.length,ok:T.ok+routed,tot:T.tot+routed,routed,ov:T.ov+ov,dec:T.dec+dec,credit:S.threadDone&&!!S.done.batch}}
+function teamM(){const a=anaM();let ok=a.ok,tot=a.tot,pn=a.pn,pa=a.pa,ov=a.ov,dec=a.dec;TEAM.slice(1).forEach(t=>{ok+=t.ok;tot+=t.tot;pn+=t.pn;pa+=t.pa;ov+=t.ov;dec+=t.dec});return{ok,tot,pn,pa,ov,dec,a}}
+function mcard(c){return `<div class="mcard ${c.lag?'lag':''}" style="--mc:${MB(c.id).c}"><span class="eyebrow">${esc(c.n)}</span><b class="v ${bump(c.key,c.v)}">${c.v}</b>
+  ${c.bar!=null?`<div class="mbar"><i style="width:${Math.min(100,c.bar*100)}%"></i></div>`:''}<span class="note">${c.t} · mission ${c.id}: ${esc(MB(c.id).n.toLowerCase())}</span>${c.d?`<span class="delta">${c.d}</span>`:''}
+  ${c.s?`<span class="chip ${c.s}" style="align-self:flex-start">${c.sl}</span>`:''}</div>`}
 function dCollector(){
   const port=[{l:'Paid, not applied',v:5.6,c:'var(--s1)'},{l:'Short or returned',v:4.1,c:'var(--s2)'},{l:'Not yet due',v:2.2,c:'var(--s4)'},{l:'Valid UCX case',v:6.1,c:'var(--s5)'}];
-  const cockpit=[{id:'C1',n:'Collectible over 30 days cleared this week',v:'MXN 4.2M',t:'target MXN 6.0M',s:'warn'},{id:'C2',n:'Promises kept',v:'71%',t:'target 85%',s:'bad'},{id:'C3',n:'Non-collectible routed out ≤ 2 days',v:S.threadDone?'84%':'82%',t:'target 95%',s:'warn'}];
+  const m=anaM(),rp=m.ok/m.tot;
+  const leadC=[{key:'a1',id:'C1',n:'Collectible actioned today',v:mxn(m.worked),t:'of '+mxn(m.list)+' on today’s list',bar:m.list?m.worked/m.list:0,d:m.worked?'▲ moved with your actions':''},
+   {key:'a2',id:'C2',n:'Promises to pay secured this week',v:m.pn+' · '+mxnM2(m.pa),t:'target 10',bar:m.pn/10,d:m.newN?`▲ +${m.newN} today · ${mxn(m.newP)}`:''},
+   {key:'a3',id:'C3',n:'Non-collectible routed out ≤ 2 days',v:pct1(m.ok,m.tot),t:`${m.ok} of ${m.tot} · target 95%`,bar:rp/.95,d:m.routed?`▲ +${m.routed} routed today`:''}];
+  const lagC=[{key:'g1',lag:1,id:'C1',n:'Collectible over 30 days cleared this week',v:'MXN 4.2M',t:'target MXN 6.0M',s:'warn',sl:'Moves when payments clear'},
+   {key:'g2',lag:1,id:'C2',n:'Promises kept, last 60 days',v:'71%',t:'target 85%',s:'bad',sl:'Moves as promise dates pass'},
+   {key:'g3',lag:1,id:'C1',n:'My past due, North',v:m.credit?'MXN 37.995M':'MXN 38.0M',t:'from SAP',d:m.credit?'▼ MXN 4,860 credit posted by route accounting':'',s:'warn',sl:'Moves when postings clear'}];
+  const pipe=[];if(S.threadDone){pipe.push(['Cash application','MXN 43,740 queued to apply to INV-90881234']);pipe.push(['Route accounting',m.credit?'MXN 4,860 credit note posted':'MXN 4,860 credit note awaiting Jorge Treviño'])}
+  if(S.res['INV-90877841'])pipe.push(['Cash application','MXN 22,600 paid 4 Oct, queued to apply']);
+  if(S.res['INV-90881702'])pipe.push(['Master data','Terms fix requested; INV-90881702 due 8 Oct, not past due']);
+  Object.entries(S.res).filter(([k,r])=>r.by==='ana'&&r.k==='promise').forEach(([k,r])=>pipe.push(['Promise',mxn(r.amt)+' due 15 Oct · '+k]));
   const lanes={recl:'Reclassified today',collect:'Collect',unsure:'Agent unsure',routed:'Routed out',paused:'Paused'};
   const cnt=l=>l==='routed'?ROUTED.length+(S.threadDone?2:0):ITEMS.filter(i=>i.lane===l).length;
   let list='';
@@ -1068,7 +1172,11 @@ function dCollector(){
   const showWs=sel&&sel.lane===S.lane;
   return `<section class="panel"><div class="ph"><div><h3>My portfolio: MXN 38.0M past due, MXN 16.6M collectible</h3><p class="sub">North region · 6 chains · 412 stores. Collectible is what remains after the other systems are read.</p></div><span class="illus">Illustrative</span></div>
     <div class="svgwrap">${waterfall(38,port,20,{h:250,finalLabel:'Yours to work (16.6 collectible + 3.4 invalid cases)'})}</div></section>
-   <div class="cockpit">${cockpit.map(c=>`<div class="mcard" style="--mc:${MB(c.id).c}"><span class="eyebrow">${esc(MB(c.id).n)}</span><b class="v">${c.v}</b><span class="note">${esc(c.n)} · ${c.t}</span><span class="chip ${c.s}" style="align-self:flex-start">${c.s==='warn'?'Behind':'Off track'}</span></div>`).join('')}</div>
+   <div class="grp-h lead"><b>Leading</b><span class="note">moves with what Ana does today</span></div>
+   <div class="cockpit">${leadC.map(mcard).join('')}</div>
+   <div class="grp-h lag"><b>Lagging</b><span class="note">moves when cash lands and postings clear, not when a button is clicked</span></div>
+   <div class="cockpit">${lagC.map(mcard).join('')}</div>
+   ${pipe.length?`<div class="pipe"><b class="eyebrow">In the pipeline · will move the lagging measures when it lands</b>${pipe.map(x=>`<span><span class="chip">${esc(x[0])}</span>${esc(x[1])}</span>`).join('')}</div>`:''}
    <div class="desk2"><div class="queue"><div class="lanes" role="tablist">${Object.entries(lanes).map(([k,l])=>`<button class="${S.lane===k?'on':''}" data-act="lane" data-k="${k}">${l} · ${cnt(k)}</button>`).join('')}</div><div class="qlist">${list}</div></div>
     <div>${showWs?workspace(sel):`<div class="ws"><p class="note">${S.lane==='routed'?'Routed items are worked by their owners. Their status updates here, so nothing is lost between teams.':'Select an item.'}</p></div>`}</div></div>
    <section class="panel"><div class="ph"><div><h3>Data sources</h3><p class="sub">A stale feed pauses the missions that depend on it instead of acting on old data.</p></div></div>
@@ -1099,27 +1207,37 @@ function workspace(i){
    ${i.act?`<div class="say" style="background:var(--surface-2);border-left-color:var(--good)"><b style="color:var(--good)">Recommended:</b> ${esc(i.act)}</div>`:''}
    ${isP?'<p class="note">Acceptance at the store can’t be confirmed until the route 233 handheld feed refreshes. Calling now risks chasing a refused delivery.</p>':''}
    <div class="wsact">${done?`<span class="chip good">${esc(done)}</span><button class="btn sm" data-act="undo" data-k="${i.id}">Undo</button>`:
-    isC?`<button class="btn pri" data-act="do" data-k="${i.id}" data-v="Done: ${esc(i.act.split(';')[0])}">Do it</button><button class="btn" data-act="do" data-k="${i.id}" data-v="Promise logged for 15 Oct">Log a promise</button>`:
-    isU?`<button class="btn pri" data-act="do" data-k="${i.id}" data-v="Request sent to the chain">Send request</button><button class="btn" data-act="do" data-k="${i.id}" data-v="Kept on the collect list">Collect anyway</button>`:
-    isP?`<button class="btn" data-act="refresh">Simulate feed refresh</button>`:`<button class="btn pri" data-act="do" data-k="${i.id}" data-v="Routed and removed from the call list">Approve reclassification</button>`}</div></div>`;
+    isC?`<button class="btn pri" data-act="do" data-k="${i.id}" data-v="${esc(i.out?i.out.txt:'Done')}" data-l="${esc(i.out&&i.out.lg?i.out.lg:'acted on '+i.id)}" data-r="${i.out?i.out.k:'contact'}" data-amt="${i.coll}" data-ag="1">Do it</button><button class="btn" data-act="do" data-k="${i.id}" data-v="Promise logged: ${esc(mxn(i.coll))} for 15 Oct" data-l="logged a promise from ${esc(i.chain)}: ${esc(mxn(i.coll))} for 15 Oct" data-r="promise" data-amt="${i.coll}" data-ag="1">Log a promise</button>`:
+    isU?`<button class="btn pri" data-act="do" data-k="${i.id}" data-v="Request sent to the chain" data-l="asked ${esc(i.chain)} for the reason on ${i.id}" data-r="request" data-ag="1">Send request</button><button class="btn" data-act="do" data-k="${i.id}" data-v="Kept on the collect list, agent overridden" data-l="kept ${i.id} on the collect list, overriding the agent" data-r="override" data-ag="1">Collect anyway</button>`:
+    isP?`<button class="btn" data-act="refresh">Simulate feed refresh</button>`:`<button class="btn pri" data-act="do" data-k="${i.id}" data-v="Routed to ${esc(i.toL||'owner')} and removed from the call list" data-l="routed ${i.id} to ${esc((i.toL||'owner').toLowerCase())} and took it off the call list" data-r="route" data-ag="1" data-aud="${i.to||''}">Approve reclassification</button>`}</div></div>`;
 }
-function dLead(){
-  return `<div class="tiles"><div class="tile"><span class="eyebrow">Collectible over 30 days</span><b>${mxnM(151)}</b><small>target ${mxnM(95)} · Mexico</small></div><div class="tile"><span class="eyebrow">Cleared this week</span><b>${mxnM(17)}</b><small>target ${mxnM(20.5)}</small></div>
-    <div class="tile"><span class="eyebrow">Routed out ≤ 2 days</span><b>${S.threadDone?'84%':'82%'}</b><small>target 95%</small></div><div class="tile"><span class="eyebrow">Agent overrides</span><b>4.2%</b><small>suggestions changed by people</small></div></div>
-   <section class="panel"><div class="ph"><div><h3>Team this week</h3><p class="sub">Collectible cleared against each collector’s share of the plan.</p></div></div><div class="tw"><table class="t"><thead><tr><th>Collector</th><th>Region</th><th>Cleared / target (MXN M)</th><th class="r">Promises kept</th><th class="r">Routed ≤ 2 days</th><th class="r">Overrides</th></tr></thead><tbody>
-    ${TEAM.map(m=>{const pc=m.cl/m.tg;return `<tr><td><b>${esc(m.n)}</b></td><td>${m.reg}</td><td><div class="track" style="max-width:180px"><i style="width:${Math.min(100,pc/1.2*100)}%;background:${pc>=.95?'var(--good)':pc>=.8?'var(--warn)':'var(--bad)'}"></i><em style="left:${100/1.2}%"></em></div><span class="note num">${m.cl} / ${m.tg}</span></td><td class="r num">${m.pr}%</td><td class="r num">${m.ro}%</td><td class="r num">${m.ov}%</td></tr>`}).join('')}</tbody></table></div></section>
+function dLead(){const t=teamM(),a=t.a;
+  const rows=TEAM.map(m=>{const L=m.k==='ana',ok=L?a.ok:m.ok,tot=L?a.tot:m.tot,pn=L?a.pn:m.pn,pa=L?a.pa:m.pa,ov=L?a.ov:m.ov,dec=L?a.dec:m.dec,wk=L?a.worked:m.wk,pc=m.cl/m.tg;
+    return `<tr class="${L&&(a.worked||a.routed||a.newN)?'live':''}"><td><b>${esc(m.n)}</b>${L&&(a.worked||a.routed||a.newN)?' <span class="chip acc">Live</span>':''}</td><td>${m.reg}</td>
+     <td><div class="track" style="max-width:150px"><i style="width:${Math.min(100,pc/1.2*100)}%;background:${pc>=.95?'var(--good)':pc>=.8?'var(--warn)':'var(--bad)'}"></i><em style="left:${100/1.2}%"></em></div><span class="note num">${m.cl} / ${m.tg}</span></td><td class="r num">${m.pr}%</td>
+     <td class="r num"><span class="${L?bump('l-wk',wk):''}">${mxn(wk)}</span></td><td class="r num"><span class="${L?bump('l-pn',pn):''}">${pn} · ${mxnM2(pa)}</span></td><td class="r num"><span class="${L?bump('l-ro',ok):''}">${pct1(ok,tot)}</span></td><td class="r num">${pct1(ov,dec)}</td></tr>`}).join('');
+  return `<div class="grp-h lag"><b>Lagging</b><span class="note">results this week</span></div>
+   <div class="tiles"><div class="tile"><span class="eyebrow">Collectible over 30 days</span><b>${mxnM(151)}</b><small>target ${mxnM(95)} · Mexico</small></div><div class="tile"><span class="eyebrow">Cleared this week</span><b>${mxnM(17)}</b><small>target ${mxnM(20.5)}</small></div><div class="tile"><span class="eyebrow">Promises kept, 60 days</span><b>74%</b><small>target 85%</small></div></div>
+   <div class="grp-h lead"><b>Leading</b><span class="note">moves with the team’s actions today</span></div>
+   <div class="tiles"><div class="tile"><span class="eyebrow">Routed out ≤ 2 days</span><b class="${bump('t-ro',t.ok)}">${pct1(t.ok,t.tot)}</b><small>${t.ok} of ${t.tot} · target 95%</small></div>
+    <div class="tile"><span class="eyebrow">Promises secured this week</span><b class="${bump('t-pn',t.pn)}">${t.pn} · ${mxnM2(t.pa)}</b><small>target 40</small></div>
+    <div class="tile"><span class="eyebrow">Agent overrides</span><b class="${bump('t-ov',t.ov)}">${pct1(t.ov,t.dec)}</b><small>${t.ov} of ${t.dec} suggestions changed by people</small></div></div>
+   <section class="panel"><div class="ph"><div><h3>Team</h3><p class="sub">Lagging columns are this week’s results. Leading columns update as each collector works. Ana’s row is live in this demo.</p></div></div><div class="tw"><table class="t"><thead>
+    <tr><th colspan="2"></th><th colspan="2" class="grp">Lagging · this week</th><th colspan="4" class="grp">Leading · today and this week</th></tr>
+    <tr><th>Collector</th><th>Region</th><th>Cleared / target (MXN M)</th><th class="r">Promises kept</th><th class="r">Actioned today</th><th class="r">Promises secured</th><th class="r">Routed ≤ 2 days</th><th class="r">Overrides</th></tr></thead><tbody>${rows}</tbody></table></div></section>
    <section class="panel"><div class="ph"><div><h3>Rules ready to change autonomy</h3><p class="sub">Promoting a rule lets the agent act without asking, inside the approved threshold.</p></div></div>
     ${RULES.filter(r=>r.verdict==='cod'&&r.o.includes('col')).map(r=>`<div class="hrow"><div><b>${r.id} · ${esc(r.rule)}</b><div class="note">${n0(r.n)} cases · ${r.ok}% consistent · ${esc(r.prop)}</div></div><div class="note">Today: suggest, human confirms</div>${S.rulePromoted[r.id]?'<span class="chip good">Acts on its own</span>':`<button class="btn sm pri" data-act="promote" data-k="${r.id}">Let it act</button>`}</div>`).join('')}</section>
    <section class="panel"><div class="ph"><div><h3>Approvals waiting on you</h3></div></div><div class="hrow"><div><b>Payment plan · Super Golfo · MXN 312,400 over 3 instalments</b><div class="note">Proposed by Ana Ruiz · second broken promise in 60 days · policy §2.5</div></div><div class="note">Above MXN 250,000: lead approval</div>
-    ${S.done.AP1?`<span class="chip good">${esc(S.done.AP1)}</span>`:'<span class="btnrow"><button class="btn sm pri" data-act="do" data-k="AP1" data-v="Approved">Approve</button><button class="btn sm" data-act="do" data-k="AP1" data-v="Returned">Return</button></span>'}</div></section>`;
+    ${S.done.AP1?`<span class="chip good">${esc(S.done.AP1)}</span>`:'<span class="btnrow"><button class="btn sm pri" data-act="do" data-k="AP1" data-v="Approved" data-l="approved Ana Ruiz’s payment plan for Super Golfo, MXN 312,400 in 3 instalments" data-aud="ana">Approve</button><button class="btn sm" data-act="do" data-k="AP1" data-v="Returned" data-l="returned Ana Ruiz’s Super Golfo payment plan for rework" data-aud="ana">Return</button></span>'}</div></section>`;
 }
 function dRoute(){const arr=S.threadDone;
   const inbox=[...(arr?[{id:'INV-90881234',st:'Store 0381 · route 214',q:'4 of 40 refused or damaged',amt:4860,from:'Ana Ruiz (collections)',ev:'Handheld: 2 D1, 2 R1, signed 09:12 · agreement §7.2',fresh:true}]:[]),
    {id:'INV-90879944',st:'Store 0407 · route 214',q:'6 of 52 refused',amt:7290,from:'Agent (pattern P06)',ev:'Handheld R2 · signed 10:41'},
    {id:'INV-90880317',st:'Store 0390 · route 219',q:'1 of 24 damaged',amt:1215,from:'Agent (rule R1)',ev:'Under MXN 2,000: '+(S.rulePromoted.R1?'credited automatically':'awaiting confirmation')},
    {id:'INV-90880522',st:'Store 0415 · route 214',q:'3 of 30 refused',amt:3645,from:'Agent (pattern P06)',ev:'Handheld R1 · signed 08:55'}];
-  return `<div class="tiles"><div class="tile"><span class="eyebrow">Invoice = accepted delivery</span><b>94%</b><small>hand-off target 99%</small></div><div class="tile"><span class="eyebrow">Short deliveries in AR</span><b>${mxnM(61)}</b><small>Mexico DSD chains</small></div><div class="tile"><span class="eyebrow">Credit notes waiting</span><b>${inbox.length}</b><small>in your inbox today</small></div></div>
-   <section class="panel"><div class="ph"><div><h3>Short deliveries routed to you</h3><p class="sub">Each arrives with handheld evidence and the agreement clause.</p></div>${S.done.batch?'<span class="chip good">Batch issued</span>':'<button class="btn sm pri" data-act="do" data-k="batch" data-v="Batch issued">Issue all credit notes</button>'}</div>
+  return `<div class="tiles"><div class="tile"><span class="eyebrow">Invoice = accepted delivery</span><b>94%</b><small>hand-off target 99%</small></div><div class="tile"><span class="eyebrow">Short deliveries in AR</span><b>${mxnM(61)}</b><small>Mexico DSD chains</small></div><div class="tile"><span class="eyebrow">Credit notes waiting</span><b class="${bump('j-w',S.done.batch?0:inbox.length)}">${S.done.batch?0:inbox.length}</b><small>${S.done.batch?'all issued today':'in your inbox today'}</small></div>
+    <div class="tile"><span class="eyebrow">Credited today</span><b class="${bump('j-c',S.done.batch?1:0)}">${S.done.batch?mxn(inbox.reduce((a,x)=>a+x.amt,0)):'MXN 0'}</b><small>removes short deliveries from collectors’ past due</small></div></div>
+   <section class="panel"><div class="ph"><div><h3>Short deliveries routed to you</h3><p class="sub">Each arrives with handheld evidence and the agreement clause.</p></div>${S.done.batch?'<span class="chip good">Batch issued</span>':`<button class="btn sm pri" data-act="do" data-k="batch" data-v="Batch issued" data-l="issued ${inbox.length} credit notes, ${esc(mxn(inbox.reduce((a,x)=>a+x.amt,0)))}, on North invoices${arr?', incl. INV-90881234 routed by Ana Ruiz':''}" data-aud="ana">Issue all credit notes</button>`}</div>
     <div class="tw"><table class="t"><thead><tr><th>Invoice</th><th>Store</th><th>What happened</th><th class="r">Credit</th><th>From</th><th>Evidence</th></tr></thead><tbody>
     ${inbox.map(x=>`<tr style="${x.fresh?'background:var(--accent-soft)':''}"><td class="mono">${x.id}${x.fresh?' <span class="chip acc">New</span>':''}</td><td>${esc(x.st)}</td><td>${esc(x.q)}</td><td class="r num">${mxn(x.amt)}</td><td>${esc(x.from)}</td><td class="note">${esc(x.ev)}</td></tr>`).join('')}</tbody></table></div>
     ${arr?'':'<p class="note" style="margin-top:8px">Approve the reclassified Cadena Norte invoice on Ana’s desk and it arrives here.</p>'}</section>
@@ -1127,9 +1245,14 @@ function dRoute(){const arr=S.threadDone;
     ${[['Route 214',14],['Route 219',9],['Route 233',7],['Route 207',4],['Route 226',2]].map(r=>`<div class="hrow"><b>${r[0]}</b><div class="track"><i style="width:${r[1]/14*100}%;background:${r[1]>=10?'var(--bad)':'var(--warn)'}"></i></div><span class="num">${r[1]}</span></div>`).join('')}</section>`;
 }
 function dOwner(){
-  const H=HANDOFFS.map(h=>({...h,v:h.n.startsWith('UCX')&&S.threadDone?64:h.v}));
-  return `<div class="tiles"><div class="tile hero"><span class="eyebrow">Collectible share of past due</span><b>${Math.round(COLLECTIBLE/PD*100)}%</b><small>${mxnM(COLLECTIBLE)} of ${mxnM(PD)} · the rest is upstream work</small></div>
-    <div class="tile"><span class="eyebrow">Past due over 30 days</span><b>${mxnM(318)}</b><small>from ${mxnM(342)} at go-live · target ${mxnM(S.targets.col)}</small></div><div class="tile"><span class="eyebrow">DSO, DSD chains</span><b>44.0 days</b><small>from 44.4</small></div><div class="tile"><span class="eyebrow">Hand-offs on target</span><b>0 of 7</b><small>all improving</small></div></div>
+  const H=HANDOFFS.map(h=>({...h,v:h.n.startsWith('UCX')&&S.threadDone?64:h.v})),t=teamM();
+  return `<div class="grp-h lag"><b>Lagging</b><span class="note">the results you report</span></div><div class="tiles"><div class="tile hero"><span class="eyebrow">Collectible share of past due</span><b>${Math.round(COLLECTIBLE/PD*100)}%</b><small>${mxnM(COLLECTIBLE)} of ${mxnM(PD)} · the rest is upstream work</small></div>
+    <div class="tile"><span class="eyebrow">Past due over 30 days</span><b>${mxnM(318)}</b><small>from ${mxnM(342)} at go-live · target ${mxnM(S.targets.col)}</small></div><div class="tile"><span class="eyebrow">DSO, DSD chains</span><b>44.0 days</b><small>from 44.4</small></div></div>
+   <div class="grp-h lead"><b>Leading</b><span class="note">what predicts next month’s results</span></div>
+   <div class="tiles"><div class="tile"><span class="eyebrow">Hand-offs on target</span><b>0 of 7</b><small>all improving</small></div>
+    <div class="tile"><span class="eyebrow">UCX cases linked to invoice</span><b class="${bump('r-ucx',S.threadDone?64:63)}">${S.threadDone?64:63}%</b><small>target 95%</small></div>
+    <div class="tile"><span class="eyebrow">Collections routed out ≤ 2 days</span><b class="${bump('r-ro',t.ok)}">${pct1(t.ok,t.tot)}</b><small>target 95%</small></div>
+    <div class="tile"><span class="eyebrow">Promises secured this week</span><b class="${bump('r-pn',t.pn)}">${t.pn} · ${mxnM2(t.pa)}</b><small>collections team</small></div></div>
    <section class="panel"><div class="ph"><div><h3>Hand-off contracts, 12 weeks</h3><p class="sub">Leading indicators across the whole process. Dashed line = target.</p></div><span class="illus">Illustrative trends</span></div>
     <div class="tw"><table class="t"><thead><tr><th>Hand-off</th><th>Trend</th><th class="r">Now</th><th class="r">Target</th><th></th></tr></thead><tbody>
     ${H.map((h,i)=>{const s=health(h.v,h.t,h.w);return `<tr><td><b>${esc(h.n)}</b><div class="note">${esc(h.from)}</div></td><td>${spark(ser(h.v-[2,6,3,3,5,7,12][i],h.v,i),h.t)}</td><td class="r num">${h.v}%</td><td class="r num muted">${h.t}%</td><td><span class="chip ${s}">${SL[s]}</span></td></tr>`}).join('')}</tbody></table></div></section>
@@ -1166,11 +1289,11 @@ PAGE.guide=()=>{header('guide');steps(null);
    ['Overview','1 min',['Walk the five process steps and the three modules.'],'“Order-to-cash runs across six systems and each team optimises its own step.”'],
    ['Context · Sources & scope','2 min',['Keep Collections in scope; show the other five objectives exist.','Connect all. Show the table picker: KNB1, LIPS, Case, FEBEP are recommended for collections.','Untick LMD_STOP_EXECUTION, note the pattern count, then re-tick.'],''],
    ['Context · Data explorer','1 min',['Open LIPS (accepted quantity), then the Cadena Norte agreement with its highlighted clauses.'],'“The documents are where the rules live.”'],
-   ['Context · Health check','3 min',['Land on 52% touchless per order vs 71–88% by team.','Collections waterfall: MXN 224M of MXN 510M is collectible.','Seven hand-off contracts, none on target.'],'“Less than half of past due is the collector’s to collect.”'],
+   ['Context · Health check','3 min',['Land on 52% touchless per order vs 71–88% by team.','Collections waterfall: MXN 224M of MXN 510M is collectible.','Lagging measures first: the five results the CFO reports. Click DSO to light up its leading drivers.','Leading measures by step, then the seven hand-off contracts, none on target.'],'“The lagging measures tell you where you are. The leading ones are what a team can move this week.”'],
    ['Context · Knowledge graph','2 min',['Build it; read the ontology; walk invoice 90881234 to MXN 0 collectible.'],'“No single system holds the truth about this invoice.”'],
    ['Builder','5 min',['Show all six objectives; select Collect what is collectible.','Standards: global definitions, local ownership.','Ladder and Sankey: collector missions plus feeder missions upstream.','Patterns: tick the mined pattern; read the tables each needs. Rules: R2 and R5 are “fix upstream”.','Owners and channels; lock the blueprint.'],'“The standard travels across markets. The result belongs to Mexico.”'],
-   ['Desk · Ana, collector','5 min',['Portfolio waterfall and cockpit.','Reclassified lane: Cadena Norte invoice; approve and route.','Collect lane; paused lane; send one opportunity.'],'“This was on her call list this morning. It is now three other teams’ work, with evidence.”'],
-   ['Desk · Jorge, Marisol, Ricardo','2 min',['Route accounting: the routed credit arrives.','Lead: let R1 act on its own.','Process owner: hand-offs and cockpit tiles.'],''],
+   ['Desk · Ana, collector','5 min',['Portfolio waterfall; leading cards move with each action, lagging cards say when they will move.','Reclassified lane: Cadena Norte invoice; approve and route. Routed out ≤ 2 days ticks up; the pipeline shows what is now with other teams.','Collect lane: Super Golfo “Do it” secures a promise; paused lane; send one opportunity.','Open History: Ana sees only her own items, not Luis or Sofía.'],'“Leading measures move today. DSO and past due move when the cash lands, and we will not pretend otherwise.”'],
+   ['Desk · Jorge, Marisol, Ricardo','3 min',['Jorge: Ana’s invoice arrives, and History shows it as new since he last looked. Issue all credit notes.','Back to Ana: her past due now shows the posted MXN 4,860 credit.','Marisol: Ana’s row is live; History shows her four collectors. Let R1 act.','Ricardo: process owner sees every event across OTC.'],'“Everyone sees their own work and their team’s, nobody else’s.”'],
    ['Close · Pilot','2 min',['Builder → Pilot scope, option B; type his actuals into the calculator.'],'“Which of these five numbers can your team give us in two weeks?”'],
   ];
   const OBJ=[['We already have Celonis.','We use it: Celonis supplies the timeline, manual-activity events and KPI definitions. It doesn’t read the handheld, the UCX case or the agreement, and it doesn’t route AR’s problem to route accounting.'],
@@ -1208,18 +1331,21 @@ document.addEventListener('click',ev=>{
   if(a==='scen'){S.scen=k;render();return}
   if(a==='msel'){S.mSel.has(k)?S.mSel.delete(k):S.mSel.add(k);S.locked=false;render();return}
   if(a==='psel'){S.pSel.has(k)?S.pSel.delete(k):S.pSel.add(k);S.locked=false;render();return}
-  if(a==='lock'){S.locked=true;S.lockedObj=S.obj;logIt('Ricardo Salas','locked the blueprint for “'+O().n+'”');render();return}
+  if(a==='lock'){S.locked=true;S.lockedObj=S.obj;logIt('ricardo','locked the blueprint for “'+O().n+'”',['marisol','jorge']);render();return}
   if(a==='opt'){S.opt=k;render();return}
   if(a==='vreset'){S.v={...VDEF};render();return}
   if(a==='lane'){S.lane=k;const f=ITEMS.find(i=>i.lane===k);S.sel=f?f.id:null;render();return}
   if(a==='pick'){const it=ITEMS.find(i=>i.id===k);if(it){S.lane=it.lane;S.sel=k}render();return}
-  if(a==='thread'){S.threadDone=true;logIt('Ana Ruiz','approved INV-90881234: payment to cash application, 4-case credit to route accounting, UCX case linked');toast('Routed to cash application and route accounting');render();return}
-  if(a==='undo-thread'){S.threadDone=false;logIt('Ana Ruiz','undid routing of INV-90881234');render();return}
-  if(a==='do'){S.done[k]=b.dataset.v;logIt(PERSONAS.find(p=>p[0]===S.persona)[1],b.dataset.v.toLowerCase()+' · '+k);toast(b.dataset.v);render();return}
-  if(a==='undo'){delete S.done[k];render();return}
-  if(a==='refresh'){S.staleSnooze=true;ITEMS.filter(i=>i.lane==='paused').forEach(i=>{i.lane='collect';i.coll=i.sapAmt;i.reason='Released after feed refresh: the store accepted in full. Collectible.';i.pat='P01';i.conf=.9;i.act='Send the first reminder with the CFDI attached'});logIt('System','route 233 handheld feed refreshed; 3 items released to the collect list');toast('Feed refreshed');if(S.lane==='paused'){S.lane='collect';S.sel='STMT-SG-0921'}render();return}
-  if(a==='opp'){S.oppSent[k]=true;logIt('Ana Ruiz','sent an opportunity to '+b.dataset.to);toast('Sent to '+b.dataset.to);render();return}
-  if(a==='promote'){S.rulePromoted[k]=true;logIt('Marisol Vega','let rule '+k+' act on its own');toast('Rule '+k+' now acts on its own');render();return}
+  if(a==='thread'){S.threadDone=true;logIt('ana','approved INV-90881234: MXN 43,740 to cash application, 4-case credit to route accounting, UCX case linked',['jorge','paola']);toast('Routed to cash application and route accounting');render();return}
+  if(a==='undo-thread'){S.threadDone=false;logIt('ana','undid routing of INV-90881234',['jorge','paola']);render();return}
+  if(a==='hlag'){S.hlag=k&&S.hlag!==k?k:null;render();return}
+  if(a==='do'){const who=PMAP[S.persona],aud=(b.dataset.aud||'').split(',').filter(Boolean),txt=b.dataset.l||(b.dataset.v.charAt(0).toLowerCase()+b.dataset.v.slice(1)+' · '+k);
+    S.done[k]=b.dataset.v;S.dmeta[k]={aud,txt};if(b.dataset.r)S.res[k]={k:b.dataset.r,amt:+b.dataset.amt||0,by:who,ag:b.dataset.ag==='1'};
+    logIt(who,txt,aud);toast(b.dataset.v);render();return}
+  if(a==='undo'){const m=S.dmeta[k]||{aud:[],txt:k};delete S.done[k];delete S.res[k];delete S.dmeta[k];logIt(PMAP[S.persona],'undid: '+m.txt,m.aud);render();return}
+  if(a==='refresh'){S.staleSnooze=true;ITEMS.filter(i=>i.lane==='paused').forEach(i=>{i.lane='collect';i.coll=i.sapAmt;i.reason='Released after feed refresh: the store accepted in full. Collectible.';i.pat='P01';i.conf=.9;i.act='Send the first reminder with the CFDI attached';i.out={k:'contact',txt:'First reminder sent with the CFDI',lg:'sent the first reminder to '+i.chain+', '+i.id}});logIt('agent','route 233 handheld feed refreshed; released 3 of Ana Ruiz’s invoices to her collect list',['ana']);toast('Feed refreshed');if(S.lane==='paused'){S.lane='collect';S.sel='STMT-SG-0921'}render();return}
+  if(a==='opp'){S.oppSent[k]=true;logIt('ana','sent an opportunity to '+b.dataset.to,[{o1:'jorge',o2:'elena',o3:'daniela'}[k]]);toast('Sent to '+b.dataset.to);render();return}
+  if(a==='promote'){S.rulePromoted[k]=true;logIt('marisol','let rule '+k+' act on its own: short-delivery credits under MXN 2,000 now post without asking',['jorge']);toast('Rule '+k+' now acts on its own');render();return}
 });
 document.addEventListener('input',ev=>{const t=ev.target;
   if(t.dataset.act==='tgt'){S.targets[S.obj]=+t.value;S.locked=false;const g=gap();$('#tgtv').textContent=fmtO(S.targets[S.obj]);$('#tgtg').textContent=fmtG(g);$('#tgtw').textContent=O().value(g);return}
@@ -1227,7 +1353,8 @@ document.addEventListener('input',ev=>{const t=ev.target;
 });
 document.addEventListener('change',ev=>{const t=ev.target;
   if(t.dataset.act==='tbl'){S.tables[t.dataset.k]=t.checked;if(S.kg===2)S.kg=0;render();return}
-  if(t.id==='persona'){S.persona=t.value;render();window.scrollTo({top:0});return}
+  if(t.id==='persona'){S.seen[PMAP[S.persona]]=S.seq;S.persona=t.value;render();window.scrollTo({top:0});return}
+  if(t.dataset.act==='owna'||t.dataset.act==='ownr'){const o=S.own[t.dataset.k]||{};o[t.dataset.act==='owna'?'a':'r']=t.value;S.own[t.dataset.k]=o;S.locked=false;render();return}
   if(t.dataset.act==='mode'){S.modes[t.dataset.k]=t.value;S.locked=false;return}
 });
 render();
