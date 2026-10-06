@@ -445,37 +445,77 @@ const HANDOFFS=[
  {n:'Payment applied within 1 day of receipt',from:'Cash application → Collections',v:81,t:95,w:90,src:'FEBEP × Celonis'},
  {n:'UCX case linked to the invoice',from:'Customer service → Collections',v:63,t:95,w:85,src:'Salesforce Case × VBRK'},
 ];
+/* O2C health check KPIs.
+   sys: C = client inventory, sourced Celonis → EDF → Gold · E = client inventory, already in EDF · P = proposed by Tiger (not in the client's KPI scope).
+   Names and categories for C and E follow the client's "KPIs in Scope" inventory (61 KPIs: 15 Celonis, 46 EDF). Values and peer quartiles are illustrative.
+   lt: lag = result reported upward · lead = what a team can move this week and that predicts a lagging result · ctx = volume or value count, shown for drill-down.
+   The lead/lag classification is Tiger's judgement for this demo; confirm with the client. */
+const KC={apo:'Automation & Process Optimization',ope:'Order Processing Efficiency',cs:'Customer Service',sov:'Sales Order Volume & Value',ar:'Receivables (proposed)'};
 const HKPIS=[
- {nd:'N1',n:'Orders with complete customer & price data',v:94.1,u:'%',dir:1,med:97,tq:99,lo:85,hi:100,o:['ccs','tch'],src:['Order','KNA1','KNVV']},
- {nd:'N1',n:'Promotions live ≥ 48 h before start',v:84.5,u:'%',dir:1,med:90,tq:96,lo:70,hi:100,o:['ded'],src:['cgcloud__Promotion__c','PRCD_ELEMENTS']},
- {nd:'N1',n:'New customer setup time',v:3.6,u:' d',dir:-1,med:2.5,tq:1.5,lo:0,hi:6,o:['ccs'],src:['Account','KNA1']},
- {nd:'N2',n:'Touchless order rate (this step)',v:74.1,u:'%',dir:1,med:80,tq:90,lo:55,hi:100,o:['tch'],src:['VBAK','o_celonis_SalesOrderItem']},
- {nd:'N2',n:'Blocked order rate',v:6.8,u:'%',dir:-1,med:5,tq:3,lo:0,hi:12,o:['tch','otif'],src:['VBAK','UKMBP_CMS_SGM']},
- {nd:'N2',n:'Order change rate',v:11.2,u:'%',dir:-1,med:9,tq:6,lo:0,hi:16,o:['tch'],src:['VBAP','e_celonis_ChangeSalesOrderItemPrice']},
- {nd:'N3',n:'OTIF % (cases)',v:91.5,u:'%',dir:1,med:94,tq:97,lo:85,hi:100,o:['otif'],src:['LIKP','LIPS','SHIPMENT']},
- {nd:'N3',n:'Invoice matches accepted delivery',v:94,u:'%',dir:1,med:97,tq:99,lo:85,hi:100,o:['col','ded'],src:['LMD_STOP_EXECUTION','VBRP']},
- {nd:'N4',n:'Average time to bill',v:18.6,u:' h',dir:-1,med:12,tq:6,lo:0,hi:30,o:['tch','cash'],src:['VBRK','LIKP']},
- {nd:'N4',n:'CFDI re-issue rate',v:3.1,u:'%',dir:-1,med:1.5,tq:.6,lo:0,hi:5,o:['tch','col'],src:['EDOCUMENT']},
- {nd:'N5',n:'DSO, DSD chains',v:44.4,u:' d',dir:-1,med:40,tq:36,lo:30,hi:55,o:['col','cash'],src:['ACDOCA','BSID']},
- {nd:'N5',n:'Past due over 30 days, share of AR',v:12.2,u:'%',dir:-1,med:8,tq:5,lo:0,hi:18,o:['col'],src:['BSID','KNB1']},
- {nd:'N5',n:'Payments applied within 1 day',v:81,u:'%',dir:1,med:90,tq:95,lo:60,hi:100,o:['cash','col'],src:['FEBEP','o_celonis_Payment']},
- {nd:'N5',n:'Deductions, share of Modern trade sales',v:8.5,u:'%',dir:-1,med:6.5,tq:4.5,lo:2,hi:12,o:['ded'],src:['Case','BSAD']},
- {nd:'N5',n:'UCX cases linked to an invoice',v:63,u:'%',dir:1,med:80,tq:92,lo:40,hi:100,o:['col','ded'],src:['Case','VBRK']},
- {nd:'N5',n:'Promises to pay kept',v:71,u:'%',dir:1,med:78,tq:88,lo:50,hi:100,o:['col'],src:['UDM_P2P_ATTR','BSAD']},
- {nd:'N2',n:'End-to-end touchless orders (per order)',v:52,u:'%',dir:1,med:65,tq:80,lo:30,hi:100,o:['tch'],src:['o_celonis_SalesOrderItem','o_celonis_BillingDocument','o_celonis_Payment']},
+ /* ---- lagging: in the client's scope ---- */
+ {lt:'lag',id:'otif',short:'OTIF',sys:'E',cat:'cs',nd:'N3',n:'OTIF % (Cases)',v:91.5,u:'%',dir:1,med:94,tq:97,lo:85,hi:100,o:['otif'],amb:'A result for logistics; it also leads lost sales'},
+ {lt:'lag',id:'fill',short:'Fill rate',sys:'E',cat:'cs',nd:'N3',n:'Customer Fill Rate %',v:95.8,u:'%',dir:1,med:97,tq:98.5,lo:90,hi:100,o:['otif']},
+ {lt:'lag',id:'otd',short:'On time',sys:'E',cat:'cs',nd:'N3',n:'On Time Delivery %',v:93.4,u:'%',dir:1,med:95,tq:97.5,lo:85,hi:100,o:['otif']},
+ {lt:'lag',id:'cyc',short:'Cycle time',sys:'E',cat:'ope',nd:'N2',n:'Average Total Cycle Time (Days)',v:4.6,u:' d',dir:-1,med:3.8,tq:2.9,lo:1,hi:7,o:['tch','otif']},
+ {lt:'lag',id:'olt',short:'Order lead time',sys:'E',cat:'ope',nd:'N2',n:'Average Order Lead Time (Days)',v:2.4,u:' d',dir:-1,med:2,tq:1.5,lo:.5,hi:4,o:['otif','tch']},
+ {lt:'lag',id:'rej',short:'Rejected value',sys:'E',cat:'sov',nd:'N2',n:'Rejected Net Order Value',disp:'MXN 182M a year',dir:-1,o:['otif','ded'],note:'1.9% of net order value'},
+ /* ---- lagging: proposed, not in the client's KPI scope ---- */
+ {lt:'lag',id:'tch',short:'E2E touchless',sys:'P',cat:'apo',nd:'N2',n:'End-to-end touchless orders (per order)',v:52,u:'%',dir:1,med:65,tq:80,lo:30,hi:100,o:['tch'],src:['o_celonis_SalesOrderItem','o_celonis_BillingDocument','o_celonis_Payment'],always:1,amb:'Counted once per order from capture to cash. The in-scope Touchless Order Rate counts order management only'},
+ {lt:'lag',id:'dso',short:'DSO',sys:'P',cat:'ar',nd:'N5',n:'DSO, DSD chains',v:44.4,u:' d',dir:-1,med:40,tq:36,lo:30,hi:55,o:['col','cash'],src:['ACDOCA','BSID']},
+ {lt:'lag',id:'pd',short:'Past due > 30',sys:'P',cat:'ar',nd:'N5',n:'Past due over 30 days, share of AR',v:12.2,u:'%',dir:-1,med:8,tq:5,lo:0,hi:18,o:['col'],src:['BSID','KNB1']},
+ {lt:'lag',id:'ded',short:'Deductions',sys:'P',cat:'ar',nd:'N5',n:'Deductions, share of Modern trade sales',v:8.5,u:'%',dir:-1,med:6.5,tq:4.5,lo:2,hi:12,o:['ded'],src:['Case','BSAD']},
+ /* ---- leading: client inventory, Celonis-sourced ---- */
+ {lt:'lead',sys:'C',cat:'apo',nd:'N2',n:'Touchless Order Rate (%)',v:74.1,u:'%',dir:1,med:80,tq:90,lo:55,hi:100,o:['tch'],dr:['tch','cyc','olt']},
+ {lt:'lead',sys:'C',cat:'apo',nd:'N2',n:'Average Number of Touches',v:2.3,u:'',dir:-1,med:1.8,tq:1.2,lo:0,hi:4,o:['tch'],dr:['tch','cyc']},
+ {lt:'lead',sys:'C',cat:'apo',nd:'N2',n:'Automation Rate',v:68,u:'%',dir:1,med:75,tq:85,lo:50,hi:100,o:['tch'],dr:['tch','cyc']},
+ {lt:'lead',sys:'C',cat:'apo',nd:'N2',n:'Blocked Order Rate',v:6.8,u:'%',dir:-1,med:5,tq:3,lo:0,hi:12,o:['tch','otif'],dr:['otif','otd','olt']},
+ {lt:'lead',sys:'C',cat:'apo',nd:'N2',n:'Credit Block Rate (%)',v:2.9,u:'%',dir:-1,med:2,tq:1,lo:0,hi:5,o:['tch','col'],dr:['olt','otif']},
+ {lt:'lead',sys:'C',cat:'apo',nd:'N2',n:'Manual Block (Count)',disp:'1,860 a month',dir:-1,o:['tch'],dr:['olt','cyc']},
+ {lt:'lead',sys:'C',cat:'apo',nd:'N2',n:'Manual Price Change',v:4.6,u:'%',dir:-1,med:3,tq:1.5,lo:0,hi:8,o:['ded','tch'],dr:['ded','rej','tch'],note:'of order items'},
+ {lt:'lead',sys:'C',cat:'ope',nd:'N2',n:'Order Change Rate',v:11.2,u:'%',dir:-1,med:9,tq:6,lo:0,hi:16,o:['tch'],dr:['otif','cyc','ded']},
+ {lt:'lead',sys:'C',cat:'ope',nd:'N2',n:'Order Entry Key Field Change Rate',v:5.3,u:'%',dir:-1,med:4,tq:2,lo:0,hi:9,o:['tch','ccs'],dr:['otif','ded']},
+ {lt:'lead',sys:'C',cat:'ope',nd:'N2',n:'Rework Order Rate',v:9.4,u:'%',dir:-1,med:7,tq:4,lo:0,hi:14,o:['tch'],dr:['cyc','tch']},
+ {lt:'lead',sys:'C',cat:'ope',nd:'N2',n:'Rework Rate',v:12.6,u:'%',dir:-1,med:9,tq:5,lo:0,hi:18,o:['tch'],dr:['cyc']},
+ {lt:'lead',sys:'C',cat:'apo',nd:'N3',n:'Delivery Block Rate (%)',v:3.4,u:'%',dir:-1,med:2.5,tq:1.5,lo:0,hi:6,o:['otif'],dr:['otif','otd']},
+ {lt:'lead',sys:'C',cat:'apo',nd:'N3',n:'Manual Delivery Date Change',v:8.1,u:'%',dir:-1,med:6,tq:3.5,lo:0,hi:12,o:['otif','tch'],dr:['otd','otif'],note:'of order items'},
+ {lt:'lead',sys:'C',cat:'apo',nd:'N4',n:'Billing Block Rate (%)',v:2.2,u:'%',dir:-1,med:1.5,tq:.8,lo:0,hi:4,o:['tch','cash'],dr:['dso','cyc']},
+ /* ---- leading: client inventory, already in EDF ---- */
+ {lt:'lead',sys:'E',cat:'ope',nd:'N2',n:'Average Order Validation Time (Days)',v:.6,u:' d',dir:-1,med:.4,tq:.2,lo:0,hi:1.2,o:['tch','ccs'],dr:['olt']},
+ {lt:'lead',sys:'E',cat:'ope',nd:'N3',n:'Average Partial Cycle Time (Days)',v:1.7,u:' d',dir:-1,med:1.4,tq:1,lo:0,hi:3,o:['otif'],dr:['cyc','otd']},
+ {lt:'lead',sys:'E',cat:'apo',nd:'N3',n:'Average Delay (Days)',v:1.4,u:' d',dir:-1,med:1,tq:.5,lo:0,hi:3,o:['otif'],dr:['otd']},
+ {lt:'lead',sys:'E',cat:'sov',nd:'N3',n:'Unshipped Net Value',disp:'MXN 41M open',dir:-1,o:['otif'],dr:['fill','otif']},
+ {lt:'lead',sys:'E',cat:'sov',nd:'N3',n:'Missing Picking (Value)',disp:'MXN 6.2M a month',dir:-1,o:['otif'],dr:['fill','otif']},
+ {lt:'lead',sys:'E',cat:'ope',nd:'N4',n:'Average Time to Bill (Hours)',v:18.6,u:' h',dir:-1,med:12,tq:6,lo:0,hi:30,o:['tch','cash'],dr:['dso','cyc']},
+ {lt:'lead',sys:'E',cat:'sov',nd:'N4',n:'Unbilled Shipped Revenue',disp:'MXN 38M',dir:-1,o:['cash','col'],dr:['dso']},
+ {lt:'lead',sys:'E',cat:'sov',nd:'N4',n:'Unbilled Revenue Rate',v:1.6,u:'%',dir:-1,med:1,tq:.5,lo:0,hi:3,o:['cash','col'],dr:['dso']},
+ {lt:'lead',sys:'E',cat:'ope',nd:'N4',n:'Weighted Average Days Since Goods Issue',v:1.9,u:' d',dir:-1,med:1.2,tq:.6,lo:0,hi:3,o:['cash','col'],dr:['dso']},
+ /* ---- leading: proposed by Tiger ---- */
+ {lt:'lead',sys:'P',cat:'ope',nd:'N1',n:'Orders with complete customer & price data',v:94.1,u:'%',dir:1,med:97,tq:99,lo:85,hi:100,o:['ccs','tch'],src:['Order','KNA1','KNVV'],dr:['tch','olt']},
+ {lt:'lead',sys:'P',cat:'ope',nd:'N1',n:'Promotions live ≥ 48 h before start',v:84.5,u:'%',dir:1,med:90,tq:96,lo:70,hi:100,o:['ded'],src:['cgcloud__Promotion__c','PRCD_ELEMENTS'],dr:['ded','rej']},
+ {lt:'lead',sys:'P',cat:'cs',nd:'N3',n:'Invoice matches accepted delivery',v:94,u:'%',dir:1,med:97,tq:99,lo:85,hi:100,o:['col','ded'],src:['LMD_STOP_EXECUTION','VBRP'],dr:['pd','ded','dso']},
+ {lt:'lead',sys:'P',cat:'ope',nd:'N4',n:'CFDI re-issue rate',v:3.1,u:'%',dir:-1,med:1.5,tq:.6,lo:0,hi:5,o:['tch','col'],src:['EDOCUMENT'],dr:['dso','tch']},
+ {lt:'lead',sys:'P',cat:'ar',nd:'N5',n:'Payments applied within 1 day',v:81,u:'%',dir:1,med:90,tq:95,lo:60,hi:100,o:['cash','col'],src:['FEBEP','o_celonis_Payment'],dr:['dso','pd']},
+ {lt:'lead',sys:'P',cat:'ar',nd:'N5',n:'UCX cases linked to an invoice',v:63,u:'%',dir:1,med:80,tq:92,lo:40,hi:100,o:['col','ded'],src:['Case','VBRK'],dr:['pd','dso','ded']},
+ {lt:'lead',sys:'P',cat:'ar',nd:'N5',n:'Promises to pay kept',v:71,u:'%',dir:1,med:78,tq:88,lo:50,hi:100,o:['col'],src:['UDM_P2P_ATTR','BSAD'],dr:['pd','dso'],amb:'A result for the collector; a leading measure for DSO'},
 ];
-
-/* Leading vs lagging (4DX-style lead and lag measures). Lagging = results the CFO reports; leading = what teams can move this week and that predicts a lagging result.
-   Classification is Tiger's judgement for this demo; confirm with the client. */
-const LAG={'OTIF % (cases)':['otif','OTIF','Lagging for logistics; it also leads lost sales'],'DSO, DSD chains':['dso','DSO'],'Past due over 30 days, share of AR':['pd','Past due > 30'],
- 'Deductions, share of Modern trade sales':['ded','Deductions'],'End-to-end touchless orders (per order)':['tch','E2E touchless']};
-const DRIVES={'Orders with complete customer & price data':['tch'],'Promotions live ≥ 48 h before start':['ded'],'New customer setup time':['tch'],
- 'Touchless order rate (this step)':['tch'],'Blocked order rate':['otif','tch'],'Order change rate':['tch','ded'],'Invoice matches accepted delivery':['pd','ded','dso'],
- 'Average time to bill':['dso'],'CFDI re-issue rate':['dso','tch'],'Payments applied within 1 day':['dso','pd'],'UCX cases linked to an invoice':['pd','dso','ded'],
- 'Promises to pay kept':['pd','dso']};
-const AMB={'Promises to pay kept':'An outcome for the collector; a leading measure for DSO'};
-HKPIS.forEach(k=>{if(LAG[k.n]){k.lt='lag';k.id=LAG[k.n][0];k.short=LAG[k.n][1];if(LAG[k.n][2])k.amb=LAG[k.n][2]}else{k.lt='lead';k.dr=DRIVES[k.n]||[];if(AMB[k.n])k.amb=AMB[k.n]}});
+/* The rest of the client's inventory: volume and value counts, shown for drill-down. [name, category, step, sys, pairs with] */
+const KCTX=[
+ ['Total Count of Cases Ordered','sov','N2','E','Customer Fill Rate %'],['Total Count of Cases Delivered','sov','N3','E','Customer Fill Rate %'],['Total Count of Cases Delivered on Time','sov','N3','E','OTIF % (Cases)'],
+ ['Total Cycle Time','ope','N2','E','Average Total Cycle Time (Days)'],['Partial Cycle Time','ope','N3','E','Average Partial Cycle Time (Days)'],['Order Lead Time','ope','N2','E','Average Order Lead Time (Days)'],
+ ['Order Validation Time (Sales Order Capture to Delivery Creation Cycle Time)','ope','N2','E','Average Order Validation Time (Days)'],['Time to Bill (Hours)','ope','N4','E','Average Time to Bill (Hours)'],
+ ['Total Sales Orders','sov','N2','E',''],['Total Sales Orders (Average)','sov','N2','E',''],['Net Order Value','sov','N2','E',''],['Sales Order Items (Count)','sov','N2','E',''],
+ ['Net Order Item Value','sov','N2','E',''],['Total Item Net Value','sov','N2','E',''],['Deliveries (Count)','sov','N3','E',''],['Delivery Items (Count)','sov','N3','E',''],
+ ['Delivered Sales Order Items','sov','N3','E',''],['Delivered Net Order Value','sov','N3','E',''],['Unshipped Deliveries','sov','N3','E','Unshipped Net Value'],
+ ['Total Shipped Revenue','sov','N3','E',''],['Shipped Delivery Item Net Value','sov','N3','E',''],['Shipped Delivery Items (Count)','sov','N3','E',''],
+ ['Delivery Blocks (Count)','apo','N3','E','Delivery Block Rate (%)'],['Delivery Blocks (Net Value)','apo','N3','E','Delivery Block Rate (%)'],
+ ['Credit Blocks (Count)','apo','N2','E','Credit Block Rate (%)'],['Credit Blocks (Net Value)','apo','N2','E','Credit Block Rate (%)'],
+ ['Billing Blocks (Count)','apo','N4','E','Billing Block Rate (%)'],['Billing Blocks (Net Value)','apo','N4','E','Billing Block Rate (%)'],
+ ['Unbilled Delivery Items (Count)','sov','N4','E','Unbilled Revenue Rate'],['Unbilled Delivery Item Net Value','sov','N4','E','Unbilled Shipped Revenue'],
+ ['Unbilled Delivery Item Net Value','sov','N4','E','Listed twice in the inventory (#26 and #42)'],
+];
+const KOUT=[['Sales Order Quantity Change Rate','ope','N2','C','Confirmed out of scope, 23 Jun 2026']];
 const LAGK=id=>HKPIS.find(k=>k.lt==='lag'&&k.id===id);
+const SYSL={C:['Celonis → EDF','src'],E:['EDF','src'],P:['Proposed · not in KPI scope','acc']};
 /* ---------- systems and tables ---------- */
 const SYS=[
  {k:'sf',n:'Salesforce',d:'SFA & eB2B orders · UCX cases · Consumer Goods Cloud promotions & visits',lg:'SF',col:'#1f74b8'},
@@ -729,7 +769,7 @@ const PEOPLE={
  sofia:['Sofía Méndez','Collections analyst · Gulf','marisol'],diego:['Diego Ramírez','Collections analyst · Pacific','marisol'],
  marisol:['Marisol Vega','Collections lead · Mexico','ricardo'],jorge:['Jorge Treviño','Route accounting lead · Monterrey','ricardo'],
  pedro:['Pedro Garza','Route settlement clerk · Monterrey','jorge'],paola:['Paola Herrera','Cash application lead · Mexico','ricardo'],
- elena:['Elena Castro','Customer master data lead · Mexico','ricardo'],laura:['Laura Pineda','Billing & CFDI lead · Mexico','ricardo'],
+ elena:['Elena Castro','Customer master data lead · Mexico','ricardo'],lucia:['Lucía Pineda','Billing & CFDI lead · Mexico','ricardo'],
  daniela:['Daniela Flores','Customer service lead · Mexico',null],valeria:['Valeria Núñez','Commercial pricing lead · Mexico',null],
  arturo:['Arturo Lozano','Order management lead · GCC',null],hector:['Héctor Ramos','Logistics lead · Monterrey',null],
  ricardo:['Ricardo Salas','OTC process owner · Finance, Mexico',null],agent:['Agent','Mission agent',null]};
@@ -739,8 +779,8 @@ const up=k=>{const r=[];let m=PEOPLE[k]&&PEOPLE[k][2];while(m){r.push(m);m=PEOPL
 /* Visibility: your own actions, anything routed to you, and anything done by or routed to people below you. The OTC process owner sees all OTC events. */
 function canSee(e,P){if(P==='ricardo')return true;if(e.who===P||e.aud.includes(P))return true;return[e.who].concat(e.aud).some(x=>up(x).includes(P))}
 function relTag(e,P){if(e.who===P)return['You','acc'];if(e.aud.includes(P))return['To you','good'];if(up(e.who).includes(P))return['Your team',''];if(e.aud.some(x=>up(x).includes(P)))return['To your team',''];return['Across OTC','']}
-const MOWN={PR:'valeria',MD:'elena',OM:'arturo',DL:'hector',RA:'jorge',BL:'laura',CS:'daniela',CA:'paola',C1:'marisol',C2:'marisol',C3:'marisol'};
-const ACC_OPTS=['marisol','jorge','paola','elena','laura','daniela','valeria','arturo','hector','ricardo'];
+const MOWN={PR:'valeria',MD:'elena',OM:'arturo',DL:'hector',RA:'jorge',BL:'lucia',CS:'daniela',CA:'paola',C1:'marisol',C2:'marisol',C3:'marisol'};
+const ACC_OPTS=['marisol','jorge','paola','elena','lucia','daniela','valeria','arturo','hector','ricardo'];
 const RESP_OPTS=['Collections analysts','Route settlement clerks','Cash application analysts','Customer data specialists','Customer service agents','Order specialists','Pricing analysts','Route planners','Billing analysts'];
 
 /* ================= state ================= */
@@ -933,22 +973,35 @@ function kpos(k){const b=(a,c)=>k.dir<0?a<=c:a>=c;if(b(k.v,k.tq))return['Top qua
 function cHealth(){
   if(!conn('sap'))return `<div class="head"><div><div class="eyebrow">Client context · O2C health check</div><h2>O2C health check</h2></div></div><div class="empty">Connect SAP first.<button class="btn pri" data-act="cstep" data-i="0">Go to Sources</button></div>`;
   const nd=id=>NODES.find(n=>n.id===id);
-  const val=(k,ready)=>ready?`<div class="kv"><b class="num">${k.v}${k.u}</b><span class="chip ${kpos(k)[1]}">${kpos(k)[0]}</span></div>${qtrack(k)}`:'<span class="note">Needs an excluded table</span>';
-  const srcs=k=>`<div class="chips" style="margin-top:4px"><span class="chip" style="color:${nd(k.nd).c}">${esc(nd(k.nd).n)}</span>${k.src.map(s=>`<span class="chip src ${tIncluded(s)?'':'off'}">${esc(s)}</span>`).join('')}</div>`;
+  const ready=k=>k.sys!=='P'||k.always||(k.src||[]).every(tIncluded);
+  const val=k=>!ready(k)?'<span class="note">Needs a table excluded in Sources</span>':k.disp?`<div class="kv"><b class="num">${esc(k.disp)}</b><span class="chip">No peer benchmark</span></div><div class="note">${k.note?esc(k.note)+' · ':''}tracked as a trend</div>`
+    :`<div class="kv"><b class="num">${k.v}${k.u}</b>${k.note?`<span class="note">${esc(k.note)}</span>`:''}<span class="chip ${kpos(k)[1]}">${kpos(k)[0]}</span></div>${qtrack(k)}`;
+  const srcs=k=>`<div class="chips" style="margin-top:4px"><span class="chip ${SYSL[k.sys][1]}">${SYSL[k.sys][0]}</span><span class="chip" style="color:${nd(k.nd).c}">${esc(nd(k.nd).n)}</span>${k.sys==='P'?(k.src||[]).map(s=>`<span class="chip src ${tIncluded(s)?'':'off'}">${esc(s)}</span>`).join(''):`<span class="chip">${esc(KC[k.cat])}</span>`}</div>`;
   const lags=HKPIS.filter(k=>k.lt==='lag'),leads=HKPIS.filter(k=>k.lt==='lead'),H=S.hlag;
-  const lagRows=lags.map(k=>{const ready=k.src.every(tIncluded),drv=leads.filter(l=>l.dr.includes(k.id)).length;
-    return `<div class="krow lagrow ${H===k.id?'sel':''}"><div><b>${esc(k.n)}</b>${k.amb?`<div class="note">${esc(k.amb)}</div>`:''}${srcs(k)}</div><div>${val(k,ready)}</div>
+  const inv=HKPIS.filter(k=>k.sys!=='P').length+KCTX.length+KOUT.length,invC=HKPIS.filter(k=>k.sys==='C').length+KOUT.length;
+  const lagRow=k=>{const drv=leads.filter(l=>l.dr.includes(k.id)).length;
+    return `<div class="krow lagrow ${H===k.id?'sel':''}"><div><b>${esc(k.n)}</b>${k.amb?`<div class="note">${esc(k.amb)}</div>`:''}${srcs(k)}</div><div>${val(k)}</div>
      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-start"><button class="btn sm ${H===k.id?'pri':''}" data-act="hlag" data-k="${k.id}" aria-pressed="${H===k.id}">${H===k.id?'Showing':'Show'} its ${drv} leading driver${drv===1?'':'s'}</button>
-     <div class="chips">${k.o.map(o=>`<span class="chip ${S.scope.includes(o)?'acc':''}">${esc(OB(o).short)}</span>`).join('')}</div></div></div>`}).join('');
+     <div class="chips">${k.o.map(o=>`<span class="chip ${S.scope.includes(o)?'acc':''}">${esc(OB(o).short)}</span>`).join('')}</div></div></div>`};
+  const lagIn=lags.filter(k=>k.sys!=='P'),lagP=lags.filter(k=>k.sys==='P');
+  const lagRows=`<div class="kgrp"><h4>In the current KPI scope · ${lagIn.length}</h4>${lagIn.map(lagRow).join('')}</div><div class="kgrp"><h4><span class="chip acc">Proposed addition</span> Not in the current ${inv}-KPI scope · ${lagP.length}</h4>${lagP.map(lagRow).join('')}</div>`;
   const leadGroups=NODES.map(n=>{const ks=leads.filter(k=>k.nd===n.id);if(!ks.length)return '';
-    return `<div class="kgrp"><h4><span style="color:${n.c}">■</span> ${esc(n.n)}</h4>${ks.map(k=>{const ready=k.src.every(tIncluded),on=H&&k.dr.includes(H);
-    return `<div class="krow ${H?(on?'hl':'dim'):''}"><div><b>${esc(k.n)}</b>${k.amb?`<div class="note">${esc(k.amb)}</div>`:''}${srcs(k)}</div><div>${val(k,ready)}</div>
+    return `<div class="kgrp"><h4><span style="color:${n.c}">■</span> ${esc(n.n)} · ${ks.length}</h4>${ks.map(k=>{const on=H&&k.dr.includes(H);
+    return `<div class="krow ${H?(on?'hl':'dim'):''}"><div><b>${esc(k.n)}</b>${k.amb?`<div class="note">${esc(k.amb)}</div>`:''}${srcs(k)}</div><div>${val(k)}</div>
      <div><div class="eyebrow" style="margin-bottom:4px">Drives</div><div class="chips">${k.dr.map(d=>`<span class="chip ${d===H?'acc':''}">${esc(LAGK(d).short)}</span>`).join('')}</div></div></div>`}).join('')}</div>`}).join('');
+  const cover=NODES.map(n=>{const c=HKPIS.filter(k=>k.sys!=='P'&&k.nd===n.id).length+KCTX.filter(x=>x[2]===n.id).length+KOUT.filter(x=>x[2]===n.id).length,pr=HKPIS.filter(k=>k.sys==='P'&&k.nd===n.id).length;
+    return `<div class="node" style="--nc:${n.c}"><b>${esc(n.n)}</b><span class="num" style="font-size:22px;font-weight:800;color:${c?'var(--ink)':'var(--bad)'}">${c}</span><span class="note">${c?'KPIs in scope':'No KPI in the current scope'}${pr?` · ${pr} proposed`:''}</span></div>`}).join('');
+  const ctxRows=KCTX.map(x=>`<tr><td>${esc(x[0])}</td><td>${esc(KC[x[1]])}</td><td>${esc(nd(x[2]).n)}</td><td><span class="chip src">${SYSL[x[3]][0]}</span></td><td class="note">${esc(x[4])}</td></tr>`).join('')
+   +KOUT.map(x=>`<tr style="opacity:.6"><td><s>${esc(x[0])}</s></td><td>${esc(KC[x[1]])}</td><td>${esc(nd(x[2]).n)}</td><td><span class="chip src">${SYSL[x[3]][0]}</span></td><td class="note">${esc(x[4])}</td></tr>`).join('');
+  const invPanel=`<section class="panel"><div class="ph"><div><h3>Your OTC KPI inventory, read against the process</h3><p class="sub">${inv} KPIs in scope: ${invC} sourced from Celonis, ${inv-invC} already in EDF. One is confirmed out of scope. Sorted here into ${lagIn.length} lagging, ${leads.filter(k=>k.sys!=='P').length} leading and ${KCTX.length} volume measures.</p></div></div>
+    <div class="o2cflow">${cover}</div>
+    <div class="say" style="margin-top:12px"><b>Worth asking:</b> the KPI scope runs from order to bill. Customer setup and receivables have no KPI in it, yet receivables is where order-to-cash reaches the CFO’s cash. The ${lagP.length+leads.filter(k=>k.sys==='P').length} measures marked <i>Proposed</i> below would close that gap. Is receivables owned by this programme, or by another?</div></section>`;
   const col=S.scope.includes('col');
+
   return `<div class="head"><div><div class="eyebrow">Client context · O2C health check</div><h2>Where Mexico’s order-to-cash stands, step by step</h2>
-    <p class="lede">KPIs computed from 18 months of the connected systems, placed against peer quartiles. Gaps rank the objectives in the builder.</p></div><span class="illus">Illustrative benchmarks</span></div>
+    <p class="lede">Your KPI inventory, sorted into the results you report and the measures teams can move, with the receivables measures we propose adding. Gaps rank the objectives in the builder.</p></div><span class="illus">Illustrative values and benchmarks</span></div>
    <div class="tiles">
-    <div class="tile hero"><span class="eyebrow">Touchless, counted per order</span><b>52%</b><small>each team reports 71–88% by its own definition</small></div>
+    <div class="tile hero"><span class="eyebrow">Touchless, counted per order</span><b>52%</b><small>vs Touchless Order Rate 74.1% for order management alone</small></div>
     <div class="tile"><span class="eyebrow">Hand-offs on target</span><b>0 of 7</b><small>see below</small></div>
     <div class="tile"><span class="eyebrow">Past due over 30 days</span><b>${mxnM(342)}</b><small>DSD chains · 12.2% of AR</small></div>
     <div class="tile"><span class="eyebrow">Modern trade deductions</span><b>8.5%</b><small>of Modern trade sales</small></div></div>
@@ -957,9 +1010,12 @@ function cHealth(){
     <div class="tw" style="margin-top:6px"><table class="t"><thead><tr><th>Category</th><th class="r">Amount</th><th>Found by joining</th><th>Owner</th></tr></thead><tbody>
     ${WF.map(w=>`<tr><td><b>${esc(w.l)}</b></td><td class="r num">${mxnM(w.v)}</td><td>${w.src.map(s=>`<span class="chip src">${esc(s)}</span>`).join(' ')}</td><td>${esc(w.to)}</td></tr>`).join('')}
     <tr><td><b>Genuinely collectible</b></td><td class="r num"><b>${mxnM(COLLECTIBLE)}</b></td><td>Everything above ruled out</td><td>Collector</td></tr></tbody></table></div></section>`:''}
+   ${invPanel}
    <section class="panel"><div class="ph"><div><span class="grp-h lag"><b>Lagging measures</b></span><h3 style="margin-top:4px">The results the CFO reports</h3><p class="sub">${lags.length} measures. They move only when cash lands, orders ship or deductions post. Pick one to see what drives it. Dot = Mexico · grey tick = peer median · green tick = top quartile.</p></div></div>${lagRows}</section>
-   <section class="panel"><div class="ph"><div><span class="grp-h lead"><b>Leading measures</b></span><h3 style="margin-top:4px">What teams can move this week</h3><p class="sub">${leads.length} measures, by process step. Each names the lagging results it predicts. ${H?`Highlighted: the drivers of <b>${esc(LAGK(H).short)}</b>.`:''}</p></div>${H?'<button class="btn sm" data-act="hlag" data-k="">Show all</button>':''}</div>${leadGroups}</section>
-   <p class="note">Leading and lagging classification is Tiger’s for this demo, following the lead/lag measure idea from <i>The 4 Disciplines of Execution</i>. Some measures sit on both sides depending on who owns them; those carry a note.</p>
+   <section class="panel"><div class="ph"><div><span class="grp-h lead"><b>Leading measures</b></span><h3 style="margin-top:4px">What teams can move this week</h3><p class="sub">${leads.length} measures by process step: ${leads.filter(k=>k.sys!=='P').length} from your inventory, ${leads.filter(k=>k.sys==='P').length} proposed. Each names the lagging results it predicts. ${H?`Highlighted: the drivers of <b>${esc(LAGK(H).short)}</b>.`:''}</p></div>${H?'<button class="btn sm" data-act="hlag" data-k="">Show all</button>':''}</div>${leadGroups}</section>
+   <p class="note">Leading and lagging classification is Tiger’s for this demo, following the lead/lag measure idea from <i>The 4 Disciplines of Execution</i>. Some measures sit on both sides depending on who owns them; those carry a note. Values and peer quartiles are illustrative until the pilot baseline.</p>
+   <details class="panel"><summary style="cursor:pointer"><b>Volume and value measures</b> <span class="chip">${KCTX.length}</span> <span class="note">counts and values from your inventory, used for drill-down rather than steering</span></summary>
+    <div class="tw" style="margin-top:10px"><table class="t"><thead><tr><th>KPI</th><th>Category</th><th>Step</th><th>Source</th><th>Pairs with</th></tr></thead><tbody>${ctxRows}</tbody></table></div></details>
    <section class="panel"><div class="ph"><div><h3>Hand-off contracts across the process</h3><p class="sub">Leading measures between teams: what each step owes the next. Bar = actual, tick = target.</p></div></div>${HANDOFFS.map(hrow).join('')}</section>
    ${nextBtn('cstep',3,'Knowledge graph')}`;
 }
@@ -1289,7 +1345,7 @@ PAGE.guide=()=>{header('guide');steps(null);
    ['Overview','1 min',['Walk the five process steps and the three modules.'],'“Order-to-cash runs across six systems and each team optimises its own step.”'],
    ['Context · Sources & scope','2 min',['Keep Collections in scope; show the other five objectives exist.','Connect all. Show the table picker: KNB1, LIPS, Case, FEBEP are recommended for collections.','Untick LMD_STOP_EXECUTION, note the pattern count, then re-tick.'],''],
    ['Context · Data explorer','1 min',['Open LIPS (accepted quantity), then the Cadena Norte agreement with its highlighted clauses.'],'“The documents are where the rules live.”'],
-   ['Context · Health check','3 min',['Land on 52% touchless per order vs 71–88% by team.','Collections waterfall: MXN 224M of MXN 510M is collectible.','Lagging measures first: the five results the CFO reports. Click DSO to light up its leading drivers.','Leading measures by step, then the seven hand-off contracts, none on target.'],'“The lagging measures tell you where you are. The leading ones are what a team can move this week.”'],
+   ['Context · Health check','3 min',['Land on 52% touchless per order vs 71–88% by team.','Collections waterfall: MXN 224M of MXN 510M is collectible.','Inventory panel: his 61 KPIs read against the five steps. Setup and receivables have none in scope. Ask who owns receivables.','Lagging: six of his results, then four proposed. Click DSO to light up its drivers: three of them are already his KPIs (time to bill, unbilled shipped revenue, days since goods issue).','Leading by step, the volume measures folded away, then the seven hand-off contracts.'],'“The lagging measures tell you where you are. The leading ones are what a team can move this week.”'],
    ['Context · Knowledge graph','2 min',['Build it; read the ontology; walk invoice 90881234 to MXN 0 collectible.'],'“No single system holds the truth about this invoice.”'],
    ['Builder','5 min',['Show all six objectives; select Collect what is collectible.','Standards: global definitions, local ownership.','Ladder and Sankey: collector missions plus feeder missions upstream.','Patterns: tick the mined pattern; read the tables each needs. Rules: R2 and R5 are “fix upstream”.','Owners and channels; lock the blueprint.'],'“The standard travels across markets. The result belongs to Mexico.”'],
    ['Desk · Ana, collector','5 min',['Portfolio waterfall; leading cards move with each action, lagging cards say when they will move.','Reclassified lane: Cadena Norte invoice; approve and route. Routed out ≤ 2 days ticks up; the pipeline shows what is now with other teams.','Collect lane: Super Golfo “Do it” secures a promise; paused lane; send one opportunity.','Open History: Ana sees only her own items, not Luis or Sofía.'],'“Leading measures move today. DSO and past due move when the cash lands, and we will not pretend otherwise.”'],
