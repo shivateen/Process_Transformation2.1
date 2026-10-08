@@ -895,7 +895,7 @@ const fmtO=(v,o=O())=>o.u==='%'?(Math.round(v*10)/10)+'%':mxnM(v);
 const fmtG=(v,o=O())=>o.u==='%'?(Math.round(v*10)/10)+' pts':mxnM(v);
 
 /* ================= header and steps ================= */
-const PAGES=[{id:'home',l:'Overview'},{id:'ctx',l:'Client context',n:1},{id:'bld',l:'Transformation builder',n:2},{id:'desk',l:'Mission desk',n:3},{id:'src',l:'Sources'},{id:'guide',l:'Presenter guide'}];
+const PAGES=[{id:'home',l:'Overview'},{id:'ctx',l:'Client context',n:1},{id:'bld',l:'Transformation builder',n:2},{id:'desk',l:'Mission desk',n:3},{id:'src',l:'Sources'}];
 function header(active){
   $('#hdr').innerHTML=`<div class="bar"><a class="brand" href="#home"><i></i>Tiger Mission Control <span>· O2C Transformation</span></a>
    <nav class="pages" aria-label="Modules">${PAGES.map(p=>`<a class="pg ${p.id===active?'on':''}" href="#${p.id}">${p.n?`<span class="pn">${p.n}</span>`:''}${p.l}</a>`).join('')}</nav>
@@ -958,7 +958,7 @@ PAGE.home=()=>{header('home');steps(null);
   return `<section class="hero"><div class="eyebrow">O2C Transformation · Mexico</div>
    <h1>From the client’s own data to the people who move the CFO’s order-to-cash numbers</h1>
    <p class="lede">Order-to-cash in Mexico runs across Salesforce, SAP, the route handheld, OTM and Celonis, and each team optimises its own step. This demo builds one picture from all of them, turns a CFO objective into cross-team missions sized from history, and puts the work in front of the people who do it.</p>
-   <div class="btnrow" style="margin-top:14px"><a class="btn pri" href="#ctx">Start the demo →</a><a class="btn" href="#guide">Presenter guide</a></div></section>
+   <div class="btnrow" style="margin-top:14px"><a class="btn pri" href="#ctx">Start the demo →</a></div></section>
   <section class="panel"><div class="ph"><div><h3>The order-to-cash process in scope</h3><p class="sub">Five steps, seven hand-offs, six source systems.</p></div></div>
    <div class="o2cflow">${NODES.map(n=>`<div class="node" style="--nc:${n.c}"><b>${esc(n.n)}</b><ul>${n.items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`).join('')}</div></section>
   <section class="flow3" aria-label="Modules">
@@ -1430,7 +1430,7 @@ PAGE.src=()=>{header('src');steps(null);
   return `<div class="head"><div><div class="eyebrow">How we built these numbers</div><h2>Sources and assumptions</h2><p class="lede">Every figure is a public fact, a practice or standard model to confirm, a Tiger assumption, or demo content.</p></div></div>
    <section class="panel">${rows.map(r=>`<div class="src-row"><span>${esc(r[1])}</span><span class="chip ${K[r[0]][1]}">${K[r[0]][0]}</span><span class="use">${esc(r[4])} ${r[2]?`<a href="${r[2]}" target="_blank" rel="noopener">${esc(r[3])} ↗</a>`:esc(r[3])}</span></div>`).join('')}</section>${footer}`;
 };
-PAGE.guide=()=>{header('guide');steps(null);
+const presenterGuide=()=>{header('guide');steps(null);
   const A=[
    ['Overview','1 min',['Walk the five process steps and the three modules.'],'“Order-to-cash runs across six systems and each team optimises its own step.”'],
    ['Context · Sources & scope','2 min',['Keep Collections in scope; show the other five objectives exist.','Connect all. Show the table picker: KNB1, LIPS, Case, FEBEP are recommended for collections.','Untick LMD_STOP_EXECUTION, note the pattern count, then re-tick.'],''],
