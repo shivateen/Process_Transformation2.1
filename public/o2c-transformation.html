@@ -791,6 +791,9 @@ const WF=[
  {l:'Open UCX case, invalid',v:46,c:'var(--s3)',to:'Stays with the collector',src:['Case','Agreements']},
 ];
 const COLLECTIBLE=PD-WF.reduce((a,x)=>a+x.v,0);
+/* The same split for the over-30-days bucket (the CFO objective KPI). Not-yet-due items are only 2–5 days off, so almost none reach 30 days. */
+const PD30=342,WF30=[{...WF[0],v:50},{...WF[1],v:44},{...WF[2],v:3},{...WF[3],v:60},{...WF[4],v:34}];
+const COLL30=PD30-WF30.reduce((a,x)=>a+x.v,0);
 const THREAD={id:'INV-90881234',chain:'Cadena Norte',store:'Store 0381 · Monterrey',sap:48600,paid:43740,short:4860,
  nodes:[
   {s:'Salesforce · Order',t:'Order',v:'SO-7784410 · 40 cases multipack 45g · 30 Aug',c:''},
@@ -851,7 +854,7 @@ const RESP_OPTS=['Collections analysts','Route settlement clerks','Cash applicat
 const S={
  conn:{},busy:{},cstep:0,scope:['col'],tables:{},req:[],xtab:'tables',xsel:null,xsys:'all',kg:0,kgLog:[],rf:'all',
  bstep:0,obj:'col',targets:{},scen:'base',mSel:null,pSel:null,modes:{},locked:false,lockedObj:null,
- cfg:{},cfgOpen:null,cfgEnv:{},persona:'col',lane:'recl',sel:'INV-90881234',done:{},res:{},dmeta:{},seq:0,seen:{},mPrev:{},hlag:null,own:{},threadDone:false,oppSent:{},rulePromoted:{},staleSnooze:false,log:[],
+ cfg:{},cfgOpen:null,cfgEnv:{},wfa:'all',persona:'col',lane:'recl',sel:'INV-90881234',done:{},res:{},dmeta:{},seq:0,seen:{},mPrev:{},hlag:null,own:{},threadDone:false,oppSent:{},rulePromoted:{},staleSnooze:false,log:[],
  opt:'B',v:null
 };
 OBJS.forEach(o=>S.targets[o.id]=o.def);
@@ -1079,11 +1082,12 @@ function cHealth(){
     <div class="tile"><span class="eyebrow">Hand-offs on target</span><b>0 of 7</b><small>see below</small></div>
     <div class="tile"><span class="eyebrow">Past due over 30 days</span><b>${mxnM(342)}</b><small>DSD chains · 12.2% of AR</small></div>
     <div class="tile"><span class="eyebrow">Modern trade deductions</span><b>8.5%</b><small>of Modern trade sales</small></div></div>
-   ${col?`<section class="panel"><div class="ph"><div><h3>Collections in scope: from past due to genuinely collectible</h3><p class="sub">SAP says MXN 510M is past due. Read against payments, store acceptance, contrarecibo dates and UCX cases, MXN ${COLLECTIBLE}M is collectible today.</p></div><span class="illus">Illustrative</span></div>
-    <div class="svgwrap">${waterfall(PD,WF,COLLECTIBLE)}</div>
+   ${col?`<section class="panel"><div class="ph"><div><h3>Collections in scope: from past due to genuinely collectible</h3><p class="sub">${S.wfa==='30'?`Over 30 days past due, SAP shows MXN ${PD30}M: the objective KPI in the Transformation builder. Read against the other systems, MXN ${COLL30}M of it is collectible today, the baseline for mission C1.`:`SAP says MXN ${PD}M is past due at any age, of which MXN ${PD30}M is over 30 days. Read against payments, store acceptance, contrarecibo dates and UCX cases, MXN ${COLLECTIBLE}M is collectible today.`}</p></div>
+     <div class="btnrow"><div class="seg" role="group" aria-label="Ageing"><button class="${S.wfa==='30'?'':'on'}" data-act="wfa" data-k="all">All past due · ${PD}M</button><button class="${S.wfa==='30'?'on':''}" data-act="wfa" data-k="30">Over 30 days · ${PD30}M</button></div><span class="illus">Illustrative</span></div></div>
+    <div class="svgwrap">${S.wfa==='30'?waterfall(PD30,WF30,COLL30,{totalLabel:'Past due > 30 days in SAP',finalLabel:'Collectible > 30 days'}):waterfall(PD,WF,COLLECTIBLE)}</div>
     <div class="tw" style="margin-top:6px"><table class="t"><thead><tr><th>Category</th><th class="r">Amount</th><th>Found by joining</th><th>Owner</th></tr></thead><tbody>
-    ${WF.map(w=>`<tr><td><b>${esc(w.l)}</b></td><td class="r num">${mxnM(w.v)}</td><td>${w.src.map(s=>`<span class="chip src">${esc(s)}</span>`).join(' ')}</td><td>${esc(w.to)}</td></tr>`).join('')}
-    <tr><td><b>Genuinely collectible</b></td><td class="r num"><b>${mxnM(COLLECTIBLE)}</b></td><td>Everything above ruled out</td><td>Collector</td></tr></tbody></table></div></section>`:''}
+    ${(S.wfa==='30'?WF30:WF).map(w=>`<tr><td><b>${esc(w.l)}</b></td><td class="r num">${mxnM(w.v)}</td><td>${w.src.map(s=>`<span class="chip src">${esc(s)}</span>`).join(' ')}</td><td>${esc(w.to)}</td></tr>`).join('')}
+    <tr><td><b>Genuinely collectible</b></td><td class="r num"><b>${mxnM(S.wfa==='30'?COLL30:COLLECTIBLE)}</b></td><td>Everything above ruled out</td><td>Collector</td></tr></tbody></table></div></section>`:''}
    ${invPanel}
    <section class="panel"><div class="ph"><div><span class="grp-h lag"><b>Lagging measures</b></span><h3 style="margin-top:4px">The results the CFO reports</h3><p class="sub">${lags.length} measures. They move only when cash lands, orders ship or deductions post. Pick one to see what drives it. Dot = Mexico · grey tick = peer median · green tick = top quartile.</p></div></div>${lagRows}</section>
    <section class="panel"><div class="ph"><div><span class="grp-h lead"><b>Leading measures</b></span><h3 style="margin-top:4px">What teams can move this week</h3><p class="sub">${leads.length} measures by process step: ${leads.filter(k=>k.sys!=='P').length} from your inventory, ${leads.filter(k=>k.sys==='P').length} proposed. Each names the lagging results it predicts. ${H?`Highlighted: the drivers of <b>${esc(LAGK(H).short)}</b>.`:''}</p></div>${H?'<button class="btn sm" data-act="hlag" data-k="">Show all</button>':''}</div>${leadGroups}</section>
@@ -1151,7 +1155,8 @@ function bObjective(){
     <div class="grid2"><div><div class="btnrow" style="align-items:baseline;gap:12px"><span class="big base">${fmtO(o.base)}</span><span class="muted" style="font-size:22px">→</span><span class="big" id="tgtv">${fmtO(S.targets[o.id])}</span></div>
       <label for="tgt" class="eyebrow" style="display:block;margin-top:16px">Target</label><input id="tgt" type="range" min="${o.min}" max="${o.max}" step="${o.step}" value="${S.targets[o.id]}" data-act="tgt">
       <div class="note" style="display:flex;justify-content:space-between"><span>${fmtO(o.min)}</span><span>${fmtO(o.max)}</span></div></div>
-     <div class="facts"><div class="fact"><span>Gap to close</span><b class="num" id="tgtg">${fmtG(g)}</b></div><div class="fact"><span>What it is worth</span><b id="tgtw">${esc(o.value(g))}</b></div><div class="fact"><span>Baseline source</span><b>Computed from the connected systems, 18 months</b></div></div></div></section>
+     <div class="facts"><div class="fact"><span>Gap to close</span><b class="num" id="tgtg">${fmtG(g)}</b></div><div class="fact"><span>What it is worth</span><b id="tgtw">${esc(o.value(g))}</b></div><div class="fact"><span>Baseline source</span><b>Computed from the connected systems, 18 months</b></div></div></div>
+    ${o.id==='col'?`<div class="say" style="margin-top:12px"><b>How this ties to the health check:</b> SAP shows MXN ${PD}M past due; MXN ${PD30}M of it is over 30 days, and that is the number above. Only MXN ${COLL30}M of the ${PD30}M is collectible today. Of the other MXN ${PD30-COLL30}M, MXN ${WF30.slice(0,4).reduce((x,w)=>x+w.v,0)}M (paid but unapplied, short-delivered, not yet due, valid cases) leaves the balance only when upstream teams clear it, and MXN ${WF30[4].v}M is invalid cases the collector must reject before collecting. So the target is reached by two kinds of mission: collectors working the ${COLL30}M plus the invalid cases (C1, C2), and upstream missions clearing the rest (C3, cash application, route accounting, UCX case linking). <a href="#ctx" data-act="wf30">See the over-30 waterfall →</a></div>`:''}</section>
    ${nextBtn('bstep',1,'Standards')}`;
 }
 function bStandards(){const o=O();
@@ -1470,6 +1475,8 @@ document.addEventListener('click',ev=>{
   if(a==='xsys'){S.xsys=k;S.xsel=null;render();return}
   if(a==='xsel'){S.xsel=k;render();return}
   if(a==='kg'){buildKg();return}
+  if(a==='wfa'){S.wfa=k;render();return}
+  if(a==='wf30'){S.wfa='30';S.cstep=2;return}
   if(a==='kgshow'){S.kg=2;S.kgReady=false;render();window.scrollTo({top:0});return}
   if(a==='rf'){S.rf=k;render();return}
   if(a==='bstep'){S.bstep=+b.dataset.i;render();window.scrollTo({top:0});return}
