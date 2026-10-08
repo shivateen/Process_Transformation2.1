@@ -360,6 +360,29 @@ select option{background:var(--surface);color:var(--ink)}
 .lg-i .chips{justify-content:flex-end}
 tr.live td{background:var(--accent-soft)}
 th.grp{text-align:center!important;border-bottom:2px solid var(--line)!important}
+.conn{position:relative}
+.conn .top{padding-right:36px}
+.gear{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:9px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;color:var(--muted);padding:0}
+.gear:hover{color:var(--accent);border-color:var(--accent-line)}
+.gear svg{width:17px;height:17px}
+.gear.set{color:var(--accent);border-color:var(--accent-line);background:var(--accent-soft)}
+.ovl{position:fixed;inset:0;background:rgba(20,16,12,.5);z-index:70;display:grid;place-items:center;padding:16px}
+.mdl{background:var(--surface);border:1px solid var(--line);border-radius:14px;max-width:620px;width:100%;max-height:calc(100vh - 32px);overflow-y:auto;padding:20px 22px;display:flex;flex-direction:column;gap:14px;box-shadow:0 18px 50px rgba(0,0,0,.25)}
+.mdl-h{display:flex;gap:12px;align-items:center;position:sticky;top:-20px;margin:-20px -22px 0;padding:16px 22px 12px;background:var(--surface);border-bottom:1px solid var(--line);z-index:2}
+.mdl-f{position:sticky;bottom:-20px;margin:0 -22px -20px;padding:12px 22px 16px;background:var(--surface);border-top:1px solid var(--line);z-index:2}
+.mdl-h h3{font-size:17px}
+.mdl-h .x{margin-left:auto;border:0;background:none;font-size:22px;line-height:1;color:var(--muted);padding:4px 8px}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:10px 12px}
+.fld{display:flex;flex-direction:column;gap:4px;font-size:12px;min-width:0}
+.fld>span{font-weight:650;color:var(--muted)}
+.fld input,.fld select{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:7px 9px;font-size:13px;width:100%;min-width:0}
+.fld input[readonly]{color:var(--muted);background:var(--surface-2)}
+.fld.wide{grid-column:1/-1}
+.fld small{font-size:11px;color:var(--faint)}
+.fsec{font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);grid-column:1/-1;margin-top:4px;padding-top:8px;border-top:1px solid var(--line)}
+.fsec:first-child{border-top:0;padding-top:0;margin-top:0}
+.ctest{font-size:12.5px;border-radius:9px;padding:9px 12px;background:var(--surface-2)}
+.ctest.ok{background:var(--good-soft);color:var(--good)}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:9px;font-size:13px;font-weight:600;z-index:60;max-width:calc(100vw - 32px)}
 .disclaim{font-size:11.5px;color:var(--muted);text-align:center}
 .src-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 14px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}
@@ -536,6 +559,37 @@ const SYS=[
  {k:'doc',n:'Documents',d:'Chain agreements · policies · SOPs · mailbox & case exports',lg:'DOC',col:'#8a5a2a'},
 ];
 const ALL=['col','tch','ded','ccs','otif','cash'];
+/* Connector settings per source. Illustrative defaults; secrets are never entered here, only a reference to the client's key vault. [id,label,type,value,options,wide,hint] */
+const ENVS=['Sandbox (synthetic)','QA','Production'];
+const CFGF={
+ sap:[['§','Connection'],['mode','Connection method','sel','OData APIs via SAP BTP',['OData APIs via SAP BTP','RFC via SAP Cloud Connector','SAP Datasphere replication flow','SLT replication (CDC)']],
+  ['host','Host / API endpoint','txt','https://s4h-prd.client.example:443','',1],['sid','System ID (SID)','txt','PRD'],['client','Client','txt','100'],
+  ['bukrs','Company codes','txt','MX01','',0,'Comma-separated'],['vkorg','Sales organisations','txt','MX10'],
+  ['§','Authentication'],['auth','Method','sel','OAuth 2.0 client credentials',['OAuth 2.0 client credentials','X.509 certificate','Basic (technical user)']],
+  ['user','Client ID / technical user','txt','TIGER_O2C_READER'],['secret','Secret reference','txt','kv://otc-mx/sap-s4-reader','',1,'Held in the client’s key vault; never stored in the accelerator'],
+  ['§','Extraction'],['load','Load','sel','Initial 18 months, then daily delta',['Initial 18 months, then daily delta','Initial 18 months, then hourly delta','Full reload nightly']],['tz','Time zone','txt','America/Monterrey']],
+ sf:[['§','Connection'],['url','Instance URL','txt','https://client-mx.my.salesforce.com','',1],['org','Org ID','txt','00D5g00000XXXXX'],['api','API version','sel','v61.0',['v61.0','v60.0','v59.0']],
+  ['objs','Objects','txt','Account, Order, OrderItem, Case, cgcloud__Promotion__c, Visit','',1],
+  ['§','Authentication'],['auth','Method','sel','OAuth 2.0 JWT bearer (connected app)',['OAuth 2.0 JWT bearer (connected app)','OAuth 2.0 client credentials']],
+  ['user','Integration user','txt','o2c.reader@client.example'],['secret','Certificate reference','txt','kv://otc-mx/sf-jwt-cert','',1,'Held in the client’s key vault'],
+  ['§','Extraction'],['load','Load','sel','Bulk API 2.0, then Change Data Capture',['Bulk API 2.0, then Change Data Capture','Bulk API 2.0 nightly','REST API hourly']]],
+ dd:[['§','Connection'],['host','SAP TM / Direct Distribution host','txt','https://tm-prd.client.example','',1],['sid','System ID (SID)','txt','TMP'],['client','Client','txt','100'],
+  ['hh','Route handheld export','sel','SFTP drop, every 15 minutes',['SFTP drop, every 15 minutes','OData API','Event stream']],['path','Export path','txt','sftp://route-export.client.example/mx/stops/','',1],
+  ['§','Authentication'],['auth','Method','sel','X.509 certificate',['X.509 certificate','OAuth 2.0 client credentials','SSH key (SFTP)']],['secret','Credential reference','txt','kv://otc-mx/tm-reader','',1,'Held in the client’s key vault'],
+  ['§','Freshness'],['stale','Pause missions when a route feed is older than','sel','24 hours',['6 hours','12 hours','24 hours','48 hours'],0,'Drives the “Paused” lane on the mission desk']],
+ otm:[['§','Connection'],['url','REST endpoint','txt','https://otm-prd.client.example/logisticsRestApi/resources-int/v2','',1],['dom','Domain','txt','MX'],['objs','Resources','txt','shipments, shipmentStops, orderReleases'],
+  ['§','Authentication'],['auth','Method','sel','OAuth 2.0 (IDCS)',['OAuth 2.0 (IDCS)','Basic (integration user)']],['user','Integration user','txt','MX.TIGER_READER'],['secret','Secret reference','txt','kv://otc-mx/otm-reader','',1,'Held in the client’s key vault'],
+  ['§','Extraction'],['load','Load','sel','Hourly delta',['Hourly delta','Every 15 minutes','Nightly']]],
+ cel:[['§','Connection'],['team','Team URL','txt','https://client.eu-1.celonis.cloud','',1],['pool','Data pool','txt','OTC Mexico'],['model','Data model','txt','O2C object-centric (OCPM)'],
+  ['kpis','Use Celonis KPI definitions','sel','Yes, where they exist',['Yes, where they exist','No, compute in the accelerator']],
+  ['§','Authentication'],['auth','Method','sel','Application key',['Application key','OAuth 2.0 client credentials']],['secret','Key reference','txt','kv://otc-mx/celonis-app-key','',1,'Held in the client’s key vault'],
+  ['§','Extraction'],['load','Load','sel','Data Pool export, daily',['Data Pool export, daily','Data Pool export, hourly','Query API on demand']]],
+ doc:[['§','Connection'],['src','Repository','sel','SharePoint Online',['SharePoint Online','Google Drive','Amazon S3','Network share via gateway']],['site','Site / folder','txt','https://client.sharepoint.com/sites/OTC-Mexico','',1],
+  ['folders','Folders to read','txt','Chain agreements; O2C policies; Route SOPs; Collections North mailbox','',1],['types','File types','txt','pdf, docx, pptx, mbox, csv'],
+  ['pii','Mask personal data in emails','sel','Yes',['Yes','No']],
+  ['§','Authentication'],['auth','Method','sel','Microsoft Entra app (read-only Sites.Selected)',['Microsoft Entra app (read-only Sites.Selected)','Service account']],['user','Application (client) ID','txt','5f1c…-…-…a91'],
+  ['secret','Secret reference','txt','kv://otc-mx/docs-reader','',1,'Held in the client’s key vault']]};
+const cfgVal=(k,f)=>(S.cfg[k]&&S.cfg[k][f[0]]!==undefined)?S.cfg[k][f[0]]:f[3];
 const TABLES=[
  {id:'Account',sys:'sf',name:'Accounts: chains and stores (RetailStore hierarchy)',rows:18420,objs:ALL,
   cols:[['Id','Record Id'],['Name','Account'],['ParentId','Chain'],['SAP_Customer__c','SAP customer'],['Channel__c','Channel'],['Region__c','Region']],
@@ -797,7 +851,7 @@ const RESP_OPTS=['Collections analysts','Route settlement clerks','Cash applicat
 const S={
  conn:{},busy:{},cstep:0,scope:['col'],tables:{},req:[],xtab:'tables',xsel:null,xsys:'all',kg:0,kgLog:[],rf:'all',
  bstep:0,obj:'col',targets:{},scen:'base',mSel:null,pSel:null,modes:{},locked:false,lockedObj:null,
- persona:'col',lane:'recl',sel:'INV-90881234',done:{},res:{},dmeta:{},seq:0,seen:{},mPrev:{},hlag:null,own:{},threadDone:false,oppSent:{},rulePromoted:{},staleSnooze:false,log:[],
+ cfg:{},cfgOpen:null,cfgEnv:{},persona:'col',lane:'recl',sel:'INV-90881234',done:{},res:{},dmeta:{},seq:0,seen:{},mPrev:{},hlag:null,own:{},threadDone:false,oppSent:{},rulePromoted:{},staleSnooze:false,log:[],
  opt:'B',v:null
 };
 OBJS.forEach(o=>S.targets[o.id]=o.def);
@@ -935,8 +989,9 @@ function cSources(){
    <div class="chips" style="gap:8px">${OBJS.map(o=>{const on=S.scope.includes(o.id);return `<button class="tog ${on?'on':''}" data-act="scope" data-k="${o.id}" aria-pressed="${on}">${on?'✓ ':''}${esc(o.n)}</button>`}).join('')}</div></section>`;
   const cards=SYS.map(s=>{const st=S.busy[s.k]?1:S.conn[s.k]||0;const ts=TABLES.filter(t=>t.sys===s.k),inc=ts.filter(t=>tIncluded(t.id));
     const what=s.k==='doc'?`${DOCS.length} documents`:`${inc.length} of ${ts.length} tables included · ${n0(inc.reduce((a,t)=>a+t.rows,0))} rows`;
-    return `<div class="conn ${st===2?'ok':''}"><div class="top"><span class="lg" style="background:${s.col}">${s.lg}</span><div><h4>${esc(s.n)}</h4><p class="note">${esc(s.d)}</p></div></div>
+    return `<div class="conn ${st===2?'ok':''}"><button class="gear ${S.cfg[s.k]?'set':''}" data-act="cfg" data-k="${s.k}" aria-label="${esc(s.n)} connector settings" title="Connector settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button><div class="top"><span class="lg" style="background:${s.col}">${s.lg}</span><div><h4>${esc(s.n)}</h4><p class="note">${esc(s.d)}</p></div></div>
      ${s.example?'<span class="chip warn" style="align-self:flex-start">Example system · confirm with client</span>':''}
+     ${S.cfg[s.k]?`<span class="chip acc" style="align-self:flex-start">Settings saved · ${esc(S.cfg[s.k].env)}</span>`:''}
      <div class="st"><span class="muted">${st===2?what:st===1?'Profiling…':'Read-only · synthetic sandbox'}</span>${st===2?'<span class="chip good">Connected</span>':st===1?'<span class="spin" aria-label="Connecting"></span>':`<button class="btn sm" data-act="conn" data-k="${s.k}">Connect</button>`}</div></div>`}).join('');
   const any=SYS.some(s=>conn(s.k));
   const picker=SYS.filter(s=>s.k!=='doc'&&conn(s.k)).map(s=>`<div class="tgrp"><div class="xgrp">${esc(s.n)}</div>${TABLES.filter(t=>t.sys===s.k).map(t=>{const on=tIncluded(t.id),need=PATS.filter(p=>p.t.includes(t.id)).length;
@@ -947,8 +1002,17 @@ function cSources(){
    ${scope}<div class="conns">${cards}</div>
    ${any?`<section class="panel"><div class="ph"><div><h3>Tables to include in the knowledge graph</h3><p class="sub">Pre-selected from the objectives in scope. Patterns that need an excluded table become unavailable in the builder.</p></div>
     <div class="btnrow"><button class="btn sm" data-act="tblall">Include all</button><button class="btn sm" data-act="tbldef">Use recommended</button></div></div><div class="tgrid">${picker||'<p class="note">Connect a system to choose its tables.</p>'}</div></section>`:`<div class="empty">Connect a source to choose its tables and documents.</div>`}
-   ${allConn()?nextBtn('cstep',1,'Data explorer'):''}`;
+   ${allConn()?nextBtn('cstep',1,'Data explorer'):''}${cfgModal()}`;
 }
+function cfgModal(){const k=S.cfgOpen;if(!k)return '';const sy=SYS.find(x=>x.k===k),env=(S.cfg[k]&&S.cfg[k].env)||ENVS[0];
+  const body=CFGF[k].map(f=>{if(f[0]==='§')return `<div class="fsec">${esc(f[1])}</div>`;const v=cfgVal(k,f),id='cf-'+f[0];
+    const ctl=f[2]==='sel'?`<select id="${id}" data-cf="${f[0]}">${f[4].map(o=>`<option ${o===v?'selected':''}>${esc(o)}</option>`).join('')}</select>`:`<input id="${id}" data-cf="${f[0]}" value="${esc(v)}" ${f[0]==='secret'?'spellcheck="false" autocomplete="off"':''}>`;
+    return `<label class="fld ${f[5]?'wide':''}" for="${id}"><span>${esc(f[1])}</span>${ctl}${f[6]?`<small>${esc(f[6])}</small>`:''}</label>`}).join('');
+  return `<div class="ovl" id="ovl"><div class="mdl" role="dialog" aria-modal="true" aria-labelledby="cfg-t"><div class="mdl-h"><span class="lg" style="background:${sy.col}">${sy.lg}</span><div><h3 id="cfg-t">${esc(sy.n)} connector</h3><p class="note">${esc(sy.d)}</p></div><button class="x" data-act="cfgclose" aria-label="Close">×</button></div>
+   <div class="fgrid"><label class="fld" for="cf-env"><span>Environment</span><select id="cf-env" data-cf="env">${ENVS.map(o=>`<option ${o===env?'selected':''}>${o}</option>`).join('')}</select></label>
+    <label class="fld" for="cf-acc"><span>Access</span><input id="cf-acc" value="Read-only" readonly></label>${body}</div>
+   <div class="ctest" id="ctest" aria-live="polite">Nothing is sent from this demo. In a deployment the accelerator runs inside the client’s environment and reads with these settings.</div>
+   <div class="btnrow mdl-f" style="justify-content:flex-end"><button class="btn" data-act="cfgtest">Test connection</button><button class="btn" data-act="cfgclose">Cancel</button><button class="btn pri" data-act="cfgsave" data-k="${k}">Save settings</button></div></div></div>`}
 function cExplorer(){
   const ts=TABLES.filter(t=>tOn(t.id)&&(S.xsys==='all'||t.sys===S.xsys));
   const ds=conn('doc')?DOCS:[];
@@ -1388,9 +1452,15 @@ window.addEventListener('hashchange',()=>{render();window.scrollTo(0,0)});
 function connect(k,cb){if(conn(k)){cb&&cb();return}S.busy[k]=1;render();setTimeout(()=>{delete S.busy[k];S.conn[k]=2;if(S.kg===2)S.kg=0;render();cb&&cb()},fast()?30:450)}
 function buildKg(){S.kg=1;S.kgReady=false;S.kgLog=[];render();const L=kgLines();let i=0;const tick=()=>{S.kgLog.push(L[i++]);if(i<L.length){render();setTimeout(tick,fast()?10:230)}else{S.kgReady=true;render()}};setTimeout(tick,fast()?10:150)}
 document.addEventListener('click',ev=>{
+  if(ev.target.id==='ovl'){S.cfgOpen=null;render();return}
   const b=ev.target.closest('[data-act]');if(!b||b.disabled)return;const a=b.dataset.act,k=b.dataset.k;
   if(a==='tbl')return;
   if(a==='conn'){connect(k);return}
+  if(a==='cfg'){S.cfgOpen=k;render();setTimeout(()=>{const f=document.querySelector('.mdl select,.mdl input');f&&f.focus()},0);return}
+  if(a==='cfgclose'){const k0=S.cfgOpen;S.cfgOpen=null;render();const g=document.querySelector(`.gear[data-k="${k0}"]`);g&&g.focus();return}
+  if(a==='cfgsave'){const o={};document.querySelectorAll('.mdl [data-cf]').forEach(el=>o[el.dataset.cf]=el.value);S.cfg[k]=o;S.cfgOpen=null;toast(SYS.find(x=>x.k===k).n+' settings saved');render();return}
+  if(a==='cfgtest'){const t=$('#ctest'),sk=S.cfgOpen,env=($('#cf-env')||{}).value||'';t.className='ctest';t.innerHTML='<span class="spin"></span> Testing read-only access…';t.scrollIntoView({block:'nearest'});b.disabled=true;
+    setTimeout(()=>{b.disabled=false;t.className='ctest ok';t.textContent=`✓ ${SYS.find(x=>x.k===sk).n} · ${env} · authenticated, read-only scope confirmed, ${TABLES.filter(x=>x.sys===sk).length||DOCS.length} ${sk==='doc'?'documents':'tables'} reachable. (Simulated)`;t.scrollIntoView({block:'nearest'})},fast()?30:900);return}
   if(a==='connall'){const ks=SYS.map(s=>s.k).filter(x=>!conn(x));const nx=()=>{const x=ks.shift();if(x)connect(x,nx)};nx();return}
   if(a==='scope'){S.scope=S.scope.includes(k)?S.scope.filter(x=>x!==k):[...S.scope,k];S.tables={};if(S.kg===2)S.kg=0;render();return}
   if(a==='tblall'){TABLES.forEach(t=>S.tables[t.id]=true);if(S.kg===2)S.kg=0;render();return}
@@ -1425,6 +1495,7 @@ document.addEventListener('click',ev=>{
   if(a==='opp'){S.oppSent[k]=true;logIt('ana','sent an opportunity to '+b.dataset.to,[{o1:'jorge',o2:'elena',o3:'daniela'}[k]]);toast('Sent to '+b.dataset.to);render();return}
   if(a==='promote'){S.rulePromoted[k]=true;logIt('marisol','let rule '+k+' act on its own: short-delivery credits under MXN 2,000 now post without asking',['jorge']);toast('Rule '+k+' now acts on its own');render();return}
 });
+document.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&S.cfgOpen){S.cfgOpen=null;render()}});
 document.addEventListener('input',ev=>{const t=ev.target;
   if(t.dataset.act==='tgt'){S.targets[S.obj]=+t.value;S.locked=false;const g=gap();$('#tgtv').textContent=fmtO(S.targets[S.obj]);$('#tgtg').textContent=fmtG(g);$('#tgtw').textContent=O().value(g);return}
   if(t.dataset.f){const v=parseFloat(t.value);if(!isNaN(v)){S.v[t.dataset.f]=v;t.classList.toggle('edited',v!==VDEF[t.dataset.f]);$('#results').innerHTML=results()}}
