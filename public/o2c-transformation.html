@@ -515,6 +515,16 @@ const KCTX=[
 ];
 const KOUT=[['Sales Order Quantity Change Rate','ope','N2','C','Confirmed out of scope, 23 Jun 2026']];
 const LAGK=id=>HKPIS.find(k=>k.lt==='lag'&&k.id===id);
+const KPI=n=>HKPIS.find(k=>k.n===n);
+/* Objective → the lagging results it reports through; mission → the leading measures its patterns act on (Tiger's mapping, illustrative) */
+const OBJLAG={col:['pd','dso'],cash:['dso'],ded:['ded','rej'],tch:['tch','cyc'],otif:['otif','otd','fill'],ccs:['olt','cyc']};
+const MLEAD={PR:['Promotions live ≥ 48 h before start','Manual Price Change'],MD:['Orders with complete customer & price data','Order Entry Key Field Change Rate','Average Order Validation Time (Days)'],
+ OM:['Touchless Order Rate (%)','Blocked Order Rate','Credit Block Rate (%)','Order Change Rate','Manual Block (Count)'],DL:['Delivery Block Rate (%)','Average Delay (Days)','Manual Delivery Date Change','Unshipped Net Value'],
+ RA:['Invoice matches accepted delivery'],BL:['CFDI re-issue rate','Billing Block Rate (%)','Average Time to Bill (Hours)','Unbilled Shipped Revenue'],
+ CS:['UCX cases linked to an invoice'],CA:['Payments applied within 1 day'],C1:[],C2:['Promises to pay kept'],C3:[]};
+const MKLT={C1:'lag'};
+const kval=k=>k.disp||(k.v+k.u);
+const ktgt=k=>k.disp?'tracked as a trend':'top quartile '+k.tq+k.u;
 const SYSL={C:['Celonis → EDF','src'],E:['EDF','src'],P:['Proposed · not in KPI scope','acc']};
 /* ---------- systems and tables ---------- */
 const SYS=[
@@ -916,7 +926,7 @@ const CSTEPS=[['Sources & scope',''],['Data explorer',''],['O2C health check',''
 PAGE.ctx=()=>{header('ctx');
   const nc=SYS.filter(s=>conn(s.k)).length;
   CSTEPS[0][1]=`${nc} of 6 connected`;CSTEPS[1][1]=`${TABLES.filter(t=>tOn(t.id)).length} tables included`;
-  CSTEPS[2][1]=conn('sap')?'Computed':'Needs SAP';CSTEPS[3][1]=S.kg===2?'Built':S.kg===1?'Building…':'Not built';
+  CSTEPS[2][1]=conn('sap')?'Computed':'Needs SAP';CSTEPS[3][1]=S.kg===2?'Built':S.kg===1?(S.kgReady?'Ready to view':'Building…'):'Not built';
   steps(CSTEPS,S.cstep,'cstep');
   return [cSources,cExplorer,cHealth,cGraph][S.cstep]()+footer;
 };
@@ -1027,12 +1037,13 @@ function kgLines(){const ts=TABLES.filter(t=>tOn(t.id));
 }
 function cGraph(){
   const hd=`<div class="head"><div><div class="eyebrow">Client context · Knowledge graph</div><h2>${S.kg===2?'Mexico O2C knowledge graph':'Build the knowledge graph'}</h2><p class="lede">Tiger’s O2C ontology supplies the meaning; Mexico’s tables and documents populate it. The graph is what lets a pattern ask “was this invoice really owed?”</p></div>${S.kg===1?'':`<button class="btn ${S.kg===2?'':'pri'}" data-act="kg" ${allConn()?'':'disabled'}>${S.kg===2?'Rebuild':'Build knowledge graph'}</button>`}</div>`;
-  if(S.kg===1)return hd+`<div class="log" aria-live="polite">${S.kgLog.map(l=>`<div><span class="ok">✓</span>${esc(l)}</div>`).join('')}<div><span class="spin"></span> Working…</div></div>`;
+  if(S.kg===1)return hd+`<div class="log" aria-live="polite">${S.kgLog.map(l=>`<div><span class="ok">✓</span>${esc(l)}</div>`).join('')}${S.kgReady?'':'<div><span class="spin"></span> Working…</div>'}</div>
+   ${S.kgReady?`<div class="done-banner" style="justify-content:space-between;flex-wrap:wrap"><span>✓ Build complete: ${S.kgLog.length} steps processed.</span><button class="btn pri" data-act="kgshow">View the knowledge graph →</button></div>`:''}`;
   if(S.kg!==2)return hd+(allConn()?'':'<div class="empty">Connect all sources first.<button class="btn" data-act="cstep" data-i="0">Go to Sources</button></div>')+ontology();
   const inc=TABLES.filter(t=>tOn(t.id)),sc=inc.reduce((a,t)=>a+t.rows,0)/TABLES.reduce((a,t)=>a+t.rows,0);
   const rules=DOC_RULES.filter(r=>S.rf==='all'||r.o.includes(S.rf));
   const t=THREAD;
-  return hd+`<div class="tiles">${[[n0(1.84e6*(.4+.6*sc)),'Entities'],[n0(6.2e6*(.4+.6*sc)),'Relationships'],[inc.length+' / '+TABLES.length,'Tables included'],[DOC_RULES.length+'','Rules from documents'],[PATS.filter(patAvail).length+' / '+PATS.length,'Patterns with data']].map(x=>`<div class="tile"><b>${x[0]}</b><small>${x[1]}</small></div>`).join('')}</div>
+  return hd+(S.kgLog.length?`<details class="panel"><summary style="cursor:pointer"><b>Build log</b> <span class="chip">${S.kgLog.length} steps</span></summary><div class="log" style="margin-top:10px">${S.kgLog.map(l=>`<div><span class="ok">✓</span>${esc(l)}</div>`).join('')}</div></details>`:'')+`<div class="tiles">${[[n0(1.84e6*(.4+.6*sc)),'Entities'],[n0(6.2e6*(.4+.6*sc)),'Relationships'],[inc.length+' / '+TABLES.length,'Tables included'],[DOC_RULES.length+'','Rules from documents'],[PATS.filter(patAvail).length+' / '+PATS.length,'Patterns with data']].map(x=>`<div class="tile"><b>${x[0]}</b><small>${x[1]}</small></div>`).join('')}</div>
    ${ontology()}
    <section class="panel"><div class="ph"><div><h3>One invoice, traced across every system</h3><p class="sub">${esc(t.chain)} · ${esc(t.store)} · route 214. Red = where one system alone tells the wrong story. Orange = the rule that decides.</p></div><span class="illus">Illustrative</span></div>
     <div class="trace">${t.nodes.map((n,i)=>`${i?'<span class="ta">→</span>':''}<div class="tn ${n.c}"><small>${esc(n.t)}</small>${esc(n.v)}<span class="s">${esc(n.s)}</span></div>`).join('')}</div>
@@ -1095,19 +1106,28 @@ function bMissions(){
   const o=O(),rm=relMissions(),sel=rm.filter(m=>S.mSel.has(m.id)&&misAch(m.id)>0);
   const sk=sel.length?sankey([sel.map(m=>({id:m.id,l:m.n,s:fmtG(misAch(m.id)),v:misAch(m.id),c:m.c})),[{id:'obj',l:o.kpi,s:`${fmtO(o.base)} → ${fmtO(o.base+(o.dir<0?-1:1)*totAch())}`,v:totAch(),c:'var(--accent)'}]],
     sel.map(m=>({s:m.id,t:'obj',v:misAch(m.id),c:m.c,title:m.n})),{H:Math.max(300,sel.length*46),ml:300,mr:250,target:gap(),targetLabel:fmtG(gap()),aria:'Mission contribution'}):'<p class="note">Select at least one mission.</p>';
-  const lv=(l,ks)=>`<div class="lv"><div class="lvl">${l}</div><div class="lvb">${ks.map(k=>`<div class="kpi"><small>${esc(k[0])}</small><b class="num">${esc(k[1])}</b><small>${esc(k[2]||'')}</small></div>`).join('')}</div></div>`;
+  const lv=(l,t,ks)=>`<div class="lv"><div class="lvl" style="${t[0]==='lead'?'background:var(--accent);color:var(--accent-ink)':''}">${l}</div><div class="lvb" style="${t[0]==='lead'?'border-color:var(--accent-line)':''}"><div style="flex-basis:100%;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap"><span class="grp-h ${t[0]}"><b>${t[0]==='lead'?'Leading':'Lagging'}</b></span><span class="note">${esc(t[1])}</span></div>${ks.length?ks.map(k=>`<div class="kpi"><small>${esc(k[0])}</small><b class="num">${esc(k[1])}</b><small>${esc(k[2]||'')}</small>${k[3]?`<span class="chips" style="margin-top:3px">${k[3]}</span>`:''}</div>`).join(''):'<span class="note">None yet. Select a mission, or add this objective to the context scope.</span>'}</div></div>`;
+  const lagIds=OBJLAG[o.id]||[],lagKs=lagIds.map(LAGK).filter(Boolean);
+  const leadNames=[...new Set(sel.flatMap(m=>MLEAD[m.id]||[]))],leadKs=leadNames.map(KPI).filter(k=>k&&k.sys!=='P');
+  const kchip=k=>`<span class="chip ${SYSL[k.sys][1]}">${SYSL[k.sys][0]}</span>`;
+  const misLead=m=>(MLEAD[m.id]||[]).map(KPI).filter(Boolean);
   const hos=HANDOFFS.filter(h=>sel.some(m=>NODES.findIndex(n=>n.id===m.nd)>=0)).slice(0,7);
   return `<div class="head"><div><div class="eyebrow">Transformation builder · KPI ladder & missions</div><h2>Which cross-team missions move ${esc(o.kpi.toLowerCase())}?</h2>
     <p class="lede">Each mission’s contribution is its patterns’ 18-month footprint in Mexico’s data, times a capture assumption. Missions span process steps; every KPI names the one above it.</p></div></div>
-   <section class="panel"><div class="ph"><div><h3>KPI ladder</h3></div></div><div class="ladder">
-    ${lv('L1',[[o.l1[0],o.l1[1]]])}${lv('L2',[[`Process owner · ${o.kpi}`,fmtO(o.base),'target '+fmtO(S.targets[o.id])]])}
-    ${lv('L3',hos.map(h=>[h.n,h.v+'%','target '+h.t+'%']))}${lv('L4',sel.map(m=>[m.kpi,m.kb,'target '+m.kt]))}</div></section>
+   <section class="panel"><div class="ph"><div><h3>KPI ladder</h3><p class="sub">The top two levels are results the CFO and process owner report. The levels below are what the missions act on day to day; they move first, and the results follow.</p></div></div><div class="ladder">
+    ${lv('L1',['lag','CFO'],[[o.l1[0],o.l1[1]]])}
+    ${lv('L2',['lag','Process owner · the objective and the results it reports through'],[[o.kpi,fmtO(o.base),'target '+fmtO(S.targets[o.id])]].concat(lagKs.map(k=>[k.n,kval(k),ktgt(k),kchip(k)])))}
+    ${lv('L3',['lead',`Your KPIs the selected missions move · ${leadKs.length} from the 61-KPI inventory`],leadKs.map(k=>[k.n,kval(k),ktgt(k),kchip(k)]))}
+    ${lv('L4',['lead','Hand-off contracts between teams'],hos.map(h=>[h.n,h.v+'%','target '+h.t+'%']))}
+    ${lv('L5',['lead','Mission KPIs, owned by each mission team'],sel.map(m=>[m.kpi,m.kb,'target '+m.kt,MKLT[m.id]?'<span class="chip">Lagging for the collector</span>':'']))}</div>
+    <div class="say" style="margin-top:12px"><b>Say:</b> “Nobody can move DSO on a Tuesday. A team can move time to bill, cases linked to invoices and payments applied in a day. The missions act on those; the results follow.”</div></section>
    ${coverBox()}
    <section class="panel"><div class="ph"><div><h3>Mission contribution to the objective</h3><p class="sub">Dashed line = the gap.</p></div></div><div class="svgwrap">${sk}</div></section>
    <div style="display:flex;flex-direction:column;gap:8px">${rm.map(m=>{const on=S.mSel.has(m.id),av=relPats().filter(p=>p.m===m.id&&patAvail(p)).length,all=relPats().filter(p=>p.m===m.id).length,nd=NODES.find(n=>n.id===m.nd);
     return `<div class="mrow ${on?'':'off'}" style="--mc:${m.c}"><button class="cb ${on?'on':''}" data-act="msel" data-k="${m.id}" aria-pressed="${on}" aria-label="Select ${esc(m.n)}" ${av?'':'disabled'}></button>
-     <div><b>${esc(m.n)}</b> <span class="chip" style="color:${nd.c}">${esc(nd.n)}</span><div class="note">Owner: ${esc(m.owner)} · ${av} of ${all} patterns have data${av<all?' · some tables excluded':''}</div></div>
-     <div class="mk">${esc(m.kpi)}<b class="num">${esc(m.kb)} → ${esc(m.kt)}</b></div><div class="mk">Contribution<b class="num">${on?fmtG(misAch(m.id)):'—'}</b></div></div>`}).join('')}</div>
+     <div><b>${esc(m.n)}</b> <span class="chip" style="color:${nd.c}">${esc(nd.n)}</span><div class="note">Owner: ${esc(m.owner)} · ${av} of ${all} patterns have data${av<all?' · some tables excluded':''}</div>
+     ${misLead(m).length?`<div class="chips" style="margin-top:5px"><span class="eyebrow" style="margin-right:2px;color:var(--accent)">Moves</span>${misLead(m).map(k=>`<span class="chip ${k.sys==='P'?'acc':''}">${esc(k.n)}</span>`).join('')}</div>`:''}</div>
+     <div class="mk">${esc(m.kpi)} <span class="chip">${MKLT[m.id]?'Lagging':'Leading'}</span><b class="num">${esc(m.kb)} → ${esc(m.kt)}</b></div><div class="mk">Contribution<b class="num">${on?fmtG(misAch(m.id)):'—'}</b></div></div>`}).join('')}</div>
    ${nextBtn('bstep',3,'Patterns & rules learned')}`;
 }
 function bPatterns(){
@@ -1118,7 +1138,8 @@ function bPatterns(){
   const rows=ms.map(m=>`<tr class="mh"><td colspan="5"><span style="color:${m.c}">■</span> ${esc(m.n)}</td></tr>`+relPats().filter(p=>p.m===m.id).map(p=>{const av=patAvail(p),on=av&&S.pSel.has(p.id);
     return `<tr style="${on?'':'opacity:.55'}"><td><button class="cb ${on?'on':''}" data-act="psel" data-k="${p.id}" aria-pressed="${on}" aria-label="Select ${esc(p.n)}" ${av?'':'disabled'}></button></td>
      <td><b>${esc(p.n)}</b> ${p.mined?`<span class="chip warn">Newly mined · ${Math.round(p.mined*100)}% confidence · SME review</span>`:'<span class="chip">Tiger library</span>'}${p.rule?` <span class="chip acc">${p.rule}</span>`:''}<div class="note">${esc(p.sig)}</div>
-      <div class="chips" style="margin-top:4px">${p.t.map(t=>`<span class="chip src ${tIncluded(t)?'':'off'}">${esc(t)}</span>`).join('')}</div>${av?'':'<div class="note" style="color:var(--warn)">Unavailable: needs a table excluded in Client context</div>'}</td>
+      <div class="chips" style="margin-top:4px">${p.t.map(t=>`<span class="chip src ${tIncluded(t)?'':'off'}">${esc(t)}</span>`).join('')}</div>
+      ${(MLEAD[p.m]||[]).length?`<div class="chips" style="margin-top:4px"><span class="eyebrow" style="margin-right:2px;color:var(--accent)">Moves</span>${(MLEAD[p.m]||[]).map(n=>`<span class="chip">${esc(n)}</span>`).join('')}</div>`:''}${av?'':'<div class="note" style="color:var(--warn)">Unavailable: needs a table excluded in Client context</div>'}</td>
      <td class="r num">${n0(p.occ)}</td><td>${esc(p.act)}</td><td class="r num">${on?fmtG(patAch(p)):'—'}</td></tr>`}).join('')).join('');
   const rl=RULES.filter(r=>r.o.includes(S.obj)).concat(RULES.filter(r=>!r.o.includes(S.obj)));
   return `<div class="head"><div><div class="eyebrow">Transformation builder · Patterns & rules learned</div><h2>What each mission actually acts on</h2>
@@ -1182,11 +1203,11 @@ PAGE.desk=()=>{header('desk');steps(null);
    <label class="psel"><span class="av">${p[1].split(' ').map(w=>w[0]).join('')}</span><span><small>Viewing as</small><select id="persona" aria-label="Persona">${PERSONAS.map(x=>`<option value="${x[0]}" ${x[0]===S.persona?'selected':''}>${esc(x[1])} · ${esc(x[2].split(' · ')[0])}</option>`).join('')}</select></span></label></div>`;
   return banner+ctl+{col:dCollector,lead:dLead,ra:dRoute,po:dOwner}[S.persona]()+history()+footer;
 };
-function history(){const P=PMAP[S.persona],vis=S.log.filter(e=>canSee(e,P)),seen=S.seen[P]||0,isNew=e=>e.id>seen&&e.who!==P,nw=vis.filter(isNew).length,hid=S.log.length-vis.length;
+function history(){const P=PMAP[S.persona],vis=S.log.filter(e=>canSee(e,P)),hidW=[...new Set(S.log.filter(e=>!canSee(e,P)).map(e=>nm(e.who)))],seen=S.seen[P]||0,isNew=e=>e.id>seen&&e.who!==P,nw=vis.filter(isNew).length,hid=S.log.length-vis.length;
   const scope={ana:'Your own actions, plus anything routed to you or done on your items.',marisol:'Your actions, your four collectors’ actions, and anything routed to them.',
    jorge:'Your actions, your route settlement team’s, and items routed to route accounting.',ricardo:'Everything across OTC: collections and route accounting report to you as process owner.'}[P];
   return `<details class="panel" ${nw?'open':''}><summary style="cursor:pointer"><b>History</b> <span class="chip">${vis.length}</span>${nw?` <span class="chip acc">${nw} new since you last looked</span>`:''}${hid?` <span class="note" style="margin-left:6px">${hid} event${hid>1?'s':''} outside your chain hidden</span>`:''}</summary>
-   <p class="note" style="margin-top:6px">Visible to ${esc(nm(P))}: ${scope}</p><div style="margin-top:6px">${vis.length?vis.map(e=>{const r=relTag(e,P);return `<div class="lg-i"><span class="num muted">${esc(e.t)}</span><span><b>${esc(nm(e.who))}</b> ${esc(e.txt)}</span><span class="chips">${isNew(e)?'<span class="chip warn">New</span>':''}<span class="chip ${r[1]}">${r[0]}</span></span></div>`}).join(''):'<p class="note">Nothing yet.</p>'}</div></details>`}
+   <p class="note" style="margin-top:6px"><span class="chip acc">Scoped to ${esc(nm(P))}</span> ${scope}${hidW.length?` Not shown here: ${esc(hidW.join(', '))}.`:''}</p><div style="margin-top:6px">${vis.length?vis.map(e=>{const r=relTag(e,P);return `<div class="lg-i"><span class="num muted">${esc(e.t)}</span><span><b>${esc(nm(e.who))}</b> ${esc(e.txt)}</span><span class="chips">${isNew(e)?'<span class="chip warn">New</span>':''}<span class="chip ${r[1]}">${r[0]}</span></span></div>`}).join(''):'<p class="note">Nothing yet.</p>'}</div></details>`}
 function anaM(){const T=TEAM[0],R=Object.entries(S.res).filter(([k,r])=>r.by==='ana');
   const col=ITEMS.filter(i=>i.lane==='collect'),list=col.reduce((a,i)=>a+i.coll,0);
   const worked=col.filter(i=>S.res[i.id]&&['promise','contact'].includes(S.res[i.id].k)).reduce((a,i)=>a+i.coll,0);
@@ -1346,8 +1367,8 @@ PAGE.guide=()=>{header('guide');steps(null);
    ['Context · Sources & scope','2 min',['Keep Collections in scope; show the other five objectives exist.','Connect all. Show the table picker: KNB1, LIPS, Case, FEBEP are recommended for collections.','Untick LMD_STOP_EXECUTION, note the pattern count, then re-tick.'],''],
    ['Context · Data explorer','1 min',['Open LIPS (accepted quantity), then the Cadena Norte agreement with its highlighted clauses.'],'“The documents are where the rules live.”'],
    ['Context · Health check','3 min',['Land on 52% touchless per order vs 71–88% by team.','Collections waterfall: MXN 224M of MXN 510M is collectible.','Inventory panel: his 61 KPIs read against the five steps. Setup and receivables have none in scope. Ask who owns receivables.','Lagging: six of his results, then four proposed. Click DSO to light up its drivers: three of them are already his KPIs (time to bill, unbilled shipped revenue, days since goods issue).','Leading by step, the volume measures folded away, then the seven hand-off contracts.'],'“The lagging measures tell you where you are. The leading ones are what a team can move this week.”'],
-   ['Context · Knowledge graph','2 min',['Build it; read the ontology; walk invoice 90881234 to MXN 0 collectible.'],'“No single system holds the truth about this invoice.”'],
-   ['Builder','5 min',['Show all six objectives; select Collect what is collectible.','Standards: global definitions, local ownership.','Ladder and Sankey: collector missions plus feeder missions upstream.','Patterns: tick the mined pattern; read the tables each needs. Rules: R2 and R5 are “fix upstream”.','Owners and channels; lock the blueprint.'],'“The standard travels across markets. The result belongs to Mexico.”'],
+   ['Context · Knowledge graph','2 min',['Build it; let the build log run and talk through each step; click “View the knowledge graph”.','Read the ontology; walk invoice 90881234 to MXN 0 collectible.'],'“No single system holds the truth about this invoice.”'],
+   ['Builder','5 min',['Show all six objectives; select Collect what is collectible.','Standards: global definitions, local ownership.','Ladder: two lagging levels on top, three leading levels below. The leading measures are his own KPIs where they exist. Each mission row shows what it moves.','Sankey: collector missions plus feeder missions upstream.','Patterns: tick the mined pattern; read the tables each needs. Rules: R2 and R5 are “fix upstream”.','Owners and channels; lock the blueprint.'],'“The standard travels across markets. The result belongs to Mexico.”'],
    ['Desk · Ana, collector','5 min',['Portfolio waterfall; leading cards move with each action, lagging cards say when they will move.','Reclassified lane: Cadena Norte invoice; approve and route. Routed out ≤ 2 days ticks up; the pipeline shows what is now with other teams.','Collect lane: Super Golfo “Do it” secures a promise; paused lane; send one opportunity.','Open History: Ana sees only her own items, not Luis or Sofía.'],'“Leading measures move today. DSO and past due move when the cash lands, and we will not pretend otherwise.”'],
    ['Desk · Jorge, Marisol, Ricardo','3 min',['Jorge: Ana’s invoice arrives, and History shows it as new since he last looked. Issue all credit notes.','Back to Ana: her past due now shows the posted MXN 4,860 credit.','Marisol: Ana’s row is live; History shows her four collectors. Let R1 act.','Ricardo: process owner sees every event across OTC.'],'“Everyone sees their own work and their team’s, nobody else’s.”'],
    ['Close · Pilot','2 min',['Builder → Pilot scope, option B; type his actuals into the calculator.'],'“Which of these five numbers can your team give us in two weeks?”'],
@@ -1365,7 +1386,7 @@ PAGE.guide=()=>{header('guide');steps(null);
 function render(){const id=(location.hash||'#home').slice(1);const pid=PAGE[id]?id:'home';$('#main').innerHTML=PAGE[pid]()}
 window.addEventListener('hashchange',()=>{render();window.scrollTo(0,0)});
 function connect(k,cb){if(conn(k)){cb&&cb();return}S.busy[k]=1;render();setTimeout(()=>{delete S.busy[k];S.conn[k]=2;if(S.kg===2)S.kg=0;render();cb&&cb()},fast()?30:450)}
-function buildKg(){S.kg=1;S.kgLog=[];render();const L=kgLines();let i=0;const tick=()=>{S.kgLog.push(L[i++]);if(i<L.length){render();setTimeout(tick,fast()?10:230)}else{S.kg=2;render()}};setTimeout(tick,fast()?10:150)}
+function buildKg(){S.kg=1;S.kgReady=false;S.kgLog=[];render();const L=kgLines();let i=0;const tick=()=>{S.kgLog.push(L[i++]);if(i<L.length){render();setTimeout(tick,fast()?10:230)}else{S.kgReady=true;render()}};setTimeout(tick,fast()?10:150)}
 document.addEventListener('click',ev=>{
   const b=ev.target.closest('[data-act]');if(!b||b.disabled)return;const a=b.dataset.act,k=b.dataset.k;
   if(a==='tbl')return;
@@ -1379,6 +1400,7 @@ document.addEventListener('click',ev=>{
   if(a==='xsys'){S.xsys=k;S.xsel=null;render();return}
   if(a==='xsel'){S.xsel=k;render();return}
   if(a==='kg'){buildKg();return}
+  if(a==='kgshow'){S.kg=2;S.kgReady=false;render();window.scrollTo({top:0});return}
   if(a==='rf'){S.rf=k;render();return}
   if(a==='bstep'){S.bstep=+b.dataset.i;render();window.scrollTo({top:0});return}
   if(a==='obj'){if(S.obj!==k){S.obj=k;S.mSel=null}render();return}
